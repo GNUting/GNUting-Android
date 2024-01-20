@@ -1,9 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.GNUtingAndroid" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
+<!-- Base application theme. -->
+<style name="Theme.GNUtingAndroid" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!-- Primary brand color. -->
 
-    <style name="Theme.GNUtingAndroid" parent="Base.Theme.GNUtingAndroid" />
+    <!-- Secondary brand color. -->
+
+    <item name="colorOnSecondary">@color/black</item>
+    <!-- Status bar color. -->
+    <item name="android:statusBarColor">@color/transparent</item>
+    <item name="android:windowLightStatusBar">true</item>
+    <!-- Customize your theme here. -->
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+    <item name="android:windowBackground">@color/white</item>
+</style>
 </resources>
