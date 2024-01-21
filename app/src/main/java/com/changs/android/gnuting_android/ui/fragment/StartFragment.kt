@@ -14,7 +14,7 @@ class StartFragment : BaseFragment<FragmentStartBinding>(FragmentStartBinding::b
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.startBtnJoin.setOnClickListener {
+        binding.startBtnLogin.setOnClickListener {
             findNavController().navigate(R.id.action_startFragment_to_loginFragment)
         }
     }
