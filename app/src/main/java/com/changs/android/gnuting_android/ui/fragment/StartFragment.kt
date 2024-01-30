@@ -17,5 +17,9 @@ class StartFragment : BaseFragment<FragmentStartBinding>(FragmentStartBinding::b
         binding.startBtnLogin.setOnClickListener {
             findNavController().navigate(R.id.action_startFragment_to_loginFragment)
         }
+
+        binding.startBtnJoin.setOnClickListener {
+            findNavController().navigate(R.id.action_startFragment_to_policyFragment)
+        }
     }
 }
