@@ -7,17 +7,14 @@
     android:paddingHorizontal="19dp"
     tools:context=".ui.fragment.LoginFragment">
 
-    <TextView
-        android:id="@+id/login_txt_join"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/login_img_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/join"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginTop="12dp"
+        android:src="@drawable/arrow_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/login_txt_title"
@@ -28,7 +25,7 @@
         android:textColor="@color/black"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_txt_join"
+        app:layout_constraintTop_toBottomOf="@id/login_img_back"
         android:textStyle="bold"/>
 
     <androidx.appcompat.widget.AppCompatEditText
@@ -69,12 +66,12 @@
         android:id="@+id/login_txt_forgot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray2"
+        android:textColor="@color/gray3"
         android:textSize="14sp"
         android:textStyle="bold"
         android:layout_marginTop="43dp"
         android:layout_marginBottom="37dp"
-        android:text="@string/forgot_id_or_password"
+        android:text="@string/forgot_password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_edit_password"/>
