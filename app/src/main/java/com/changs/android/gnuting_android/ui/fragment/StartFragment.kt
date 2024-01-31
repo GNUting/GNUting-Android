@@ -15,8 +15,6 @@ class StartFragment : BaseFragment<FragmentStartBinding>(FragmentStartBinding::b
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().setStatusBarTransparent()
-
         binding.startBtnLogin.setOnClickListener {
             findNavController().navigate(R.id.action_startFragment_to_loginFragment)
         }
@@ -24,6 +22,11 @@ class StartFragment : BaseFragment<FragmentStartBinding>(FragmentStartBinding::b
         binding.startBtnJoin.setOnClickListener {
             findNavController().navigate(R.id.action_startFragment_to_policyFragment)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().setStatusBarTransparent()
     }
 
     override fun onPause() {
