@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="19dp"
+    tools:context=".ui.fragment.Join1Fragment">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/join1_content"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/join1_img_back"
+        app:layout_constraintTop_toBottomOf="@+id/join1_img_back" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/join1_img_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/arrow_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1/3"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/join1_img_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/join1_img_back" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/join1_btn_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" >
+        <TextView
+            android:textColor="@color/gray6"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이메일"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/join1_edit_email"
+                android:layout_width="0dp"
+                android:maxLength="20"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:theme="@style/EditTextTheme"
+                android:inputType="textEmailAddress"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/join1_btn_verify"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/join1_txt_email_pin_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\@gnu.ac.kr"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:layout_marginEnd="14dp"
+                app:layout_constraintBottom_toBottomOf="@+id/join1_edit_email"
+                app:layout_constraintEnd_toEndOf="@+id/join1_edit_email"
+                app:layout_constraintTop_toTopOf="@+id/join1_edit_email" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/join1_btn_verify"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@drawable/background_radius_10dp_solid_gray7"
+                android:text="인증하기"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_marginVertical="5dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:textColor="@color/gray6"
+            android:textSize="14sp"
+            android:layout_marginTop="38dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="인증번호"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/join1_edit_certification_number"
+                android:layout_width="0dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:theme="@style/EditTextTheme"
+                android:inputType="number"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/join1_btn_certification_confirmation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/join1_btn_certification_confirmation"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@drawable/background_radius_10dp_solid_gray7"
+                android:text="확인"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_marginVertical="5dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_gravity="end"
+            android:visibility="invisible"
+            android:text="03:12"
+            android:textSize="14sp"
+            android:textColor="@color/main"
+            android:textStyle="bold"
+            android:id="@+id/join1_txt_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_marginTop="22dp"
+            android:textColor="@color/gray6"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/join1_edit_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:theme="@style/EditTextTheme"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:visibility="invisible"
+            android:textSize="14sp"
+            android:textColor="@color/main"
+            android:textStyle="bold"
+            android:layout_gravity="start"
+            android:id="@+id/join1_txt_verification1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textColor="@color/gray6"
+            android:textSize="14sp"
+            android:layout_marginTop="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호 확인"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/join1_edit_password_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:theme="@style/EditTextTheme"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:visibility="invisible"
+            android:textSize="14sp"
+            android:textColor="@color/main"
+            android:textStyle="bold"
+            android:layout_gravity="start"
+            android:id="@+id/join1_txt_verification2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/join1_btn_next"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_radius_10dp_solid_main"
+        android:paddingVertical="18dp"
+        android:text="@string/next"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

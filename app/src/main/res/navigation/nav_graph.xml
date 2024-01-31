@@ -35,5 +35,32 @@
         android:id="@+id/policyFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.PolicyFragment"
         android:label="fragment_policy"
-        tools:layout="@layout/fragment_policy" />
+        tools:layout="@layout/fragment_policy" >
+        <action
+            android:id="@+id/action_policyFragment_to_join1Fragment"
+            app:destination="@id/join1Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/join1Fragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.Join1Fragment"
+        android:label="fragment_join1"
+        tools:layout="@layout/fragment_join1" >
+        <action
+            android:id="@+id/action_join1Fragment_to_join2Fragment"
+            app:destination="@id/join2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/join2Fragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.Join2Fragment"
+        android:label="fragment_join2"
+        tools:layout="@layout/fragment_join2" >
+        <action
+            android:id="@+id/action_join2Fragment_to_join3Fragment"
+            app:destination="@id/join3Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/join3Fragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.Join3Fragment"
+        android:label="fragment_join3"
+        tools:layout="@layout/fragment_join3" />
 </navigation>
