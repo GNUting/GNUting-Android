@@ -20,6 +20,6 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-        listener(year, month, day)
+        listener(year, month+1, day)
     }
 }
