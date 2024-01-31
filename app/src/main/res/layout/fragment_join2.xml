@@ -133,6 +133,65 @@
             android:layout_height="wrap_content"
             android:text="생년월일"/>
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/join2_ll_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="25dp"
+            android:paddingVertical="14dp"
+            android:layout_marginTop="13dp"
+            android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/join2_txt_year"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="YYYY"
+                android:textColor="#7d7d7d"
+                android:textSize="17sp"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="#7d7d7d"
+                android:textSize="17sp"
+                android:text="/"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/join2_txt_month"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="#7d7d7d"
+                android:textSize="17sp"
+                android:text="MM"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="#7d7d7d"
+                android:textSize="17sp"
+                android:gravity="center"
+                android:text="/"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/join2_txt_day"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="#7d7d7d"
+                android:text="DD"
+                android:textSize="17sp"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
 
         <TextView
             android:layout_marginTop="22dp"
