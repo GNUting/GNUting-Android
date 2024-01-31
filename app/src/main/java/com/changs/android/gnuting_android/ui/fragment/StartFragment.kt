@@ -7,12 +7,15 @@ import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentStartBinding
-
+import com.changs.android.gnuting_android.util.setStatusBarOrigin
+import com.changs.android.gnuting_android.util.setStatusBarTransparent
 
 
 class StartFragment : BaseFragment<FragmentStartBinding>(FragmentStartBinding::bind, R.layout.fragment_start) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().setStatusBarTransparent()
 
         binding.startBtnLogin.setOnClickListener {
             findNavController().navigate(R.id.action_startFragment_to_loginFragment)
@@ -21,5 +24,10 @@ class StartFragment : BaseFragment<FragmentStartBinding>(FragmentStartBinding::b
         binding.startBtnJoin.setOnClickListener {
             findNavController().navigate(R.id.action_startFragment_to_policyFragment)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireActivity().setStatusBarOrigin()
     }
 }
