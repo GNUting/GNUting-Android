@@ -1,5 +1,6 @@
 package com.changs.android.gnuting_android.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentJoin1Binding
 import com.changs.android.gnuting_android.databinding.FragmentJoin3Binding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import timber.log.Timber
 
 class Join3Fragment :
@@ -33,6 +35,12 @@ class Join3Fragment :
 
         binding.join3ImgProfile.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
+        binding.join3BtnNext.setOnClickListener {
+            val intent = Intent(requireContext(), HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 }
