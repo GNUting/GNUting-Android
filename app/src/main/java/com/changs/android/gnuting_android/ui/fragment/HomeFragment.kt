@@ -9,16 +9,19 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
+import com.changs.android.gnuting_android.data.model.DetailPostItem
+import com.changs.android.gnuting_android.data.model.PostListItem
 import com.changs.android.gnuting_android.databinding.FragmentHomeBinding
 import com.changs.android.gnuting_android.ui.adapter.HomeAdapter
 import com.changs.android.gnuting_android.ui.adapter.ViewPagerAdapter
+import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class HomeFragment :
-    BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home) {
+    BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home), PostItemNavigator {
     private val viewModel: HomeViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,7 +35,7 @@ class HomeFragment :
     }
 
     private fun setRecyclerView() {
-        val adapter = HomeAdapter()
+        val adapter = HomeAdapter(this)
         binding.homeRecyclerview.adapter = adapter
         adapter.submitList(viewModel.posts)
 
@@ -54,5 +57,10 @@ class HomeFragment :
                 }
             }
         }
+    }
+
+    override fun navigateToDetail(itemPosition: Int) {
+        val action = DetailFragmentDirections.actionGlobalDetailFragment()
+        findNavController().navigate(action)
     }
 }

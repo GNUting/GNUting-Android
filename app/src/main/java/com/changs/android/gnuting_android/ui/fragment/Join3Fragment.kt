@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentJoin1Binding
@@ -28,6 +29,7 @@ class Join3Fragment :
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     Timber.d("Selected URI: $uri")
+                    Glide.with(this).load(uri).circleCrop().error(R.drawable.ic_profile).into(binding.join3ImgProfile)
                 } else {
                     Timber.d("No media selected")
                 }

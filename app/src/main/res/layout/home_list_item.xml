@@ -9,7 +9,6 @@
         android:id="@+id/home_list_item_txt_department"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         android:layout_marginStart="3dp"
         android:textSize="16sp"
         android:textColor="@color/black"
