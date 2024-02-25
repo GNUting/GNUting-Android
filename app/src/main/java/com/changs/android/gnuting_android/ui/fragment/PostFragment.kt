@@ -24,8 +24,8 @@ class PostFragment : BaseFragment<FragmentPostBinding>(FragmentPostBinding::bind
         binding.postImgBack.setOnClickListener { findNavController().popBackStack() }
 
         binding.postLlAddMember.setOnClickListener {
-            val dialog = AddMemberDialog {}
-            dialog.show(parentFragmentManager, null)
+            val dialog = AddMemberDialog()
+            dialog.show(childFragmentManager, null)
         }
     }
 

@@ -10,8 +10,9 @@ import androidx.fragment.app.DialogFragment
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.databinding.DialogAddMemberBinding
 import com.changs.android.gnuting_android.ui.adapter.AddMemberAdapter
+import com.changs.android.gnuting_android.ui.adapter.SelectedMemberAdapter
 
-class AddMemberDialog(val listener: () -> Unit) : DialogFragment() {
+class AddMemberDialog : DialogFragment() {
 
     private lateinit var binding: DialogAddMemberBinding
 
@@ -31,11 +32,16 @@ class AddMemberDialog(val listener: () -> Unit) : DialogFragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = DialogAddMemberBinding.inflate(layoutInflater)
 
@@ -50,7 +56,13 @@ class AddMemberDialog(val listener: () -> Unit) : DialogFragment() {
     private fun initView() {
         val adapter = AddMemberAdapter()
         binding.dialogAddMemberRecyclerview.adapter = adapter
+
+        val selectedMemberAdapter = SelectedMemberAdapter()
+        binding.dialogAddMemberRecyclerviewSelectedMember.adapter = selectedMemberAdapter
+
         val members = listOf(Member(null, "전재욱", "짱짱맨", "19학번", "25살", "ENTP", "안녕하세요 저는 컴퓨터과학과이고 컴퓨터과학을 공부하고 있습니다.", "asd123", "컴퓨터과학과"))
+
         adapter.submitList(members)
+        selectedMemberAdapter.submitList(members)
     }
 }
