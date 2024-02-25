@@ -12,6 +12,7 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentMyBinding
 import com.changs.android.gnuting_android.databinding.FragmentPostBinding
 import com.changs.android.gnuting_android.ui.adapter.PostMemberAdapter
+import com.changs.android.gnuting_android.util.AddMemberDialog
 import com.changs.android.gnuting_android.viewmodel.PostViewModel
 
 class PostFragment : BaseFragment<FragmentPostBinding>(FragmentPostBinding::bind, R.layout.fragment_post) {
@@ -21,6 +22,11 @@ class PostFragment : BaseFragment<FragmentPostBinding>(FragmentPostBinding::bind
         setRecyclerView()
         binding.postTxtMemberTitle.text = "멤버 (${viewModel.members.size})"
         binding.postImgBack.setOnClickListener { findNavController().popBackStack() }
+
+        binding.postLlAddMember.setOnClickListener {
+            val dialog = AddMemberDialog {}
+            dialog.show(parentFragmentManager, null)
+        }
     }
 
     private fun setRecyclerView() {
