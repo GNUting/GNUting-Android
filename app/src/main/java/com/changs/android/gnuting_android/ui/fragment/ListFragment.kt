@@ -50,7 +50,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::bind
 
     private fun setRecyclerView() {
         binding.listRecyclerview.adapter = adapter
-
+        binding.listRecyclerview.itemAnimator = null
         adapter.submitList(applicationList1)
     }
 }
