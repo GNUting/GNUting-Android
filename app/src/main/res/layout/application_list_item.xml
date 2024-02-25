@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:paddingHorizontal="12dp"
+    android:layout_marginBottom="15dp"
+    android:paddingVertical="10dp"
+    android:gravity="center_vertical"
+    android:background="@drawable/background_radius_10dp_stroke_gray10">
+
+    <TextView
+        android:id="@+id/application_list_txt_department"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        tools:text="산업시스템공학부"
+        android:layout_marginEnd="3dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_weight="1"
+        android:id="@+id/application_list_txt_member_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        tools:text="3명"
+        android:layout_marginEnd="30dp"
+        android:textColor="@color/black" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:gravity="center"
+        android:id="@+id/application_list_ll_status_container"
+        android:layout_width="140dp"
+        android:background="@drawable/background_radius_10dp_solid_main"
+        android:paddingVertical="13dp"
+        android:paddingHorizontal="30dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/application_list_txt_status"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="대기중"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
