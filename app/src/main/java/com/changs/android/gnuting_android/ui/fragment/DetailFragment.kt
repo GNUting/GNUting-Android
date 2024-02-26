@@ -14,6 +14,7 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentDetailBinding
 import com.changs.android.gnuting_android.databinding.FragmentListBinding
 import com.changs.android.gnuting_android.ui.adapter.SpinnerAdapter
+import com.changs.android.gnuting_android.util.CurrentMemberBottomSheetFragment
 
 class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::bind, R.layout.fragment_detail) {
     private val args: DetailFragmentArgs by navArgs()
@@ -22,6 +23,11 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
 
         binding.detailImgBack.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.detailTxtCurrentParticipant.setOnClickListener {
+            val bottomDialogFragment = CurrentMemberBottomSheetFragment()
+            bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
         }
 
         args.detail?.let {
