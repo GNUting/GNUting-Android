@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.ApplicationItem
@@ -17,7 +18,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 
 class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::bind, R.layout.fragment_list) {
-    val adapter by lazy { ApplicationAdapter() }
+    val adapter by lazy { ApplicationAdapter(::applicationItemListener) }
     val members = listOf(Member(null, "전재욱", "짱짱맨", "19학번", "25살", "ENTP", "안녕하세요 저는 컴퓨터과학과이고 컴퓨터과학을 공부하고 있습니다.", "asd123", "컴퓨터과학과"))
     val applicationList1 = listOf(ApplicationItem("산업시스템공학", members, 1), ApplicationItem("컴퓨터과학과", members, 0), ApplicationItem("간호학과", members, 1))
     val applicationList2 = listOf(ApplicationItem("컴퓨터공학", members, 0), ApplicationItem("의류학과", members, 1))
@@ -52,5 +53,10 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::bind
         binding.listRecyclerview.adapter = adapter
         binding.listRecyclerview.itemAnimator = null
         adapter.submitList(applicationList1)
+    }
+
+    private fun applicationItemListener(item: ApplicationItem) {
+        val action = ListFragmentDirections.actionListFragmentToApplicationFragment(item)
+        findNavController().navigate(action)
     }
 }

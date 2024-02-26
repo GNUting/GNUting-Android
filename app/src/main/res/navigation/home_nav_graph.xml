@@ -28,7 +28,11 @@
         android:id="@+id/listFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_listFragment_to_applicationFragment"
+            app:destination="@id/applicationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/postListFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.PostListFragment"
@@ -56,4 +60,15 @@
     </fragment>
     <action android:id="@+id/action_global_detailFragment"
         app:destination="@id/detailFragment"/>
+    <fragment
+        android:id="@+id/applicationFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.ApplicationFragment"
+        android:label="fragment_application"
+        tools:layout="@layout/fragment_application" >
+        <argument
+            android:name="application_item"
+            app:argType="com.changs.android.gnuting_android.data.model.ApplicationItem"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>

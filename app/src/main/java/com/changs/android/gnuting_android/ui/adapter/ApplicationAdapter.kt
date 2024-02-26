@@ -22,7 +22,7 @@ import com.changs.android.gnuting_android.databinding.PostListItemBinding
 import com.changs.android.gnuting_android.databinding.PostMemberItemBinding
 
 
-class ApplicationAdapter :
+class ApplicationAdapter(val listener: (ApplicationItem) -> Unit) :
     ListAdapter<ApplicationItem, ApplicationAdapter.ViewHolder>(object : DiffUtil.ItemCallback<ApplicationItem>() {
         override fun areItemsTheSame(oldItem: ApplicationItem, newItem: ApplicationItem): Boolean {
             return oldItem == newItem
@@ -33,19 +33,23 @@ class ApplicationAdapter :
         }
     }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(parent)
+        return ViewHolder(parent, listener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
-    class ViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+    class ViewHolder(parent: ViewGroup, val listener: (ApplicationItem) -> Unit) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.application_list_item, parent, false)
     ) {
         private val binding = ApplicationListItemBinding.bind(itemView)
 
         fun bind(item: ApplicationItem) {
+            binding.root.setOnClickListener {
+                listener(item)
+            }
+
             binding.applicationListTxtMemberCount.text = "${item.members.size}명"
             binding.applicationListTxtDepartment.text = item.department
 
