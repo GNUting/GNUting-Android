@@ -23,7 +23,14 @@
         android:id="@+id/myFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.MyFragment"
         android:label="fragment_my"
-        tools:layout="@layout/fragment_my" />
+        tools:layout="@layout/fragment_my" >
+        <action
+            android:id="@+id/action_myFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_myFragment_to_myPostListFragment"
+            app:destination="@id/myPostListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/listFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.ListFragment"
@@ -71,4 +78,18 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.EditProfileFragment"
+        android:label="fragment_edit_proflie"
+        tools:layout="@layout/fragment_edit_proflie" >
+        <argument
+            android:name="member"
+            app:argType="com.changs.android.gnuting_android.data.model.Member" />
+    </fragment>
+    <fragment
+        android:id="@+id/myPostListFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.MyPostListFragment"
+        android:label="fragment_my_post_list"
+        tools:layout="@layout/fragment_my_post_list" />
 </navigation>
