@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -51,18 +52,20 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                 override fun onItemSelected(
                     parent: AdapterView<*>?, view: View?, position: Int, id: Long
                 ) {
+                    Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_SHORT).show()
+
                     when (position) {
                         0 -> {
-                            findNavController().navigate(R.id.action_detailFragment_to_editPostFragment)
                             binding.detailSpinner.setSelection(3, false)
+                            findNavController().navigate(R.id.action_detailFragment_to_editPostFragment)
                         }
                         1 -> {
                             binding.detailSpinner.setSelection(3, false)
                         }
 
                         2 -> {
-                            findNavController().navigate(R.id.action_global_reportFragment)
                             binding.detailSpinner.setSelection(3, false)
+                            findNavController().navigate(R.id.action_global_reportFragment)
                         }
 
                         else -> {
@@ -91,5 +94,10 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                 "편하게 채팅 신청해주세요~"
         binding.detailTxtCurrentParticipant.text = "현재 채팅/참여중인 사람 ${4}명"
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.detailSpinner.setSelection(3, false)
     }
 }
