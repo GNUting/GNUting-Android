@@ -20,6 +20,10 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
         binding.myTxtInfo.text = "컴퓨터공학과 | 26살 | 21학번"
         binding.myTxtIntro.text = "네카라쿠배당토직야몰두센 가고싶다~"
 
+        binding.myTxtMenuReport.setOnClickListener {
+            findNavController().navigate(R.id.action_myFragment_to_reportFragment)
+        }
+
         binding.myTxtMenuMyPosts.setOnClickListener {
             findNavController().navigate(R.id.action_myFragment_to_myPostListFragment)
         }
