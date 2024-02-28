@@ -14,5 +14,9 @@ import com.changs.android.gnuting_android.databinding.FragmentMyBinding
 class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.layout.fragment_my) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.myTxtName.text = "이창형"
+        binding.myTxtInfo.text = "컴퓨터공학과 | 26살 | 21학번"
+        binding.myTxtIntro.text = "네카라쿠배당토직야몰두센 가고싶다~"
     }
 }
