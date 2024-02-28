@@ -61,6 +61,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                         }
 
                         2 -> {
+                            findNavController().navigate(R.id.action_global_reportFragment)
                             binding.detailSpinner.setSelection(3, false)
                         }
 

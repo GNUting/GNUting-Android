@@ -21,7 +21,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
         binding.myTxtIntro.text = "네카라쿠배당토직야몰두센 가고싶다~"
 
         binding.myTxtMenuReport.setOnClickListener {
-            findNavController().navigate(R.id.action_myFragment_to_reportFragment)
+            findNavController().navigate(R.id.action_global_reportFragment)
         }
 
         binding.myTxtMenuMyPosts.setOnClickListener {

@@ -30,9 +30,6 @@
         <action
             android:id="@+id/action_myFragment_to_myPostListFragment"
             app:destination="@id/myPostListFragment" />
-        <action
-            android:id="@+id/action_myFragment_to_reportFragment"
-            app:destination="@id/reportFragment" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
@@ -100,4 +97,5 @@
         android:name="com.changs.android.gnuting_android.ui.fragment.ReportFragment"
         android:label="fragment_report"
         tools:layout="@layout/fragment_report" />
+    <action android:id="@+id/action_global_reportFragment" app:destination="@id/reportFragment"/>
 </navigation>
