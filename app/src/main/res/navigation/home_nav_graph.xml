@@ -64,6 +64,9 @@
             app:argType="com.changs.android.gnuting_android.data.model.DetailPostItem"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_detailFragment_to_editPostFragment"
+            app:destination="@id/editPostFragment" />
     </fragment>
     <action android:id="@+id/action_global_detailFragment"
         app:destination="@id/detailFragment"/>
@@ -97,5 +100,10 @@
         android:name="com.changs.android.gnuting_android.ui.fragment.ReportFragment"
         android:label="fragment_report"
         tools:layout="@layout/fragment_report" />
-    <action android:id="@+id/action_global_reportFragment" app:destination="@id/reportFragment"/>
+    <action android:id="@+id/action_global_reportFragment" app:destination="@id/reportFragment" />
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.EditPostFragment"
+        android:label="fragment_edit_post"
+        tools:layout="@layout/fragment_edit_post" />
 </navigation>

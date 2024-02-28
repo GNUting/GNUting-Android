@@ -53,7 +53,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                 ) {
                     when (position) {
                         0 -> {
-
+                            findNavController().navigate(R.id.action_detailFragment_to_editPostFragment)
                             binding.detailSpinner.setSelection(3, false)
                         }
                         1 -> {
