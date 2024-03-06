@@ -45,9 +45,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/detail_txt_title" />
 
-            <Spinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/detail_spinner"
                 android:layout_width="1dp"
+                android:dropDownWidth="130dp"
+                android:spinnerMode="dropdown"
+                android:popupElevation="0dp"
+                android:popupBackground="@drawable/background_radius_17dp_solid_gray12"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:clickable="false"

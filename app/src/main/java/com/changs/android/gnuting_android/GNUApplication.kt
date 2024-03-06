@@ -1,6 +1,8 @@
 package com.changs.android.gnuting_android
 
 import android.app.Application
+import android.content.SharedPreferences
+import com.changs.android.gnuting_android.data.repository.SignUpRepository
 import com.changs.android.gnuting_android.util.Constant.BASE_URL
 import com.changs.android.gnuting_android.util.Constant.X_ACCESS_TOKEN
 import de.hdodenhof.circleimageview.BuildConfig
@@ -14,6 +16,12 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class GNUApplication : Application() {
+
+    companion object {
+        lateinit var retrofit: Retrofit
+        lateinit var signUpRepository: SignUpRepository
+        lateinit var sharedPreferences: SharedPreferences
+    }
     override fun onCreate() {
         super.onCreate()
 
@@ -21,7 +29,7 @@ class GNUApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        val sharedPreferences = applicationContext.getSharedPreferences("GNU", MODE_PRIVATE)
+        sharedPreferences = applicationContext.getSharedPreferences("GNU", MODE_PRIVATE)
 
         val logger = HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG) {
@@ -36,7 +44,7 @@ class GNUApplication : Application() {
                 val builder: Request.Builder = chain.request().newBuilder()
                 val jwtToken: String? = sharedPreferences.getString(X_ACCESS_TOKEN, null)
                 if (jwtToken != null) {
-                    builder.addHeader(X_ACCESS_TOKEN, jwtToken)
+                    builder.addHeader("Authorization", jwtToken)
                 }
 
                 proceed(builder.build())
@@ -44,11 +52,13 @@ class GNUApplication : Application() {
         }
 
         val client = OkHttpClient.Builder().readTimeout(5000, TimeUnit.MILLISECONDS)
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .connectTimeout(5000, TimeUnit.MILLISECONDS).addInterceptor(logger)
             .addNetworkInterceptor(requestInterceptor).build()
 
-        val retrofit = Retrofit.Builder().baseUrl(BASE_URL).client(client)
+        retrofit = Retrofit.Builder().baseUrl(BASE_URL).client(client)
             .addConverterFactory(GsonConverterFactory.create()).build()
 
+        signUpRepository = SignUpRepository(retrofit)
     }
 }

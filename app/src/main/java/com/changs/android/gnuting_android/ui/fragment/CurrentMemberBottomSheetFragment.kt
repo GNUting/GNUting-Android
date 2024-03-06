@@ -1,4 +1,4 @@
-package com.changs.android.gnuting_android.util
+package com.changs.android.gnuting_android.ui.fragment
 
 import android.app.Dialog
 import android.content.Intent

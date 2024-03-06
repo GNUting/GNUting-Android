@@ -1,21 +1,15 @@
 package com.changs.android.gnuting_android.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentDetailBinding
-import com.changs.android.gnuting_android.databinding.FragmentListBinding
 import com.changs.android.gnuting_android.ui.adapter.SpinnerAdapter
-import com.changs.android.gnuting_android.util.CurrentMemberBottomSheetFragment
 
 class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::bind, R.layout.fragment_detail) {
     private val args: DetailFragmentArgs by navArgs()
@@ -38,13 +32,18 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             binding.detailTxtCurrentParticipant.text = "현재 채팅/참여중인 사람 ${it.memberNum}명"
         }
 
+        var isSpinnerEventPossible = false
+
         binding.detailImgSetting.setOnClickListener {
             binding.detailSpinner.performClick()
+            isSpinnerEventPossible = true
         }
-        binding.detailSpinner.adapter = SpinnerAdapter(
+
+
+        val adapter = SpinnerAdapter(
             requireContext(), resources.getStringArray(R.array.post_setting).toList()
         )
-
+        binding.detailSpinner.adapter = adapter
         binding.detailSpinner.setSelection(3, false)
 
         binding.detailSpinner.onItemSelectedListener =
@@ -52,20 +51,23 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                 override fun onItemSelected(
                     parent: AdapterView<*>?, view: View?, position: Int, id: Long
                 ) {
-                    Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_SHORT).show()
 
                     when (position) {
                         0 -> {
-                            binding.detailSpinner.setSelection(3, false)
-                            findNavController().navigate(R.id.action_detailFragment_to_editPostFragment)
+                            if (isSpinnerEventPossible) {
+                                isSpinnerEventPossible = false
+                                findNavController().navigate(R.id.action_detailFragment_to_editPostFragment)
+                            }
                         }
                         1 -> {
-                            binding.detailSpinner.setSelection(3, false)
+                            isSpinnerEventPossible = false
                         }
 
                         2 -> {
-                            binding.detailSpinner.setSelection(3, false)
-                            findNavController().navigate(R.id.action_global_reportFragment)
+                            if (isSpinnerEventPossible) {
+                                isSpinnerEventPossible = false
+                                findNavController().navigate(R.id.action_global_reportFragment)
+                            }
                         }
 
                         else -> {
@@ -96,8 +98,4 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.detailSpinner.setSelection(3, false)
-    }
 }
