@@ -17,6 +17,8 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="colorAccent">@color/main</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
+
     </style>
 
     <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -35,4 +37,10 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
+
+    <style name="SpinnerDivideStyle" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@color/gray13</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
 </resources>
