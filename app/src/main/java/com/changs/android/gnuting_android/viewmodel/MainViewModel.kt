@@ -201,10 +201,10 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
 
     fun postLogin(email: String?, password: String?) {
         viewModelScope.launch {
-            if (email.isNullOrEmpty() && password.isNullOrEmpty()) {
+            if (email != null && password != null) {
                 try {
                     _spinner.value = true
-                    val result = repository.postLogin(LoginRequest(email!!, password!!))
+                    val result = repository.postLogin(LoginRequest(email, password))
                     if (result.isSuccessful && result.body() != null) {
                         _loginResponse.value = Event(result.body()!!)
                         _spinner.value = false
