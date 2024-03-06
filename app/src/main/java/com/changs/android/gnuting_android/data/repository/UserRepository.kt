@@ -1,19 +1,18 @@
 package com.changs.android.gnuting_android.data.repository
 
 import android.graphics.Bitmap
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.CheckNickNameResponse
+import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
 import com.changs.android.gnuting_android.data.model.SignUpResponse
-import com.changs.android.gnuting_android.data.source.remote.SignUpInterface
+import com.changs.android.gnuting_android.data.source.remote.UserInterface
 import com.changs.android.gnuting_android.util.FormDataUtil
-import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.Retrofit
 
-class SignUpRepository(retrofit: Retrofit) {
-    private val service = retrofit.create(SignUpInterface::class.java)
+class UserRepository(retrofit: Retrofit) {
+    private val service = retrofit.create(UserInterface::class.java)
     suspend fun postMailCertification(mailCertificationRequest: MailCertificationRequest): Response<MailCertificationResponse> =
         service.postMailCertification(mailCertificationRequest)
 
@@ -49,4 +48,6 @@ class SignUpRepository(retrofit: Retrofit) {
     }
 
     suspend fun getSearchDepartment(name: String) = service.getSearchDepartment(name)
+
+    suspend fun postLogin(loginRequest: LoginRequest) = service.postLogin(loginRequest)
 }

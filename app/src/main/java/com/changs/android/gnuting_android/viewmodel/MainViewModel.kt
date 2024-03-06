@@ -1,7 +1,6 @@
 package com.changs.android.gnuting_android.viewmodel
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,24 +8,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.changs.android.gnuting_android.GNUApplication
+import com.changs.android.gnuting_android.data.model.LoginRequest
+import com.changs.android.gnuting_android.data.model.LoginResponse
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.model.SignUpResponse
-import com.changs.android.gnuting_android.data.repository.SignUpRepository
-import com.changs.android.gnuting_android.util.Constant
-import com.changs.android.gnuting_android.util.Constant.MIllIS_IN_FUTURE
-import com.changs.android.gnuting_android.util.Constant.TICK_INTERVAL
+import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.util.Constant.X_ACCESS_TOKEN
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.lang.Exception
 
-class MainViewModel(private val repository: SignUpRepository) : ViewModel() {
+class MainViewModel(private val repository: UserRepository) : ViewModel() {
     // 사용자 정보
     var birthDate: String? = null
     var department: String? = null
@@ -52,9 +46,9 @@ class MainViewModel(private val repository: SignUpRepository) : ViewModel() {
 
     val mailCertificationNumber: LiveData<Event<String>> get() = _mailCertificationNumber
 
-    private val _signUpResponse = MutableLiveData<SignUpResponse>()
+    private val _signUpResponse = MutableLiveData<Event<SignUpResponse>>()
 
-    val signUpResponse: LiveData<SignUpResponse> get() = _signUpResponse
+    val signUpResponse: LiveData<Event<SignUpResponse>> get() = _signUpResponse
 
     private val _searchDepartmentResponse = MutableLiveData<SearchDepartmentResponse>()
 
@@ -62,6 +56,10 @@ class MainViewModel(private val repository: SignUpRepository) : ViewModel() {
 
     val choiceDepartment = MutableLiveData<String>()
 
+    private val _loginResponse = MutableLiveData<Event<LoginResponse>>()
+
+    val loginResponse: LiveData<Event<LoginResponse>>
+        get() = _loginResponse
 
     private val _snackbar = MutableLiveData<String?>()
 
@@ -151,7 +149,7 @@ class MainViewModel(private val repository: SignUpRepository) : ViewModel() {
                         userSelfIntroduction = userSelfIntroduction!!
                     )
                     if (result.isSuccessful && result.body() != null) {
-                        _signUpResponse.value = result.body()
+                        _signUpResponse.value = Event(result.body()!!)
                         _spinner.value = false
 
                         val token = result.headers()["Authorization"]
@@ -201,6 +199,39 @@ class MainViewModel(private val repository: SignUpRepository) : ViewModel() {
         }
     }
 
+    fun postLogin(email: String?, password: String?) {
+        viewModelScope.launch {
+            if (email.isNullOrEmpty() && password.isNullOrEmpty()) {
+                try {
+                    _spinner.value = true
+                    val result = repository.postLogin(LoginRequest(email!!, password!!))
+                    if (result.isSuccessful && result.body() != null) {
+                        _loginResponse.value = Event(result.body()!!)
+                        _spinner.value = false
+
+                        val token = result.headers()["Authorization"]
+                        GNUApplication.sharedPreferences.edit().putString(X_ACCESS_TOKEN, token).apply()
+                    } else {
+                        result.errorBody()?.let {
+                            val errorBody = getErrorResponse(it)
+                            errorBody?.let { error ->
+                                _spinner.value = false
+                                _snackbar.value = error.message
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    _spinner.value = false
+                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                }
+            } else {
+                _snackbar.value = "이메일 또는 패스워드 입력이 완료되지 않았습니다."
+            }
+        }
+
+    }
+
+
     companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -208,7 +239,7 @@ class MainViewModel(private val repository: SignUpRepository) : ViewModel() {
                 modelClass: Class<T>, extras: CreationExtras
             ): T {
                 return MainViewModel(
-                    GNUApplication.signUpRepository
+                    GNUApplication.userRepository
                 ) as T
             }
         }

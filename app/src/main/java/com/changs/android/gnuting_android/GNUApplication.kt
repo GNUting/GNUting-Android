@@ -2,7 +2,7 @@ package com.changs.android.gnuting_android
 
 import android.app.Application
 import android.content.SharedPreferences
-import com.changs.android.gnuting_android.data.repository.SignUpRepository
+import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.util.Constant.BASE_URL
 import com.changs.android.gnuting_android.util.Constant.X_ACCESS_TOKEN
 import de.hdodenhof.circleimageview.BuildConfig
@@ -19,7 +19,7 @@ class GNUApplication : Application() {
 
     companion object {
         lateinit var retrofit: Retrofit
-        lateinit var signUpRepository: SignUpRepository
+        lateinit var userRepository: UserRepository
         lateinit var sharedPreferences: SharedPreferences
     }
     override fun onCreate() {
@@ -59,6 +59,6 @@ class GNUApplication : Application() {
         retrofit = Retrofit.Builder().baseUrl(BASE_URL).client(client)
             .addConverterFactory(GsonConverterFactory.create()).build()
 
-        signUpRepository = SignUpRepository(retrofit)
+        userRepository = UserRepository(retrofit)
     }
 }

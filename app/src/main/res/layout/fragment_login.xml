@@ -77,7 +77,7 @@
         app:layout_constraintTop_toBottomOf="@id/login_edit_password"/>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/start_btn_login"
+        android:id="@+id/login_btn_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/login"
