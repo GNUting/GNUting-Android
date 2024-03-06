@@ -12,6 +12,7 @@ import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentPolicyBinding
 import com.changs.android.gnuting_android.viewmodel.PolicyViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class PolicyFragment :
     BaseFragment<FragmentPolicyBinding>(FragmentPolicyBinding::bind, R.layout.fragment_policy) {
@@ -28,7 +29,10 @@ class PolicyFragment :
         }
 
         binding.policyBtnNext.setOnClickListener {
-            findNavController().navigate(R.id.action_policyFragment_to_join1Fragment)
+            if (binding.policyCheck1.isChecked && binding.policyCheck2.isChecked && binding.policyCheck3.isChecked) findNavController().navigate(
+                R.id.action_policyFragment_to_join1Fragment
+            )
+            else Snackbar.make(binding.root, "필수 항목을 모두 체크해주세요.", Snackbar.LENGTH_SHORT).show()
         }
 
         viewModel.isAllChecked.observe(viewLifecycleOwner) {
