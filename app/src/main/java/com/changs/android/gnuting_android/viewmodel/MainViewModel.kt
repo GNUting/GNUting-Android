@@ -1,6 +1,7 @@
 package com.changs.android.gnuting_android.viewmodel
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,8 +13,10 @@ import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.model.SignUpResponse
 import com.changs.android.gnuting_android.data.repository.SignUpRepository
+import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Constant.MIllIS_IN_FUTURE
 import com.changs.android.gnuting_android.util.Constant.TICK_INTERVAL
+import com.changs.android.gnuting_android.util.Constant.X_ACCESS_TOKEN
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import kotlinx.coroutines.CoroutineStart
@@ -83,6 +86,7 @@ class MainViewModel(private val repository: SignUpRepository) : ViewModel() {
                     val result = repository.getCheckNickName(it)
                     if (result.isSuccessful && result.body() != null) {
                         _nickNameCheck.value = result.body()!!.result
+                        _snackbar.value = result.body()!!.message
                         _spinner.value = false
                     } else {
                         result.errorBody()?.let {
@@ -149,6 +153,9 @@ class MainViewModel(private val repository: SignUpRepository) : ViewModel() {
                     if (result.isSuccessful && result.body() != null) {
                         _signUpResponse.value = result.body()
                         _spinner.value = false
+
+                        val token = result.headers()["Authorization"]
+                        GNUApplication.sharedPreferences.edit().putString(X_ACCESS_TOKEN, token).apply()
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
