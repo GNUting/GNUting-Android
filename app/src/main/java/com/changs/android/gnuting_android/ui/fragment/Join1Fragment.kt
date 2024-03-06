@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doBeforeTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -36,8 +39,11 @@ class Join1Fragment :
                 if (viewModel.tempMailCertificationNumber == certificationNumber) {
                     binding.join1TxtVerificationCertification.visibility = View.INVISIBLE
                     viewModel.mailCertificationNumberCheck = true
+
                     join1ViewModel.timerJob.cancel()
                     binding.join1TxtTimer.visibility = View.INVISIBLE
+
+                    Snackbar.make(binding.root, "인증이 완료 되었습니다.", Snackbar.LENGTH_SHORT).show()
                 } else {
                     binding.join1TxtVerificationCertification.text = "인증번호가 일치하지 않습니다."
                     binding.join1TxtVerificationCertification.visibility = View.VISIBLE
@@ -52,44 +58,17 @@ class Join1Fragment :
             viewModel.postMailCertification()
         }
 
-        binding.join1EditEmail.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+        binding.join1EditEmail.doAfterTextChanged {
+            viewModel.email = it.toString() + "@gnu.ac.kr"
+        }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.email = s.toString() + "@gnu.ac.kr"
-            }
+        binding.join1EditPassword.doBeforeTextChanged { text, start, count, after ->
+            binding.join1TxtVerificationPasswordCheck.visibility = View.INVISIBLE
+        }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
-        })
-
-        binding.join1EditPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                binding.join1TxtVerificationPasswordCheck.visibility = View.INVISIBLE
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-            }
-        })
-
-        binding.join1EditPasswordCheck.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                binding.join1TxtVerificationPasswordCheck.visibility = View.INVISIBLE
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-            }
-        })
-
+        binding.join1EditPasswordCheck.doBeforeTextChanged { text, start, count, after ->
+            binding.join1TxtVerificationPasswordCheck.visibility = View.INVISIBLE
+        }
 
         binding.join1ImgBack.setOnClickListener { findNavController().popBackStack() }
 
