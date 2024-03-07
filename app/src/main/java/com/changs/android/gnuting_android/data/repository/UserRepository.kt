@@ -5,14 +5,21 @@ import com.changs.android.gnuting_android.data.model.CheckNickNameResponse
 import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
+import com.changs.android.gnuting_android.data.model.MyInfoResult
 import com.changs.android.gnuting_android.data.model.SignUpResponse
+import com.changs.android.gnuting_android.data.source.local.AppDatabase
 import com.changs.android.gnuting_android.data.source.remote.UserInterface
 import com.changs.android.gnuting_android.util.FormDataUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import retrofit2.Retrofit
 
-class UserRepository(retrofit: Retrofit) {
+class UserRepository(retrofit: Retrofit, room: AppDatabase) {
     private val service = retrofit.create(UserInterface::class.java)
+    private val dao = room.userDao()
     suspend fun postMailCertification(mailCertificationRequest: MailCertificationRequest): Response<MailCertificationResponse> =
         service.postMailCertification(mailCertificationRequest)
 
@@ -50,4 +57,12 @@ class UserRepository(retrofit: Retrofit) {
     suspend fun getSearchDepartment(name: String) = service.getSearchDepartment(name)
 
     suspend fun postLogin(loginRequest: LoginRequest) = service.postLogin(loginRequest)
+
+    suspend fun fetchRecentMyInfo() {
+        val myInfo = service.getMyInfo()
+        dao.updateMyInfo(myInfo.result)
+    }
+
+    val myInfoFlow: Flow<MyInfoResult>
+        get() = dao.getMyInfo().flowOn(Dispatchers.Default).conflate()
 }

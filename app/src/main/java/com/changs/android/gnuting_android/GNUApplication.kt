@@ -2,7 +2,10 @@ package com.changs.android.gnuting_android
 
 import android.app.Application
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.changs.android.gnuting_android.data.repository.UserRepository
+import com.changs.android.gnuting_android.data.source.local.AppDatabase
+import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Constant.BASE_URL
 import com.changs.android.gnuting_android.util.Constant.X_ACCESS_TOKEN
 import de.hdodenhof.circleimageview.BuildConfig
@@ -59,6 +62,11 @@ class GNUApplication : Application() {
         retrofit = Retrofit.Builder().baseUrl(BASE_URL).client(client)
             .addConverterFactory(GsonConverterFactory.create()).build()
 
-        userRepository = UserRepository(retrofit)
+        val room = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, Constant.DATABASE_NAME
+        ).build()
+
+        userRepository = UserRepository(retrofit, room)
     }
 }

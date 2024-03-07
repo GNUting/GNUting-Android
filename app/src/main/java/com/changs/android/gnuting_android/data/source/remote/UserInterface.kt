@@ -5,6 +5,7 @@ import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.LoginResponse
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
+import com.changs.android.gnuting_android.data.model.MyInfoResponse
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.model.SignUpResponse
 import okhttp3.MultipartBody
@@ -44,4 +45,7 @@ interface UserInterface {
 
     @POST("/api/v1/login")
     suspend fun postLogin(@Body loginRequest: LoginRequest): Response<LoginResponse>
+
+    @GET("/api/v1/board/user/myinfo")
+    suspend fun getMyInfo(): MyInfoResponse
 }
