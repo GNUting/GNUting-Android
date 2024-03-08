@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_marginBottom="15dp"
     android:layout_width="match_parent"
@@ -14,7 +15,7 @@
         android:textColor="@color/black"
         android:maxLines="1"
         android:ellipsize="end"
-        android:text="간호학과"/>
+        tools:text="간호학과"/>
 
     <TextView
         android:id="@+id/home_list_item_txt_title"
@@ -25,6 +26,6 @@
         android:textColor="@color/black"
         android:maxLines="1"
         android:ellipsize="end"
-        android:text="3:3 과팅 하실분 연락 주세요~"/>
+        tools:text="3:3 과팅 하실분 연락 주세요~"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

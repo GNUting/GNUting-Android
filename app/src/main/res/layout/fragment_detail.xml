@@ -151,7 +151,7 @@
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_chat_selected"
         android:gravity="center_vertical"
-        android:text="현재 채팅/참여중인 사람 O명"
+        tools:text="현재 채팅/참여중인 사람 O명"
         android:textColor="@color/main"
         android:layout_marginBottom="11dp"
         android:textSize="16sp"

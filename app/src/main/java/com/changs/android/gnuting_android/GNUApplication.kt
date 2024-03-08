@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.room.Room
+import com.changs.android.gnuting_android.data.repository.PostRepository
 import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.data.source.local.AppDatabase
 import com.changs.android.gnuting_android.util.Constant
@@ -23,6 +24,7 @@ class GNUApplication : Application() {
     companion object {
         lateinit var retrofit: Retrofit
         lateinit var userRepository: UserRepository
+        lateinit var postRepository: PostRepository
         lateinit var sharedPreferences: SharedPreferences
     }
     override fun onCreate() {
@@ -68,5 +70,6 @@ class GNUApplication : Application() {
         ).build()
 
         userRepository = UserRepository(retrofit, room)
+        postRepository  = PostRepository((retrofit))
     }
 }

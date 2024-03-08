@@ -14,8 +14,10 @@ import com.changs.android.gnuting_android.databinding.ActivityHomeBinding
 import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.internal.notify
 
+@ExperimentalCoroutinesApi
 class HomeActivity : AppCompatActivity() {
     private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
     private val viewModel: HomeMainViewModel by viewModels { HomeMainViewModel.Factory }
