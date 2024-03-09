@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.Member
@@ -25,6 +26,9 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
             binding.myTxtName.text = myInfo.nickname
             binding.myTxtInfo.text = "${myInfo.department} | ${myInfo.age} | ${myInfo.studentId}"
             binding.myTxtIntro.text = myInfo.userSelfIntroduction
+
+            Glide.with(this@MyFragment).load(myInfo.profileImage).error(R.drawable.ic_profile)
+                .into(binding.myImgProfile)
 
             binding.myTxtEditProfile.setOnClickListener {
                 val action = MyFragmentDirections.actionMyFragmentToEditProfileFragment(myInfo)
