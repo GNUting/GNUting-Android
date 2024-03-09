@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_postListFragment_to_postFragment"
             app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_postListFragment_to_searchPostListFragment"
+            app:destination="@id/searchPostListFragment" />
     </fragment>
     <fragment
         android:id="@+id/postFragment"
@@ -75,9 +78,7 @@
         tools:layout="@layout/fragment_application" >
         <argument
             android:name="application_item"
-            app:argType="com.changs.android.gnuting_android.data.model.ApplicationItem"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:argType="com.changs.android.gnuting_android.data.model.ApplicationResult" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -86,7 +87,7 @@
         tools:layout="@layout/fragment_edit_proflie" >
         <argument
             android:name="member"
-            app:argType="com.changs.android.gnuting_android.data.model.Member" />
+            app:argType="com.changs.android.gnuting_android.data.model.MyInfoResult" />
     </fragment>
     <fragment
         android:id="@+id/myPostListFragment"
@@ -103,5 +104,14 @@
         android:id="@+id/editPostFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.EditPostFragment"
         android:label="fragment_edit_post"
-        tools:layout="@layout/fragment_edit_post" />
+        tools:layout="@layout/fragment_edit_post" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchPostListFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.SearchPostListFragment"
+        android:label="fragment_search_post_list"
+        tools:layout="@layout/fragment_search_post_list" />
 </navigation>

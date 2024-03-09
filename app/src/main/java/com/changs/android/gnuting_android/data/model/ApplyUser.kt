@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class InUser(
+data class ApplyUser(
     @SerializedName("age")
     val age: String,
     @SerializedName("department")
@@ -17,12 +17,11 @@ data class InUser(
     @SerializedName("nickname")
     val nickname: String,
     @SerializedName("profileImage")
-    val profileImage: String? = null,
+    val profileImage: String,
     @SerializedName("studentId")
     val studentId: String,
     @SerializedName("userRole")
     val userRole: String,
     @SerializedName("userSelfIntroduction")
-    val userSelfIntroduction: String,
-    @Transient var isChecked: Boolean = false
-) : Parcelable
+    val userSelfIntroduction: String
+): Parcelable

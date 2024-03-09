@@ -13,10 +13,12 @@ data class PostDetailResult(
     val inUser: List<InUser>,
     @SerializedName("inUserCount")
     val inUserCount: Int,
-    @SerializedName("nickname")
-    val nickname: String,
     @SerializedName("status")
     val status: String,
     @SerializedName("title")
-    val title: String
+    val title: String,
+    @SerializedName("user")
+    val user: User,
+    @SerializedName("time")
+    val time: String
 )

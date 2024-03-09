@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.ApplicationItem
+import com.changs.android.gnuting_android.data.model.ApplicationResult
 import com.changs.android.gnuting_android.data.model.HomePostItem
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.data.model.PostListItem
@@ -22,13 +23,13 @@ import com.changs.android.gnuting_android.databinding.PostListItemBinding
 import com.changs.android.gnuting_android.databinding.PostMemberItemBinding
 
 
-class ApplicationAdapter(val listener: (ApplicationItem) -> Unit) :
-    ListAdapter<ApplicationItem, ApplicationAdapter.ViewHolder>(object : DiffUtil.ItemCallback<ApplicationItem>() {
-        override fun areItemsTheSame(oldItem: ApplicationItem, newItem: ApplicationItem): Boolean {
+class ApplicationAdapter(private val listener: (ApplicationResult) -> Unit) :
+    ListAdapter<ApplicationResult, ApplicationAdapter.ViewHolder>(object : DiffUtil.ItemCallback<ApplicationResult>() {
+        override fun areItemsTheSame(oldItem: ApplicationResult, newItem: ApplicationResult): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: ApplicationItem, newItem: ApplicationItem): Boolean {
+        override fun areContentsTheSame(oldItem: ApplicationResult, newItem: ApplicationResult): Boolean {
             return oldItem == newItem
         }
     }) {
@@ -40,26 +41,32 @@ class ApplicationAdapter(val listener: (ApplicationItem) -> Unit) :
         holder.bind(currentList[position])
     }
 
-    class ViewHolder(parent: ViewGroup, val listener: (ApplicationItem) -> Unit) : RecyclerView.ViewHolder(
+    class ViewHolder(parent: ViewGroup, val listener: (ApplicationResult) -> Unit) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.application_list_item, parent, false)
     ) {
         private val binding = ApplicationListItemBinding.bind(itemView)
 
-        fun bind(item: ApplicationItem) {
+        fun bind(item: ApplicationResult) {
             binding.root.setOnClickListener {
                 listener(item)
             }
 
-            binding.applicationListTxtMemberCount.text = "${item.members.size}명"
-            binding.applicationListTxtDepartment.text = item.department
+            binding.applicationListTxtMemberCount.text = "${item.applyUserCount}명"
+            binding.applicationListTxtDepartment.text = item.applyUserDepartment
 
-            // 0이면 대기중 1이면 성공
-            if (item.status == 0) {
-                binding.applicationListTxtStatus.text = "대기중"
-                binding.applicationListLlStatusContainer.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
-            } else {
-                binding.applicationListTxtStatus.text = "성공"
-                binding.applicationListLlStatusContainer.setBackgroundResource(R.drawable.background_radius_10dp_solid_secondary)
+            when (item.applyStatus) {
+                "대기중" -> {
+                    binding.applicationListTxtStatus.text = "대기중"
+                    binding.applicationListLlStatusContainer.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                }
+                "거절" -> {
+                    binding.applicationListTxtStatus.text = "거절됨"
+                    binding.applicationListLlStatusContainer.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                }
+                else -> {
+                    binding.applicationListTxtStatus.text = "수락"
+                    binding.applicationListLlStatusContainer.setBackgroundResource(R.drawable.background_radius_10dp_solid_secondary)
+                }
             }
         }
     }

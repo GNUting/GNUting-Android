@@ -11,15 +11,23 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
+import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.FragmentDetailBinding
 import com.changs.android.gnuting_android.ui.adapter.SpinnerAdapter
+import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.viewmodel.DetailViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
+import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
+import com.google.android.material.snackbar.Snackbar
+import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DetailFragment :
     BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::bind, R.layout.fragment_detail) {
     private val viewModel: HomeMainViewModel by activityViewModels()
+    private val memberAddViewModel: MemberAddViewModel by viewModels { MemberAddViewModel.Factory }
+    private val detailViewModel: DetailViewModel by viewModels()
     private val args: DetailFragmentArgs by navArgs()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,21 +41,12 @@ class DetailFragment :
         binding.detailImgBack.setOnClickListener {
             findNavController().popBackStack()
         }
-
-        binding.detailTxtCurrentParticipant.setOnClickListener {
-            val bottomDialogFragment = CurrentMemberBottomSheetFragment()
-            bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
-        }
-
     }
 
     private fun setSpinner() {
-        // TODO: 뷰모델로 이전
-        var isSpinnerEventPossible = false
-
         binding.detailImgSetting.setOnClickListener {
             binding.detailSpinner.performClick()
-            isSpinnerEventPossible = true
+            detailViewModel.isSpinnerEventPossible = true
         }
 
         val adapter = SpinnerAdapter(
@@ -63,19 +62,23 @@ class DetailFragment :
 
                 when (position) {
                     0 -> {
-                        if (isSpinnerEventPossible) {
-                            isSpinnerEventPossible = false
-                            findNavController().navigate(R.id.action_detailFragment_to_editPostFragment)
+                        if (detailViewModel.isSpinnerEventPossible) {
+                            detailViewModel.isSpinnerEventPossible = false
+                            val action =
+                                DetailFragmentDirections.actionDetailFragmentToEditPostFragment(args.id)
+                            findNavController().navigate(action)
                         }
                     }
 
                     1 -> {
-                        isSpinnerEventPossible = false
+                        if (detailViewModel.isSpinnerEventPossible) {
+                            viewModel.deletePost(args.id)
+                        }
                     }
 
                     2 -> {
-                        if (isSpinnerEventPossible) {
-                            isSpinnerEventPossible = false
+                        if (detailViewModel.isSpinnerEventPossible) {
+                            detailViewModel.isSpinnerEventPossible = false
                             findNavController().navigate(R.id.action_global_reportFragment)
                         }
                     }
@@ -89,19 +92,41 @@ class DetailFragment :
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
+
+        binding.detailBtnChatRequest.setOnClickListener {
+            val addMemberBottomSheetFragment = AddMemberBottomSheetFragment(memberAddViewModel, args.id)
+            addMemberBottomSheetFragment.show(childFragmentManager, null)
+        }
     }
 
     private fun setObserver() {
+        viewModel.deletePostResponse.eventObserve(viewLifecycleOwner) {
+            Snackbar.make(binding.root, it.result, Snackbar.LENGTH_SHORT).show()
+            findNavController().popBackStack()
+        }
         viewModel.postDetailResponse.observe(viewLifecycleOwner) {
             it.result.apply {
-                // TODO: 유저 조회 API 연동해서 프로필 이미지 같은거 표시해야 할듯
-                Glide.with(this@DetailFragment).load(R.drawable.ic_profile)
+                viewModel.myInfo.value?.let { myInfo ->
+                    if (myInfo.nickname == user.nickname) {
+                        binding.detailBtnChatRequest.visibility = View.INVISIBLE
+                        binding.detailSpinner.visibility = View.INVISIBLE
+                        binding.detailImgSetting.visibility = View.VISIBLE
+                    }
+                }
+
+                Glide.with(this@DetailFragment).load(user.profileImage).error(R.drawable.ic_profile)
                     .into(binding.detailImgProfile)
                 binding.detailTxtPostTitle.text = title
-                binding.detailTxtNickname.text = nickname
-                binding.detailTxtInfo.text = "컴퓨터과학과 | 23학번"
+                binding.detailTxtNickname.text = user.nickname
+                binding.detailTxtInfo.text = "${user.department} | ${user.studentId}"
                 binding.detailTxtDetail.text = detail
-                binding.detailTxtCurrentParticipant.text = "현재 채팅/참여중인 사람 ${inUserCount}명"
+                binding.detailTxtCurrentParticipant.text = "현재 채팅/참여중인 사람 ${inUser.size}명"
+                binding.detailTxtTime.text = time
+
+                binding.detailTxtCurrentParticipant.setOnClickListener {
+                    val bottomDialogFragment = CurrentMemberBottomSheetFragment(inUser)
+                    bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
+                }
             }
         }
     }

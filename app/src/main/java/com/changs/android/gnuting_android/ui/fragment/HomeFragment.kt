@@ -68,9 +68,12 @@ class HomeFragment :
 
     private fun setObserver() {
         viewModel.myInfo.observe(viewLifecycleOwner) {
+            it?.let {
                 binding.homeTxtGreetings.text = "${it.nickname}님 안녕하세요!"
                 Glide.with(binding.root).load(it.profileImage).error(R.drawable.ic_profile)
                     .into(binding.homeImgProfile)
+            }
+
         }
 
         viewModel.postResponse.observe(viewLifecycleOwner) {

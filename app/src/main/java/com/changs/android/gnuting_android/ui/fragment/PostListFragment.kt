@@ -22,7 +22,6 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(FragmentPostListB
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getPostList()
-
         setRecyclerView()
         setListener()
         setObserver()
@@ -36,15 +35,7 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(FragmentPostListB
         }
 
         binding.postListImgSearch.setOnClickListener {
-            binding.postListClDefault.visibility = View.INVISIBLE
-            binding.postListLlSearch.visibility = View.VISIBLE
-        }
-
-        binding.postListTxtCancel.setOnClickListener {
-            binding.postListLlSearch.visibility = View.INVISIBLE
-            binding.postListEditSearch.hideSoftKeyboard()
-            binding.postListEditSearch.text?.clear()
-            binding.postListClDefault.visibility = View.VISIBLE
+            findNavController().navigate(R.id.action_postListFragment_to_searchPostListFragment)
         }
     }
 

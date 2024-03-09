@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.databinding.CurrentMemberBottomSheetBinding
 import com.changs.android.gnuting_android.ui.adapter.PostCurrentMemberAdapter
@@ -15,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class CurrentMemberBottomSheetFragment : BottomSheetDialogFragment() {
+class CurrentMemberBottomSheetFragment(private val currentMember: List<InUser>) : BottomSheetDialogFragment() {
     private var _binding: CurrentMemberBottomSheetBinding? = null
     private val binding get() = _binding!!
 
@@ -46,9 +47,7 @@ class CurrentMemberBottomSheetFragment : BottomSheetDialogFragment() {
 
         val adapter = PostCurrentMemberAdapter()
         binding.currentMemberBottomSheetRecyclerview.adapter = adapter
-
-        val members = listOf(Member(null, "전재욱", "짱짱맨", "19학번", "25살", "ENTP", "안녕하세요 저는 컴퓨터과학과이고 컴퓨터과학을 공부하고 있습니다.", "asd123", "컴퓨터과학과"), Member(null, "전재욱", "짱짱맨", "19학번", "25살", "ENTP", "안녕하세요 저는 컴퓨터과학과이고 컴퓨터과학을 공부하고 있습니다.", "asd123", "컴퓨터과학과"), Member(null, "전재욱", "짱짱맨", "19학번", "25살", "ENTP", "안녕하세요 저는 컴퓨터과학과이고 컴퓨터과학을 공부하고 있습니다.", "asd123", "컴퓨터과학과"), Member(null, "전재욱", "짱짱맨", "19학번", "25살", "ENTP", "안녕하세요 저는 컴퓨터과학과이고 컴퓨터과학을 공부하고 있습니다.", "asd123", "컴퓨터과학과"))
-        adapter.submitList(members)
+        adapter.submitList(currentMember)
 
 
     }

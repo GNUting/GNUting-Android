@@ -36,7 +36,7 @@ class HomeAdapter(private val listener: PostItemNavigator) :
         private val binding = HomeListItemBinding.bind(itemView)
 
         fun bind(item: PostResult) {
-            // binding.homeListItemTxtDepartment.text = item.department
+            binding.homeListItemTxtDepartment.text = item.user.department
             binding.homeListItemTxtTitle.text = item.title
             binding.root.setOnClickListener {
                 listener.navigateToDetail(item.id)

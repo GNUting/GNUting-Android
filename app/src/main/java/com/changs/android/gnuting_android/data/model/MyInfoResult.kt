@@ -1,10 +1,13 @@
 package com.changs.android.gnuting_android.data.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "my_info")
 data class MyInfoResult(
     @SerializedName("age")
@@ -17,7 +20,6 @@ data class MyInfoResult(
     @SerializedName("gender")
     val gender: String,
     @SerializedName("id")
-    @PrimaryKey
     val id: Int,
     @SerializedName("nickname")
     @ColumnInfo(name = "nickname")
@@ -33,5 +35,8 @@ data class MyInfoResult(
     val userRole: String,
     @SerializedName("userSelfIntroduction")
     @ColumnInfo(name = "user_self_introduction")
-    val userSelfIntroduction: String
-)
+    val userSelfIntroduction: String,
+) : Parcelable {
+    @PrimaryKey(autoGenerate = false)
+    var idx: Long = 0L
+}

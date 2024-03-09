@@ -9,39 +9,6 @@
     android:paddingHorizontal="24dp"
     tools:context=".ui.fragment.PostListFragment">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/post_list_ll_search"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/post_list_edit_search"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:textSize="15sp"
-            android:paddingStart="10dp"
-            android:maxLines="1"
-            android:drawablePadding="10dp"
-            android:background="@drawable/background_radius_10dp_solid_gray10"
-            android:hint="글 제목 검색"
-            android:drawableStart="@drawable/ic_search2" />
-
-        <TextView
-            android:id="@+id/post_list_txt_cancel"
-            android:textSize="17sp"
-            android:textColor="@color/black"
-            android:layout_marginStart="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="취소"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

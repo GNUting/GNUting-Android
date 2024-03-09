@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.changs.android.gnuting_android.R
+import com.changs.android.gnuting_android.data.model.Content
 import com.changs.android.gnuting_android.data.model.HomePostItem
 import com.changs.android.gnuting_android.data.model.PostListItem
 import com.changs.android.gnuting_android.data.model.PostResult
@@ -14,21 +15,21 @@ import com.changs.android.gnuting_android.databinding.PostListItemBinding
 import com.changs.android.gnuting_android.util.PostItemNavigator
 
 
-class PostListAdapter(private val listener: PostItemNavigator) :
-    ListAdapter<PostResult, PostListAdapter.ViewHolder>(object : DiffUtil.ItemCallback<PostResult>() {
-        override fun areItemsTheSame(oldItem: PostResult, newItem: PostResult): Boolean {
+class PostSearchListAdapter(private val listener: PostItemNavigator) :
+    ListAdapter<Content, PostSearchListAdapter.ViewHolder>(object : DiffUtil.ItemCallback<Content>() {
+        override fun areItemsTheSame(oldItem: Content, newItem: Content): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: PostResult, newItem: PostResult): Boolean {
-            return oldItem.id == newItem.id
+        override fun areContentsTheSame(oldItem: Content, newItem: Content): Boolean {
+            return oldItem.boardId == newItem.boardId
         }
     }) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostListAdapter.ViewHolder {
-        return PostListAdapter.ViewHolder(parent, listener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostSearchListAdapter.ViewHolder {
+        return PostSearchListAdapter.ViewHolder(parent, listener)
     }
 
-    override fun onBindViewHolder(holder: PostListAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PostSearchListAdapter.ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
@@ -37,12 +38,12 @@ class PostListAdapter(private val listener: PostItemNavigator) :
     ) {
         private val binding = PostListItemBinding.bind(itemView)
 
-        fun bind(item: PostResult) {
+        fun bind(item: Content) {
             binding.postListItemTxtTitle.text = item.title
-            binding.postListItemTxtInfo.text = "${item.user.department} | ${item.user.studentId}"
+            binding.postListItemTxtInfo.text = "${item.department} | ${item.studentId}"
 
             binding.root.setOnClickListener {
-                listener.navigateToDetail(item.id)
+                listener.navigateToDetail(item.boardId)
             }
         }
     }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.HomePostItem
+import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.data.model.PostListItem
 import com.changs.android.gnuting_android.databinding.AddMemberItemBinding
@@ -21,33 +22,34 @@ import com.changs.android.gnuting_android.databinding.PostMemberItemBinding
 import com.changs.android.gnuting_android.databinding.SelectedMemberItemBinding
 
 
-class SelectedMemberAdapter :
-    ListAdapter<Member, SelectedMemberAdapter.ViewHolder>(object : DiffUtil.ItemCallback<Member>() {
-        override fun areItemsTheSame(oldItem: Member, newItem: Member): Boolean {
+class SelectedMemberAdapter(private val listener: (InUser) -> Unit) :
+    ListAdapter<InUser, SelectedMemberAdapter.ViewHolder>(object : DiffUtil.ItemCallback<InUser>() {
+        override fun areItemsTheSame(oldItem: InUser, newItem: InUser): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: Member, newItem: Member): Boolean {
+        override fun areContentsTheSame(oldItem: InUser, newItem: InUser): Boolean {
             return oldItem.id == newItem.id
         }
     }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(parent)
+        return ViewHolder(parent, listener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
-    class ViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+    class ViewHolder(parent: ViewGroup, private val listener: (InUser) -> Unit) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.selected_member_item, parent, false)
     ) {
         private val binding = SelectedMemberItemBinding.bind(itemView)
 
-        fun bind(item: Member) {
-            val name = "${item.nickName}(${item.id})"
-
-            binding.selectedMemberItemTxtNickname.text = name
+        fun bind(item: InUser) {
+            binding.root.setOnClickListener {
+                listener(item)
+            }
+            binding.selectedMemberItemTxtNickname.text = item.nickname
         }
     }
 }

@@ -1,135 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.ApplicationFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="16dp">
+
+                <ImageView
+                    android:id="@+id/application_img_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/arrow_left"
+                    app:layout_constraintBottom_toBottomOf="@+id/application_txt_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/application_txt_title" />
+
+                <TextView
+                    android:id="@+id/application_txt_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="신청현황"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                android:id="@+id/application_txt_department"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/application_txt_title"
+                tools:text="체육교육학" />
+
+                <TextView
+                    android:id="@+id/application_txt_member_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/application_txt_department"
+                    app:layout_constraintStart_toEndOf="@+id/application_txt_department"
+                    app:layout_constraintTop_toTopOf="@+id/application_txt_department"
+                    tools:text="3명" />
+
+                <TextView
+                    android:id="@+id/application_txt_status"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_radius_10dp_solid_secondary"
+                    android:gravity="center"
+                    android:paddingHorizontal="30dp"
+                    android:paddingVertical="13dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/application_txt_member_count"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/application_txt_member_count"
+                    tools:text="성공" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/application_ll_recyclerview_container1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/application_txt_department">
+
+                    <TextView
+                        android:id="@+id/application_txt_recyclerview_header1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        tools:text="체육교육과"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/application_recyclerview1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/application_ll_recyclerview_container2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/application_ll_recyclerview_container1">
+
+                    <TextView
+                        android:id="@+id/application_txt_recyclerview_header2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        tools:text="체육교육과"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/application_recyclerview2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/application_btn_left"
+        android:visibility="invisible"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="16dp">
+        android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="수락하기"
+        android:layout_marginStart="28dp"
+        android:paddingVertical="19dp"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/application_btn_right"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/application_img_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/arrow_left"
-            app:layout_constraintBottom_toBottomOf="@+id/application_txt_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/application_txt_title" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/application_btn_right"
+        android:visibility="invisible"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="19dp"
+        android:textSize="14sp"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:background="@drawable/background_radius_10dp_solid_main"
+        android:text="거절하기"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/application_btn_left" />
 
-        <TextView
-            android:id="@+id/application_txt_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="신청현황"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/application_txt_department"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/application_txt_title"
-            tools:text="체육교육학" />
-
-        <TextView
-            android:id="@+id/application_txt_member_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:layout_marginStart="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/application_txt_department"
-            app:layout_constraintStart_toEndOf="@+id/application_txt_department"
-            app:layout_constraintTop_toTopOf="@+id/application_txt_department"
-            tools:text="3명" />
-
-        <TextView
-            android:id="@+id/application_txt_status"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_radius_10dp_solid_secondary"
-            android:gravity="center"
-            android:paddingHorizontal="30dp"
-            android:paddingVertical="13dp"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/application_txt_member_count"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/application_txt_member_count"
-            tools:text="성공" />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/application_ll_recyclerview_container1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"
-            android:orientation="vertical"
-            android:padding="20dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/application_txt_department">
-
-            <TextView
-                android:id="@+id/application_txt_recyclerview_header1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                tools:text="체육교육과"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/application_recyclerview1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/application_ll_recyclerview_container2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"
-            android:orientation="vertical"
-            android:padding="20dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/application_ll_recyclerview_container1">
-
-            <TextView
-                android:id="@+id/application_txt_recyclerview_header2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                tools:text="체육교육과"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/application_recyclerview2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.HomePostItem
+import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.data.model.PostListItem
 import com.changs.android.gnuting_android.databinding.HomeListItemBinding
@@ -20,12 +21,12 @@ import com.changs.android.gnuting_android.databinding.PostMemberItemBinding
 
 
 class PostMemberAdapter :
-    ListAdapter<Member, PostMemberAdapter.ViewHolder>(object : DiffUtil.ItemCallback<Member>() {
-        override fun areItemsTheSame(oldItem: Member, newItem: Member): Boolean {
+    ListAdapter<InUser, PostMemberAdapter.ViewHolder>(object : DiffUtil.ItemCallback<InUser>() {
+        override fun areItemsTheSame(oldItem: InUser, newItem: InUser): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: Member, newItem: Member): Boolean {
+        override fun areContentsTheSame(oldItem: InUser, newItem: InUser): Boolean {
             return oldItem.id == newItem.id
         }
     }) {
@@ -42,17 +43,16 @@ class PostMemberAdapter :
     ) {
         private val binding = PostMemberItemBinding.bind(itemView)
 
-        fun bind(item: Member) {
-            val name = "${item.nickName}(${item.id})"
+        fun bind(item: InUser) {
             val info = "${item.department} | ${item.age} | ${item.studentId}"
 
             val text = binding.root.context.getString(R.string.post_member_txt).format(
-                name, info
+                item.nickname, info
             )
             val styledText: Spanned = Html.fromHtml(text, FROM_HTML_MODE_LEGACY)
 
             binding.postMemberItemInfo.text = styledText
-            binding.postMemberItemIntro.text = item.intro
+            binding.postMemberItemIntro.text = item.userSelfIntroduction
         }
     }
 }

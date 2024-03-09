@@ -21,12 +21,14 @@ class EditProfileFragment: BaseFragment<FragmentEditProflieBinding>(FragmentEdit
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        args.member.let {
-            binding.editProfileEditNickName.setText(it.nickName)
-            binding.editProfileEditDepartment.setText(it.department)
-            binding.editProfileEditIntro.setText(it.intro)
+        // TODO: 프로필 수정 API 연동
 
-            Glide.with(this).load(it.profile).error(R.drawable.ic_profile).into(binding.editProfileImg)
+        args.member.let {
+            binding.editProfileEditNickName.setText(it.nickname)
+            binding.editProfileEditDepartment.setText(it.department)
+            binding.editProfileEditIntro.setText(it.userSelfIntroduction)
+
+            Glide.with(this).load(it.profileImage).error(R.drawable.ic_profile).into(binding.editProfileImg)
         }
 
         val pickMedia =

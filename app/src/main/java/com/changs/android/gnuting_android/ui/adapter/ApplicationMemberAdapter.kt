@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.HomePostItem
+import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.data.model.PostListItem
 import com.changs.android.gnuting_android.databinding.ApplicationMemberItemBinding
@@ -22,13 +23,13 @@ import com.changs.android.gnuting_android.databinding.PostMemberItemBinding
 
 
 class ApplicationMemberAdapter :
-    ListAdapter<Member, ApplicationMemberAdapter.ViewHolder>(object :
-        DiffUtil.ItemCallback<Member>() {
-        override fun areItemsTheSame(oldItem: Member, newItem: Member): Boolean {
+    ListAdapter<InUser, ApplicationMemberAdapter.ViewHolder>(object :
+        DiffUtil.ItemCallback<InUser>() {
+        override fun areItemsTheSame(oldItem: InUser, newItem: InUser): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: Member, newItem: Member): Boolean {
+        override fun areContentsTheSame(oldItem: InUser, newItem: InUser): Boolean {
             return oldItem.id == newItem.id
         }
     }) {
@@ -45,14 +46,14 @@ class ApplicationMemberAdapter :
     ) {
         private val binding = ApplicationMemberItemBinding.bind(itemView)
 
-        fun bind(item: Member) {
-            binding.applicationMemberTxtName.text = item.name
-            val info = "${item.studentId} | ${item.age} | ${item.mbti}"
+        fun bind(item: InUser) {
+            binding.applicationMemberTxtName.text = item.nickname
+            val info = "${item.studentId} | ${item.age}"
 
-            Glide.with(binding.root.context).load(item.profile).error(R.drawable.ic_profile)
+            Glide.with(binding.root.context).load(item.profileImage).error(R.drawable.ic_profile)
                 .into(binding.applicationMemberItemImg)
             binding.applicationMemberTxtMemberInfo.text = info
-            binding.applicationMemberTxtMemberIntro.text = item.intro
+            binding.applicationMemberTxtMemberIntro.text = item.userSelfIntroduction
         }
     }
 }

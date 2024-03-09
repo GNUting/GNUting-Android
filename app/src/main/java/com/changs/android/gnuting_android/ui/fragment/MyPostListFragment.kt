@@ -21,8 +21,7 @@ class MyPostListFragment : BaseFragment<FragmentMyPostListBinding>(FragmentMyPos
     private lateinit var adapter: PostListAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // TODO: 내가 쓴 글 조회 API로 바꾸기
-        viewModel.getPostList()
+        viewModel.getMyPostList()
 
         setRecyclerView()
         setListener()
@@ -34,7 +33,7 @@ class MyPostListFragment : BaseFragment<FragmentMyPostListBinding>(FragmentMyPos
     }
 
     private fun setObserver() {
-        viewModel.postResponse.observe(viewLifecycleOwner) {
+        viewModel.myPostResponse.observe(viewLifecycleOwner) {
             adapter.submitList(it.result)
         }
     }
