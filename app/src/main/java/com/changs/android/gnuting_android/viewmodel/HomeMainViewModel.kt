@@ -9,6 +9,8 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.ApplicationResponse
 import com.changs.android.gnuting_android.data.model.HomePostItem
@@ -18,6 +20,7 @@ import com.changs.android.gnuting_android.data.model.MyInfoResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResult
 import com.changs.android.gnuting_android.data.model.PostDetailResponse
 import com.changs.android.gnuting_android.data.model.PostResponse
+import com.changs.android.gnuting_android.data.model.PostResult
 import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.data.model.SaveResponse
 import com.changs.android.gnuting_android.data.repository.ApplicationRepository
@@ -27,6 +30,7 @@ import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -130,7 +134,9 @@ class HomeMainViewModel(
     private val _applicationReceiveStateResponse = MutableLiveData<ApplicationResponse>()
     val applicationReceiveStateResponse: LiveData<ApplicationResponse> get() = _applicationReceiveStateResponse
 
-
+    fun getPostPagingList(): Flow<PagingData<PostResult>> {
+        return postRepository.getPostListPagingData().cachedIn(viewModelScope)
+    }
 
     fun getApplicationReceiveList() {
         viewModelScope.launch {

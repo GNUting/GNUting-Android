@@ -106,4 +106,11 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
 
+    def paging_version = "3.0.0-alpha07"
+
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
+    // alternatively - without Android dependencies for tests
+    testImplementation "androidx.paging:paging-common:$paging_version"
+
 }
