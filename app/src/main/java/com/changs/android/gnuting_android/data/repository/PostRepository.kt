@@ -3,21 +3,17 @@ package com.changs.android.gnuting_android.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.changs.android.gnuting_android.data.model.Content
 import com.changs.android.gnuting_android.data.model.InUser
-import com.changs.android.gnuting_android.data.model.PostResponse
 import com.changs.android.gnuting_android.data.model.PostResult
-import com.changs.android.gnuting_android.data.model.PostSearchResponse
 import com.changs.android.gnuting_android.data.model.SaveRequest
-import com.changs.android.gnuting_android.data.model.SaveResponse
-import com.changs.android.gnuting_android.data.model.UserSearchResponse
+import com.changs.android.gnuting_android.data.source.MyPostListDataSource
 import com.changs.android.gnuting_android.data.source.PostListPagingSource
+import com.changs.android.gnuting_android.data.source.PostSearchListSource
 import com.changs.android.gnuting_android.data.source.remote.PostInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.http.Body
-import retrofit2.http.Query
 
 @OptIn(androidx.paging.ExperimentalPagingApi::class)
 class PostRepository(retrofit: Retrofit) {
@@ -45,6 +41,18 @@ class PostRepository(retrofit: Retrofit) {
     fun getPostListPagingData(): Flow<PagingData<PostResult>> {
         return Pager(PagingConfig(pageSize = 20)) {
             PostListPagingSource(Dispatchers.IO, service)
+        }.flow
+    }
+
+    fun getMyPostListPagingData(): Flow<PagingData<PostResult>> {
+        return Pager(PagingConfig(pageSize = 20)) {
+            MyPostListDataSource(Dispatchers.IO, service)
+        }.flow
+    }
+
+    fun getSearchPostListPagingData(query: String): Flow<PagingData<Content>> {
+        return Pager(PagingConfig(pageSize = 20)) {
+            PostSearchListSource(Dispatchers.IO, service, query)
         }.flow
     }
 }

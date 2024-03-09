@@ -44,5 +44,5 @@ interface PostInterface {
     suspend fun postApply(@Path("id") id: Int, @Body inUser: List<InUser>): Response<SaveResponse>
 
     @GET("api/v1/board/search")
-    suspend fun getSearchPost(@Query("keyword") keyword: String): Response<PostSearchResponse>
+    suspend fun getSearchPost(@Query("keyword") keyword: String, @Query("page") page: Int = 1): Response<PostSearchResponse>
 }

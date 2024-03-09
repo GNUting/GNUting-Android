@@ -13,6 +13,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.ApplicationResponse
+import com.changs.android.gnuting_android.data.model.Content
 import com.changs.android.gnuting_android.data.model.HomePostItem
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
@@ -137,6 +138,15 @@ class HomeMainViewModel(
     fun getPostPagingList(): Flow<PagingData<PostResult>> {
         return postRepository.getPostListPagingData().cachedIn(viewModelScope)
     }
+
+    fun getMyPostPagingList(): Flow<PagingData<PostResult>> {
+        return postRepository.getMyPostListPagingData().cachedIn(viewModelScope)
+    }
+
+    fun getSearchPostPagingList(query: String): Flow<PagingData<Content>> {
+        return postRepository.getSearchPostListPagingData(query).cachedIn(viewModelScope)
+    }
+
 
     fun getApplicationReceiveList() {
         viewModelScope.launch {

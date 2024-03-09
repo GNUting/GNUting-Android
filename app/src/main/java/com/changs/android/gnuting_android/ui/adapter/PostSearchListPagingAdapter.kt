@@ -5,21 +5,21 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.changs.android.gnuting_android.data.model.Content
 import com.changs.android.gnuting_android.data.model.PostResult
 import com.changs.android.gnuting_android.databinding.PostListItemBinding
 import com.changs.android.gnuting_android.util.PostItemNavigator
 
 
-class PostListPagingAdapter(private val listener: PostItemNavigator) :
-    PagingDataAdapter<PostResult, PostListPagingAdapter.PagingViewHolder>(object :
-        DiffUtil.ItemCallback<PostResult>() {
-
-        override fun areItemsTheSame(oldItem: PostResult, newItem: PostResult): Boolean {
-            return oldItem.title == newItem.title
+class PostSearchListPagingAdapter(private val listener: PostItemNavigator) :
+    PagingDataAdapter<Content, PostSearchListPagingAdapter.PagingViewHolder>(object :
+        DiffUtil.ItemCallback<Content>() {
+        override fun areItemsTheSame(oldItem: Content, newItem: Content): Boolean {
+            return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: PostResult, newItem: PostResult): Boolean {
-            return oldItem == newItem
+        override fun areContentsTheSame(oldItem: Content, newItem: Content): Boolean {
+            return oldItem.boardId == newItem.boardId
         }
     }) {
 
@@ -31,19 +31,18 @@ class PostListPagingAdapter(private val listener: PostItemNavigator) :
 
     override fun onBindViewHolder(holder: PagingViewHolder, position: Int) {
         val item = getItem(position)
-        item?.let { holder.bind(it, listener) }
+        item?.let { holder.bind(it) }
     }
 
     inner class PagingViewHolder(private val binding: PostListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: PostResult, listener: PostItemNavigator) = with(binding) {
-
+        fun bind(item: Content) {
             binding.postListItemTxtTitle.text = item.title
-            binding.postListItemTxtInfo.text = "${item.user.department} | ${item.user.studentId}"
+            binding.postListItemTxtInfo.text = "${item.department} | ${item.studentId}"
 
             binding.root.setOnClickListener {
-                listener.navigateToDetail(item.id)
+                listener.navigateToDetail(item.boardId)
             }
         }
     }
