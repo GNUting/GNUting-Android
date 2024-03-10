@@ -1,7 +1,7 @@
 package com.changs.android.gnuting_android.data.source.remote
 
 import com.changs.android.gnuting_android.data.model.ApplicationResponse
-import com.changs.android.gnuting_android.data.model.SaveResponse
+import com.changs.android.gnuting_android.data.model.DefaultResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -16,6 +16,6 @@ interface ApplicationInterface {
 
 
     @PATCH("/api/v1/board/applications/refuse/{id}")
-    suspend fun patchRefuse(@Path("id") id: Int): Response<SaveResponse>
+    suspend fun patchRefuse(@Path("id") id: Int): Response<DefaultResponse>
 
 }

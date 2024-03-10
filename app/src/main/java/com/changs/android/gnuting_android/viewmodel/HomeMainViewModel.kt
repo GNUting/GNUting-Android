@@ -1,12 +1,10 @@
 package com.changs.android.gnuting_android.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.paging.PagingData
@@ -14,32 +12,26 @@ import androidx.paging.cachedIn
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.ApplicationResponse
 import com.changs.android.gnuting_android.data.model.Content
-import com.changs.android.gnuting_android.data.model.HomePostItem
 import com.changs.android.gnuting_android.data.model.InUser
-import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResult
 import com.changs.android.gnuting_android.data.model.PostDetailResponse
 import com.changs.android.gnuting_android.data.model.PostResponse
 import com.changs.android.gnuting_android.data.model.PostResult
 import com.changs.android.gnuting_android.data.model.SaveRequest
-import com.changs.android.gnuting_android.data.model.SaveResponse
+import com.changs.android.gnuting_android.data.model.DefaultResponse
+import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.repository.ApplicationRepository
 import com.changs.android.gnuting_android.data.repository.PostRepository
 import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -57,25 +49,31 @@ class HomeMainViewModel(
         userRepository.myInfoFlow
     }.asLiveData()
 
-    private val _saveResponse = MutableLiveData<Event<SaveResponse>>()
+    private val _saveResponse = MutableLiveData<Event<DefaultResponse>>()
 
-    val saveResponse: LiveData<Event<SaveResponse>>
+    val saveResponse: LiveData<Event<DefaultResponse>>
         get() = _saveResponse
 
-    private val _applyChatResponse = MutableLiveData<Event<SaveResponse>>()
+    private val _applyChatResponse = MutableLiveData<Event<DefaultResponse>>()
 
-    val applyChatResponse: LiveData<Event<SaveResponse>>
+    val applyChatResponse: LiveData<Event<DefaultResponse>>
         get() = _applyChatResponse
 
-    private val _patchPostDetailResponse = MutableLiveData<Event<SaveResponse>>()
+    private val _patchPostDetailResponse = MutableLiveData<Event<DefaultResponse>>()
 
-    val patchPostDetailResponse: LiveData<Event<SaveResponse>>
+    val patchPostDetailResponse: LiveData<Event<DefaultResponse>>
         get() = _patchPostDetailResponse
 
-    private val _refuseResponse = MutableLiveData<Event<SaveResponse>>()
+    private val _refuseResponse = MutableLiveData<Event<DefaultResponse>>()
 
-    val refuseResponse: LiveData<Event<SaveResponse>>
+    val refuseResponse: LiveData<Event<DefaultResponse>>
         get() = _refuseResponse
+
+    private val _reportResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val reportResponse: LiveData<Event<DefaultResponse>>
+        get() = _reportResponse
+
 
     private val _snackbar = MutableLiveData<String?>()
 
@@ -124,9 +122,9 @@ class HomeMainViewModel(
 
     val postDetailResponse: LiveData<PostDetailResponse> get() = _postDetailResponse
 
-    private val _deletePostResponse = MutableLiveData<Event<SaveResponse>>()
+    private val _deletePostResponse = MutableLiveData<Event<DefaultResponse>>()
 
-    val deletePostResponse: LiveData<Event<SaveResponse>> get() = _deletePostResponse
+    val deletePostResponse: LiveData<Event<DefaultResponse>> get() = _deletePostResponse
 
 
     private val _applicationApplyStateResponse = MutableLiveData<ApplicationResponse>()
@@ -316,6 +314,34 @@ class HomeMainViewModel(
                 if (result.isSuccessful && result.body() != null) {
                     _refuseResponse.value = Event(result.body()!!)
                     _snackbar.value = result.message()
+                    _spinner.value = false
+
+                } else {
+                    result.errorBody()?.let {
+                        val errorBody = getErrorResponse(it)
+                        errorBody?.let { error ->
+                            _spinner.value = false
+                            if (error.code == "BOARD5003") {
+                                // TODO: 분기 처리 추가
+                            } else _snackbar.value = error.message
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _spinner.value = false
+                _snackbar.value = "네트워크 에러가 발생했습니다."
+            }
+        }
+    }
+
+    fun report(reportRequest: ReportRequest) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val result = postRepository.postReport(reportRequest)
+                if (result.isSuccessful && result.body() != null) {
+                    _reportResponse.value = Event(result.body()!!)
+                    _snackbar.value = result.body()!!.result
                     _spinner.value = false
 
                 } else {

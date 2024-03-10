@@ -98,7 +98,11 @@
         android:id="@+id/reportFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.ReportFragment"
         android:label="fragment_report"
-        tools:layout="@layout/fragment_report" />
+        tools:layout="@layout/fragment_report" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
     <action android:id="@+id/action_global_reportFragment" app:destination="@id/reportFragment" />
     <fragment
         android:id="@+id/editPostFragment"

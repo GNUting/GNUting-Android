@@ -37,7 +37,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
         }
 
         binding.myTxtMenuReport.setOnClickListener {
-            findNavController().navigate(R.id.action_global_reportFragment)
+            // TODO: 마이페이지에서 신고 API 개발되면 신고하기 페이지로 이동하는 navigate 추가 예정
         }
 
         binding.myTxtMenuMyPosts.setOnClickListener {
