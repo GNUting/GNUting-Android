@@ -63,6 +63,10 @@ class UserRepository(retrofit: Retrofit, room: AppDatabase) {
         dao.updateMyInfo(myInfo.result)
     }
 
+    suspend fun deleteUser(myInfo: MyInfoResult) {
+        dao.deleteMyInfo(myInfo)
+    }
+
     val myInfoFlow: Flow<MyInfoResult>
         get() = dao.getMyInfo().flowOn(Dispatchers.Default).conflate()
 }

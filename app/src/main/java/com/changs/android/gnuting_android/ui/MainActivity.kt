@@ -29,9 +29,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        // 테스트용
-        // GNUApplication.sharedPreferences.edit().putString(Constant.X_ACCESS_TOKEN, null).apply()
-
         splashScreen.setOnExitAnimationListener {
             if (GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null) != null) {
                 Log.d("token", GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null).toString())

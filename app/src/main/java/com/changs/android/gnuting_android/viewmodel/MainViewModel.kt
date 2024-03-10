@@ -71,7 +71,6 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
     val spinner: LiveData<Boolean>
         get() = _spinner
 
-
     fun onSnackbarShown() {
         _snackbar.value = null
     }

@@ -34,7 +34,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.lang.Exception
+import kotlin.Exception
 
 @ExperimentalCoroutinesApi
 class HomeMainViewModel(
@@ -439,6 +439,19 @@ class HomeMainViewModel(
             } catch (e: Exception) {
                 _spinner.value = false
                 _snackbar.value = "네트워크 에러가 발생했습니다."
+            }
+        }
+    }
+
+    fun logoutUser() {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                myInfo.value?.let { userRepository.deleteUser(it) }
+                _spinner.value = false
+            } catch (e: Exception) {
+                _spinner.value = false
+                _snackbar.value = "에러가 발생했습니다."
             }
         }
     }
