@@ -102,6 +102,7 @@ class AddMemberBottomSheetFragment(private val memberAddViewModel: MemberAddView
         }
 
         viewModel.applyChatResponse.eventObserve(viewLifecycleOwner) {
+            Snackbar.make(binding.root, it.result, Snackbar.LENGTH_SHORT).show()
             findNavController().popBackStack()
         }
     }

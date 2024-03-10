@@ -27,7 +27,7 @@ class PostSearchListPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Content> {
         return try {
-            val page = params.key ?: 1
+            val page = params.key ?: 0
 
             val response = withContext(ioDispatcher) {
                 service.getSearchPost(query, page)
@@ -35,7 +35,7 @@ class PostSearchListPagingSource(
 
             val postList = response.body()?.result?.content?: listOf()
 
-            val prevKey = if (page == 1) null else page - 1
+            val prevKey = if (page == 0) null else page - 1
             val nextKey = if (postList.isEmpty() || (response.body()?.result?.size ?: 0) < 20) null else page + 1
 
             LoadResult.Page(
