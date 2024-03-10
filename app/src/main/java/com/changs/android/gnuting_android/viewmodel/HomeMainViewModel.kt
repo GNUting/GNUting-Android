@@ -424,7 +424,7 @@ class HomeMainViewModel(
                 if (result.isSuccessful && result.body() != null) {
                     _applyChatResponse.value = Event(result.body()!!)
                     _spinner.value = false
-                    _snackbar.value = result.message()
+                    _snackbar.value = result.body()!!.result
                 } else {
                     result.errorBody()?.let {
                         val errorBody = getErrorResponse(it)

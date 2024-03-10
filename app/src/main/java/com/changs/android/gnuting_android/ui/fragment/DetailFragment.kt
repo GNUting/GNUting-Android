@@ -28,7 +28,6 @@ class DetailFragment :
     BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::bind, R.layout.fragment_detail) {
     private val viewModel: HomeMainViewModel by activityViewModels()
     private val memberAddViewModel: MemberAddViewModel by viewModels { MemberAddViewModel.Factory }
-    private val detailViewModel: DetailViewModel by viewModels()
     private val args: DetailFragmentArgs by navArgs()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,6 +65,10 @@ class DetailFragment :
             val action =
                 DetailFragmentDirections.actionGlobalReportFragment(args.id)
             findNavController().navigate(action)
+        }
+
+        binding.detailBtnChatRequest.setOnClickListener {
+            AddMemberBottomSheetFragment(memberAddViewModel, args.id).show(childFragmentManager, null)
         }
     }
 
