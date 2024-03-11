@@ -74,17 +74,14 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
                 if (isChecked) {
                     viewModel.currentMember.value?.let {
                         currentMember.addAll(it)
-                        val user = currentMember.count { it.id == inUser.id }
 
-                        if (user == 0) currentMember.add(inUser)
+                        if (currentMember.any { it.id == inUser.id }) currentMember.add(inUser)
                     }
                 } else {
                     viewModel.currentMember.value?.let {
                         currentMember.addAll(it)
 
-                        val user = currentMember.count { it.id == inUser.id }
-
-                        if (user != 0) currentMember.removeIf {
+                        if (currentMember.any { it.id == inUser.id }) currentMember.removeIf {
                             it.id == inUser.id
                         }
 
@@ -135,10 +132,9 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
         }
 
         viewModel.searchUserResponse.observe(viewLifecycleOwner) {
-            val count = selectedMemberAdapter.currentList.count { inUser ->
-                it.result.id == inUser.id
-            }
-            if (count > 0) {
+            if (selectedMemberAdapter.currentList.any { inUser ->
+                    it.result.id == inUser.id
+                }) {
                 it.result.isChecked = true
             }
             adapter.submitList(listOf(it.result))
