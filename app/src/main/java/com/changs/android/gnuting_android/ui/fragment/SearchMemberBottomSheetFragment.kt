@@ -75,7 +75,7 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
                     viewModel.currentMember.value?.let {
                         currentMember.addAll(it)
 
-                        if (currentMember.any { it.id == inUser.id }) currentMember.add(inUser)
+                        if (currentMember.none { it.id == inUser.id }) currentMember.add(inUser)
                     }
                 } else {
                     viewModel.currentMember.value?.let {
