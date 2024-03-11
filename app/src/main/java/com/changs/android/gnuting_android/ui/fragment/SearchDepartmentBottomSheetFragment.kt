@@ -44,6 +44,7 @@ class SearchDepartmentBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getSearchDepartment("")
 
         binding.searchDepartmentBottomSheetEditSearch.addTextChangedListener {
             viewModel.getSearchDepartment(it.toString())

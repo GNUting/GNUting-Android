@@ -24,7 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel? = null) :
+class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel) :
     BottomSheetDialogFragment() {
     private var _binding: SearchMemberBottomSheetBinding? = null
     private lateinit var adapter: AddMemberAdapter
@@ -53,13 +53,15 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel?
         setRecyclerView()
         setObserver()
 
+        viewModel.getSearchUser("")
+
         binding.searchMemberBottomSheetImgClose.setOnClickListener {
             dismiss()
         }
 
         binding.searchMemberBottomSheetEdit.addTextChangedListener {
             it?.let {
-                viewModel?.getSearchUser(it.toString())
+                viewModel.getSearchUser(it.toString())
             }
         }
     }
@@ -71,14 +73,14 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel?
                     val currentMember = mutableListOf<InUser>()
 
                     if (isChecked) {
-                        viewModel?.currentMember?.value?.let {
+                        viewModel.currentMember?.value?.let {
                             currentMember.addAll(it)
                             val user = currentMember.count { it.id == inUser.id }
 
                             if (user == 0) currentMember.add(inUser)
                         }
                     } else {
-                        viewModel?.currentMember?.value?.let {
+                        viewModel.currentMember?.value?.let {
                             currentMember.addAll(it)
 
                             val user = currentMember.count { it.id == inUser.id }
@@ -89,7 +91,7 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel?
 
                         }
                     }
-                    viewModel?.currentMember?.value = currentMember
+                    viewModel.currentMember?.value = currentMember
                 }
             }
 
@@ -102,7 +104,7 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel?
                 if (it.id != inUser.id) {
                     val currentMember = mutableListOf<InUser>()
 
-                    viewModel?.currentMember?.value?.let {
+                    viewModel.currentMember.value?.let {
                         currentMember.addAll(it)
 
                         val user = currentMember.count { it.id == inUser.id }
@@ -111,7 +113,7 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel?
                             it.id == inUser.id
                         }
                     }
-                    viewModel?.currentMember?.value = currentMember
+                    viewModel.currentMember.value = currentMember
                 }
 
             }
@@ -122,11 +124,11 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel?
     }
 
     private fun setObserver() {
-        viewModel?.currentMember?.observe(viewLifecycleOwner) {
+        viewModel.currentMember.observe(viewLifecycleOwner) {
             selectedMemberAdapter.submitList(it)
         }
 
-        viewModel?.searchUserResponse?.observe(viewLifecycleOwner) {
+        viewModel.searchUserResponse.observe(viewLifecycleOwner) {
             val count = selectedMemberAdapter.currentList.count { inUser ->
                 it.result.id == inUser.id
             }
