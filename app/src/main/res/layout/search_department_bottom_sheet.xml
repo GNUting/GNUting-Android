@@ -13,7 +13,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_close"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="60dp"
+        android:layout_height="3dp"
+        android:background="@drawable/background_radius_10dp_solid_black"
+        app:layout_constraintBottom_toBottomOf="@+id/search_department_bottom_sheet_img_close"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatEditText

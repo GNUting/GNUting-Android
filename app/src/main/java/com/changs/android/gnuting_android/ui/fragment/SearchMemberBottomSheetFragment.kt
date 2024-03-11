@@ -53,6 +53,10 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel?
         setRecyclerView()
         setObserver()
 
+        binding.searchMemberBottomSheetImgClose.setOnClickListener {
+            dismiss()
+        }
+
         binding.searchMemberBottomSheetEdit.addTextChangedListener {
             it?.let {
                 viewModel?.getSearchUser(it.toString())
