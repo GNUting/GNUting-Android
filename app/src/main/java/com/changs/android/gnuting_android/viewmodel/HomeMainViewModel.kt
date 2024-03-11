@@ -286,6 +286,7 @@ class HomeMainViewModel(
                 val result = postRepository.postSave(saveRequest)
                 if (result.isSuccessful && result.body() != null) {
                     _saveResponse.value = Event(result.body()!!)
+                    _snackbar.value = result.body()!!.result
                     _spinner.value = false
 
                 } else {
@@ -369,6 +370,7 @@ class HomeMainViewModel(
                 val result = postRepository.patchPostDetail(id, saveRequest)
                 if (result.isSuccessful && result.body() != null) {
                     _patchPostDetailResponse.value = Event(result.body()!!)
+                    _snackbar.value = result.body()!!.result
                     _spinner.value = false
 
                 } else {
@@ -396,6 +398,7 @@ class HomeMainViewModel(
                 val result = postRepository.deletePost(id)
                 if (result.isSuccessful && result.body() != null) {
                     _deletePostResponse.value = Event(result.body()!!)
+                    _snackbar.value = result.body()!!.result
                     _spinner.value = false
 
                 } else {

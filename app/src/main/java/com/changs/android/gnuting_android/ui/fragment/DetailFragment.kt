@@ -74,7 +74,6 @@ class DetailFragment :
 
         private fun setObserver() {
             viewModel.deletePostResponse.eventObserve(viewLifecycleOwner) {
-                Snackbar.make(binding.root, it.result, Snackbar.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             }
             viewModel.postDetailResponse.observe(viewLifecycleOwner) {
