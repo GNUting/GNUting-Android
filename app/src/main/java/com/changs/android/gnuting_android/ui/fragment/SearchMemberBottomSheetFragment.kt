@@ -67,36 +67,35 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
     }
 
     private fun setRecyclerView() {
-        adapter = AddMemberAdapter { inUser, isChecked ->
+        adapter = AddMemberAdapter(homeViewModel.myInfo.value?.id) { inUser, isChecked ->
             homeViewModel.myInfo.value?.let {
-                if (it.id != inUser.id) {
-                    val currentMember = mutableListOf<InUser>()
+                val currentMember = mutableListOf<InUser>()
 
-                    if (isChecked) {
-                        viewModel.currentMember.value?.let {
-                            currentMember.addAll(it)
-                            val user = currentMember.count { it.id == inUser.id }
+                if (isChecked) {
+                    viewModel.currentMember.value?.let {
+                        currentMember.addAll(it)
+                        val user = currentMember.count { it.id == inUser.id }
 
-                            if (user == 0) currentMember.add(inUser)
-                        }
-                    } else {
-                        viewModel.currentMember.value?.let {
-                            currentMember.addAll(it)
-
-                            val user = currentMember.count { it.id == inUser.id }
-
-                            if (user != 0) currentMember.removeIf {
-                                it.id == inUser.id
-                            }
-
-                        }
+                        if (user == 0) currentMember.add(inUser)
                     }
-                    viewModel.currentMember.value = currentMember
+                } else {
+                    viewModel.currentMember.value?.let {
+                        currentMember.addAll(it)
+
+                        val user = currentMember.count { it.id == inUser.id }
+
+                        if (user != 0) currentMember.removeIf {
+                            it.id == inUser.id
+                        }
+
+                    }
                 }
+                viewModel.currentMember.value = currentMember
             }
 
 
         }
+        binding.searchMemberBottomSheetRecyclerview.itemAnimator = null
         binding.searchMemberBottomSheetRecyclerview.adapter = adapter
 
         selectedMemberAdapter = SelectedMemberAdapter { inUser ->
@@ -114,13 +113,20 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
                         }
                     }
                     viewModel.currentMember.value = currentMember
+
+                    viewModel.searchUserResponse.value?.let {
+                        val user = it.result.apply { isChecked = false }
+                        adapter.submitList(listOf()) {
+                            adapter.submitList(listOf(user))
+                        }
+                    }
                 }
 
             }
         }
 
-        binding.searchMemberBottomSheetRecyclerviewSelectedMember.adapter =
-            selectedMemberAdapter
+        binding.searchMemberBottomSheetRecyclerviewSelectedMember.adapter = selectedMemberAdapter
+        binding.searchMemberBottomSheetRecyclerviewSelectedMember.itemAnimator = null
     }
 
     private fun setObserver() {
