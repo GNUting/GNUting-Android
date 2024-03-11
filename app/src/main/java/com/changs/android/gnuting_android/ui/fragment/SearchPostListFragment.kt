@@ -27,18 +27,9 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchPostListFragment : BaseFragment<FragmentSearchPostListBinding>(FragmentSearchPostListBinding::bind, R.layout.fragment_search_post_list), PostItemNavigator {
     private val viewModel: HomeMainViewModel by activityViewModels()
-    private val searchViewModel: SearchViewModel by viewModels { SearchViewModel.Factory }
     private lateinit var adapter: PostSearchListPagingAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        searchViewModel.snackbar.observe(viewLifecycleOwner) { text ->
-            text?.let {
-                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
-                viewModel.onSnackbarShown()
-            }
-        }
-
         setRecyclerView()
         setListener()
 
