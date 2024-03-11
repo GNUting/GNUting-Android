@@ -73,14 +73,14 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
                     val currentMember = mutableListOf<InUser>()
 
                     if (isChecked) {
-                        viewModel.currentMember?.value?.let {
+                        viewModel.currentMember.value?.let {
                             currentMember.addAll(it)
                             val user = currentMember.count { it.id == inUser.id }
 
                             if (user == 0) currentMember.add(inUser)
                         }
                     } else {
-                        viewModel.currentMember?.value?.let {
+                        viewModel.currentMember.value?.let {
                             currentMember.addAll(it)
 
                             val user = currentMember.count { it.id == inUser.id }
@@ -91,7 +91,7 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
 
                         }
                     }
-                    viewModel.currentMember?.value = currentMember
+                    viewModel.currentMember.value = currentMember
                 }
             }
 
