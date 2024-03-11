@@ -314,7 +314,7 @@ class HomeMainViewModel(
                 val result = applicationRepository.patchRefuse(id)
                 if (result.isSuccessful && result.body() != null) {
                     _refuseResponse.value = Event(result.body()!!)
-                    _snackbar.value = result.message()
+                    _snackbar.value = result.body()!!.result
                     _spinner.value = false
 
                 } else {
