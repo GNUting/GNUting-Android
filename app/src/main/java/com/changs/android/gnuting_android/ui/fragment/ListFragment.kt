@@ -24,7 +24,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalCoroutinesApi::class)
 class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::bind, R.layout.fragment_list) {
     private val viewModel: HomeMainViewModel by activityViewModels()
-    val adapter by lazy { ApplicationAdapter(::applicationItemListener) }
+    val applyStateAdapter by lazy { ApplicationAdapter(::applicationItemListener) }
+    val receiveStateAdapter by lazy { ApplicationAdapter(::applicationItemListener) }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getApplicationReceiveList()
@@ -37,15 +39,11 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::bind
                 tab?.let {
                     when(it.position) {
                         0 -> {
-                            viewModel.applicationApplyStateResponse.value?.let {
-                                adapter.submitList(it.result)
-                            }
+                            binding.listRecyclerview.adapter = applyStateAdapter
                         }
 
                         else -> {
-                            viewModel.applicationReceiveStateResponse.value?.let {
-                                adapter.submitList(it.result)
-                            }
+                            binding.listRecyclerview.adapter = receiveStateAdapter
                         }
                     }
                 }
@@ -60,17 +58,17 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::bind
     }
 
     private fun setRecyclerView() {
-        binding.listRecyclerview.adapter = adapter
+        binding.listRecyclerview.adapter = applyStateAdapter
         binding.listRecyclerview.itemAnimator = null
     }
 
     private fun setObserver() {
         viewModel.applicationApplyStateResponse.observe(viewLifecycleOwner) {
-            adapter.submitList(it.result)
+            applyStateAdapter.submitList(it.result)
         }
 
         viewModel.applicationReceiveStateResponse.observe(viewLifecycleOwner) {
-            adapter.submitList(it.result)
+            receiveStateAdapter.submitList(it.result)
 
         }
     }
