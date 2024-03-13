@@ -26,7 +26,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AddMemberBottomSheetFragment(private val memberAddViewModel: MemberAddViewModel, private val boardId: Int) : BottomSheetDialogFragment() {
+class AddMemberBottomSheetFragment(
+    private val memberAddViewModel: MemberAddViewModel, private val boardId: Int
+) : BottomSheetDialogFragment() {
     private var _binding: AddMemberBottomSheetBinding? = null
     private val viewModel: HomeMainViewModel by activityViewModels()
     private lateinit var adapter: PostCurrentMemberAdapter
@@ -63,7 +65,8 @@ class AddMemberBottomSheetFragment(private val memberAddViewModel: MemberAddView
 
     private fun setListener() {
         binding.addMemberBottomSheetLlAddMember.setOnClickListener {
-            val searchMemberBottomSheetFragment = SearchMemberBottomSheetFragment(memberAddViewModel)
+            val searchMemberBottomSheetFragment =
+                SearchMemberBottomSheetFragment(memberAddViewModel)
             searchMemberBottomSheetFragment.show(childFragmentManager, null)
         }
 
@@ -81,8 +84,10 @@ class AddMemberBottomSheetFragment(private val memberAddViewModel: MemberAddView
 
     private fun setObserver() {
         memberAddViewModel.currentMember.observe(viewLifecycleOwner) {
-            binding.addMemberBottomSheetTxtMemberTitle.text = "멤버 (${it.size})"
-            adapter.submitList(it)
+            it?.let {
+                binding.addMemberBottomSheetTxtMemberTitle.text = "멤버 (${it.size})"
+                adapter.submitList(it)
+            }
 
         }
         viewModel.myInfo.value?.let { myInfo ->
@@ -104,5 +109,11 @@ class AddMemberBottomSheetFragment(private val memberAddViewModel: MemberAddView
         viewModel.applyChatResponse.eventObserve(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        memberAddViewModel.currentMember.value = null
     }
 }

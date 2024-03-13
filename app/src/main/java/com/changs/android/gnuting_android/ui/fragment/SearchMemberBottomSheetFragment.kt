@@ -96,8 +96,8 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
         binding.searchMemberBottomSheetRecyclerview.adapter = adapter
 
         selectedMemberAdapter = SelectedMemberAdapter { inUser ->
-            homeViewModel.myInfo.value?.let {
-                if (it.id != inUser.id) {
+            homeViewModel.myInfo.value?.let { myInfo ->
+                if (myInfo.id != inUser.id) {
                     val currentMember = mutableListOf<InUser>()
 
                     viewModel.currentMember.value?.let {
@@ -111,14 +111,15 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
                     }
                     viewModel.currentMember.value = currentMember
 
-                    viewModel.searchUserResponse.value?.let {
-                        val user = it.result.apply { isChecked = false }
-                        adapter.submitList(listOf()) {
-                            adapter.submitList(listOf(user))
+                    viewModel.searchUserResponse.value?.let { userSearchResponse ->
+                        if (userSearchResponse.result.id == inUser.id) {
+                            val user = userSearchResponse.result.apply { isChecked = false }
+                            adapter.submitList(listOf()) {
+                                adapter.submitList(listOf(user))
+                            }
                         }
                     }
                 }
-
             }
         }
 
@@ -128,22 +129,25 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
 
     private fun setObserver() {
         viewModel.currentMember.observe(viewLifecycleOwner) {
-            selectedMemberAdapter.submitList(it)
+            it?.let { selectedMemberAdapter.submitList(it) }
         }
 
         viewModel.searchUserResponse.observe(viewLifecycleOwner) {
-            if (selectedMemberAdapter.currentList.any { inUser ->
-                    it.result.id == inUser.id
-                }) {
-                it.result.isChecked = true
+            it?.let {
+                if (selectedMemberAdapter.currentList.any { inUser ->
+                        it.result.id == inUser.id
+                    }) {
+                    it.result.isChecked = true
+                }
+                adapter.submitList(listOf(it.result))
             }
-            adapter.submitList(listOf(it.result))
         }
     }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.searchUserResponse.value = null
         _binding = null
     }
 

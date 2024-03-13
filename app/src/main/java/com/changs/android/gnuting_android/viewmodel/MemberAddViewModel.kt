@@ -17,10 +17,7 @@ import java.lang.Exception
 class MemberAddViewModel(repository: PostRepository) : ViewModel() {
     val currentMember = MutableLiveData<MutableList<InUser>>()
 
-    private val _searchUserResponse = MutableLiveData<UserSearchResponse>()
-
-    val searchUserResponse: LiveData<UserSearchResponse>
-        get() = _searchUserResponse
+    val searchUserResponse = MutableLiveData<UserSearchResponse>()
 
     private val _snackbar = MutableLiveData<String?>()
 
@@ -36,7 +33,7 @@ class MemberAddViewModel(repository: PostRepository) : ViewModel() {
             try {
                 val result = GNUApplication.postRepository.getUserSearch(nickname)
                 if (result.isSuccessful && result.body() != null) {
-                    _searchUserResponse.value = result.body()
+                    searchUserResponse.value = result.body()
                 } else {
                     result.errorBody()?.let {
                         val errorBody = getErrorResponse(it)
