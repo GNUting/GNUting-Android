@@ -21,6 +21,7 @@ import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -42,6 +43,11 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
                 val action = MyFragmentDirections.actionMyFragmentToEditProfileFragment(myInfo)
                 findNavController().navigate(action)
             }
+        }
+
+        binding.myTxtMenuOpenSource.setOnClickListener {
+            startActivity(Intent(requireContext(), OssLicensesMenuActivity::class.java))
+            OssLicensesMenuActivity.setActivityTitle("오픈소스 라이선스")
         }
 
         binding.myTxtMenuReport.setOnClickListener {

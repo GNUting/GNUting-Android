@@ -6,4 +6,5 @@ object Constant {
     const val MIllIS_IN_FUTURE = 180000L
     const val TICK_INTERVAL = 1000L
     const val DATABASE_NAME = "GNU_DATABASE"
+    const val FCM_TOKEN = "FCM_TOKEN"
 }
