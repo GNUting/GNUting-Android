@@ -29,6 +29,7 @@ class GNUApplication : Application() {
         lateinit var applicationRepository: ApplicationRepository
         lateinit var sharedPreferences: SharedPreferences
     }
+
     override fun onCreate() {
         super.onCreate()
 
@@ -51,7 +52,7 @@ class GNUApplication : Application() {
                 val builder: Request.Builder = chain.request().newBuilder()
                 val jwtToken: String? = sharedPreferences.getString(X_ACCESS_TOKEN, null)
                 if (jwtToken != null) {
-                    builder.addHeader("Authorization", jwtToken)
+                    builder.addHeader("Authorization", "Bearer $jwtToken")
                 }
 
                 proceed(builder.build())
@@ -72,7 +73,7 @@ class GNUApplication : Application() {
         ).build()
 
         userRepository = UserRepository(retrofit, room)
-        postRepository  = PostRepository(retrofit)
+        postRepository = PostRepository(retrofit)
         applicationRepository = ApplicationRepository(retrofit)
     }
 }

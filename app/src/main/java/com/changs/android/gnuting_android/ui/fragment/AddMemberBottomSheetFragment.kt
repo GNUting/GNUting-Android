@@ -1,6 +1,7 @@
 package com.changs.android.gnuting_android.ui.fragment
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.databinding.AddMemberBottomSheetBinding
+import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.AddMemberAdapter
 import com.changs.android.gnuting_android.ui.adapter.PostCurrentMemberAdapter
 import com.changs.android.gnuting_android.ui.adapter.SelectedMemberAdapter
@@ -83,6 +85,12 @@ class AddMemberBottomSheetFragment(
     }
 
     private fun setObserver() {
+        memberAddViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
         memberAddViewModel.currentMember.observe(viewLifecycleOwner) {
             it?.let {
                 binding.addMemberBottomSheetTxtMemberTitle.text = "멤버 (${it.size})"

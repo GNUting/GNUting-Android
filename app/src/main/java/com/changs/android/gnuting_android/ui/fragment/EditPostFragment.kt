@@ -1,5 +1,6 @@
 package com.changs.android.gnuting_android.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -12,6 +13,7 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.databinding.FragmentEditPostBinding
+import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.PostMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
@@ -67,6 +69,12 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
     }
 
     private fun setObserver() {
+        memberAddViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
         viewModel.postDetailResponse.observe(viewLifecycleOwner) {
             it.result.apply {
                 binding.editPostEditTitle.setText(title)

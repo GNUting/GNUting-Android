@@ -13,9 +13,11 @@ import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.databinding.CurrentMemberBottomSheetBinding
 import com.changs.android.gnuting_android.databinding.SearchMemberBottomSheetBinding
+import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.AddMemberAdapter
 import com.changs.android.gnuting_android.ui.adapter.PostCurrentMemberAdapter
 import com.changs.android.gnuting_android.ui.adapter.SelectedMemberAdapter
+import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -141,6 +143,12 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
                 }
                 adapter.submitList(listOf(it.result))
             }
+        }
+
+        viewModel.expirationToken.eventObserve(viewLifecycleOwner) {
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 

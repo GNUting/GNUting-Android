@@ -1,11 +1,15 @@
 package com.changs.android.gnuting_android.data.source.remote
 
 import com.changs.android.gnuting_android.data.model.CheckNickNameResponse
+import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.LoginResponse
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
+import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
+import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenResponse
+import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.model.SignUpResponse
 import okhttp3.MultipartBody
@@ -48,4 +52,10 @@ interface UserInterface {
 
     @GET("/api/v1/board/user/myinfo")
     suspend fun getMyInfo(): MyInfoResponse
+
+    @POST("/api/v1/reIssueAccessToken")
+    suspend fun postReIssueAccessToken(@Body request: ReIssueAccessTokenRequest): Response<ReIssueAccessTokenResponse>
+
+    @POST("/api/v1/savetoken")
+    suspend fun postSaveFCMToken(@Body request: SaveFCMTokenRequest): Response<DefaultResponse>
 }

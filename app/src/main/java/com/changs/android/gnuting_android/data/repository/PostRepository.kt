@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.changs.android.gnuting_android.data.model.Content
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.PostResult
+import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.data.source.MyPostListPagingSource
@@ -41,21 +42,23 @@ class PostRepository(retrofit: Retrofit) {
 
     suspend fun postReport(reportRequest: ReportRequest) = service.postBoardReport(reportRequest)
 
-    fun getPostListPagingData(): Flow<PagingData<PostResult>> {
+    suspend fun postReIssueAccessToken(request: ReIssueAccessTokenRequest) = service.postReIssueAccessToken(request)
+
+    fun getPostListPagingData(listener: () -> Unit): Flow<PagingData<PostResult>> {
         return Pager(PagingConfig(pageSize = 20)) {
-            PostListPagingSource(Dispatchers.IO, service)
+            PostListPagingSource(Dispatchers.IO, service, listener)
         }.flow
     }
 
-    fun getMyPostListPagingData(): Flow<PagingData<PostResult>> {
+    fun getMyPostListPagingData(listener: () -> Unit): Flow<PagingData<PostResult>> {
         return Pager(PagingConfig(pageSize = 20)) {
-            MyPostListPagingSource(Dispatchers.IO, service)
+            MyPostListPagingSource(Dispatchers.IO, service, listener)
         }.flow
     }
 
-    fun getSearchPostListPagingData(query: String): Flow<PagingData<Content>> {
+    fun getSearchPostListPagingData(query: String, listener: () -> Unit): Flow<PagingData<Content>> {
         return Pager(PagingConfig(pageSize = 20)) {
-            PostSearchListPagingSource(Dispatchers.IO, service, query)
+            PostSearchListPagingSource(Dispatchers.IO, service, query, listener)
         }.flow
     }
 }

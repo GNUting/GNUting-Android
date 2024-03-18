@@ -1,6 +1,7 @@
 package com.changs.android.gnuting_android.ui
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.changs.android.gnuting_android.GNUApplication.Companion.sharedPrefere
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.databinding.ActivityHomeBinding
 import com.changs.android.gnuting_android.util.Constant
+import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
@@ -50,6 +52,12 @@ class HomeActivity : AppCompatActivity() {
 
                 else -> binding.bottomNav.isVisible = false
             }
+        }
+
+        viewModel.expirationToken.eventObserve(this) {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         viewModel.spinner.observe(this) { show ->

@@ -1,5 +1,6 @@
 package com.changs.android.gnuting_android.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,6 +15,7 @@ import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.FragmentDetailBinding
+import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.SpinnerAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.DetailViewModel
@@ -73,6 +75,12 @@ class DetailFragment :
     }
 
         private fun setObserver() {
+            memberAddViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
+
             viewModel.deletePostResponse.eventObserve(viewLifecycleOwner) {
                 findNavController().popBackStack()
             }

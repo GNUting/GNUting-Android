@@ -15,6 +15,7 @@ import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.model.SignUpResponse
 import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.util.Constant.X_ACCESS_TOKEN
+import com.changs.android.gnuting_android.util.Constant.X_REFRESH_TOKEN
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import kotlinx.coroutines.launch
@@ -151,8 +152,11 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                         _signUpResponse.value = Event(result.body()!!)
                         _spinner.value = false
 
-                        val token = result.headers()["Authorization"]
-                        GNUApplication.sharedPreferences.edit().putString(X_ACCESS_TOKEN, token).apply()
+                        val accessToken = result.body()!!.result.accessToken
+                        val refreshToken = result.body()!!.result.refreshToken
+
+                        GNUApplication.sharedPreferences.edit().putString(X_ACCESS_TOKEN, accessToken).apply()
+                        GNUApplication.sharedPreferences.edit().putString(X_REFRESH_TOKEN, refreshToken).apply()
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
@@ -208,8 +212,11 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                         _loginResponse.value = Event(result.body()!!)
                         _spinner.value = false
 
-                        val token = result.headers()["Authorization"]
-                        GNUApplication.sharedPreferences.edit().putString(X_ACCESS_TOKEN, token).apply()
+                        val accessToken = result.body()!!.result.accessToken
+                        val refreshToken = result.body()!!.result.refreshToken
+
+                        GNUApplication.sharedPreferences.edit().putString(X_ACCESS_TOKEN, accessToken).apply()
+                        GNUApplication.sharedPreferences.edit().putString(X_REFRESH_TOKEN, refreshToken).apply()
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)

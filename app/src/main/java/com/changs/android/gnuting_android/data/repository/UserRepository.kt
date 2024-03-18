@@ -2,10 +2,14 @@ package com.changs.android.gnuting_android.data.repository
 
 import android.graphics.Bitmap
 import com.changs.android.gnuting_android.data.model.CheckNickNameResponse
+import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResult
+import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
+import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenResponse
+import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SignUpResponse
 import com.changs.android.gnuting_android.data.source.local.AppDatabase
 import com.changs.android.gnuting_android.data.source.remote.UserInterface
@@ -16,6 +20,8 @@ import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 class UserRepository(retrofit: Retrofit, room: AppDatabase) {
     private val service = retrofit.create(UserInterface::class.java)
@@ -69,4 +75,8 @@ class UserRepository(retrofit: Retrofit, room: AppDatabase) {
 
     val myInfoFlow: Flow<MyInfoResult>
         get() = dao.getMyInfo().flowOn(Dispatchers.Default).conflate()
+
+    suspend fun postReIssueAccessToken(request: ReIssueAccessTokenRequest) = service.postReIssueAccessToken(request)
+
+    suspend fun postSaveFCMToken(request: SaveFCMTokenRequest) = service.postSaveFCMToken(request)
 }

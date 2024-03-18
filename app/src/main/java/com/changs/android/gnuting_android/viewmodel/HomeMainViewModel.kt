@@ -20,10 +20,12 @@ import com.changs.android.gnuting_android.data.model.PostResponse
 import com.changs.android.gnuting_android.data.model.PostResult
 import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.data.model.DefaultResponse
+import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.repository.ApplicationRepository
 import com.changs.android.gnuting_android.data.repository.PostRepository
 import com.changs.android.gnuting_android.data.repository.UserRepository
+import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -74,6 +76,11 @@ class HomeMainViewModel(
     val reportResponse: LiveData<Event<DefaultResponse>>
         get() = _reportResponse
 
+    private val _expirationToken = MutableLiveData<Event<Boolean>>()
+
+    val expirationToken: LiveData<Event<Boolean>>
+        get() = _expirationToken
+
 
     private val _snackbar = MutableLiveData<String?>()
 
@@ -92,14 +99,14 @@ class HomeMainViewModel(
 
     init {
         myInfoFlow.onEach {
-                _spinner.value = true
-                userRepository.fetchRecentMyInfo()
-            }.onEach {
-                _spinner.value = false
-            }.catch { throwable ->
-                _snackbar.value = throwable.message
-                _spinner.value = false
-            }.launchIn(viewModelScope)
+            _spinner.value = true
+            userRepository.fetchRecentMyInfo()
+        }.onEach {
+            _spinner.value = false
+        }.catch { throwable ->
+            _snackbar.value = throwable.message
+            _spinner.value = false
+        }.launchIn(viewModelScope)
     }
 
     val images = listOf(
@@ -134,15 +141,17 @@ class HomeMainViewModel(
     val applicationReceiveStateResponse: LiveData<ApplicationResponse> get() = _applicationReceiveStateResponse
 
     fun getPostPagingList(): Flow<PagingData<PostResult>> {
-        return postRepository.getPostListPagingData().cachedIn(viewModelScope)
+        return postRepository.getPostListPagingData(::pagingSourceListener).cachedIn(viewModelScope)
     }
 
     fun getMyPostPagingList(): Flow<PagingData<PostResult>> {
-        return postRepository.getMyPostListPagingData().cachedIn(viewModelScope)
+        return postRepository.getMyPostListPagingData(::pagingSourceListener)
+            .cachedIn(viewModelScope)
     }
 
     fun getSearchPostPagingList(query: String): Flow<PagingData<Content>> {
-        return postRepository.getSearchPostListPagingData(query).cachedIn(viewModelScope)
+        return postRepository.getSearchPostListPagingData(query, ::pagingSourceListener)
+            .cachedIn(viewModelScope)
     }
 
 
@@ -154,7 +163,6 @@ class HomeMainViewModel(
                 if (result.isSuccessful && result.body() != null) {
                     _applicationReceiveStateResponse.value = result.body()
                     _spinner.value = false
-
                 } else {
                     result.errorBody()?.let {
                         val errorBody = getErrorResponse(it)
@@ -162,6 +170,31 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
+                            } else if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        getApplicationReceiveList()
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
                             } else _snackbar.value = error.message
                         }
                     }
@@ -189,6 +222,31 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
+                            } else if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        getApplicationApplyList()
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
                             } else _snackbar.value = error.message
                         }
                     }
@@ -217,6 +275,31 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
+                            } else if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        getPostList(page)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
                             } else _snackbar.value = error.message
                         }
                     }
@@ -267,8 +350,35 @@ class HomeMainViewModel(
                     result.errorBody()?.let {
                         val errorBody = getErrorResponse(it)
                         errorBody?.let { error ->
-                            _spinner.value = false
-                            _snackbar.value = error.message
+                            if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        getPostDetail(id)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
+                            } else {
+                                _spinner.value = false
+                                _snackbar.value = error.message
+                            }
                         }
                     }
                 }
@@ -296,6 +406,31 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
+                            } else if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        postSave(saveRequest)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
                             } else _snackbar.value = error.message
                         }
                     }
@@ -324,6 +459,31 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
+                            } else if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        refuse(id)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
                             } else _snackbar.value = error.message
                         }
                     }
@@ -352,6 +512,31 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
+                            } else if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        report(reportRequest)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
                             } else _snackbar.value = error.message
                         }
                     }
@@ -380,6 +565,31 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
+                            } else if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        patchSave(id, saveRequest)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
                             } else _snackbar.value = error.message
                         }
                     }
@@ -408,6 +618,31 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
+                            } else if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        deletePost(id)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
                             } else _snackbar.value = error.message
                         }
                     }
@@ -435,6 +670,31 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
+                            } else if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        postApplyChat(id, inUser)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
                             } else _snackbar.value = error.message
                         }
                     }
@@ -457,6 +717,10 @@ class HomeMainViewModel(
                 _snackbar.value = "에러가 발생했습니다."
             }
         }
+    }
+
+    private fun pagingSourceListener() {
+        _expirationToken.value = Event(true)
     }
 
 

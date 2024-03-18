@@ -2,9 +2,7 @@ package com.changs.android.gnuting_android.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginResult(
-    @SerializedName("accessToken")
-    val accessToken: String,
+data class ReIssueAccessTokenRequest(
     @SerializedName("refreshToken")
     val refreshToken: String
 )
