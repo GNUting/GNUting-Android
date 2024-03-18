@@ -2,9 +2,7 @@ package com.changs.android.gnuting_android.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.AdapterView
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -13,16 +11,12 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
-import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.FragmentDetailBinding
 import com.changs.android.gnuting_android.ui.MainActivity
-import com.changs.android.gnuting_android.ui.adapter.SpinnerAdapter
+import com.changs.android.gnuting_android.ui.PhotoActivity
 import com.changs.android.gnuting_android.util.eventObserve
-import com.changs.android.gnuting_android.viewmodel.DetailViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
-import com.google.android.material.snackbar.Snackbar
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -99,6 +93,15 @@ class DetailFragment :
                     Glide.with(this@DetailFragment).load(user.profileImage)
                         .error(R.drawable.ic_profile)
                         .into(binding.detailImgProfile)
+
+                    // Expecting binder but got null!
+
+                    binding.detailImgProfile.setOnClickListener {
+                        val intent = Intent(requireContext(), PhotoActivity::class.java)
+                        intent.putExtra("img", user.profileImage)
+                        binding.root.context.startActivity(intent)
+                    }
+
                     binding.detailTxtPostTitle.text = title
                     binding.detailTxtNickname.text = user.nickname
                     binding.detailTxtInfo.text = "${user.department} | ${user.studentId}"

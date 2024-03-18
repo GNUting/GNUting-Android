@@ -120,4 +120,8 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun selectedItemId(menuId: Int) {
+        binding.bottomNav.selectedItemId = menuId
+    }
 }

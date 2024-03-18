@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentHomeBinding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.HomeAdapter
 import com.changs.android.gnuting_android.ui.adapter.ViewPagerAdapter
 import com.changs.android.gnuting_android.util.PostItemNavigator
@@ -40,6 +41,10 @@ class HomeFragment :
     private fun setListener() {
         binding.homeTxtMoreList.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_postListFragment)
+        }
+
+        binding.homeImgProfile.setOnClickListener {
+            (requireActivity() as HomeActivity).selectedItemId(R.id.myFragment)
         }
     }
 
