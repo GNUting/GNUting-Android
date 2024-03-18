@@ -60,6 +60,10 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
 
         viewModel.getSearchUser("")
 
+        binding.searchMemberBottomSheetTxtMemberAdd.setOnClickListener {
+            dismiss()
+        }
+
         binding.searchMemberBottomSheetImgClose.setOnClickListener {
             dismiss()
         }

@@ -5,22 +5,36 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    android:padding="20dp"
+    android:paddingHorizontal="20dp"
     android:minHeight="800dp">
+
+    <TextView
+        android:id="@+id/search_member_bottom_sheet_txt_member_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_radius_10dp_solid_secondary"
+        android:padding="5dp"
+        android:text="멤버 추가"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view2" />
 
     <ImageView
         android:id="@+id/search_member_bottom_sheet_img_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_close"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/view2" />
 
     <View
+        android:id="@+id/view2"
         android:layout_width="60dp"
         android:layout_height="3dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/background_radius_10dp_solid_black"
-        app:layout_constraintBottom_toBottomOf="@+id/search_member_bottom_sheet_img_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,14 +43,14 @@
         android:id="@+id/search_member_bottom_sheet_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:maxLines="1"
         android:background="@drawable/background_radius_5dp_solid_gray1"
         android:drawableStart="@drawable/ic_search3"
         android:drawablePadding="10dp"
+        android:layout_marginTop="30dp"
         android:hint="닉네임을 입력해 주세요."
         android:imeOptions="actionSearch"
         android:inputType="text"
+        android:maxLines="1"
         android:paddingHorizontal="15dp"
         android:paddingVertical="5dp"
         android:textColor="@color/white"
@@ -44,7 +58,7 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_member_bottom_sheet_recyclerview_selected_member"
