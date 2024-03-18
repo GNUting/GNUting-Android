@@ -23,14 +23,4 @@ class StartFragment : BaseFragment<FragmentStartBinding>(FragmentStartBinding::b
             findNavController().navigate(R.id.action_startFragment_to_policyFragment)
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        requireActivity().setStatusBarTransparent()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        requireActivity().setStatusBarOrigin()
-    }
 }
