@@ -322,6 +322,7 @@
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:maxLength="30"
+                android:maxLines="2"
                 android:theme="@style/EditTextTheme"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
