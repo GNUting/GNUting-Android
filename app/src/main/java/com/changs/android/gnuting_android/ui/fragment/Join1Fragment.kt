@@ -117,7 +117,7 @@ class Join1Fragment :
     }
 
     private fun validatePassword(password: String): Boolean {
-        val passwordRegex = "^(?=.*[A-Za-z])(?=.*[@#$%^&+=])(?=\\S+$).{8,15}$".toRegex()
+        val passwordRegex = Regex("(?=.*[A-Za-z])(?=.*[!@#$%^&*()-+_])(?=\\S+\$).{8,}")
         return passwordRegex.matches(password)
     }
 
