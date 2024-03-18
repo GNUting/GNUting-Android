@@ -22,6 +22,7 @@ import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
 import com.changs.android.gnuting_android.data.model.ReportRequest
+import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.repository.ApplicationRepository
 import com.changs.android.gnuting_android.data.repository.PostRepository
 import com.changs.android.gnuting_android.data.repository.UserRepository
@@ -80,6 +81,11 @@ class HomeMainViewModel(
 
     val expirationToken: LiveData<Event<Boolean>>
         get() = _expirationToken
+
+    private val _saveFcmTokenResponse = MutableLiveData<Event<Boolean>>()
+
+    val saveFcmTokenResponse: LiveData<Event<Boolean>>
+        get() = _saveFcmTokenResponse
 
 
     private val _snackbar = MutableLiveData<String?>()
@@ -696,6 +702,58 @@ class HomeMainViewModel(
                                 }
 
                             } else _snackbar.value = error.message
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _spinner.value = false
+                _snackbar.value = "네트워크 에러가 발생했습니다."
+            }
+        }
+    }
+
+    fun postSaveFcmToken(token: String) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val result = userRepository.postSaveFCMToken(SaveFCMTokenRequest(token))
+                if (result.isSuccessful && result.body() != null) {
+                    _saveFcmTokenResponse.value = Event(true)
+                    _spinner.value = false
+                    _snackbar.value = result.body()!!.result
+                } else {
+                    result.errorBody()?.let {
+                        val errorBody = getErrorResponse(it)
+                        errorBody?.let { error ->
+                            _spinner.value = false
+                            if (error.code == "BOARD5003") {
+                                // TODO: 분기 처리 추가
+                            } else if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        postSaveFcmToken(token)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
+                            }
                         }
                     }
                 }

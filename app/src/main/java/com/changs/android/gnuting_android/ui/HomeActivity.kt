@@ -36,6 +36,17 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        if (sharedPreferences.getString(
+                Constant.X_ACCESS_TOKEN, null
+            ) == null
+        ) {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        initFirebaseFcm()
+
         askNotificationPermission()
 
         val navHostFragment =
@@ -47,8 +58,8 @@ class HomeActivity : AppCompatActivity() {
 
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.homeFragment, R.id.listFragment, R.id.chatFragment, R.id.myFragment ->
-                    binding.bottomNav.isVisible = true
+                R.id.homeFragment, R.id.listFragment, R.id.chatFragment, R.id.myFragment -> binding.bottomNav.isVisible =
+                    true
 
                 else -> binding.bottomNav.isVisible = false
             }
@@ -75,11 +86,9 @@ class HomeActivity : AppCompatActivity() {
     private fun initFirebaseFcm() {
         val saveFcmToken = sharedPreferences.getString(Constant.FCM_TOKEN, null)
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
-            if (saveFcmToken != it || saveFcmToken.isNullOrEmpty()) {
+            if (saveFcmToken != it || !saveFcmToken.isNullOrEmpty()) {
                 sharedPreferences.edit().putString(Constant.FCM_TOKEN, it).apply()
-                // postFcmToken(it)
-            } else {
-                // HomeActivity로 이동
+                viewModel.postSaveFcmToken(it)
             }
         }.addOnFailureListener {
             Snackbar.make(binding.root, "네트워크 에러가 발생했습니다.", Snackbar.LENGTH_SHORT).show()
@@ -100,11 +109,12 @@ class HomeActivity : AppCompatActivity() {
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
+            if (ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
             ) {
                 // FCM SDK (and your app) can post notifications.
-            }  else {
+            } else {
                 // Directly ask for the permission
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }

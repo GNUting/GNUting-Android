@@ -6,14 +6,31 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 
 class MyFirebaseMessagingService: FirebaseMessagingService() {
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onNewToken(token: String) {
         super.onNewToken(token)
+
+        GlobalScope.launch {
+            try {
+                Timber.d("FCM 토큰 저장 $token")
+                GNUApplication.userRepository.postSaveFCMToken(SaveFCMTokenRequest(token))
+            } catch (e: Exception) {
+                Timber.d("FCM 토큰 저장 API 에러")
+            }
+        }
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
@@ -24,8 +41,9 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         sendNotification(title, body)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun sendNotification(title: String?, body: String?) {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, HomeActivity::class.java)
         val pIntent = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
         } else {
