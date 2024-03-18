@@ -31,6 +31,22 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.myInfo.observe(viewLifecycleOwner) {
+            it?.let { myInfo ->
+                binding.myTxtName.text = myInfo.nickname
+                binding.myTxtInfo.text = "${myInfo.department} | ${myInfo.age} | ${myInfo.studentId}"
+                binding.myTxtIntro.text = myInfo.userSelfIntroduction
+
+                Glide.with(this@MyFragment).load(myInfo.profileImage).error(R.drawable.ic_profile)
+                    .into(binding.myImgProfile)
+
+                binding.myTxtEditProfile.setOnClickListener {
+                    val action = MyFragmentDirections.actionMyFragmentToEditProfileFragment(myInfo)
+                    findNavController().navigate(action)
+                }
+            }
+        }
+
         viewModel.myInfo.value?.let { myInfo ->
             binding.myTxtName.text = myInfo.nickname
             binding.myTxtInfo.text = "${myInfo.department} | ${myInfo.age} | ${myInfo.studentId}"

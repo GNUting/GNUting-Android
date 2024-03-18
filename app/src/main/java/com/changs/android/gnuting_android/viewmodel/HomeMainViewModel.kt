@@ -1,5 +1,6 @@
 package com.changs.android.gnuting_android.viewmodel
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,9 +21,11 @@ import com.changs.android.gnuting_android.data.model.PostResponse
 import com.changs.android.gnuting_android.data.model.PostResult
 import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.data.model.DefaultResponse
+import com.changs.android.gnuting_android.data.model.ProfileResponse
 import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
+import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.repository.ApplicationRepository
 import com.changs.android.gnuting_android.data.repository.PostRepository
 import com.changs.android.gnuting_android.data.repository.UserRepository
@@ -37,6 +40,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.Exception
 
 @ExperimentalCoroutinesApi
@@ -45,7 +49,6 @@ class HomeMainViewModel(
     private val postRepository: PostRepository,
     private val applicationRepository: ApplicationRepository
 ) : ViewModel() {
-    // TODO: Flow 로 코드 개선 예정
     private val myInfoFlow = MutableStateFlow<MyInfoResponse?>(null)
 
     val myInfo: LiveData<MyInfoResult> = myInfoFlow.flatMapLatest {
@@ -86,6 +89,11 @@ class HomeMainViewModel(
 
     val saveFcmTokenResponse: LiveData<Event<Boolean>>
         get() = _saveFcmTokenResponse
+
+    val profileResponse: LiveData<Event<ProfileResponse>>
+        get() = _profileResponse
+
+    private val _profileResponse = MutableLiveData<Event<ProfileResponse>>()
 
 
     private val _snackbar = MutableLiveData<String?>()
@@ -145,6 +153,56 @@ class HomeMainViewModel(
 
     private val _applicationReceiveStateResponse = MutableLiveData<ApplicationResponse>()
     val applicationReceiveStateResponse: LiveData<ApplicationResponse> get() = _applicationReceiveStateResponse
+
+    private val _searchDepartmentResponse = MutableLiveData<SearchDepartmentResponse>()
+
+    val searchDepartmentResponse: LiveData<SearchDepartmentResponse> get() = _searchDepartmentResponse
+
+    val choiceDepartment = MutableLiveData<String>()
+
+    private val _nickNameCheck = MutableLiveData<Boolean>()
+
+    val nickNameCheck: LiveData<Boolean> get() = _nickNameCheck
+
+    var department: String? = null
+    var nickname: String? = null
+    var profileImage: Bitmap? = null
+
+    fun fetchRecentMyInfo() {
+        viewModelScope.launch {
+            try {
+                userRepository.fetchRecentMyInfo()
+            } catch (e: Exception) {
+              Timber.d("error ${e.message}")
+            }
+        }
+    }
+    fun getCheckNickName() {
+        viewModelScope.launch {
+            nickname?.let {
+                try {
+                    _spinner.value = true
+                    val result = userRepository.getCheckNickName(it)
+                    if (result.isSuccessful && result.body() != null) {
+                        _nickNameCheck.value = result.body()!!.result
+                        _snackbar.value = result.body()!!.message
+                        _spinner.value = false
+                    } else {
+                        result.errorBody()?.let {
+                            val errorBody = getErrorResponse(it)
+                            errorBody?.let { error ->
+                                _spinner.value = false
+                                _snackbar.value = error.message
+                            }
+                        }
+                    }
+                } catch (e: java.lang.Exception) {
+                    _spinner.value = false
+                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                }
+            }
+        }
+    }
 
     fun getPostPagingList(): Flow<PagingData<PostResult>> {
         return postRepository.getPostListPagingData(::pagingSourceListener).cachedIn(viewModelScope)
@@ -764,6 +822,63 @@ class HomeMainViewModel(
         }
     }
 
+    fun updateProfile(department: String?, nickname: String, userSelfIntroduction: String?) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val result = userRepository.patchProfile(
+                    department = department,
+                    nickname = nickname,
+                    profileImage = profileImage,
+                    userSelfIntroduction = userSelfIntroduction
+                )
+                if (result.isSuccessful && result.body() != null) {
+                    _profileResponse.value = Event(result.body()!!)
+                    _snackbar.value = "프로필 수정이 완료되었습니다."
+                    _spinner.value = false
+                } else {
+                    result.errorBody()?.let {
+                        val errorBody = getErrorResponse(it)
+                        errorBody?.let { error ->
+                            _spinner.value = false
+                            if (error.code == "BOARD5003") {
+                                // TODO: 분기 처리 추가
+                            } else if (error.code == "TOKEN4001") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        ReIssueAccessTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        updateProfile(department, nickname, userSelfIntroduction)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _spinner.value = false
+                _snackbar.value = "네트워크 에러가 발생했습니다."
+            }
+        }
+    }
+
     fun logoutUser() {
         viewModelScope.launch {
             try {
@@ -779,6 +894,32 @@ class HomeMainViewModel(
 
     private fun pagingSourceListener() {
         _expirationToken.value = Event(true)
+    }
+
+    fun getSearchDepartment(department: String?) {
+        viewModelScope.launch {
+            department?.let {
+                try {
+                    _spinner.value = true
+                    val result = userRepository.getSearchDepartment(it)
+                    if (result.isSuccessful && result.body() != null) {
+                        _searchDepartmentResponse.value = result.body()
+                        _spinner.value = false
+                    } else {
+                        result.errorBody()?.let {
+                            val errorBody = getErrorResponse(it)
+                            errorBody?.let { error ->
+                                _spinner.value = false
+                                _snackbar.value = error.message
+                            }
+                        }
+                    }
+                } catch (e: java.lang.Exception) {
+                    _spinner.value = false
+                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                }
+            }
+        }
     }
 
 

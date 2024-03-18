@@ -7,6 +7,7 @@ import com.changs.android.gnuting_android.data.model.LoginResponse
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
+import com.changs.android.gnuting_android.data.model.ProfileResponse
 import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
 import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenResponse
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
@@ -17,6 +18,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Query
@@ -58,4 +60,13 @@ interface UserInterface {
 
     @POST("/api/v1/savetoken")
     suspend fun postSaveFCMToken(@Body request: SaveFCMTokenRequest): Response<DefaultResponse>
+
+    @Multipart
+    @PATCH("/api/v1/update")
+    suspend fun patchProfile(
+        @Part department: MultipartBody.Part? = null,
+        @Part nickname: MultipartBody.Part? = null,
+        @Part profileImage: MultipartBody.Part? = null,
+        @Part userSelfIntroduction: MultipartBody.Part? = null
+    ): Response<ProfileResponse>
 }

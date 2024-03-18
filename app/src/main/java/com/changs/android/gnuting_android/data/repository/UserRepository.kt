@@ -7,6 +7,7 @@ import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResult
+import com.changs.android.gnuting_android.data.model.ProfileResponse
 import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
 import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenResponse
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
@@ -18,10 +19,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 class UserRepository(retrofit: Retrofit, room: AppDatabase) {
     private val service = retrofit.create(UserInterface::class.java)
@@ -55,10 +58,38 @@ class UserRepository(retrofit: Retrofit, room: AppDatabase) {
             password = FormDataUtil.getTextBody("password", password),
             phoneNumber = FormDataUtil.getTextBody("phoneNumber", phoneNumber),
             studentId = FormDataUtil.getTextBody("studentId", studentId),
-            profileImage = profileImage?.let { FormDataUtil.getImageBody(profileImage, "profileImage", "profileImage") },
-            userSelfIntroduction = FormDataUtil.getTextBody("userSelfIntroduction", userSelfIntroduction)
+            profileImage = profileImage?.let {
+                FormDataUtil.getImageBody(
+                    profileImage, "profileImage", "profileImage"
+                )
+            },
+            userSelfIntroduction = FormDataUtil.getTextBody(
+                "userSelfIntroduction", userSelfIntroduction
+            )
         )
     }
+
+    suspend fun patchProfile(
+        department: String? = null,
+        nickname: String? = null,
+        profileImage: Bitmap?,
+        userSelfIntroduction: String? = null
+    ) = service.patchProfile(department = department?.let {
+        FormDataUtil.getTextBody(
+            "department", it
+        )
+    },
+        profileImage = profileImage?.let {
+            FormDataUtil.getImageBody(
+                profileImage, "profileImage", "profileImage"
+            )
+        },
+        nickname = nickname?.let { FormDataUtil.getTextBody("nickname", it) },
+        userSelfIntroduction = userSelfIntroduction?.let {
+            FormDataUtil.getTextBody(
+                "userSelfIntroduction", it
+            )
+        })
 
     suspend fun getSearchDepartment(name: String) = service.getSearchDepartment(name)
 
@@ -76,7 +107,8 @@ class UserRepository(retrofit: Retrofit, room: AppDatabase) {
     val myInfoFlow: Flow<MyInfoResult>
         get() = dao.getMyInfo().flowOn(Dispatchers.Default).conflate()
 
-    suspend fun postReIssueAccessToken(request: ReIssueAccessTokenRequest) = service.postReIssueAccessToken(request)
+    suspend fun postReIssueAccessToken(request: ReIssueAccessTokenRequest) =
+        service.postReIssueAccessToken(request)
 
     suspend fun postSaveFCMToken(request: SaveFCMTokenRequest) = service.postSaveFCMToken(request)
 }
