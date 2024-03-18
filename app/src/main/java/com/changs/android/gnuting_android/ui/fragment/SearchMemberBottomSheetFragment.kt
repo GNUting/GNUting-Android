@@ -3,9 +3,12 @@ package com.changs.android.gnuting_android.ui.fragment
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -61,11 +64,15 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
             dismiss()
         }
 
-        binding.searchMemberBottomSheetEdit.addTextChangedListener {
-            it?.let {
-                viewModel.getSearchUser(it.toString())
+        binding.searchMemberBottomSheetEdit.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    viewModel.getSearchUser(binding.searchMemberBottomSheetEdit.text.toString())
+                    return true
+                }
+                return false
             }
-        }
+        })
     }
 
     private fun setRecyclerView() {

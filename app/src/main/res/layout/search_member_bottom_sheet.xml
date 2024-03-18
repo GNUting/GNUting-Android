@@ -35,6 +35,8 @@
         android:drawableStart="@drawable/ic_search3"
         android:drawablePadding="10dp"
         android:hint="닉네임을 입력해 주세요."
+        android:imeOptions="actionSearch"
+        android:inputType="text"
         android:paddingHorizontal="15dp"
         android:paddingVertical="5dp"
         android:textColor="@color/white"
