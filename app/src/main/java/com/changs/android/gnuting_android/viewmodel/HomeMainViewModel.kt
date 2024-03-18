@@ -234,7 +234,7 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
-                            } else if (error.code == "TOKEN4001") {
+                            } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 
@@ -286,7 +286,7 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
-                            } else if (error.code == "TOKEN4001") {
+                            } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 
@@ -339,7 +339,7 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
-                            } else if (error.code == "TOKEN4001") {
+                            } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 
@@ -414,7 +414,7 @@ class HomeMainViewModel(
                     result.errorBody()?.let {
                         val errorBody = getErrorResponse(it)
                         errorBody?.let { error ->
-                            if (error.code == "TOKEN4001") {
+                            if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 
@@ -470,7 +470,7 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
-                            } else if (error.code == "TOKEN4001") {
+                            } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 
@@ -523,7 +523,7 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
-                            } else if (error.code == "TOKEN4001") {
+                            } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 
@@ -576,7 +576,7 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
-                            } else if (error.code == "TOKEN4001") {
+                            } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 
@@ -629,7 +629,7 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
-                            } else if (error.code == "TOKEN4001") {
+                            } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 
@@ -682,7 +682,7 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
-                            } else if (error.code == "TOKEN4001") {
+                            } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 
@@ -734,7 +734,7 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
-                            } else if (error.code == "TOKEN4001") {
+                            } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 
@@ -786,7 +786,7 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
-                            } else if (error.code == "TOKEN4001") {
+                            } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 
@@ -843,7 +843,7 @@ class HomeMainViewModel(
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
                                 // TODO: 분기 처리 추가
-                            } else if (error.code == "TOKEN4001") {
+                            } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 

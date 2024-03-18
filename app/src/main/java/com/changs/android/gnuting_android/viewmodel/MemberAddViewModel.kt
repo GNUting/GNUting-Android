@@ -46,7 +46,7 @@ class MemberAddViewModel(private val postRepository: PostRepository) : ViewModel
                     result.errorBody()?.let {
                         val errorBody = getErrorResponse(it)
                         errorBody?.let { error ->
-                            if (error.code == "TOKEN4001") {
+                            if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
 

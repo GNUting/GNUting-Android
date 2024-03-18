@@ -39,7 +39,7 @@ class PostSearchListPagingSource(
                 result.errorBody()?.let {
                     val errorBody = getErrorResponse(it)
                     errorBody?.let { error ->
-                        if (error.code == "TOKEN4001") {
+                        if (error.code == "TOKEN4001-1") {
                             GNUApplication.sharedPreferences.edit().putString(Constant.X_ACCESS_TOKEN, null).apply()
 
                             val refreshToken = GNUApplication.sharedPreferences.getString(
