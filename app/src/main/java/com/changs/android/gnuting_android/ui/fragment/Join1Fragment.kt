@@ -81,8 +81,13 @@ class Join1Fragment :
                         .show()
                 } else {
                     if (binding.join1EditPassword.text.toString() == binding.join1EditPasswordCheck.text.toString()) {
-                        viewModel.password = binding.join1EditPassword.text.toString()
-                        findNavController().navigate(R.id.action_join1Fragment_to_join2Fragment)
+                        if (validatePassword(binding.join1EditPassword.text.toString())) {
+                            viewModel.password = binding.join1EditPassword.text.toString()
+                            findNavController().navigate(R.id.action_join1Fragment_to_join2Fragment)
+                        } else {
+                            Snackbar.make(binding.root, "비밀번호가 유효하지 않습니다.", Snackbar.LENGTH_SHORT)
+                                .show()
+                        }
                     } else {
                         binding.join1TxtVerificationPasswordCheck.text = "비밀번호가 일치하지 않습니다."
                         binding.join1TxtVerificationPasswordCheck.visibility = View.VISIBLE
@@ -109,6 +114,11 @@ class Join1Fragment :
                 binding.join1TxtTimer.visibility = View.INVISIBLE
             }
         }
+    }
+
+    private fun validatePassword(password: String): Boolean {
+        val passwordRegex = "^(?=.*[A-Za-z])(?=.*[@#$%^&+=])(?=\\S+$).{8,15}$".toRegex()
+        return passwordRegex.matches(password)
     }
 
 }
