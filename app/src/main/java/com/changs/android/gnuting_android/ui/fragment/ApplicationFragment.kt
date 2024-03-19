@@ -45,6 +45,8 @@ class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(FragmentApp
                             binding.applicationBtnRight.setOnClickListener {
                                 viewModel.refuse(id)
                             }
+                        } else {
+                            binding.applicationBtnCancel.visibility = View.VISIBLE
                         }
                     }
 
