@@ -39,7 +39,7 @@ class Join2Fragment :
         binding.join2EditPhoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         binding.join2EditPhoneNumber.doOnTextChanged { text, start, before, count ->
-            viewModel.phoneNumber = text.toString().replace("-", "")
+            viewModel.phoneNumber = text.toString()
         }
 
         binding.join2EditStudentId.doAfterTextChanged {
@@ -105,7 +105,7 @@ class Join2Fragment :
                         Snackbar.make(binding.root, "입력되지 않은 항목이 있습니다.", Snackbar.LENGTH_SHORT)
                             .show()
                     } else {
-                        val regex = Regex("^010\\d{7,8}$")
+                        val regex = Regex("^\\d{3}-\\d{4}-\\d{4}$")
                         val isValid = regex.matches(viewModel.phoneNumber!!)
 
                         if (isValid) {
