@@ -2,6 +2,7 @@ package com.changs.android.gnuting_android.data.repository
 
 import android.graphics.Bitmap
 import com.changs.android.gnuting_android.data.model.CheckNickNameResponse
+import com.changs.android.gnuting_android.data.model.EmailVerifyRequest
 import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.http.Body
 
 class UserRepository(retrofit: Retrofit, room: AppDatabase) {
     private val service = retrofit.create(UserInterface::class.java)
@@ -108,4 +110,6 @@ class UserRepository(retrofit: Retrofit, room: AppDatabase) {
     suspend fun postLogout(request: RefreshTokenRequest) = service.postLogout(request)
 
     suspend fun deleteWithdrawal() = service.deleteWithdrawal()
+
+    suspend fun postEmailVerify(request: EmailVerifyRequest) = service.postEmailVerify(request)
 }

@@ -35,22 +35,8 @@ class Join1Fragment :
                 Snackbar.make(binding.root, "인증 시간이 초과되었습니다.", Snackbar.LENGTH_SHORT).show()
             } else {
                 val certificationNumber = binding.join1EditCertificationNumber.text.toString()
-
-                if (viewModel.tempMailCertificationNumber == certificationNumber) {
-                    binding.join1TxtVerificationCertification.visibility = View.INVISIBLE
-                    viewModel.mailCertificationNumberCheck = true
-
-                    join1ViewModel.timerJob.cancel()
-                    binding.join1TxtTimer.visibility = View.INVISIBLE
-
-                    Snackbar.make(binding.root, "인증이 완료 되었습니다.", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    binding.join1TxtVerificationCertification.text = "인증번호가 일치하지 않습니다."
-                    binding.join1TxtVerificationCertification.visibility = View.VISIBLE
-                    viewModel.mailCertificationNumberCheck = false
-                }
+                viewModel.postEmailVerify(certificationNumber)
             }
-
         }
 
         binding.join1BtnVerify.setOnClickListener {
@@ -104,6 +90,14 @@ class Join1Fragment :
             viewModel.tempMailCertificationNumber = it
             join1ViewModel.timerJob.start()
             binding.join1TxtTimer.visibility = View.VISIBLE
+        }
+
+        viewModel.emailVerifyResponse.eventObserve(viewLifecycleOwner) {
+            binding.join1TxtVerificationCertification.visibility = View.INVISIBLE
+            viewModel.mailCertificationNumberCheck = true
+
+            join1ViewModel.timerJob.cancel()
+            binding.join1TxtTimer.visibility = View.INVISIBLE
         }
 
         join1ViewModel.customTimerDuration.observe(viewLifecycleOwner) {

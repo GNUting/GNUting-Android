@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.changs.android.gnuting_android.GNUApplication
+import com.changs.android.gnuting_android.data.model.DefaultResponse
+import com.changs.android.gnuting_android.data.model.EmailVerifyRequest
 import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.LoginResponse
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
@@ -61,6 +63,11 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
 
     val loginResponse: LiveData<Event<LoginResponse>>
         get() = _loginResponse
+
+    private val _emailVerifyResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val emailVerifyResponse: LiveData<Event<DefaultResponse>>
+        get() = _emailVerifyResponse
 
     private val _snackbar = MutableLiveData<String?>()
 
@@ -155,8 +162,10 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                         val accessToken = result.body()!!.result.accessToken
                         val refreshToken = result.body()!!.result.refreshToken
 
-                        GNUApplication.sharedPreferences.edit().putString(X_ACCESS_TOKEN, accessToken).apply()
-                        GNUApplication.sharedPreferences.edit().putString(X_REFRESH_TOKEN, refreshToken).apply()
+                        GNUApplication.sharedPreferences.edit()
+                            .putString(X_ACCESS_TOKEN, accessToken).apply()
+                        GNUApplication.sharedPreferences.edit()
+                            .putString(X_REFRESH_TOKEN, refreshToken).apply()
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
@@ -215,8 +224,10 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                         val accessToken = result.body()!!.result.accessToken
                         val refreshToken = result.body()!!.result.refreshToken
 
-                        GNUApplication.sharedPreferences.edit().putString(X_ACCESS_TOKEN, accessToken).apply()
-                        GNUApplication.sharedPreferences.edit().putString(X_REFRESH_TOKEN, refreshToken).apply()
+                        GNUApplication.sharedPreferences.edit()
+                            .putString(X_ACCESS_TOKEN, accessToken).apply()
+                        GNUApplication.sharedPreferences.edit()
+                            .putString(X_REFRESH_TOKEN, refreshToken).apply()
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
@@ -234,9 +245,37 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                 _snackbar.value = "이메일 또는 패스워드 입력이 완료되지 않았습니다."
             }
         }
-
     }
 
+
+    fun postEmailVerify(number: String) {
+        viewModelScope.launch {
+            if (email != null) {
+                try {
+                    _spinner.value = true
+                    val result = repository.postEmailVerify(EmailVerifyRequest(email!!, number))
+                    if (result.isSuccessful && result.body() != null) {
+                        _emailVerifyResponse.value = Event(result.body()!!)
+                        _spinner.value = false
+                        _snackbar.value = result.body()!!.result
+                    } else {
+                        result.errorBody()?.let {
+                            val errorBody = getErrorResponse(it)
+                            errorBody?.let { error ->
+                                _spinner.value = false
+                                _snackbar.value = error.message
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    _spinner.value = false
+                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                }
+            } else {
+                _snackbar.value = "이메일 입력이 완료되지 않았습니다."
+            }
+        }
+    }
 
     companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {

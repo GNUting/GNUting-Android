@@ -2,6 +2,7 @@ package com.changs.android.gnuting_android.data.source.remote
 
 import com.changs.android.gnuting_android.data.model.CheckNickNameResponse
 import com.changs.android.gnuting_android.data.model.DefaultResponse
+import com.changs.android.gnuting_android.data.model.EmailVerifyRequest
 import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.LoginResponse
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
@@ -76,4 +77,7 @@ interface UserInterface {
 
     @DELETE("/api/v1/deleteUser")
     suspend fun deleteWithdrawal(): Response<DefaultResponse>
+
+    @POST("/api/v1/mail/verify")
+    suspend fun postEmailVerify(@Body request: EmailVerifyRequest): Response<DefaultResponse>
 }
