@@ -19,6 +19,7 @@ import com.changs.android.gnuting_android.databinding.FragmentMyBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.util.Constant
+import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -30,22 +31,6 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.myInfo.observe(viewLifecycleOwner) {
-            it?.let { myInfo ->
-                binding.myTxtName.text = myInfo.nickname
-                binding.myTxtInfo.text = "${myInfo.department} | ${myInfo.age} | ${myInfo.studentId}"
-                binding.myTxtIntro.text = myInfo.userSelfIntroduction
-
-                Glide.with(this@MyFragment).load(myInfo.profileImage).error(R.drawable.ic_profile)
-                    .into(binding.myImgProfile)
-
-                binding.myTxtEditProfile.setOnClickListener {
-                    val action = MyFragmentDirections.actionMyFragmentToEditProfileFragment(myInfo)
-                    findNavController().navigate(action)
-                }
-            }
-        }
 
         viewModel.myInfo.value?.let { myInfo ->
             binding.myTxtName.text = myInfo.nickname
@@ -61,6 +46,13 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
             }
         }
 
+        setObserver()
+        setListener()
+
+    }
+
+
+    private fun setListener() {
         binding.myTxtMenuOpenSource.setOnClickListener {
             startActivity(Intent(requireContext(), OssLicensesMenuActivity::class.java))
             OssLicensesMenuActivity.setActivityTitle("오픈소스 라이선스")
@@ -72,15 +64,45 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
         binding.myTxtMenuLogout.setOnClickListener {
             viewModel.logoutUser()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+        }
 
+        binding.myTxtMenuWithdrawal.setOnClickListener {
+            viewModel.withdrawal()
         }
 
         binding.myTxtMenuMyPosts.setOnClickListener {
             findNavController().navigate(R.id.action_myFragment_to_myPostListFragment)
         }
+    }
 
+    private fun setObserver() {
+        viewModel.myInfo.observe(viewLifecycleOwner) {
+            it?.let { myInfo ->
+                binding.myTxtName.text = myInfo.nickname
+                binding.myTxtInfo.text =
+                    "${myInfo.department} | ${myInfo.age} | ${myInfo.studentId}"
+                binding.myTxtIntro.text = myInfo.userSelfIntroduction
+
+                Glide.with(this@MyFragment).load(myInfo.profileImage).error(R.drawable.ic_profile)
+                    .into(binding.myImgProfile)
+
+                binding.myTxtEditProfile.setOnClickListener {
+                    val action = MyFragmentDirections.actionMyFragmentToEditProfileFragment(myInfo)
+                    findNavController().navigate(action)
+                }
+            }
+        }
+
+        viewModel.logoutResponse.eventObserve(viewLifecycleOwner) {
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        viewModel.withdrawalResponse.eventObserve(viewLifecycleOwner) {
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
     }
 }

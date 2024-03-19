@@ -1,6 +1,7 @@
 package com.changs.android.gnuting_android.viewmodel
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,7 +23,7 @@ import com.changs.android.gnuting_android.data.model.PostResult
 import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.ProfileResponse
-import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
+import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
@@ -147,6 +148,14 @@ class HomeMainViewModel(
 
     val deletePostResponse: LiveData<Event<DefaultResponse>> get() = _deletePostResponse
 
+    private val _logoutResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val logoutResponse: LiveData<Event<DefaultResponse>> get() = _logoutResponse
+
+    private val _withdrawalResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val withdrawalResponse: LiveData<Event<DefaultResponse>> get() = _withdrawalResponse
+
 
     private val _applicationApplyStateResponse = MutableLiveData<ApplicationResponse>()
     val applicationApplyStateResponse: LiveData<ApplicationResponse> get() = _applicationApplyStateResponse
@@ -173,10 +182,11 @@ class HomeMainViewModel(
             try {
                 userRepository.fetchRecentMyInfo()
             } catch (e: Exception) {
-              Timber.d("error ${e.message}")
+                Timber.d("error ${e.message}")
             }
         }
     }
+
     fun getCheckNickName() {
         viewModelScope.launch {
             nickname?.let {
@@ -244,7 +254,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -259,7 +269,11 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
-                            } else _snackbar.value = error.message
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
                         }
                     }
                 }
@@ -296,7 +310,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -311,7 +325,11 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
-                            } else _snackbar.value = error.message
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
                         }
                     }
                 }
@@ -349,7 +367,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -364,7 +382,11 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
-                            } else _snackbar.value = error.message
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
                         }
                     }
                 }
@@ -375,32 +397,6 @@ class HomeMainViewModel(
         }
     }
 
-    fun getMyPostList(page: Int = 1) {
-        viewModelScope.launch {
-            try {
-                _spinner.value = true
-                val result = postRepository.getMyPostList(page)
-                if (result.isSuccessful && result.body() != null) {
-                    _myPostResponse.value = result.body()
-                    _spinner.value = false
-
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else _snackbar.value = error.message
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                _spinner.value = false
-                _snackbar.value = "네트워크 에러가 발생했습니다."
-            }
-        }
-    }
 
     fun getPostDetail(id: Int) {
         viewModelScope.launch {
@@ -424,7 +420,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -439,9 +435,10 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
                             } else {
-                                _spinner.value = false
-                                _snackbar.value = error.message
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
                             }
                         }
                     }
@@ -480,7 +477,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -495,7 +492,11 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
-                            } else _snackbar.value = error.message
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
                         }
                     }
                 }
@@ -532,7 +533,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -547,7 +548,11 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
-                            } else _snackbar.value = error.message
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
                         }
                     }
                 }
@@ -585,7 +590,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -600,7 +605,11 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
-                            } else _snackbar.value = error.message
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
                         }
                     }
                 }
@@ -638,7 +647,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -653,7 +662,11 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
-                            } else _snackbar.value = error.message
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
                         }
                     }
                 }
@@ -691,7 +704,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -706,7 +719,11 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
-                            } else _snackbar.value = error.message
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
                         }
                     }
                 }
@@ -743,7 +760,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -758,7 +775,11 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
-                            } else _snackbar.value = error.message
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
                         }
                     }
                 }
@@ -795,7 +816,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -810,6 +831,10 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
                             }
                         }
                     }
@@ -852,7 +877,7 @@ class HomeMainViewModel(
 
                                 if (refreshToken != null) {
                                     val response = userRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {
@@ -867,6 +892,10 @@ class HomeMainViewModel(
                                     _expirationToken.value = Event(true)
                                 }
 
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
                             }
                         }
                     }
@@ -882,12 +911,109 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                GNUApplication.sharedPreferences.edit().clear().apply()
-                myInfo.value?.let { userRepository.deleteUser(it) }
-                _spinner.value = false
+                val refreshToken =
+                    GNUApplication.sharedPreferences.getString(Constant.X_REFRESH_TOKEN, null)
+                if (refreshToken == null) {
+                    _expirationToken.value = Event(true)
+                    return@launch
+                }
+                val result = userRepository.postLogout(RefreshTokenRequest(refreshToken))
+                if (result.isSuccessful && result.body() != null) {
+                    _logoutResponse.value = Event(result.body()!!)
+                    GNUApplication.sharedPreferences.edit().clear().apply()
+                    myInfo.value?.let { userRepository.deleteUser(it) }
+                    _spinner.value = false
+                } else {
+                    result.errorBody()?.let {
+                        val errorBody = getErrorResponse(it)
+                        errorBody?.let { error ->
+                            _spinner.value = false
+                            if (error.code == "BOARD5003") {
+
+                            } else if (error.code == "TOKEN4001-1") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val response = userRepository.postReIssueAccessToken(
+                                    RefreshTokenRequest(refreshToken)
+                                )
+
+                                if (response.isSuccessful && response.body() != null) {
+                                    val accessToken = response.body()!!.result.accessToken
+                                    GNUApplication.sharedPreferences.edit()
+                                        .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                    logoutUser()
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
+                        }
+                    }
+                }
             } catch (e: Exception) {
                 _spinner.value = false
-                _snackbar.value = "에러가 발생했습니다."
+                _snackbar.value = "네트워크 에러가 발생했습니다."
+            }
+        }
+    }
+
+    fun withdrawal() {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val result = userRepository.deleteWithdrawal()
+                if (result.isSuccessful && result.body() != null) {
+                    _withdrawalResponse.value = Event(result.body()!!)
+                    GNUApplication.sharedPreferences.edit().clear().apply()
+                    myInfo.value?.let { userRepository.deleteUser(it) }
+                    _spinner.value = false
+                } else {
+                    result.errorBody()?.let {
+                        val errorBody = getErrorResponse(it)
+                        errorBody?.let { error ->
+                            _spinner.value = false
+                            if (error.code == "BOARD5003") {
+
+                            } else if (error.code == "TOKEN4001-1") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        RefreshTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        withdrawal()
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _spinner.value = false
+                _snackbar.value = "네트워크 에러가 발생했습니다."
             }
         }
     }

@@ -8,7 +8,7 @@ import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
 import com.changs.android.gnuting_android.data.model.ProfileResponse
-import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
+import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenResponse
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
@@ -16,6 +16,7 @@ import com.changs.android.gnuting_android.data.model.SignUpResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
@@ -56,7 +57,7 @@ interface UserInterface {
     suspend fun getMyInfo(): MyInfoResponse
 
     @POST("/api/v1/reIssueAccessToken")
-    suspend fun postReIssueAccessToken(@Body request: ReIssueAccessTokenRequest): Response<ReIssueAccessTokenResponse>
+    suspend fun postReIssueAccessToken(@Body request: RefreshTokenRequest): Response<ReIssueAccessTokenResponse>
 
     @POST("/api/v1/savetoken")
     suspend fun postSaveFCMToken(@Body request: SaveFCMTokenRequest): Response<DefaultResponse>
@@ -69,4 +70,10 @@ interface UserInterface {
         @Part profileImage: MultipartBody.Part? = null,
         @Part userSelfIntroduction: MultipartBody.Part? = null
     ): Response<ProfileResponse>
+
+    @POST("/api/v1/logout")
+    suspend fun postLogout(@Body request: RefreshTokenRequest): Response<DefaultResponse>
+
+    @DELETE("/api/v1/deleteUser")
+    suspend fun deleteWithdrawal(): Response<DefaultResponse>
 }
