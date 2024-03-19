@@ -5,6 +5,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -36,20 +37,14 @@ class SearchPostListFragment : BaseFragment<FragmentSearchPostListBinding>(Fragm
     }
 
     private fun setListener() {
-        binding.searchPostListEditSearch.setOnEditorActionListener(object : TextView.OnEditorActionListener {
-            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.getSearchPostPagingList(binding.searchPostListEditSearch.text.toString())
-                            .collectLatest {
-                                adapter.submitData(it)
-                            }
+        binding.searchPostListEditSearch.doOnTextChanged { _, _, _, _ ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.getSearchPostPagingList(binding.searchPostListEditSearch.text.toString())
+                    .collectLatest {
+                        adapter.submitData(it)
                     }
-                    return true
-                }
-                return false
             }
-        })
+        }
 
         binding.searchPostListTxtCancel.setOnClickListener {
             findNavController().popBackStack()

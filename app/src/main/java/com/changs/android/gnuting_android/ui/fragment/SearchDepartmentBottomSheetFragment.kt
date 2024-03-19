@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.changs.android.gnuting_android.data.model.Member
@@ -51,15 +52,9 @@ class SearchDepartmentBottomSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getSearchDepartment("")
 
-        binding.searchDepartmentBottomSheetEditSearch.setOnEditorActionListener(object : TextView.OnEditorActionListener {
-            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    viewModel.getSearchDepartment(binding.searchDepartmentBottomSheetEditSearch.text.toString())
-                    return true
-                }
-                return false
-            }
-        })
+        binding.searchDepartmentBottomSheetEditSearch.doOnTextChanged { _, _, _, _ ->
+            viewModel.getSearchDepartment(binding.searchDepartmentBottomSheetEditSearch.text.toString())
+        }
 
         binding.searchDepartmentBottomSheetImgClose.setOnClickListener {
             dismiss()
