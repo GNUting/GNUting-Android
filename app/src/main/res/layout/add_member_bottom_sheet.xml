@@ -8,14 +8,14 @@ android:layout_height="match_parent"
 android:minHeight="800dp"
 android:padding="20dp">
 
-<ImageView
-    android:id="@+id/add_member_bottom_sheet_img_close"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/ic_close"
-    app:layout_constraintBottom_toBottomOf="@+id/add_member_bottom_sheet_txt_title"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/add_member_bottom_sheet_txt_title" />
+    <ImageView
+        android:id="@+id/add_member_bottom_sheet_img_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close"
+        app:layout_constraintBottom_toBottomOf="@+id/add_member_bottom_sheet_txt_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_member_bottom_sheet_txt_title" />
 
 <TextView
     android:id="@+id/add_member_bottom_sheet_txt_title"
