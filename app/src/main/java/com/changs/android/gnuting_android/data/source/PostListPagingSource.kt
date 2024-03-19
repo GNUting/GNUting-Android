@@ -5,7 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.PostResult
-import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
+import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.source.remote.PostInterface
 import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.getErrorResponse
@@ -47,7 +47,7 @@ class PostListPagingSource(
 
                             if (refreshToken != null) {
                                 val response = service.postReIssueAccessToken(
-                                    ReIssueAccessTokenRequest(refreshToken)
+                                    RefreshTokenRequest(refreshToken)
                                 )
 
                                 if (response.isSuccessful && response.body() != null) {

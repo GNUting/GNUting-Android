@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.InUser
-import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
+import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.UserSearchResponse
 import com.changs.android.gnuting_android.data.repository.PostRepository
 import com.changs.android.gnuting_android.util.Constant
@@ -56,7 +56,7 @@ class MemberAddViewModel(private val postRepository: PostRepository) : ViewModel
 
                                 if (refreshToken != null) {
                                     val response = postRepository.postReIssueAccessToken(
-                                        ReIssueAccessTokenRequest(refreshToken)
+                                        RefreshTokenRequest(refreshToken)
                                     )
 
                                     if (response.isSuccessful && response.body() != null) {

@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import com.changs.android.gnuting_android.data.model.Content
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.PostResult
-import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
+import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.data.source.MyPostListPagingSource
@@ -42,7 +42,7 @@ class PostRepository(retrofit: Retrofit) {
 
     suspend fun postReport(reportRequest: ReportRequest) = service.postBoardReport(reportRequest)
 
-    suspend fun postReIssueAccessToken(request: ReIssueAccessTokenRequest) = service.postReIssueAccessToken(request)
+    suspend fun postReIssueAccessToken(request: RefreshTokenRequest) = service.postReIssueAccessToken(request)
 
     fun getPostListPagingData(listener: () -> Unit): Flow<PagingData<PostResult>> {
         return Pager(PagingConfig(pageSize = 20)) {

@@ -7,7 +7,7 @@ import com.changs.android.gnuting_android.data.model.PostSearchResponse
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.data.model.DefaultResponse
-import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenRequest
+import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenResponse
 import com.changs.android.gnuting_android.data.model.UserSearchResponse
 import retrofit2.Response
@@ -52,6 +52,6 @@ interface PostInterface {
     suspend fun postBoardReport(@Body reportRequest: ReportRequest): Response<DefaultResponse>
 
     @POST("/api/v1/reIssueAccessToken")
-    suspend fun postReIssueAccessToken(@Body request: ReIssueAccessTokenRequest): Response<ReIssueAccessTokenResponse>
+    suspend fun postReIssueAccessToken(@Body request: RefreshTokenRequest): Response<ReIssueAccessTokenResponse>
 
 }
