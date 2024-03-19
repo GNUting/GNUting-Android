@@ -41,7 +41,6 @@ class SearchViewModel(private val postRepository: PostRepository) : ViewModel() 
                         val errorBody = getErrorResponse(it)
                         errorBody?.let { error ->
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
                             } else _snackbar.value = error.message
                         }
                     }

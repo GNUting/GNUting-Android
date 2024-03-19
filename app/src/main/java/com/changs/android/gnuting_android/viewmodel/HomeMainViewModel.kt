@@ -233,7 +233,7 @@ class HomeMainViewModel(
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
@@ -285,7 +285,7 @@ class HomeMainViewModel(
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
@@ -338,7 +338,7 @@ class HomeMainViewModel(
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
@@ -390,7 +390,7 @@ class HomeMainViewModel(
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else _snackbar.value = error.message
                         }
                     }
@@ -460,7 +460,7 @@ class HomeMainViewModel(
                 val result = postRepository.postSave(saveRequest)
                 if (result.isSuccessful && result.body() != null) {
                     _saveResponse.value = Event(result.body()!!)
-                    _snackbar.value = result.body()!!.result
+                    _snackbar.value = "게시물 작성이 완료되었습니다."
                     _spinner.value = false
 
                 } else {
@@ -469,7 +469,7 @@ class HomeMainViewModel(
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
@@ -513,7 +513,6 @@ class HomeMainViewModel(
                 val result = applicationRepository.patchRefuse(id)
                 if (result.isSuccessful && result.body() != null) {
                     _refuseResponse.value = Event(result.body()!!)
-                    _snackbar.value = result.body()!!.result
                     _spinner.value = false
 
                 } else {
@@ -522,7 +521,7 @@ class HomeMainViewModel(
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
@@ -575,7 +574,7 @@ class HomeMainViewModel(
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
@@ -619,7 +618,7 @@ class HomeMainViewModel(
                 val result = postRepository.patchPostDetail(id, saveRequest)
                 if (result.isSuccessful && result.body() != null) {
                     _patchPostDetailResponse.value = Event(result.body()!!)
-                    _snackbar.value = result.body()!!.result
+                    _snackbar.value = "게시물 수정이 완료되었습니다."
                     _spinner.value = false
 
                 } else {
@@ -628,7 +627,7 @@ class HomeMainViewModel(
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
@@ -672,7 +671,7 @@ class HomeMainViewModel(
                 val result = postRepository.deletePost(id)
                 if (result.isSuccessful && result.body() != null) {
                     _deletePostResponse.value = Event(result.body()!!)
-                    _snackbar.value = result.body()!!.result
+                    _snackbar.value = "게시물 삭제가 완료되었습니다."
                     _spinner.value = false
 
                 } else {
@@ -681,7 +680,7 @@ class HomeMainViewModel(
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
@@ -726,14 +725,14 @@ class HomeMainViewModel(
                 if (result.isSuccessful && result.body() != null) {
                     _applyChatResponse.value = Event(result.body()!!)
                     _spinner.value = false
-                    _snackbar.value = result.body()!!.result
+                    _snackbar.value = "채팅 신청하기가 완료되었습니다."
                 } else {
                     result.errorBody()?.let {
                         val errorBody = getErrorResponse(it)
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
@@ -785,7 +784,7 @@ class HomeMainViewModel(
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
@@ -842,7 +841,7 @@ class HomeMainViewModel(
                         errorBody?.let { error ->
                             _spinner.value = false
                             if (error.code == "BOARD5003") {
-                                // TODO: 분기 처리 추가
+
                             } else if (error.code == "TOKEN4001-1") {
                                 GNUApplication.sharedPreferences.edit()
                                     .putString(Constant.X_ACCESS_TOKEN, null).apply()
