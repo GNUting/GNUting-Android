@@ -8,6 +8,19 @@
     android:minHeight="800dp"
     android:padding="20dp">
 
+    <TextView
+        android:id="@+id/current_member_bottom_sheet_txt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="과팅 멤버 정보"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/current_member_bottom_sheet_img_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/current_member_bottom_sheet_img_close"
         android:layout_width="wrap_content"
