@@ -108,7 +108,7 @@ class DetailFragment :
                     binding.detailTxtNickname.text = user.nickname
                     binding.detailTxtInfo.text = "${user.department} | ${user.studentId}"
                     binding.detailTxtDetail.text = detail
-                    binding.detailTxtCurrentParticipant.text = "현재 채팅/참여중인 사람 ${inUser.size}명"
+                    binding.detailTxtCurrentParticipant.text = "과팅 멤버 정보 ${inUser.size}명"
                     binding.detailTxtTime.text = time
 
                     binding.detailTxtCurrentParticipant.setOnClickListener {
