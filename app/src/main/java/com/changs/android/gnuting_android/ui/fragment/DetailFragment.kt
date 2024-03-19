@@ -84,7 +84,7 @@ class DetailFragment :
                 it.result.apply {
                     viewModel.myInfo.value?.let { myInfo ->
                         if (myInfo.nickname == user.nickname) {
-                            binding.detailBtnChatRequest.visibility = View.INVISIBLE
+                            binding.detailBtnChatRequest.visibility = View.GONE
                             binding.detailTxtMenuEdit.visibility = View.VISIBLE
                             binding.detailTxtMenuRemove.visibility = View.VISIBLE
                             binding.detailViewMenuLine1.visibility = View.VISIBLE
