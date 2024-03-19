@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels { MainViewModel.Factory }
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -48,14 +47,26 @@ class MainActivity : AppCompatActivity() {
             Log.d("fcmtoken", token.toString())
         })
 
-        splashScreen.setOnExitAnimationListener {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            splashScreen.setOnExitAnimationListener {
+                if (GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null) != null) {
+                    Log.d("token", GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null).toString())
+                    val intent = Intent(this, HomeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                } else {
+                    it.remove()
+                }
+            }
+        } else {
             if (GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null) != null) {
-                Log.d("token", GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null).toString())
+                Log.d("token",
+                    GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null)
+                        .toString()
+                )
                 val intent = Intent(this, HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
-            } else {
-                it.remove()
             }
         }
 
