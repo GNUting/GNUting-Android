@@ -16,10 +16,12 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        return DatePickerDialog(requireActivity(), this, year, month, day)
+        return DatePickerDialog(
+            requireActivity(), R.style.SpinnerDatePickerDialogStyle, this, year, month, day
+        )
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-        listener(year, month+1, day)
+        listener(year, month + 1, day)
     }
 }
