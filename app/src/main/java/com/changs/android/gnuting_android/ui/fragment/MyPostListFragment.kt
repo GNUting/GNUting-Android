@@ -1,16 +1,13 @@
 package com.changs.android.gnuting_android.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentMyPostListBinding
-import com.changs.android.gnuting_android.ui.adapter.PostListAdapter
 import com.changs.android.gnuting_android.ui.adapter.PostListPagingAdapter
 import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
