@@ -86,7 +86,7 @@ class HomeActivity : AppCompatActivity() {
     private fun initFirebaseFcm() {
         val saveFcmToken = sharedPreferences.getString(Constant.FCM_TOKEN, null)
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
-            if (saveFcmToken != it || !saveFcmToken.isNullOrEmpty()) {
+            if (saveFcmToken != it || saveFcmToken.isNullOrEmpty()) {
                 sharedPreferences.edit().putString(Constant.FCM_TOKEN, it).apply()
                 viewModel.postSaveFcmToken(it)
             }
