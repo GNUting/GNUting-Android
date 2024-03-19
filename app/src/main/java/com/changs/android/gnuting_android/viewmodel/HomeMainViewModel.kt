@@ -882,6 +882,7 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
+                GNUApplication.sharedPreferences.edit().clear().apply()
                 myInfo.value?.let { userRepository.deleteUser(it) }
                 _spinner.value = false
             } catch (e: Exception) {
