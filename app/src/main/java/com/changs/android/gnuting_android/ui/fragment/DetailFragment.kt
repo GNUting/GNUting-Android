@@ -96,13 +96,12 @@ class DetailFragment :
                         .error(R.drawable.ic_profile)
                         .into(binding.detailImgProfile)
 
-                    // Expecting binder but got null!
-
                     binding.detailImgProfile.setOnClickListener {
                         val intent = Intent(requireContext(), PhotoActivity::class.java)
                         intent.putExtra("img", user.profileImage)
                         binding.root.context.startActivity(intent)
                     }
+
 
                     binding.detailTxtPostTitle.text = title
                     binding.detailTxtNickname.text = user.nickname
