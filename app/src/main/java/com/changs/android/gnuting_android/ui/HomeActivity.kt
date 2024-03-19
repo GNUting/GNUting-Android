@@ -66,6 +66,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         viewModel.expirationToken.eventObserve(this) {
+            GNUApplication.sharedPreferences.edit().clear().apply()
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
