@@ -18,5 +18,9 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding>(FragmentPasswordB
         binding.passwordImgBack.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.passwordBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_passwordFragment_to_findPasswordFragment)
+        }
     }
 }

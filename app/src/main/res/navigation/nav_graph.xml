@@ -30,7 +30,11 @@
         android:id="@+id/passwordFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.PasswordFragment"
         android:label="fragment_password"
-        tools:layout="@layout/fragment_password" />
+        tools:layout="@layout/fragment_password" >
+        <action
+            android:id="@+id/action_passwordFragment_to_findPasswordFragment"
+            app:destination="@id/findPasswordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/policyFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.PolicyFragment"
@@ -63,4 +67,9 @@
         android:name="com.changs.android.gnuting_android.ui.fragment.Join3Fragment"
         android:label="fragment_join3"
         tools:layout="@layout/fragment_join3" />
+    <fragment
+        android:id="@+id/findPasswordFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.FindPasswordFragment"
+        android:label="fragment_find_password"
+        tools:layout="@layout/fragment_find_password" />
 </navigation>
