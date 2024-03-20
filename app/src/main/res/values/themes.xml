@@ -19,6 +19,12 @@
         <item name="android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
     </style>
 
+    <style name="NoMarginsDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
     <style name="SpinnerDatePickerDialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <!--This will change the window dialog background color-->
         <item name="android:windowBackground">@color/white</item>

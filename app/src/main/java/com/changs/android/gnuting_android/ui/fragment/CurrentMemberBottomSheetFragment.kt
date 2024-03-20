@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.databinding.CurrentMemberBottomSheetBinding
@@ -39,6 +40,8 @@ class CurrentMemberBottomSheetFragment(private val currentMember: List<InUser>) 
         }
         return dialog
     }
+
+    override fun getTheme(): Int = R.style.NoMarginsDialog
 
     private fun setupFullHeight(bottomSheet: View) {
         val layoutParams = bottomSheet.layoutParams

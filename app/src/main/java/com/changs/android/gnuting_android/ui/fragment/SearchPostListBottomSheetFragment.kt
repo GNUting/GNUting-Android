@@ -8,17 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.databinding.AddMemberBottomSheetBinding
+import com.changs.android.gnuting_android.databinding.CurrentMemberBottomSheetBinding
+import com.changs.android.gnuting_android.databinding.SearchPostListBottomSheetBinding
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.AddMemberAdapter
 import com.changs.android.gnuting_android.ui.adapter.PostCurrentMemberAdapter
+import com.changs.android.gnuting_android.ui.adapter.PostSearchListPagingAdapter
 import com.changs.android.gnuting_android.ui.adapter.SelectedMemberAdapter
+import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
@@ -27,15 +33,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AddMemberBottomSheetFragment(
-    private val memberAddViewModel: MemberAddViewModel, private val boardId: Int
-) : BottomSheetDialogFragment() {
-    private var _binding: AddMemberBottomSheetBinding? = null
+class SearchPostListBottomSheetFragment : BottomSheetDialogFragment(), PostItemNavigator {
+    private var _binding: SearchPostListBottomSheetBinding? = null
     private val viewModel: HomeMainViewModel by activityViewModels()
-    private lateinit var adapter: PostCurrentMemberAdapter
+    private lateinit var adapter: PostSearchListPagingAdapter
     private val binding get() = _binding!!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -70,7 +76,7 @@ class AddMemberBottomSheetFragment(
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = AddMemberBottomSheetBinding.inflate(inflater, container, false)
+        _binding = SearchPostListBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -78,74 +84,45 @@ class AddMemberBottomSheetFragment(
         super.onViewCreated(view, savedInstanceState)
         setListener()
         setRecyclerView()
-        setObserver()
-    }
 
-    private fun setRecyclerView() {
-        adapter = PostCurrentMemberAdapter()
-        binding.addMemberBottomSheetRecyclerview.adapter = adapter
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getSearchPostPagingList("").collectLatest {
+                adapter.submitData(it)
+            }
+        }
     }
 
     private fun setListener() {
-        binding.addMemberBottomSheetLlAddMember.setOnClickListener {
-            val searchMemberBottomSheetFragment =
-                SearchMemberBottomSheetFragment(memberAddViewModel)
-            searchMemberBottomSheetFragment.show(childFragmentManager, null)
+        binding.searchPostListBottomSheetEditSearch.doOnTextChanged { _, _, _, _ ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.getSearchPostPagingList(binding.searchPostListBottomSheetEditSearch.text.toString())
+                    .collectLatest {
+                        adapter.submitData(it)
+                    }
+            }
         }
 
-        binding.addMemberBottomSheetImgClose.setOnClickListener {
+        binding.searchPostListBottomSheetImgBack.setOnClickListener {
             dismiss()
         }
 
-        binding.addMemberBottomSheetBtnChatRequest.setOnClickListener {
-            memberAddViewModel.currentMember.value?.let {
-                viewModel.postApplyChat(boardId, it.toList())
-                dismiss()
-            }
+        binding.searchPostListBottomSheetTxtCancel.setOnClickListener {
+            binding.searchPostListBottomSheetEditSearch.text?.clear()
         }
     }
 
-    private fun setObserver() {
-        memberAddViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
+    private fun setRecyclerView() {
+        adapter = PostSearchListPagingAdapter(this)
+        binding.searchPostListBottomSheetRecyclerview.adapter = adapter
+    }
 
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
-        memberAddViewModel.currentMember.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.addMemberBottomSheetTxtMemberTitle.text = "멤버 (${it.size})"
-                adapter.submitList(it)
-            }
-
-        }
-        viewModel.myInfo.value?.let { myInfo ->
-            val myUserInfo = InUser(
-                age = myInfo.age,
-                department = myInfo.department,
-                gender = myInfo.gender,
-                id = myInfo.id,
-                nickname = myInfo.nickname,
-                profileImage = myInfo.profileImage,
-                studentId = myInfo.studentId,
-                userRole = myInfo.userRole,
-                userSelfIntroduction = myInfo.userSelfIntroduction
-            )
-
-            memberAddViewModel.currentMember.value = mutableListOf(myUserInfo)
-        }
-
-        viewModel.applyChatResponse.eventObserve(viewLifecycleOwner) {
-            findNavController().popBackStack()
-        }
+    override fun navigateToDetail(id: Int) {
+        val action = DetailFragmentDirections.actionGlobalDetailFragment(id)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        memberAddViewModel.currentMember.value = null
     }
 }

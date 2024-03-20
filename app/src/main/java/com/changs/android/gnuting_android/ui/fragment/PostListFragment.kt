@@ -40,7 +40,8 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(FragmentPostListB
         }
 
         binding.postListImgSearch.setOnClickListener {
-            findNavController().navigate(R.id.action_postListFragment_to_searchPostListFragment)
+            val bottomDialogFragment = SearchPostListBottomSheetFragment()
+            bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
         }
     }
 
