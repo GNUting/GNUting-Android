@@ -46,8 +46,12 @@ class SearchPostListFragment : BaseFragment<FragmentSearchPostListBinding>(Fragm
             }
         }
 
-        binding.searchPostListTxtCancel.setOnClickListener {
+        binding.searchPostListImgBack.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.searchPostListTxtCancel.setOnClickListener {
+            binding.searchPostListEditSearch.text?.clear()
         }
     }
 
