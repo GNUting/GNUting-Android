@@ -78,7 +78,7 @@ class AddMemberAdapter(
                 binding.root.context.startActivity(intent)
             }
 
-            val info = "${item.department} | ${item.age} | ${item.studentId}"
+            val info = "${item.department} | ${item.studentId} | ${item.age}"
 
             binding.addMemberItemInfo.text = info
             binding.addMemberItemIntro.text = item.userSelfIntroduction

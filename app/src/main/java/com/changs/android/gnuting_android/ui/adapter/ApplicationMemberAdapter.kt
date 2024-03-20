@@ -39,7 +39,7 @@ class ApplicationMemberAdapter :
 
         fun bind(item: InUser) {
             binding.applicationMemberTxtName.text = item.nickname
-            val info = "${item.studentId} | ${item.age}"
+            val info = "${item.department} | ${item.studentId} | ${item.age}"
 
             Glide.with(binding.root.context).load(item.profileImage).error(R.drawable.ic_profile)
                 .into(binding.applicationMemberItemImg)

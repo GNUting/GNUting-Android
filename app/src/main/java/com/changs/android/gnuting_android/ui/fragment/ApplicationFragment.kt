@@ -33,8 +33,7 @@ class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(
         setObserver()
 
         args.applicationItem.run {
-            binding.applicationTxtDepartment.text = applyUserDepartment
-            binding.applicationTxtMemberCount.text = "${applyUserCount}명"
+            binding.applicationTxtMember.text = "$applyUserCount : $applyUserCount 매칭"
 
             when (applyStatus) {
                 "대기중" -> {

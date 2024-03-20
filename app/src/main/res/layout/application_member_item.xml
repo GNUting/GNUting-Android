@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="20dp">
+    android:background="@drawable/background_radius_10dp_stroke_gray9"
+    android:padding="15dp"
+    android:layout_marginTop="8dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/application_member_item_img"
@@ -33,7 +35,7 @@
         android:layout_height="wrap_content"
         android:textColor="#767676"
         android:layout_marginTop="5dp"
-        tools:text="20학번 | 23살 | ENFJ"
+        tools:text="학과 | 학번 | 나이"
         app:layout_constraintTop_toBottomOf="@+id/application_member_item_img"
         app:layout_constraintStart_toStartOf="parent"/>
 
