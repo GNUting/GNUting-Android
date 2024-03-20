@@ -20,7 +20,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(FragmentApplicationBinding::bind, R.layout.fragment_application) {
+class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(
+    FragmentApplicationBinding::bind,
+    R.layout.fragment_application
+) {
     private val args: ApplicationFragmentArgs by navArgs()
     private val viewModel: HomeMainViewModel by activityViewModels()
 
@@ -42,20 +45,30 @@ class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(FragmentApp
                             binding.applicationBtnLeft.visibility = View.VISIBLE
                             binding.applicationBtnRight.visibility = View.VISIBLE
 
+                            binding.applicationBtnLeft.setOnClickListener {
+                                viewModel.accept(id)
+                            }
+
                             binding.applicationBtnRight.setOnClickListener {
                                 viewModel.refuse(id)
                             }
                         } else {
                             binding.applicationBtnCancel.visibility = View.VISIBLE
+
+                            binding.applicationBtnCancel.setOnClickListener {
+                                viewModel.cancel(id)
+                            }
                         }
                     }
 
 
                 }
+
                 "거절" -> {
                     binding.applicationTxtStatus.text = "거절됨"
                     binding.applicationTxtStatus.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
                 }
+
                 else -> {
                     binding.applicationTxtStatus.text = "수락"
                     binding.applicationTxtStatus.setBackgroundResource(R.drawable.background_radius_10dp_solid_secondary)

@@ -76,6 +76,16 @@ class HomeMainViewModel(
     val refuseResponse: LiveData<Event<DefaultResponse>>
         get() = _refuseResponse
 
+    private val _acceptResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val acceptResponse: LiveData<Event<DefaultResponse>>
+        get() = _acceptResponse
+
+    private val _cancelResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val cancelResponse: LiveData<Event<DefaultResponse>>
+        get() = _cancelResponse
+
     private val _reportResponse = MutableLiveData<Event<DefaultResponse>>()
 
     val reportResponse: LiveData<Event<DefaultResponse>>
@@ -541,6 +551,118 @@ class HomeMainViewModel(
                                         GNUApplication.sharedPreferences.edit()
                                             .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
                                         refuse(id)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _spinner.value = false
+                _snackbar.value = "네트워크 에러가 발생했습니다."
+            }
+        }
+    }
+
+    fun accept(id: Int) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val result = applicationRepository.postAccept(id)
+                if (result.isSuccessful && result.body() != null) {
+                    _acceptResponse.value = Event(result.body()!!)
+                    _spinner.value = false
+
+                } else {
+                    result.errorBody()?.let {
+                        val errorBody = getErrorResponse(it)
+                        errorBody?.let { error ->
+                            _spinner.value = false
+                            if (error.code == "BOARD5003") {
+
+                            } else if (error.code == "TOKEN4001-1") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        RefreshTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        accept(id)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _spinner.value = false
+                _snackbar.value = "네트워크 에러가 발생했습니다."
+            }
+        }
+    }
+
+    fun cancel(id: Int) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val result = applicationRepository.deleteCancel(id)
+                if (result.isSuccessful && result.body() != null) {
+                    _cancelResponse.value = Event(result.body()!!)
+                    _spinner.value = false
+
+                } else {
+                    result.errorBody()?.let {
+                        val errorBody = getErrorResponse(it)
+                        errorBody?.let { error ->
+                            _spinner.value = false
+                            if (error.code == "BOARD5003") {
+
+                            } else if (error.code == "TOKEN4001-1") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        RefreshTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        cancel(id)
                                     } else {
                                         _expirationToken.value = Event(true)
                                     }
