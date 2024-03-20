@@ -30,6 +30,8 @@ class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setObserver()
+
         args.applicationItem.run {
             binding.applicationTxtDepartment.text = applyUserDepartment
             binding.applicationTxtMemberCount.text = "${applyUserCount}명"
@@ -89,6 +91,16 @@ class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(
         }
 
         binding.applicationImgBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun setObserver() {
+        viewModel.cancelResponse.eventObserve(viewLifecycleOwner) {
+            findNavController().popBackStack()
+        }
+
+        viewModel.acceptResponse.eventObserve(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
 
