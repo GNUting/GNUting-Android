@@ -63,10 +63,6 @@ class DetailFragment :
                 DetailFragmentDirections.actionGlobalReportFragment(args.id)
             findNavController().navigate(action)
         }
-
-        binding.detailBtnChatRequest.setOnClickListener {
-            AddMemberBottomSheetFragment(memberAddViewModel, args.id).show(childFragmentManager, null)
-        }
     }
 
         private fun setObserver() {
@@ -113,6 +109,15 @@ class DetailFragment :
                     binding.detailTxtCurrentParticipant.setOnClickListener {
                         val bottomDialogFragment = CurrentMemberBottomSheetFragment(inUser)
                         bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
+                    }
+
+                    if (status != "OPEN") {
+                        binding.detailBtnChatRequest.isEnabled = false
+                        // TODO: 비활성화 색상 표시
+                    }
+
+                    binding.detailBtnChatRequest.setOnClickListener {
+                            AddMemberBottomSheetFragment(memberAddViewModel, args.id).show(childFragmentManager, null)
                     }
                 }
             }
