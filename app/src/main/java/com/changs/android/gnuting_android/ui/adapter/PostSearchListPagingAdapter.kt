@@ -40,8 +40,7 @@ class PostSearchListPagingAdapter(private val listener: PostItemNavigator) :
         fun bind(item: Content) {
             binding.postListItemTxtTitle.text = item.title
             binding.postListItemTxtInfo.text = "${item.department} | ${item.studentId}"
-            // TODO: 게시물 검색 API에 인원 수 정보가 추가될 예정
-            binding.postListItemTxtMember.text = ""
+            binding.postListItemTxtMember.text = "인원 : ${item.inUserCount}명"
             binding.root.setOnClickListener {
                 listener.navigateToDetail(item.boardId)
             }

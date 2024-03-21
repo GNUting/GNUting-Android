@@ -10,5 +10,7 @@ data class Content(
     @SerializedName("studentId")
     val studentId: String,
     @SerializedName("title")
-    val title: String
+    val title: String,
+    @SerializedName("inUserCount")
+    val inUserCount: Int
 )
