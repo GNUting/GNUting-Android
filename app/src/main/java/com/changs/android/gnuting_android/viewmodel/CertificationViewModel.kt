@@ -10,7 +10,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class Join1ViewModel : ViewModel() {
+class CertificationViewModel : ViewModel() {
+    var mailCertificationNumberCheck = false
+
     val customTimerDuration: MutableLiveData<Long> = MutableLiveData(Constant.MIllIS_IN_FUTURE)
     private var oldTimeMills: Long = 0
 

@@ -8,6 +8,7 @@ import com.changs.android.gnuting_android.data.model.LoginResponse
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
+import com.changs.android.gnuting_android.data.model.PasswordRequest
 import com.changs.android.gnuting_android.data.model.ProfileResponse
 import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenResponse
@@ -80,4 +81,7 @@ interface UserInterface {
 
     @POST("/api/v1/mail/verify")
     suspend fun postEmailVerify(@Body request: EmailVerifyRequest): Response<DefaultResponse>
+
+    @PATCH("/api/v1/setNewPassword")
+    suspend fun patchPassword(@Body request: PasswordRequest): Response<DefaultResponse>
 }

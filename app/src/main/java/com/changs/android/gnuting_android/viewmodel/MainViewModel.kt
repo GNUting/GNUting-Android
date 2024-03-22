@@ -13,6 +13,7 @@ import com.changs.android.gnuting_android.data.model.EmailVerifyRequest
 import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.LoginResponse
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
+import com.changs.android.gnuting_android.data.model.PasswordRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.model.SignUpResponse
 import com.changs.android.gnuting_android.data.repository.UserRepository
@@ -20,6 +21,7 @@ import com.changs.android.gnuting_android.util.Constant.X_ACCESS_TOKEN
 import com.changs.android.gnuting_android.util.Constant.X_REFRESH_TOKEN
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -40,10 +42,6 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
     private val _nickNameCheck = MutableLiveData<Boolean>()
 
     val nickNameCheck: LiveData<Boolean> get() = _nickNameCheck
-
-    var mailCertificationNumberCheck = false
-
-    var tempMailCertificationNumber = ""
 
     private val _mailCertificationNumber = MutableLiveData<Event<String>>()
 
@@ -68,6 +66,11 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
 
     val emailVerifyResponse: LiveData<Event<DefaultResponse>>
         get() = _emailVerifyResponse
+
+    private val _passwordResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val passwordResponse: LiveData<Event<DefaultResponse>>
+        get() = _passwordResponse
 
     private val _snackbar = MutableLiveData<String?>()
 
@@ -273,6 +276,36 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                 }
             } else {
                 _snackbar.value = "이메일 입력이 완료되지 않았습니다."
+            }
+        }
+    }
+
+    fun patchPassword() {
+        viewModelScope.launch {
+            if (email != null && password != null) {
+                try {
+                    _spinner.value = true
+                    val result = repository.patchPassword(PasswordRequest(email!!, password!!))
+                    if (result.isSuccessful && result.body() != null) {
+                        _spinner.value = false
+                        _snackbar.value = result.body()!!.result
+                        delay(1000)
+                        _passwordResponse.value = Event(result.body()!!)
+                    } else {
+                        result.errorBody()?.let {
+                            val errorBody = getErrorResponse(it)
+                            errorBody?.let { error ->
+                                _spinner.value = false
+                                _snackbar.value = error.message
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    _spinner.value = false
+                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                }
+            } else {
+                _snackbar.value = "입력이 완료되지 않았습니다."
             }
         }
     }
