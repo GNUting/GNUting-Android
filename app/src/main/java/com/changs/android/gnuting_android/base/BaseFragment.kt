@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.changs.android.gnuting_android.util.hideSoftKeyboard
 
 abstract class BaseFragment<B : ViewBinding>(
     private val bind: (View) -> B,
@@ -22,6 +23,11 @@ abstract class BaseFragment<B : ViewBinding>(
         savedInstanceState: Bundle?
     ): View? {
         _binding = bind(super.onCreateView(inflater, container, savedInstanceState)!!)
+
+        binding.root.setOnClickListener {
+            it.hideSoftKeyboard()
+        }
+
         return binding.root
     }
 

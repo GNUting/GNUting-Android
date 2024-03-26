@@ -86,17 +86,20 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
         _snackbar.value = null
     }
 
-    fun getCheckNickName() {
+    fun getCheckNickName(inputNickname: String?) {
         viewModelScope.launch {
-            nickname?.let {
+            inputNickname?.let {
                 try {
                     _spinner.value = true
                     val result = repository.getCheckNickName(it)
                     if (result.isSuccessful && result.body() != null) {
+                        nickname = inputNickname
                         _nickNameCheck.value = result.body()!!.result
                         _snackbar.value = result.body()!!.message
                         _spinner.value = false
                     } else {
+                        nickname = null
+                        _nickNameCheck.value = false
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
@@ -106,6 +109,8 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                         }
                     }
                 } catch (e: Exception) {
+                    nickname = null
+                    _nickNameCheck.value = false
                     _spinner.value = false
                     _snackbar.value = "네트워크 에러가 발생했습니다."
                 }
@@ -155,8 +160,8 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
                         password = password!!,
                         phoneNumber = phoneNumber!!,
                         studentId = studentId!!,
-                        profileImage = profileImage!!,
-                        userSelfIntroduction = userSelfIntroduction!!
+                        profileImage = profileImage,
+                        userSelfIntroduction = userSelfIntroduction
                     )
                     if (result.isSuccessful && result.body() != null) {
                         _signUpResponse.value = Event(result.body()!!)

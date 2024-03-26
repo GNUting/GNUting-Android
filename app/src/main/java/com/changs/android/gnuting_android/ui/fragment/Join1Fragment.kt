@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doBeforeTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,6 +13,7 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentJoin1Binding
 import com.changs.android.gnuting_android.util.convertMillisecondsToTime
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.CertificationViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -20,6 +22,7 @@ class Join1Fragment :
     BaseFragment<FragmentJoin1Binding>(FragmentJoin1Binding::bind, R.layout.fragment_join1) {
     private val viewModel: MainViewModel by activityViewModels()
     private val certificationViewModel: CertificationViewModel by viewModels()
+    private val buttonActiveCheckViewModel: ButtonActiveCheckViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListener()
@@ -41,16 +44,35 @@ class Join1Fragment :
             viewModel.postMailCertification()
         }
 
-        binding.join1EditEmail.doAfterTextChanged {
-            viewModel.email = it.toString() + "@gnu.ac.kr"
+        binding.join1EditEmail.doOnTextChanged { text, start, count, after ->
+            viewModel.email = text.toString() + "@gnu.ac.kr"
+            if (!text.isNullOrEmpty()) {
+                binding.join1BtnVerify.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                binding.join1BtnVerify.isEnabled = true
+            } else {
+                binding.join1BtnVerify.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                binding.join1BtnVerify.isEnabled = false
+            }
         }
 
-        binding.join1EditPassword.doBeforeTextChanged { text, start, count, after ->
-            binding.join1TxtVerificationPasswordCheck.visibility = View.INVISIBLE
+        binding.join1EditCertificationNumber.doOnTextChanged { text, start, count, after ->
+            if (!text.isNullOrEmpty()) {
+                binding.join1BtnCertificationConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                binding.join1BtnCertificationConfirmation.isEnabled = true
+            } else {
+                binding.join1BtnCertificationConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                binding.join1BtnCertificationConfirmation.isEnabled = false
+            }
         }
 
-        binding.join1EditPasswordCheck.doBeforeTextChanged { text, start, count, after ->
+        binding.join1EditPassword.doOnTextChanged { text, start, count, after ->
             binding.join1TxtVerificationPasswordCheck.visibility = View.INVISIBLE
+            checkButtonActiveCondition()
+        }
+
+        binding.join1EditPasswordCheck.doOnTextChanged { text, start, count, after ->
+            binding.join1TxtVerificationPasswordCheck.visibility = View.INVISIBLE
+            checkButtonActiveCondition()
         }
 
         binding.join1ImgBack.setOnClickListener { findNavController().popBackStack() }
@@ -85,12 +107,15 @@ class Join1Fragment :
     private fun setObserver() {
         viewModel.mailCertificationNumber.eventObserve(viewLifecycleOwner) {
             certificationViewModel.timerJob.start()
+            certificationViewModel.mailCertificationNumberCheck = false
             binding.join1TxtTimer.visibility = View.VISIBLE
+            checkButtonActiveCondition()
         }
 
         viewModel.emailVerifyResponse.eventObserve(viewLifecycleOwner) {
             binding.join1TxtVerificationCertification.visibility = View.INVISIBLE
             certificationViewModel.mailCertificationNumberCheck = true
+            checkButtonActiveCondition()
 
             certificationViewModel.timerJob.cancel()
             binding.join1TxtTimer.visibility = View.INVISIBLE
@@ -104,6 +129,21 @@ class Join1Fragment :
                 binding.join1TxtTimer.visibility = View.INVISIBLE
             }
         }
+
+        buttonActiveCheckViewModel.buttonActiveCheck.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.join1BtnNext.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                binding.join1BtnNext.isEnabled = true
+            } else {
+                binding.join1BtnNext.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                binding.join1BtnNext.isEnabled = false
+            }
+        }
+    }
+
+    private fun checkButtonActiveCondition() {
+        buttonActiveCheckViewModel.buttonActiveCheck.value =
+            (certificationViewModel.mailCertificationNumberCheck && !binding.join1EditPassword.text.isNullOrBlank() && !binding.join1EditPasswordCheck.text.isNullOrBlank() && !binding.join1EditEmail.text.isNullOrBlank())
     }
 
     private fun validatePassword(password: String): Boolean {

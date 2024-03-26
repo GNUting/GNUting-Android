@@ -69,7 +69,7 @@
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:theme="@style/EditTextTheme"
-                android:inputType="number"
+                android:inputType="text"
                 android:maxLength="10"
                 android:maxLines="1"
                 android:layout_height="wrap_content"
@@ -163,14 +163,15 @@
             android:id="@+id/edit_profile_txt_edit_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="8dp"
             android:gravity="center"
             android:layout_marginTop="40dp"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/black"
             android:text="프로필 수정"
-            android:textSize="16sp"
-            android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"/>
+            android:paddingVertical="18dp"
+            android:background="@drawable/background_radius_10dp_solid_main"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

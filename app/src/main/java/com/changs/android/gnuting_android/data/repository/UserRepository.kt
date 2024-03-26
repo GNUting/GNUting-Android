@@ -43,7 +43,7 @@ class UserRepository(retrofit: Retrofit, room: AppDatabase) {
         phoneNumber: String,
         studentId: String,
         profileImage: Bitmap?,
-        userSelfIntroduction: String
+        userSelfIntroduction: String?
     ): Response<SignUpResponse> {
         return service.postSignUp(
             birthDate = FormDataUtil.getTextBody("birthDate", birthDate),
@@ -61,7 +61,7 @@ class UserRepository(retrofit: Retrofit, room: AppDatabase) {
                 )
             },
             userSelfIntroduction = FormDataUtil.getTextBody(
-                "userSelfIntroduction", userSelfIntroduction
+                "userSelfIntroduction", userSelfIntroduction ?: ""
             )
         )
     }

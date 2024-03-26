@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -40,6 +41,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             binding.editProfileEditNickName.setText(it.nickname)
             preNickName = it.nickname
             viewModel.nickname = it.nickname
+            viewModel.nickNameCheck.value = false
             binding.editProfileTxtMajor.text = it.department
             binding.editProfileEditIntro.setText(it.userSelfIntroduction)
 
@@ -68,7 +70,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
 
     private fun setListener() {
         binding.editProfileBtnConfirmation.setOnClickListener {
-            viewModel.getCheckNickName()
+            viewModel.getCheckNickName(binding.editProfileEditNickName.text.toString())
         }
 
         binding.editProfileImgBack.setOnClickListener {
@@ -78,7 +80,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         binding.editProfileTxtEditProfile.setOnClickListener {
             if (preNickName != binding.editProfileEditNickName.text.toString()) {
                 viewModel.nickNameCheck.value?.let {
-                    if (it) {
+                    if (it && binding.editProfileEditNickName.text.toString() == viewModel.nickname) {
                         viewModel.updateProfile(
                             department = binding.editProfileTxtMajor.text.toString(),
                             nickname = binding.editProfileEditNickName.text.toString(),
@@ -99,9 +101,16 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             }
         }
 
-        binding.editProfileEditNickName.doAfterTextChanged {
-            viewModel.nickname = it.toString()
+        binding.editProfileEditNickName.doOnTextChanged { text, start, count, after ->
+            if (!text.isNullOrEmpty()) {
+                binding.editProfileBtnConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                binding.editProfileBtnConfirmation.isEnabled = true
+            } else {
+                binding.editProfileBtnConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                binding.editProfileBtnConfirmation.isEnabled = false
+            }
         }
+
 
         binding.editProfileLlMajorContainer.setOnClickListener {
             val bottomDialogFragment = ProfileSearchDepartmentBottomSheetFragment()
@@ -133,6 +142,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
 
         viewModel.profileResponse.eventObserve(viewLifecycleOwner) {
             viewModel.fetchRecentMyInfo()
+            preNickName = viewModel.nickname
         }
+
     }
 }

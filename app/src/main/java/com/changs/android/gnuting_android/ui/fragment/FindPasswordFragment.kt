@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doBeforeTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,7 @@ import com.changs.android.gnuting_android.databinding.FragmentFindPasswordBindin
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.util.convertMillisecondsToTime
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.CertificationViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -22,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentFindPasswordBinding::bind, R.layout.fragment_find_password) {
     private val viewModel: MainViewModel by activityViewModels()
     private val certificationViewModel: CertificationViewModel by viewModels()
+    private val buttonActiveCheckViewModel: ButtonActiveCheckViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setObserver()
@@ -70,16 +73,35 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
             viewModel.postMailCertification()
         }
 
-        binding.findPasswordEditEmail.doAfterTextChanged {
-            viewModel.email = it.toString() + "@gnu.ac.kr"
+        binding.findPasswordEditEmail.doOnTextChanged { text, start, count, after ->
+            viewModel.email = text.toString() + "@gnu.ac.kr"
+            if (!text.isNullOrEmpty()) {
+                binding.findPasswordBtnVerify.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                binding.findPasswordBtnVerify.isEnabled = true
+            } else {
+                binding.findPasswordBtnVerify.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                binding.findPasswordBtnVerify.isEnabled = false
+            }
         }
 
-        binding.findPasswordEditPassword.doBeforeTextChanged { text, start, count, after ->
-            binding.findPasswordTxtVerificationPasswordCheck.visibility = View.INVISIBLE
+        binding.findPasswordEditCertificationNumber.doOnTextChanged { text, start, count, after ->
+            if (!text.isNullOrEmpty()) {
+                binding.findPasswordBtnCertificationConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                binding.findPasswordBtnCertificationConfirmation.isEnabled = true
+            } else {
+                binding.findPasswordBtnCertificationConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                binding.findPasswordBtnCertificationConfirmation.isEnabled = false
+            }
         }
 
-        binding.findPasswordEditPasswordCheck.doBeforeTextChanged { text, start, count, after ->
+        binding.findPasswordEditPassword.doOnTextChanged { text, start, count, after ->
             binding.findPasswordTxtVerificationPasswordCheck.visibility = View.INVISIBLE
+            checkButtonActiveCondition()
+        }
+
+        binding.findPasswordEditPasswordCheck.doOnTextChanged { text, start, count, after ->
+            binding.findPasswordTxtVerificationPasswordCheck.visibility = View.INVISIBLE
+            checkButtonActiveCondition()
         }
 
         binding.findPasswordImgBack.setOnClickListener { findNavController().popBackStack() }
@@ -94,12 +116,15 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
 
         viewModel.mailCertificationNumber.eventObserve(viewLifecycleOwner) {
             certificationViewModel.timerJob.start()
+            certificationViewModel.mailCertificationNumberCheck = false
             binding.findPasswordTxtTimer.visibility = View.VISIBLE
+            checkButtonActiveCondition()
         }
 
         viewModel.emailVerifyResponse.eventObserve(viewLifecycleOwner) {
             binding.findPasswordTxtVerificationCertification.visibility = View.INVISIBLE
             certificationViewModel.mailCertificationNumberCheck = true
+            checkButtonActiveCondition()
 
             certificationViewModel.timerJob.cancel()
             binding.findPasswordTxtTimer.visibility = View.INVISIBLE
@@ -113,6 +138,21 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
                 binding.findPasswordTxtTimer.visibility = View.INVISIBLE
             }
         }
+
+        buttonActiveCheckViewModel.buttonActiveCheck.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.findPasswordBtnNext.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                binding.findPasswordBtnNext.isEnabled = true
+            } else {
+                binding.findPasswordBtnNext.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                binding.findPasswordBtnNext.isEnabled = false
+            }
+        }
+    }
+
+    private fun checkButtonActiveCondition() {
+        buttonActiveCheckViewModel.buttonActiveCheck.value =
+            (certificationViewModel.mailCertificationNumberCheck && !binding.findPasswordEditPassword.text.isNullOrBlank() && !binding.findPasswordEditPasswordCheck.text.isNullOrBlank() && !binding.findPasswordEditEmail.text.isNullOrBlank())
     }
 
     private fun validatePassword(password: String): Boolean {

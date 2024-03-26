@@ -8,10 +8,12 @@ import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentJoin2Binding
+import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
@@ -21,6 +23,7 @@ import java.util.Locale
 class Join2Fragment :
     BaseFragment<FragmentJoin2Binding>(FragmentJoin2Binding::bind, R.layout.fragment_join2) {
     private val viewModel: MainViewModel by activityViewModels()
+    private val buttonActiveCheckViewModel: ButtonActiveCheckViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListener()
@@ -29,31 +32,43 @@ class Join2Fragment :
 
     private fun setListener() {
         binding.join2BtnNicknameCheck.setOnClickListener {
-            viewModel.getCheckNickName()
+            viewModel.getCheckNickName(binding.join2EditNickname.text.toString())
         }
 
-        binding.join2EditName.doAfterTextChanged {
-            viewModel.name = it.toString()
+        binding.join2EditName.doOnTextChanged { text, start, count, after ->
+            viewModel.name = text.toString()
+            checkButtonActiveCondition()
         }
 
         binding.join2EditPhoneNumber.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         binding.join2EditPhoneNumber.doOnTextChanged { text, start, before, count ->
             viewModel.phoneNumber = text.toString()
+            checkButtonActiveCondition()
         }
 
-        binding.join2EditStudentId.doAfterTextChanged {
-            viewModel.studentId = it.toString()
+        binding.join2EditStudentId.doOnTextChanged { text, start, count, after ->
+            viewModel.studentId = text.toString()
+            checkButtonActiveCondition()
         }
 
-        binding.join2EditNickname.doAfterTextChanged {
-            viewModel.nickname = it.toString()
+        binding.join2EditNickname.doOnTextChanged { text, start, count, after ->
+            if (!text.isNullOrEmpty()) {
+                binding.join2BtnNicknameCheck.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                binding.join2BtnNicknameCheck.isEnabled = true
+            } else {
+                binding.join2BtnNicknameCheck.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                binding.join2BtnNicknameCheck.isEnabled = false
+            }
+
+            checkButtonActiveCondition()
         }
 
 
 
-        binding.join2EditIntro.doAfterTextChanged {
-            viewModel.userSelfIntroduction = it.toString()
+        binding.join2EditIntro.doOnTextChanged { text, start, count, after ->
+            viewModel.userSelfIntroduction = text.toString()
+            checkButtonActiveCondition()
         }
 
         binding.join2RadioGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -68,6 +83,7 @@ class Join2Fragment :
 
                 else -> null
             }
+            checkButtonActiveCondition()
         }
 
         binding.join2LlMajorContainer.setOnClickListener {
@@ -90,6 +106,7 @@ class Join2Fragment :
                         join2TxtDay.text = day.toString()
 
                         viewModel.birthDate = strDate
+                        checkButtonActiveCondition()
                     }
                 }
             }
@@ -100,8 +117,8 @@ class Join2Fragment :
 
         binding.join2BtnNext.setOnClickListener {
             viewModel.nickNameCheck.value?.let {
-                if (it) {
-                    if (viewModel.name == null || viewModel.phoneNumber == null || viewModel.gender == null || viewModel.department == null || viewModel.studentId == null || viewModel.userSelfIntroduction == null) {
+                if (it && !viewModel.nickname.isNullOrEmpty() && binding.join2EditNickname.text.toString() == viewModel.nickname) {
+                    if (viewModel.name == null || viewModel.phoneNumber == null || viewModel.gender == null || viewModel.department == null || viewModel.studentId == null) {
                         Snackbar.make(binding.root, "입력되지 않은 항목이 있습니다.", Snackbar.LENGTH_SHORT)
                             .show()
                     } else {
@@ -126,7 +143,27 @@ class Join2Fragment :
     private fun setObserver() {
         viewModel.choiceDepartment.observe(viewLifecycleOwner) {
             viewModel.department = it
+            binding.join2TxtMajor.setTextColor(resources.getColor(R.color.black, null))
             binding.join2TxtMajor.text = it
         }
+
+        buttonActiveCheckViewModel.buttonActiveCheck.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.join2BtnNext.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                binding.join2BtnNext.isEnabled = true
+            } else {
+                binding.join2BtnNext.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                binding.join2BtnNext.isEnabled = false
+            }
+        }
+
+        viewModel.nickNameCheck.observe(viewLifecycleOwner) {
+            checkButtonActiveCondition()
+        }
+    }
+
+    private fun checkButtonActiveCondition() {
+        buttonActiveCheckViewModel.buttonActiveCheck.value =
+            (viewModel.nickNameCheck.value?: false && !viewModel.name.isNullOrEmpty() && !viewModel.phoneNumber.isNullOrEmpty() && !viewModel.nickname.isNullOrEmpty() && !viewModel.gender.isNullOrEmpty() && !viewModel.birthDate.isNullOrEmpty() && !viewModel.studentId.isNullOrEmpty())
     }
 }

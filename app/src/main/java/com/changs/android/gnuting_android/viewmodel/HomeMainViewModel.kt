@@ -179,9 +179,7 @@ class HomeMainViewModel(
 
     val choiceDepartment = MutableLiveData<String>()
 
-    private val _nickNameCheck = MutableLiveData<Boolean>()
-
-    val nickNameCheck: LiveData<Boolean> get() = _nickNameCheck
+    val nickNameCheck = MutableLiveData<Boolean>()
 
     var department: String? = null
     var nickname: String? = null
@@ -197,18 +195,20 @@ class HomeMainViewModel(
         }
     }
 
-    fun getCheckNickName() {
+    fun getCheckNickName(inputNickName: String?) {
         viewModelScope.launch {
-            nickname?.let {
+            inputNickName?.let {
                 try {
                     _spinner.value = true
                     val result = userRepository.getCheckNickName(it)
                     if (result.isSuccessful && result.body() != null) {
-                        _nickNameCheck.value = result.body()!!.result
+                        nickNameCheck.value = result.body()!!.result
+                        nickname = it
                         _snackbar.value = result.body()!!.message
                         _spinner.value = false
                     } else {
                         result.errorBody()?.let {
+                            nickNameCheck.value = false
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
@@ -216,7 +216,8 @@ class HomeMainViewModel(
                             }
                         }
                     }
-                } catch (e: java.lang.Exception) {
+                } catch (e: Exception) {
+                    nickNameCheck.value = false
                     _spinner.value = false
                     _snackbar.value = "네트워크 에러가 발생했습니다."
                 }
@@ -967,6 +968,7 @@ class HomeMainViewModel(
 
     fun updateProfile(department: String?, nickname: String, userSelfIntroduction: String?) {
         viewModelScope.launch {
+            nickNameCheck.value = false
             try {
                 _spinner.value = true
                 val result = userRepository.patchProfile(
