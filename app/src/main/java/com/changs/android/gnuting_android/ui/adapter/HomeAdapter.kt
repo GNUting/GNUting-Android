@@ -36,7 +36,12 @@ class HomeAdapter(private val listener: PostItemNavigator) :
         private val binding = HomeListItemBinding.bind(itemView)
 
         fun bind(item: PostResult) {
-            binding.homeListItemTxtDepartment.text = item.user.department
+            val department = if (item.user.department.length > 6) {
+                item.user.department.substring(0, 6) + ".."
+            } else {
+                item.user.department
+            }
+            binding.homeListItemTxtDepartment.text = department
             binding.homeListItemTxtTitle.text = item.title
             binding.root.setOnClickListener {
                 listener.navigateToDetail(item.id)
