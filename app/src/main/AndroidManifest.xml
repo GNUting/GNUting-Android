@@ -35,11 +35,11 @@
 
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
+            android:theme="@style/OpensourceLicense"/>
 
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
+            android:theme="@style/OpensourceLicense"/>
 
         <service
             android:name=".MyFirebaseMessagingService"
