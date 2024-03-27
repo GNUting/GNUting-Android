@@ -121,27 +121,25 @@
         </androidx.core.widget.NestedScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/application_btn_left"
+        android:id="@+id/application_btn_accept"
         android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"
+        android:background="@drawable/background_radius_10dp_solid_secondary"
         style="?android:attr/borderlessButtonStyle"
         android:text="수락하기"
-        android:layout_marginStart="28dp"
         android:paddingVertical="19dp"
         android:textSize="14sp"
-        android:textColor="@color/black"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="28dp"
+        android:textColor="@color/white"
         android:layout_marginBottom="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/application_btn_right"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/application_btn_refuse" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/application_btn_right"
+        android:id="@+id/application_btn_refuse"
         android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -151,12 +149,13 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:background="@drawable/background_radius_10dp_solid_main"
+        app:layout_constraintEnd_toStartOf="@+id/application_btn_accept"
         android:text="거절하기"
-        android:layout_marginEnd="28dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/application_btn_left" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/application_btn_cancel"

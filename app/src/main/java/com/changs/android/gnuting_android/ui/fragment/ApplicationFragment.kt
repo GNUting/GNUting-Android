@@ -43,14 +43,14 @@ class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(
                     viewModel.myInfo.value?.let { myInfo ->
                         val none = args.applicationItem.applyUser.none { it.id == myInfo.id }
                         if (none) {
-                            binding.applicationBtnLeft.visibility = View.VISIBLE
-                            binding.applicationBtnRight.visibility = View.VISIBLE
+                            binding.applicationBtnRefuse.visibility = View.VISIBLE
+                            binding.applicationBtnAccept.visibility = View.VISIBLE
 
-                            binding.applicationBtnLeft.setOnClickListener {
+                            binding.applicationBtnAccept.setOnClickListener {
                                 viewModel.accept(id)
                             }
 
-                            binding.applicationBtnRight.setOnClickListener {
+                            binding.applicationBtnRefuse.setOnClickListener {
                                 viewModel.refuse(id)
                             }
                         } else {
