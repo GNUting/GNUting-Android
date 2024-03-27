@@ -58,7 +58,7 @@ class HomeActivity : AppCompatActivity() {
 
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.homeFragment, R.id.listFragment, R.id.chatFragment, R.id.myFragment -> binding.bottomNav.isVisible =
+                R.id.homeFragment, R.id.listFragment, R.id.chatListFragment, R.id.myFragment -> binding.bottomNav.isVisible =
                     true
 
                 else -> binding.bottomNav.isVisible = false

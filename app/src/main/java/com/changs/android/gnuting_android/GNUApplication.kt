@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.changs.android.gnuting_android.data.repository.ApplicationRepository
+import com.changs.android.gnuting_android.data.repository.ChatRepository
 import com.changs.android.gnuting_android.data.repository.PostRepository
 import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.data.source.local.AppDatabase
@@ -26,6 +27,7 @@ class GNUApplication : Application() {
         lateinit var retrofit: Retrofit
         lateinit var userRepository: UserRepository
         lateinit var postRepository: PostRepository
+        lateinit var chatRepository: ChatRepository
         lateinit var applicationRepository: ApplicationRepository
         lateinit var sharedPreferences: SharedPreferences
     }
@@ -75,5 +77,6 @@ class GNUApplication : Application() {
         userRepository = UserRepository(retrofit, room)
         postRepository = PostRepository(retrofit)
         applicationRepository = ApplicationRepository(retrofit)
+        chatRepository = ChatRepository(retrofit)
     }
 }

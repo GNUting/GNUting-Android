@@ -6,10 +6,14 @@
     app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/chatFragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.ChatFragment"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        android:id="@+id/chatListFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.ChatListFragment"
+        android:label="fragment_chat_list"
+        tools:layout="@layout/fragment_chat_list" >
+        <action
+            android:id="@+id/action_chatListFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.HomeFragment"
@@ -118,4 +122,19 @@
         android:name="com.changs.android.gnuting_android.ui.fragment.SearchPostListFragment"
         android:label="fragment_search_post_list"
         tools:layout="@layout/fragment_search_post_list" />
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="info"
+            app:argType="string" />
+    </fragment>
 </navigation>
