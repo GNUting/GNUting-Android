@@ -87,8 +87,11 @@ class ChatFragment :
         }
 
         binding.chatImgSend.setOnClickListener {
-            chatViewModel.sendMessage(binding.chatEdit.text.toString())
-            binding.chatEdit.text?.clear()
+            if (!binding.chatEdit.text.isNullOrEmpty()) {
+                chatViewModel.sendMessage(binding.chatEdit.text.toString())
+                binding.chatEdit.text?.clear()
+                binding.chatEdit.clearFocus()
+            }
         }
     }
 
