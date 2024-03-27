@@ -19,6 +19,7 @@ import androidx.core.view.WindowCompat
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.BaseResponse
 import okhttp3.ResponseBody
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -70,4 +71,18 @@ fun convertMillisecondsToTime(milliseconds: Long): String {
     val formatter = SimpleDateFormat("mm:ss", Locale.KOREA)
     formatter.timeZone = TimeZone.getTimeZone("UTC")
     return formatter.format(Date(milliseconds))
+}
+
+fun convertToKoreanTime(dateString: String): String {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault())
+    if (dateString.contains("Z")) inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+    val outputFormat = SimpleDateFormat("HH:mm", Locale.KOREA)
+
+    val parsedDate = try {
+        inputFormat.parse(dateString)
+    } catch (e: Exception) {
+        Timber.e(e.message.toString())
+        null
+    }
+    return parsedDate?.let { outputFormat.format(it) } ?: ""
 }

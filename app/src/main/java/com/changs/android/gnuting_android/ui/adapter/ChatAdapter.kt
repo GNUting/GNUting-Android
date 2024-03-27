@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
-import com.changs.android.gnuting_android.data.model.ChatItem
 import com.changs.android.gnuting_android.data.model.MessageItem
-import com.changs.android.gnuting_android.databinding.ChatItemBinding
 import com.changs.android.gnuting_android.databinding.MeChatItemBinding
 import com.changs.android.gnuting_android.databinding.OtherChatItemBinding
 import com.changs.android.gnuting_android.ui.PhotoActivity
+import com.changs.android.gnuting_android.util.convertToKoreanTime
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 
 class ChatAdapter(private val myNickName: String) :
@@ -78,6 +81,11 @@ class ChatAdapter(private val myNickName: String) :
             binding.meChatItemTxtMessage.text = item.message
             binding.meChatItemTxtNickname.text = item.nickname
 
+            if (!item.createdDate.isNullOrBlank()) {
+                binding.meChatItemTxtTime.text = convertToKoreanTime(item.createdDate)
+            }
+
+
             Glide.with(binding.root.context).load(item.profileImage).error(R.drawable.ic_profile)
                 .into(binding.meChatItemImg)
 
@@ -97,6 +105,10 @@ class ChatAdapter(private val myNickName: String) :
         fun bind(item: MessageItem) {
             binding.otherChatItemTxtMessage.text = item.message
             binding.otherChatItemTxtNickname.text = item.nickname
+
+            if (!item.createdDate.isNullOrBlank()) {
+                binding.otherChatItemTxtTime.text = convertToKoreanTime(item.createdDate)
+            }
 
             Glide.with(binding.root.context).load(item.profileImage).error(R.drawable.ic_profile)
                 .into(binding.otherChatItemImg)

@@ -6,7 +6,7 @@ data class MessageItem(
     @SerializedName("chatRoomId")
     val chatRoomId: Int,
     @SerializedName("createdDate")
-    val createdDate: String,
+    val createdDate: String? = null,
     @SerializedName("email")
     val email: String,
     @SerializedName("id")
