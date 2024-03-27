@@ -1,6 +1,7 @@
 package com.changs.android.gnuting_android.data.repository
 
 import com.changs.android.gnuting_android.data.model.ChatResponse
+import com.changs.android.gnuting_android.data.source.StompChatSource
 import com.changs.android.gnuting_android.data.source.remote.ChatInterface
 import com.changs.android.gnuting_android.data.source.remote.PostInterface
 import retrofit2.Retrofit

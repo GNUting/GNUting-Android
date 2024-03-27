@@ -1,5 +1,6 @@
 package com.changs.android.gnuting_android.ui.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -12,6 +13,7 @@ import com.changs.android.gnuting_android.data.model.MessageItem
 import com.changs.android.gnuting_android.databinding.ChatItemBinding
 import com.changs.android.gnuting_android.databinding.MeChatItemBinding
 import com.changs.android.gnuting_android.databinding.OtherChatItemBinding
+import com.changs.android.gnuting_android.ui.PhotoActivity
 
 
 class ChatAdapter(private val myNickName: String) :
@@ -75,8 +77,15 @@ class ChatAdapter(private val myNickName: String) :
         fun bind(item: MessageItem) {
             binding.meChatItemTxtMessage.text = item.message
             binding.meChatItemTxtNickname.text = item.nickname
+
             Glide.with(binding.root.context).load(item.profileImage).error(R.drawable.ic_profile)
                 .into(binding.meChatItemImg)
+
+            binding.meChatItemImg.setOnClickListener {
+                val intent = Intent(binding.root.context, PhotoActivity::class.java)
+                intent.putExtra("img", item.profileImage)
+                binding.root.context.startActivity(intent)
+            }
         }
     }
 
@@ -88,8 +97,15 @@ class ChatAdapter(private val myNickName: String) :
         fun bind(item: MessageItem) {
             binding.otherChatItemTxtMessage.text = item.message
             binding.otherChatItemTxtNickname.text = item.nickname
+
             Glide.with(binding.root.context).load(item.profileImage).error(R.drawable.ic_profile)
                 .into(binding.otherChatItemImg)
+
+            binding.otherChatItemImg.setOnClickListener {
+                val intent = Intent(binding.root.context, PhotoActivity::class.java)
+                intent.putExtra("img", item.profileImage)
+                binding.root.context.startActivity(intent)
+            }
         }
     }
 }
