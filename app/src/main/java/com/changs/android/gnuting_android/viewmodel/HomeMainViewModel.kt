@@ -133,7 +133,6 @@ class HomeMainViewModel(
         }.onEach {
             _spinner.value = false
         }.catch { throwable ->
-            _snackbar.value = throwable.message
             _spinner.value = false
         }.launchIn(viewModelScope)
     }

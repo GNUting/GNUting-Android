@@ -2,6 +2,7 @@ package com.changs.android.gnuting_android.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -36,9 +37,8 @@ class ChatListAdapter(private val listener: (Int, String, String) -> Unit) :
         private val binding = ChatItemBinding.bind(itemView)
 
         fun bind(item: ChatListResult, listener: (Int, String, String) -> Unit) {
-            // TODO: response 구조 변경될 예정
 
-            val info = "${item.applyLeaderDepartment} | ${"몇학번인지 표시~"}"
+            val info = "${item.applyLeaderDepartment} | ${item.leaderUserDepartment}"
 
             binding.chatItemTxtTitle.text = item.title
             binding.chatItemTxtInfo.text = info
@@ -47,10 +47,55 @@ class ChatListAdapter(private val listener: (Int, String, String) -> Unit) :
                 listener(item.id, item.title, info)
             }
 
-            binding.chatItemTxtLastMessage.text = "마지막 메세지~"
+            // TODO: api response 구조 바뀌면 적용
+            // binding.chatItemTxtLastMessage.text = "last message"
 
-            Glide.with(binding.root.context).load("").error(R.drawable.ic_profile)
-                .into(binding.chatItemImgProfile)
+            binding.chatItemImgProfile.isVisible = false
+            binding.chatItemClProfileImgCount3Container.isVisible = false
+            binding.chatItemClProfileImgCount4Container.isVisible = false
+
+            when (item.chatRoomUserProfileImages.size) {
+                1 -> {
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0]).error(R.drawable.ic_profile)
+                        .into(binding.chatItemImgProfile)
+
+                    binding.chatItemImgProfile.isVisible = true
+                }
+
+                3 -> {
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0]).error(R.drawable.ic_profile)
+                        .into(binding.chatItemImgProfileImgTypeCount3Img1)
+
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1]).error(R.drawable.ic_profile)
+                        .into(binding.chatItemImgProfileImgTypeCount3Img2)
+
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[2]).error(R.drawable.ic_profile)
+                        .into(binding.chatItemImgProfileImgTypeCount3Img3)
+
+                    binding.chatItemClProfileImgCount3Container.isVisible = true
+                }
+
+                in 4..10 -> {
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0]).error(R.drawable.ic_profile)
+                        .into(binding.chatItemImgProfileImgTypeCount4Img1)
+
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1]).error(R.drawable.ic_profile)
+                        .into(binding.chatItemImgProfileImgTypeCount4Img2)
+
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[2]).error(R.drawable.ic_profile)
+                        .into(binding.chatItemImgProfileImgTypeCount4Img3)
+
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[3]).error(R.drawable.ic_profile)
+                        .into(binding.chatItemImgProfileImgTypeCount4Img4)
+
+                    binding.chatItemClProfileImgCount4Container.isVisible = true
+                }
+
+                else -> {
+
+                }
+
+            }
         }
     }
 }

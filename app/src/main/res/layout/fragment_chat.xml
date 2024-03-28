@@ -49,7 +49,7 @@
             app:layout_constraintEnd_toEndOf="@+id/chat_txt_title"
             app:layout_constraintStart_toStartOf="@+id/chat_txt_title"
             app:layout_constraintTop_toBottomOf="@+id/chat_txt_title"
-            tools:text="컴퓨터과학과 | 23학번" />
+            tools:text="컴퓨터과학과 | 의류학과" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

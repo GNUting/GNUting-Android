@@ -10,5 +10,7 @@ data class ChatListResult(
     @SerializedName("leaderUserDepartment")
     val leaderUserDepartment: String,
     @SerializedName("title")
-    val title: String
+    val title: String,
+    @SerializedName("chatRoomUserProfileImages")
+    val chatRoomUserProfileImages: List<String>
 )

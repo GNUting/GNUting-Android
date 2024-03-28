@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.MessageItem
+import com.changs.android.gnuting_android.databinding.ManagerChatItemBinding
 import com.changs.android.gnuting_android.databinding.MeChatItemBinding
 import com.changs.android.gnuting_android.databinding.OtherChatItemBinding
 import com.changs.android.gnuting_android.ui.PhotoActivity
@@ -32,6 +33,7 @@ class ChatAdapter(private val myNickName: String) :
     }) {
     private val VIEW_TYPE_USER_MESSAGE_ME = 0
     private val VIEW_TYPE_USER_MESSAGE_OTHER = 1
+    private val VIEW_TYPE_USER_MESSAGE_MANAGER = 2
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -39,8 +41,12 @@ class ChatAdapter(private val myNickName: String) :
                 MeViewHolder(parent)
             }
 
-            else -> {
+            VIEW_TYPE_USER_MESSAGE_OTHER -> {
                 OtherViewHolder(parent)
+            }
+
+            else -> {
+                ManagerViewHolder(parent)
             }
         }
     }
@@ -52,21 +58,27 @@ class ChatAdapter(private val myNickName: String) :
                 holder.bind(currentList[position])
             }
 
-            else -> {
+            VIEW_TYPE_USER_MESSAGE_OTHER -> {
                 holder as OtherViewHolder
+                holder.bind(currentList[position])
+            }
+
+            else -> {
+                holder as ManagerViewHolder
                 holder.bind(currentList[position])
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (getItem(position).nickname) {
-            myNickName -> {
-                VIEW_TYPE_USER_MESSAGE_ME
+        return when (getItem(position).messageType) {
+            "CHAT" -> {
+                if (getItem(position).nickname == myNickName) VIEW_TYPE_USER_MESSAGE_ME
+                else VIEW_TYPE_USER_MESSAGE_OTHER
             }
 
             else -> {
-                VIEW_TYPE_USER_MESSAGE_OTHER
+                VIEW_TYPE_USER_MESSAGE_MANAGER
             }
         }
     }
@@ -118,6 +130,16 @@ class ChatAdapter(private val myNickName: String) :
                 intent.putExtra("img", item.profileImage)
                 binding.root.context.startActivity(intent)
             }
+        }
+    }
+
+    class ManagerViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.manager_chat_item, parent, false)
+    ) {
+        private val binding = ManagerChatItemBinding.bind(itemView)
+
+        fun bind(item: MessageItem) {
+            binding.managerChatItemTxtMessage.text = item.message
         }
     }
 }

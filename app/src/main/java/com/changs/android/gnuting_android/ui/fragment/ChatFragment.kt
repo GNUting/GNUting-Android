@@ -54,8 +54,6 @@ class ChatFragment :
         setObserver()
         setListener()
 
-        chatViewModel.connectChatRoom(args.id, ::updateMessage)
-
         binding.chatTxtTitle.text = args.title
         binding.chatTxtInfo.text = args.info
 
@@ -66,11 +64,14 @@ class ChatFragment :
             val messageItem: MessageItem =
                 GsonBuilder().create().fromJson(data, MessageItem::class.java)
 
-            val currentList = adapter.currentList.toMutableList()
-            currentList.add(messageItem)
-            adapter.submitList(currentList) {
-                binding.chatRecyclerview.scrollToPosition(adapter.currentList.size - 1)
+            if (messageItem.messageType == "CHAT") {
+                val currentList = adapter.currentList.toMutableList()
+                currentList.add(messageItem)
+                adapter.submitList(currentList) {
+                    binding.chatRecyclerview.scrollToPosition(adapter.currentList.size - 1)
+                }
             }
+
         }
     }
 
@@ -103,6 +104,8 @@ class ChatFragment :
     private fun setObserver() {
         viewModel.chatsResponse.observe(viewLifecycleOwner) {
             adapter.submitList(it.result)
+
+            chatViewModel.connectChatRoom(args.id, ::updateMessage)
         }
     }
 
