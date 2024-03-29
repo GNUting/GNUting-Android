@@ -47,9 +47,6 @@ class ChatListAdapter(private val listener: (Int, String, String) -> Unit) :
                 listener(item.id, item.title, info)
             }
 
-            // TODO: api response 구조 바뀌면 적용
-            // binding.chatItemTxtLastMessage.text = "last message"
-
             binding.chatItemImgProfile.isVisible = false
             binding.chatItemClProfileImgCount3Container.isVisible = false
             binding.chatItemClProfileImgCount4Container.isVisible = false
