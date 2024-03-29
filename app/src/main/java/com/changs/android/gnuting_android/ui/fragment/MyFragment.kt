@@ -68,7 +68,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
         binding.myTxtMenuLegalNotice.setOnClickListener {
             val intent = Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("https://gnuting.github.io/GNUting-PrivacyPolicy/privacy_policy.pdf")
+                Uri.parse("https://gnuting.github.io/GNUting-PrivacyPolicy/privacy_policy")
             )
             startActivity(intent)
         }
