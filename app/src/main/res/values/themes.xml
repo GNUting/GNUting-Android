@@ -1,9 +1,86 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.GNUtingAndroid" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Theme.GNUtingAndroid" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/main</item>
+        <item name="colorPrimaryDark">@color/main</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorAccent">@color/main</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
     </style>
 
-    <style name="Theme.GNUtingAndroid" parent="Base.Theme.GNUtingAndroid" />
+    <style name="OpensourceLicense" parent="Theme.AppCompat.Light">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <style name="NoMarginsDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="SpinnerDatePickerDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <!--This will change the window dialog background color-->
+        <item name="android:windowBackground">@color/white</item>
+        <!-- This will change the date picker Day/Month/Year Text color-->
+        <item name="android:textColorPrimary">@color/black</item>
+        <!-- This will change the divider color -->
+        <item name="android:colorControlNormal">@color/black</item>
+        <!-- This will set a custom style to the Date Picker eg: spinner mode style -->
+        <item name="android:datePickerStyle">@style/MySpinnerDatePickerStyle</item>
+        <!-- This will set a custom style to the dialog Button Positive-->
+        <item name="android:buttonBarPositiveButtonStyle">@style/MyDatePickerButtonStyle</item>
+        <!-- This will set a custom style to the dialog Button Negative-->
+        <item name="android:buttonBarNegativeButtonStyle">@style/MyDatePickerButtonStyle</item>
+        <!-- This will change the dialog Title Text color -->
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!-- Custom  DatePicker Style-->
+    <style name="MySpinnerDatePickerStyle" parent="android:Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
+
+    <!-- Custom DatePicker Button Style-->
+    <style name="MyDatePickerButtonStyle" parent="android:Widget.Material.Button.Borderless">
+        <item name="android:textColor">@color/main</item>
+    </style>
+
+    <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/gray7</item>
+        <item name="colorControlActivated">@color/main</item>
+        <item name="colorControlHighlight">@color/main</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_dialog_background</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="SpinnerDivideStyle" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@color/gray13</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+
 </resources>

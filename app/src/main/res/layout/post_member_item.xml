@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="9dp"
+    android:orientation="vertical"
+    android:paddingHorizontal="19dp"
+    android:paddingVertical="14dp"
+    android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/post_member_item_info"
+        android:maxLines="1"
+        tools:text="짱짱맨(asd123) 컴퓨터과학과 | 21살 | 20학번"
+        android:textSize="16sp"
+        android:ellipsize="end"
+        android:textColor="#636060"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/post_member_item_intro"
+        android:maxLines="1"
+        android:textSize="16sp"
+        tools:text="안녕하세요 저는 컴퓨터과학과이고 컴퓨터과학을 공부하고 있습니다."
+        android:textColor="#636060"
+        android:ellipsize="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

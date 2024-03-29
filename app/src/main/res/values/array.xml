@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="post_setting">
+        <item><font fgcolor='#0000'>\t\t수정\t\t</font></item>
+        <item><font fgcolor='#0000'>\t\t삭제\t\t</font></item>
+        <item><font fgcolor='#0000'>\t\t신고\t\t</font></item>
+        <item><font fgcolor='#0000'> </font></item>
+    </string-array>
+</resources>

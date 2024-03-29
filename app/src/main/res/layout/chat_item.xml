@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_radius_10dp_stroke_gray9"
+    android:padding="15dp"
+    android:layout_marginBottom="15dp">
+
+    <TextView
+        android:id="@+id/chat_item_txt_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/chat_item_img_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="4:4 과팅 하실 분 연락 주세요~" />
+
+    <TextView
+        android:id="@+id/chat_item_txt_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="컴퓨터과학과 | 23학번"
+        android:textColor="#767676"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/chat_item_txt_title"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/chat_item_cl_profile_img_count_3_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/chat_item_img_profile_img_type_count_3_img1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_profile" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/chat_item_img_profile_img_type_count_3_img2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp"
+            android:layout_marginStart="25dp"
+            android:src="@drawable/ic_profile"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/chat_item_img_profile_img_type_count_3_img3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_profile"
+            android:layout_marginBottom="23dp"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/chat_item_img_profile_img_type_count_3_img2"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/chat_item_img_profile"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:visibility="invisible"
+        android:scaleType="centerCrop"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="1dp"
+        android:src="@drawable/ic_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/chat_item_cl_profile_img_count_4_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/chat_item_img_profile_img_type_count_4_img1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_profile"
+            app:layout_constraintBottom_toTopOf="@+id/chat_item_img_profile_img_type_count_4_img3"
+            app:layout_constraintEnd_toStartOf="@+id/chat_item_img_profile_img_type_count_4_img2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/chat_item_img_profile_img_type_count_4_img2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_profile"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/chat_item_img_profile_img_type_count_4_img4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/chat_item_img_profile_img_type_count_4_img1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/chat_item_img_profile_img_type_count_4_img3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_profile"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/chat_item_img_profile_img_type_count_4_img4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/chat_item_img_profile_img_type_count_4_img4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_profile"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/chat_item_img_profile_img_type_count_4_img3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

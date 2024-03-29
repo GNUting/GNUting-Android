@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.MyFragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="26dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/my_img_profile"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/ic_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/my_txt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/my_img_profile"
+                app:layout_constraintTop_toTopOf="@+id/my_img_profile"
+                android:textSize="18sp"
+                android:layout_marginStart="14dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                tools:text="이름"/>
+
+            <TextView
+                android:id="@+id/my_txt_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:textColor="#767676"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/my_txt_name"
+                app:layout_constraintStart_toEndOf="@+id/my_txt_name"
+                app:layout_constraintTop_toTopOf="@+id/my_txt_name"
+                tools:text="학과 | 나이 | 학번" />
+
+            <TextView
+                android:id="@+id/my_txt_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="자기소개"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/my_txt_name"
+                app:layout_constraintStart_toStartOf="@+id/my_txt_name"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/my_txt_edit_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp"
+            android:gravity="center"
+            android:layout_marginVertical="16dp"
+            android:textColor="@color/black"
+            android:text="프로필 수정"
+            android:textSize="16sp"
+            android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"/>
+
+        <TextView
+            android:id="@+id/my_txt_menu_my_posts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="작성한 글 목록"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="17dp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_arrow_right2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#767676"
+            android:text="고객 지원"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="13dp"
+            android:background="#E9E9E9"/>
+  \
+        <TextView
+            android:id="@+id/my_txt_menu_customer_service_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="고객센터"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="17dp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_arrow_right2" />
+
+        <TextView
+            android:layout_marginTop="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#767676"
+            android:text="계정 관리"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="13dp"
+            android:background="#E9E9E9"/>
+        <TextView
+            android:id="@+id/my_txt_menu_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="로그아웃"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="17dp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_arrow_right2" />
+
+        <TextView
+            android:id="@+id/my_txt_menu_withdrawal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="회원탈퇴"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="17dp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_arrow_right2" />
+
+        <TextView
+            android:layout_marginTop="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#767676"
+            android:text="안내"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="13dp"
+            android:background="#E9E9E9"/>
+        <TextView
+            android:id="@+id/my_txt_menu_announcement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="공지사항"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="17dp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_arrow_right2" />
+
+        <TextView
+            android:id="@+id/my_txt_menu_help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="도움말"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="17dp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_arrow_right2" />
+
+        <TextView
+            android:id="@+id/my_txt_menu_open_source"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="오픈소스 사용"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="17dp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_arrow_right2" />
+
+        <TextView
+            android:id="@+id/my_txt_menu_legal_notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="개인정보 처리방침"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="17dp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_arrow_right2" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>

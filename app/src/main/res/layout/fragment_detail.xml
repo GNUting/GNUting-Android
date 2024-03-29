@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragment.DetailFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingHorizontal="24dp"
+            android:paddingTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/detail_img_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_left"
+                app:layout_constraintBottom_toBottomOf="@+id/detail_txt_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/detail_txt_title" />
+
+            <TextView
+                android:id="@+id/detail_txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="과팅 게시판"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/detail_img_setting"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:src="@drawable/baseline_more_vert_24"
+                app:layout_constraintBottom_toBottomOf="@+id/detail_txt_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/detail_txt_title" />
+
+            <TextView
+                android:id="@+id/detail_txt_post_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="4:4 과팅 하실분 연락 주세요"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="27dp"
+                app:layout_constraintTop_toBottomOf="@+id/detail_txt_title"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <View
+                android:id="@+id/detail_view_line1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e9e9e9"
+                android:layout_marginTop="11dp"
+                app:layout_constraintTop_toBottomOf="@+id/detail_txt_post_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/detail_img_profile"
+                android:layout_marginTop="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintStart_toStartOf="@+id/detail_view_line1"
+                app:layout_constraintTop_toBottomOf="@+id/detail_view_line1"
+                tools:src="@drawable/ic_profile" />
+
+            <TextView
+                android:id="@+id/detail_txt_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray6"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/detail_view_line2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_view_line1"
+                tools:text="16분전" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/detail_ll_profile_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/detail_img_profile"
+                app:layout_constraintStart_toEndOf="@+id/detail_img_profile"
+                app:layout_constraintTop_toTopOf="@+id/detail_img_profile">
+                <TextView
+                    android:id="@+id/detail_txt_nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    tools:text="마산 불주먹"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/detail_txt_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    tools:text="컴퓨터과학과 | 23학번"
+                    android:textColor="#767676"
+                    android:textSize="14sp"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:id="@+id/detail_view_line2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e9e9e9"
+                android:layout_marginTop="9dp"
+                app:layout_constraintTop_toBottomOf="@+id/detail_ll_profile_info"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/detail_txt_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="400dp"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detail_view_line2"
+                tools:text="내용" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="gone"
+                android:id="@+id/detail_ll_spinner"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/detail_img_setting"
+                app:layout_constraintTop_toBottomOf="@+id/detail_img_setting"
+                android:background="@drawable/background_radius_17dp_solid_gray12"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/detail_txt_menu_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:layout_marginVertical="14dp"
+                    android:text="수정"/>
+                <View
+                    android:id="@+id/detail_view_menu_line1"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#C5C5C5"/>
+                <TextView
+                    android:id="@+id/detail_txt_menu_remove"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginVertical="14dp"
+                    android:text="삭제"/>
+                <View
+                    android:id="@+id/detail_view_menu_line2"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#C5C5C5"/>
+                <TextView
+                    android:id="@+id/detail_txt_menu_reportd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginVertical="14dp"
+                    android:text="신고"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/detail_txt_current_participant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_chat_selected"
+        android:gravity="center_vertical"
+        tools:text="현재 채팅/참여중인 사람 O명"
+        android:textColor="@color/main"
+        android:layout_marginBottom="11dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/detail_btn_chat_request"
+        app:layout_constraintEnd_toEndOf="@+id/detail_btn_chat_request"
+        app:layout_constraintStart_toStartOf="@+id/detail_btn_chat_request" />
+
+    <Button
+        android:id="@+id/detail_btn_chat_request"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:layout_marginBottom="22dp"
+        android:paddingVertical="10dp"
+        android:text="채팅 신청하기"
+        android:background="@drawable/background_radius_10dp_solid_main"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        style="?android:attr/borderlessButtonStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
