@@ -85,12 +85,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initFirebaseFcm() {
-        val saveFcmToken = sharedPreferences.getString(Constant.FCM_TOKEN, null)
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
-            if (saveFcmToken != it || saveFcmToken.isNullOrEmpty()) {
-                sharedPreferences.edit().putString(Constant.FCM_TOKEN, it).apply()
                 viewModel.postSaveFcmToken(it)
-            }
         }.addOnFailureListener {
             Snackbar.make(binding.root, "네트워크 에러가 발생했습니다.", Snackbar.LENGTH_SHORT).show()
         }
