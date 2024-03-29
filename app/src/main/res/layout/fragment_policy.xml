@@ -126,18 +126,14 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/policy_txt_privacy_policy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="개인 정보 처리 방침"
                 android:textColor="@color/black"
+                android:drawableEnd="@drawable/arrow_right"
                 android:textSize="15sp"
                 android:layout_weight="1" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/arrow_right"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

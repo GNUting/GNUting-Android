@@ -1,39 +1,24 @@
 package com.changs.android.gnuting_android.ui.fragment
 
-import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.Window
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.util.Util
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
-import com.changs.android.gnuting_android.data.model.Member
-import com.changs.android.gnuting_android.databinding.FragmentJoin1Binding
 import com.changs.android.gnuting_android.databinding.FragmentMyBinding
-import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
-import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.showTwoButtonDialog
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
-import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.google.firebase.installations.Utils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.layout.fragment_my) {
@@ -80,6 +65,14 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
 
     private fun setListener() {
+        binding.myTxtMenuLegalNotice.setOnClickListener {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://gnuting.github.io/GNUting-PrivacyPolicy/privacy_policy.pdf")
+            )
+            startActivity(intent)
+        }
+
         binding.myTxtMenuOpenSource.setOnClickListener {
             startActivity(Intent(requireContext(), OssLicensesMenuActivity::class.java))
             OssLicensesMenuActivity.setActivityTitle("오픈소스 라이선스")
