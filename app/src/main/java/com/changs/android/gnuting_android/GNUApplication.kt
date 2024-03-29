@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.room.Room
+import com.changs.android.gnuting_android.data.repository.AlarmRepository
 import com.changs.android.gnuting_android.data.repository.ApplicationRepository
 import com.changs.android.gnuting_android.data.repository.ChatRepository
 import com.changs.android.gnuting_android.data.repository.PostRepository
@@ -29,6 +30,7 @@ class GNUApplication : Application() {
         lateinit var postRepository: PostRepository
         lateinit var chatRepository: ChatRepository
         lateinit var applicationRepository: ApplicationRepository
+        lateinit var alarmRepository: AlarmRepository
         lateinit var sharedPreferences: SharedPreferences
         var isActiveChatFragment: Boolean? = null
     }
@@ -80,5 +82,6 @@ class GNUApplication : Application() {
         postRepository = PostRepository(retrofit)
         applicationRepository = ApplicationRepository(retrofit)
         chatRepository = ChatRepository(retrofit)
+        alarmRepository = AlarmRepository(retrofit)
     }
 }

@@ -31,7 +31,6 @@ class HomeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getPostList()
-
         setListener()
         setPager()
         setRecyclerView()
@@ -41,6 +40,10 @@ class HomeFragment :
     private fun setListener() {
         binding.homeTxtMoreList.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_postListFragment)
+        }
+
+        binding.homeImgAlarm.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_alarmListFragment)
         }
 
         binding.homeImgProfile.setOnClickListener {

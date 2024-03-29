@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.changs.android.gnuting_android.GNUApplication
+import com.changs.android.gnuting_android.data.model.AlarmListResponse
 import com.changs.android.gnuting_android.data.model.ApplicationResponse
 import com.changs.android.gnuting_android.data.model.ChatListResponse
 import com.changs.android.gnuting_android.data.model.ChatResponse
@@ -29,6 +30,7 @@ import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
+import com.changs.android.gnuting_android.data.repository.AlarmRepository
 import com.changs.android.gnuting_android.data.repository.ApplicationRepository
 import com.changs.android.gnuting_android.data.repository.ChatRepository
 import com.changs.android.gnuting_android.data.repository.PostRepository
@@ -52,7 +54,8 @@ class HomeMainViewModel(
     private val userRepository: UserRepository,
     private val postRepository: PostRepository,
     private val applicationRepository: ApplicationRepository,
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
+    private val alarmRepository: AlarmRepository
 ) : ViewModel() {
     private val myInfoFlow = MutableStateFlow<MyInfoResponse?>(null)
 
@@ -191,6 +194,14 @@ class HomeMainViewModel(
     private val _chatsResponse: MutableLiveData<ChatResponse> = MutableLiveData()
 
     val chatsResponse: LiveData<ChatResponse> get() = _chatsResponse
+
+    private val _deleteAlarmResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val deleteAlarmResponse: LiveData<Event<DefaultResponse>> get() = _deleteAlarmResponse
+
+    private val _alarmListResponse = MutableLiveData<AlarmListResponse>()
+
+    val alarmListResponse: LiveData<AlarmListResponse> get() = _alarmListResponse
 
     var department: String? = null
     var nickname: String? = null
@@ -1286,6 +1297,112 @@ class HomeMainViewModel(
         }
     }
 
+    fun deleteAlarm(id: Int) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val result = alarmRepository.deleteNotification(id)
+                if (result.isSuccessful && result.body() != null) {
+                    _deleteAlarmResponse.value = Event(result.body()!!)
+                    _spinner.value = false
+                } else {
+                    result.errorBody()?.let {
+                        val errorBody = getErrorResponse(it)
+                        errorBody?.let { error ->
+                            _spinner.value = false
+                            if (error.code == "BOARD5003") {
+
+                            } else if (error.code == "TOKEN4001-1") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        RefreshTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        deleteAlarm(id)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _spinner.value = false
+                _snackbar.value = "네트워크 에러가 발생했습니다."
+            }
+        }
+    }
+
+    fun getAlarmList() {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val result = alarmRepository.getAlarmList()
+                if (result.isSuccessful && result.body() != null) {
+                    _alarmListResponse.value = result.body()!!
+                    _spinner.value = false
+                } else {
+                    result.errorBody()?.let {
+                        val errorBody = getErrorResponse(it)
+                        errorBody?.let { error ->
+                            _spinner.value = false
+                            if (error.code == "BOARD5003") {
+
+                            } else if (error.code == "TOKEN4001-1") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        RefreshTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        getAlarmList()
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _spinner.value = false
+                _snackbar.value = "네트워크 에러가 발생했습니다."
+            }
+        }
+    }
+
 
     companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
@@ -1297,7 +1414,8 @@ class HomeMainViewModel(
                     GNUApplication.userRepository,
                     GNUApplication.postRepository,
                     GNUApplication.applicationRepository,
-                    GNUApplication.chatRepository
+                    GNUApplication.chatRepository,
+                    GNUApplication.alarmRepository
                 ) as T
             }
         }

@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_postListFragment"
             app:destination="@id/postListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_alarmListFragment"
+            app:destination="@id/alarmListFragment" />
     </fragment>
     <fragment
         android:id="@+id/myFragment"
@@ -154,4 +157,9 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+    <fragment
+        android:id="@+id/alarmListFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.AlarmListFragment"
+        android:label="fragment_alarm_list"
+        tools:layout="@layout/fragment_alarm_list" />
 </navigation>
