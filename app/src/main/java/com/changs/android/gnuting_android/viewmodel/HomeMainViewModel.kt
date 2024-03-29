@@ -912,7 +912,7 @@ class HomeMainViewModel(
                             } else if (error.code != null && error.code.contains("TOKEN4001")) {
                                 _expirationToken.value = Event(true)
                             } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                                _snackbar.value = error.message
                             }
                         }
                     }

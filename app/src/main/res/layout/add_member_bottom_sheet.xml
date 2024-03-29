@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_close"
         app:layout_constraintBottom_toBottomOf="@+id/add_member_bottom_sheet_txt_title"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/add_member_bottom_sheet_txt_title" />
 
     <TextView

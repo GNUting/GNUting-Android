@@ -30,14 +30,16 @@ class GNUApplication : Application() {
         lateinit var chatRepository: ChatRepository
         lateinit var applicationRepository: ApplicationRepository
         lateinit var sharedPreferences: SharedPreferences
+        var isActiveChatFragment: Boolean? = null
     }
 
     override fun onCreate() {
         super.onCreate()
-
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
+        isActiveChatFragment = false
 
         sharedPreferences = applicationContext.getSharedPreferences("GNU", MODE_PRIVATE)
 

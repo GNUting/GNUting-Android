@@ -56,7 +56,6 @@ class ChatFragment :
 
         binding.chatTxtTitle.text = args.title
         binding.chatTxtInfo.text = args.info
-
     }
 
     private fun updateMessage(data: String) {
@@ -64,27 +63,17 @@ class ChatFragment :
             val messageItem: MessageItem =
                 GsonBuilder().create().fromJson(data, MessageItem::class.java)
 
-            if (messageItem.messageType == "CHAT") {
                 val currentList = adapter.currentList.toMutableList()
                 currentList.add(messageItem)
                 adapter.submitList(currentList) {
                     binding.chatRecyclerview.scrollToPosition(adapter.currentList.size - 1)
                 }
-            }
-
         }
     }
 
     private fun setListener() {
         binding.postListImgBack.setOnClickListener {
             findNavController().popBackStack()
-        }
-
-        binding.chatEdit.setOnEditorActionListener { _, actionId, event ->
-            if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
-                binding.chatImgSend.performClick()
-            }
-            false
         }
 
         binding.chatImgSend.setOnClickListener {
@@ -107,6 +96,16 @@ class ChatFragment :
 
             chatViewModel.connectChatRoom(args.id, ::updateMessage)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        GNUApplication.isActiveChatFragment = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        GNUApplication.isActiveChatFragment = false
     }
 
     override fun onDestroyView() {

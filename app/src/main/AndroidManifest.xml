@@ -17,6 +17,7 @@
         android:theme="@style/Theme.GNUtingAndroid"
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
+
         <activity
             android:name=".ui.PhotoActivity"
             android:exported="false" />
@@ -48,6 +49,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

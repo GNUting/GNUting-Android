@@ -57,10 +57,6 @@ class ProfileSearchDepartmentBottomSheetFragment : BottomSheetDialogFragment() {
             viewModel.getSearchDepartment(binding.searchDepartmentBottomSheetEditSearch.text.toString())
         }
 
-        binding.searchDepartmentBottomSheetImgClose.setOnClickListener {
-            dismiss()
-        }
-
         val adapter = DepartmentAdapter {
             viewModel.choiceDepartment.value = it
             dismiss()

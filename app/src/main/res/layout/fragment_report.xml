@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_close"
             app:layout_constraintBottom_toBottomOf="@+id/report_txt_title"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/report_txt_title" />
 
         <TextView
