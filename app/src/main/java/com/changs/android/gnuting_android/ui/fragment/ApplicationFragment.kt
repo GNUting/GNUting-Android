@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
+import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.databinding.FragmentApplicationBinding
 import com.changs.android.gnuting_android.databinding.FragmentListBinding
@@ -76,8 +78,8 @@ class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(
                 }
             }
 
-            val adapter1 = ApplicationMemberAdapter()
-            val adapter2 = ApplicationMemberAdapter()
+            val adapter1 = ApplicationMemberAdapter(::navigateListener)
+            val adapter2 = ApplicationMemberAdapter(::navigateListener)
 
             binding.applicationTxtRecyclerviewHeader1.text = applyUserDepartment
             binding.applicationTxtRecyclerviewHeader2.text = participantUserDepartment
@@ -108,5 +110,9 @@ class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(
         }
     }
 
+    private fun navigateListener(user: InUser) {
+        val args = bundleOf("user" to user)
+        findNavController().navigate(R.id.photoFragment, args)
+    }
 
 }

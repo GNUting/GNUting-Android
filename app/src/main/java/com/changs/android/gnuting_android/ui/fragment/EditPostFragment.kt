@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android.ui.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -65,7 +66,7 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
     }
 
     private fun setRecyclerView() {
-        adapter = PostMemberAdapter()
+        adapter = PostMemberAdapter(::navigateListener)
         binding.editPostRecyclerview.adapter = adapter
     }
 
@@ -109,5 +110,10 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
         viewModel.patchPostDetailResponse.eventObserve(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
+    }
+
+    private fun navigateListener(user: InUser) {
+        val args = bundleOf("user" to user)
+        findNavController().navigate(R.id.photoFragment, args)
     }
 }

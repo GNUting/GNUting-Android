@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,7 @@ import com.bumptech.glide.util.Util
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
+import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.databinding.FragmentJoin1Binding
 import com.changs.android.gnuting_android.databinding.FragmentMyBinding
@@ -47,6 +49,23 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
             Glide.with(this@MyFragment).load(myInfo.profileImage).error(R.drawable.ic_profile)
                 .into(binding.myImgProfile)
+
+            binding.myImgProfile.setOnClickListener {
+                val myUserInfo = InUser(
+                    age = myInfo.age,
+                    department = myInfo.department,
+                    gender = myInfo.gender,
+                    id = myInfo.id,
+                    nickname = myInfo.nickname,
+                    profileImage = myInfo.profileImage,
+                    studentId = myInfo.studentId,
+                    userRole = myInfo.userRole,
+                    userSelfIntroduction = myInfo.userSelfIntroduction
+                )
+
+                val args = bundleOf("user" to myUserInfo)
+                findNavController().navigate(R.id.photoFragment, args)
+            }
 
             binding.myTxtEditProfile.setOnClickListener {
                 val action = MyFragmentDirections.actionMyFragmentToEditProfileFragment(myInfo)

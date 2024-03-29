@@ -19,9 +19,6 @@
         tools:targetApi="33">
 
         <activity
-            android:name=".ui.PhotoActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.HomeActivity"
             android:exported="false" />
         <activity

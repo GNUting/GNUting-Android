@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.GNUApplication
@@ -82,7 +83,7 @@ class AddMemberBottomSheetFragment(
     }
 
     private fun setRecyclerView() {
-        adapter = PostCurrentMemberAdapter()
+        adapter = PostCurrentMemberAdapter(::navigateListener)
         binding.addMemberBottomSheetRecyclerview.adapter = adapter
 
     }
@@ -147,5 +148,10 @@ class AddMemberBottomSheetFragment(
         super.onDestroyView()
         _binding = null
         memberAddViewModel.currentMember.value = null
+    }
+
+    private fun navigateListener(user: InUser) {
+        val args = bundleOf("user" to user)
+        findNavController().navigate(R.id.photoFragment, args)
     }
 }

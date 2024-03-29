@@ -112,19 +112,25 @@ class ReportFragment :
             reportViewModel.reportCategory = ReportCategory.OTHER
         }
 
-
         binding.reportBtnReport.setOnClickListener {
-            if (binding.reportEdit.text.isNullOrEmpty()) {
-                Snackbar.make(binding.root, "신고 사유를 작성해주세요.", Snackbar.LENGTH_SHORT).show()
-                viewModel.onSnackbarShown()
+            if (args.nickname != null) {
+                // 유저 신고하기
+                Snackbar.make(binding.root, "유저 신고하기는 아직 구현되지 않았습니다.", Snackbar.LENGTH_SHORT).show()
             } else {
-                val reportRequest = ReportRequest(
-                    args.id, reportViewModel.reportCategory.name, binding.reportEdit.text.toString()
-                )
-                viewModel.report(reportRequest)
+                // 게시물 신고하기
+                if (binding.reportEdit.text.isNullOrEmpty()) {
+                    Snackbar.make(binding.root, "신고 사유를 작성해주세요.", Snackbar.LENGTH_SHORT).show()
+                    viewModel.onSnackbarShown()
+                } else {
+                    val reportRequest = ReportRequest(
+                        args.id,
+                        reportViewModel.reportCategory.name,
+                        binding.reportEdit.text.toString()
+                    )
+                    viewModel.report(reportRequest)
+                }
             }
         }
-
 
         binding.reportImgClose.setOnClickListener {
             findNavController().popBackStack()

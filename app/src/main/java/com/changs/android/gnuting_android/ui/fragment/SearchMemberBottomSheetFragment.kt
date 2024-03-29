@@ -9,10 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.GNUApplication
+import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
 import com.changs.android.gnuting_android.databinding.CurrentMemberBottomSheetBinding
@@ -77,7 +80,7 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
     }
 
     private fun setRecyclerView() {
-        adapter = AddMemberAdapter(homeViewModel.myInfo.value?.id) { inUser, isChecked ->
+        adapter = AddMemberAdapter(homeViewModel.myInfo.value?.id, ::navigateListener) { inUser, isChecked ->
             homeViewModel.myInfo.value?.let {
                 val currentMember = mutableListOf<InUser>()
 
@@ -166,6 +169,11 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
         super.onDestroyView()
         viewModel.searchUserResponse.value = null
         _binding = null
+    }
+
+    private fun navigateListener(user: InUser) {
+        val args = bundleOf("user" to user)
+        findNavController().navigate(R.id.photoFragment, args)
     }
 
 }

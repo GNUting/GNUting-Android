@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android.ui.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -59,7 +60,7 @@ class PostFragment :
     }
 
     private fun setRecyclerView() {
-        adapter = PostMemberAdapter()
+        adapter = PostMemberAdapter(::navigateListener)
         binding.postRecyclerview.adapter = adapter
     }
 
@@ -95,5 +96,10 @@ class PostFragment :
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
+    }
+
+    private fun navigateListener(user: InUser) {
+        val args = bundleOf("user" to user)
+        findNavController().navigate(R.id.photoFragment, args)
     }
 }

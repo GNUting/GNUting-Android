@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.Member
@@ -65,16 +67,19 @@ class CurrentMemberBottomSheetFragment(private val currentMember: List<InUser>) 
             dismiss()
         }
 
-        val adapter = PostCurrentMemberAdapter()
+        val adapter = PostCurrentMemberAdapter(::navigateListener)
         binding.currentMemberBottomSheetRecyclerview.adapter = adapter
         adapter.submitList(currentMember)
-
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun navigateListener(user: InUser) {
+        val args = bundleOf("user" to user)
+        findNavController().navigate(R.id.photoFragment, args)
     }
 
 }
