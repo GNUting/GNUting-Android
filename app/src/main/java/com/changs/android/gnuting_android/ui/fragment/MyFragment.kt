@@ -58,10 +58,6 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
             OssLicensesMenuActivity.setActivityTitle("오픈소스 라이선스")
         }
 
-        binding.myTxtMenuReport.setOnClickListener {
-            // TODO: 마이페이지에서 신고 API 개발되면 신고하기 페이지로 이동하는 navigate 추가 예정
-        }
-
         binding.myTxtMenuLogout.setOnClickListener {
             viewModel.logoutUser()
         }

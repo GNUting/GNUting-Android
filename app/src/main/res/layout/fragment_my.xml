@@ -97,16 +97,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="13dp"
             android:background="#E9E9E9"/>
-        <TextView
-            android:id="@+id/my_txt_menu_report"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="신고하기"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginBottom="17dp"
-            android:textStyle="bold"
-            app:drawableEndCompat="@drawable/ic_arrow_right2" />
+  \
         <TextView
             android:id="@+id/my_txt_menu_customer_service_center"
             android:layout_width="match_parent"
@@ -207,7 +198,7 @@
             android:id="@+id/my_txt_menu_legal_notice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="법적 고지"
+            android:text="개인정보 처리방침"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginBottom="17dp"
