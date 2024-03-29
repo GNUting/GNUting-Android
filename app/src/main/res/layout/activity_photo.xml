@@ -7,6 +7,15 @@
     tools:context=".ui.PhotoActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/photo_img_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_report"
+        android:padding="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/photo_img_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
