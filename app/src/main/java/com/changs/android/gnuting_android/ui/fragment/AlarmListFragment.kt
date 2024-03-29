@@ -27,7 +27,7 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getChatRoomList()
+        viewModel.getAlarmList()
         setRecyclerView()
         setListener()
         setObserver()
@@ -45,7 +45,7 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
         }
 
         viewModel.deleteAlarmResponse.observe(viewLifecycleOwner) {
-            viewModel.getChatRoomList()
+            viewModel.getAlarmList()
         }
     }
 
