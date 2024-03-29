@@ -22,14 +22,14 @@ class PolicyFragment :
         super.onViewCreated(view, savedInstanceState)
 
         fun isAllChecked() =
-            binding.policyCheck1.isChecked && binding.policyCheck2.isChecked && binding.policyCheck3.isChecked && binding.policyCheck4.isChecked && binding.policyCheck5.isChecked
+            binding.policyCheck1.isChecked && binding.policyCheck2.isChecked
 
         binding.policyImgBack.setOnClickListener {
             findNavController().popBackStack()
         }
 
         binding.policyBtnNext.setOnClickListener {
-            if (binding.policyCheck1.isChecked && binding.policyCheck2.isChecked && binding.policyCheck3.isChecked) findNavController().navigate(
+            if (binding.policyCheck1.isChecked && binding.policyCheck2.isChecked) findNavController().navigate(
                 R.id.action_policyFragment_to_join1Fragment
             )
             else Snackbar.make(binding.root, "필수 항목을 모두 체크해주세요.", Snackbar.LENGTH_SHORT).show()
@@ -40,9 +40,6 @@ class PolicyFragment :
                 policyCheckAll.isChecked = it
                 policyCheck1.isChecked = it
                 policyCheck2.isChecked = it
-                policyCheck3.isChecked = it
-                policyCheck4.isChecked = it
-                policyCheck5.isChecked = it
             }
         }
 
@@ -53,20 +50,6 @@ class PolicyFragment :
         binding.policyCheck2.setOnClickListener {
             binding.policyCheckAll.isChecked = isAllChecked()
         }
-
-        binding.policyCheck3.setOnClickListener {
-            binding.policyCheckAll.isChecked = isAllChecked()
-        }
-
-        binding.policyCheck4.setOnClickListener {
-            binding.policyCheckAll.isChecked = isAllChecked()
-        }
-
-        binding.policyCheck5.setOnClickListener {
-            binding.policyCheckAll.isChecked = isAllChecked()
-        }
-
-
 
         binding.policyCheckAll.setOnClickListener {
             viewModel.isAllChecked.value = binding.policyCheckAll.isChecked
