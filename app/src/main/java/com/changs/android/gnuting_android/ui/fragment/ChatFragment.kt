@@ -1,6 +1,7 @@
 package com.changs.android.gnuting_android.ui.fragment
 
 import android.os.Bundle
+import android.text.InputFilter
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -79,6 +80,17 @@ class ChatFragment :
     }
 
     private fun setListener() {
+        val inputFilter = InputFilter { _, _, _, dest, dstart, _ ->
+            // 입력된 텍스트에서 줄 수 계산
+            val lineCount = dest.toString().substring(0, dstart).split("\n").size
+
+            // 20줄 이상인 경우 입력 제한
+            if (lineCount >= 20) ""
+            else null
+        }
+
+        binding.chatEdit.filters = arrayOf(inputFilter)
+
         binding.postListImgBack.setOnClickListener {
             findNavController().popBackStack()
         }
