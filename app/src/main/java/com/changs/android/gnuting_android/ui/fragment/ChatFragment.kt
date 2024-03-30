@@ -1,5 +1,6 @@
 package com.changs.android.gnuting_android.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
 import android.util.Log
@@ -19,9 +20,12 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.MessageItem
 import com.changs.android.gnuting_android.databinding.FragmentChatBinding
+import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
+import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -30,18 +34,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class ChatFragment :
     BaseFragment<FragmentChatBinding>(FragmentChatBinding::bind, R.layout.fragment_chat) {
     private val viewModel: HomeMainViewModel by activityViewModels()
-    private val chatViewModel: ChatViewModel by viewModels()
+    private val chatViewModel: ChatViewModel by viewModels { ChatViewModel.Factory }
     private val args: ChatFragmentArgs by navArgs()
-    private val adapter by lazy {
-        ChatAdapter(
-            viewModel.myInfo.value?.nickname ?: "",
-            ::navigateListener
-        )
-    }
+    private var adapter: ChatAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getChats(args.id)
+        chatViewModel.getChats(args.id)
         setRecyclerView()
         setObserver()
         setListener()
@@ -76,24 +75,49 @@ class ChatFragment :
     }
 
     private fun setRecyclerView() {
+        adapter = ChatAdapter(
+            viewModel.myInfo.value?.nickname ?: "", ::navigateListener
+        )
         binding.chatRecyclerview.adapter = adapter
         binding.chatRecyclerview.itemAnimator = null
     }
 
     private fun setObserver() {
+        chatViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
+            GNUApplication.sharedPreferences.edit().clear().apply()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        chatViewModel.spinner.observe(viewLifecycleOwner) { show ->
+            binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        chatViewModel.snackbar.observe(viewLifecycleOwner) { text ->
+            text?.let {
+                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+                chatViewModel.onSnackbarShown()
+            }
+        }
+
         chatViewModel.message.observe(viewLifecycleOwner) {
             val messageItem: MessageItem =
                 GsonBuilder().create().fromJson(it, MessageItem::class.java)
 
-            val currentList = adapter.currentList.toMutableList()
-            currentList.add(messageItem)
-            adapter.submitList(currentList) {
-                binding.chatRecyclerview.scrollToPosition(adapter.currentList.size - 1)
+            adapter?.let {
+                val currentList = it.currentList.toMutableList()
+                currentList.add(messageItem)
+                it.submitList(currentList) {
+                    binding.chatRecyclerview.scrollToPosition(it.currentList.size - 1)
+                }
             }
         }
-        viewModel.chatsResponse.observe(viewLifecycleOwner) {
-            adapter.submitList(it.result) {
-                binding.chatRecyclerview.scrollToPosition(adapter.currentList.size - 1)
+        chatViewModel.chatsResponse.observe(viewLifecycleOwner) { response ->
+            adapter?.let {
+                it.submitList(response.result) {
+                    binding.chatRecyclerview.scrollToPosition(it.currentList.size - 1)
+                }
             }
 
             chatViewModel.connectChatRoom(args.id)
@@ -113,6 +137,7 @@ class ChatFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         chatViewModel.disConnectChatRoom()
+        adapter = null
     }
 
     private fun navigateListener(user: InUser) {
