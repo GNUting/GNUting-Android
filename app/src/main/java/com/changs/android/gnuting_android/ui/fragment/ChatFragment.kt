@@ -112,6 +112,7 @@ class ChatFragment :
     private fun setObserver() {
         viewModel.chatsResponse.observe(viewLifecycleOwner) {
             adapter.submitList(it.result)
+            // binding.chatRecyclerview.scrollToPosition(adapter.currentList.size - 1)
 
             chatViewModel.connectChatRoom(args.id, ::updateMessage)
         }
