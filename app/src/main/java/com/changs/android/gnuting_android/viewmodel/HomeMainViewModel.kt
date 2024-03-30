@@ -40,6 +40,7 @@ import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -1256,6 +1257,7 @@ class HomeMainViewModel(
 
     fun getChatRoomList() {
         viewModelScope.launch {
+            delay(1000)
             try {
                 _spinner.value = true
                 val result = chatRepository.getChatRoomList()
