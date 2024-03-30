@@ -15,7 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class ChatListFragment :
     BaseFragment<FragmentChatListBinding>(FragmentChatListBinding::bind, R.layout.fragment_chat_list) {
     private val viewModel: HomeMainViewModel by activityViewModels()
-    private val adapter by lazy { ChatListAdapter(::itemClickListener) }
+    private var adapter: ChatListAdapter? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getChatRoomList()
@@ -29,12 +29,18 @@ class ChatListFragment :
     }
 
     private fun setRecyclerView() {
+        adapter = ChatListAdapter(::itemClickListener)
         binding.chatListRecyclerview.adapter = adapter
     }
 
     private fun setObserver() {
         viewModel.chatRoomListResponse.observe(viewLifecycleOwner) {
-            adapter.submitList(it.result)
+            adapter?.submitList(it.result)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter = null
     }
 }
