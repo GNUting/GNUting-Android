@@ -30,6 +30,7 @@ import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
+import com.changs.android.gnuting_android.data.model.UserReportRequest
 import com.changs.android.gnuting_android.data.repository.AlarmRepository
 import com.changs.android.gnuting_android.data.repository.ApplicationRepository
 import com.changs.android.gnuting_android.data.repository.ChatRepository
@@ -97,6 +98,11 @@ class HomeMainViewModel(
 
     val reportResponse: LiveData<Event<DefaultResponse>>
         get() = _reportResponse
+
+    private val _userReportResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val userReportResponse: LiveData<Event<DefaultResponse>>
+        get() = _userReportResponse
 
     private val _expirationToken = MutableLiveData<Event<Boolean>>()
 
@@ -743,6 +749,63 @@ class HomeMainViewModel(
                                         GNUApplication.sharedPreferences.edit()
                                             .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
                                         report(reportRequest)
+                                    } else {
+                                        _expirationToken.value = Event(true)
+                                    }
+                                } else {
+                                    _expirationToken.value = Event(true)
+                                }
+
+                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
+                                _expirationToken.value = Event(true)
+                            } else {
+                                _snackbar.value = "네트워크 에러가 발생했습니다."
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _spinner.value = false
+                _snackbar.value = "네트워크 에러가 발생했습니다."
+            }
+        }
+    }
+
+    fun userReport(reportRequest: UserReportRequest) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val result = userRepository.postUserReport(reportRequest)
+                if (result.isSuccessful && result.body() != null) {
+                    _userReportResponse.value = Event(result.body()!!)
+                    _snackbar.value = result.body()!!.result
+                    _spinner.value = false
+
+                } else {
+                    result.errorBody()?.let {
+                        val errorBody = getErrorResponse(it)
+                        errorBody?.let { error ->
+                            _spinner.value = false
+                            if (error.code == "BOARD5003") {
+
+                            } else if (error.code == "TOKEN4001-1") {
+                                GNUApplication.sharedPreferences.edit()
+                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+
+                                val refreshToken = GNUApplication.sharedPreferences.getString(
+                                    Constant.X_REFRESH_TOKEN, null
+                                )
+
+                                if (refreshToken != null) {
+                                    val response = userRepository.postReIssueAccessToken(
+                                        RefreshTokenRequest(refreshToken)
+                                    )
+
+                                    if (response.isSuccessful && response.body() != null) {
+                                        val accessToken = response.body()!!.result.accessToken
+                                        GNUApplication.sharedPreferences.edit()
+                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+                                        userReport(reportRequest)
                                     } else {
                                         _expirationToken.value = Event(true)
                                     }
