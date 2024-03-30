@@ -20,26 +20,10 @@ import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.MessageItem
 import com.changs.android.gnuting_android.databinding.FragmentChatBinding
 import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
-import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.gson.GsonBuilder
-import de.hdodenhof.circleimageview.BuildConfig
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONObject
-import timber.log.Timber
-import ua.naiksoftware.stomp.Stomp
-import ua.naiksoftware.stomp.dto.LifecycleEvent
-import ua.naiksoftware.stomp.dto.StompCommand
-import ua.naiksoftware.stomp.dto.StompHeader
-import ua.naiksoftware.stomp.dto.StompMessage
-import java.util.concurrent.TimeUnit
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -64,19 +48,6 @@ class ChatFragment :
 
         binding.chatTxtTitle.text = args.title
         binding.chatTxtInfo.text = args.info
-    }
-
-    private fun updateMessage(data: String) {
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-            val messageItem: MessageItem =
-                GsonBuilder().create().fromJson(data, MessageItem::class.java)
-
-            val currentList = adapter.currentList.toMutableList()
-            currentList.add(messageItem)
-            adapter.submitList(currentList) {
-                binding.chatRecyclerview.scrollToPosition(adapter.currentList.size - 1)
-            }
-        }
     }
 
     private fun setListener() {
@@ -110,11 +81,20 @@ class ChatFragment :
     }
 
     private fun setObserver() {
+        chatViewModel.message.observe(viewLifecycleOwner) {
+            val messageItem: MessageItem =
+                GsonBuilder().create().fromJson(it, MessageItem::class.java)
+
+            val currentList = adapter.currentList.toMutableList()
+            currentList.add(messageItem)
+            adapter.submitList(currentList) {
+                binding.chatRecyclerview.scrollToPosition(adapter.currentList.size - 1)
+            }
+        }
         viewModel.chatsResponse.observe(viewLifecycleOwner) {
             adapter.submitList(it.result)
-            // binding.chatRecyclerview.scrollToPosition(adapter.currentList.size - 1)
 
-            chatViewModel.connectChatRoom(args.id, ::updateMessage)
+            chatViewModel.connectChatRoom(args.id)
         }
     }
 

@@ -8,7 +8,11 @@ import com.changs.android.gnuting_android.util.Constant.CHAT_URL
 import com.google.gson.GsonBuilder
 import de.hdodenhof.circleimageview.BuildConfig
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -54,17 +58,20 @@ class StompChatSource(private val chatRoomId: Int) {
             .connectTimeout(5000, TimeUnit.MILLISECONDS).addInterceptor(logger).build()
     }
 
-    fun topic(updateMessage: (String) -> Unit) {
+    fun topic() = flow<String> {
         try {
             subscribe = stompClient.topic("/sub/chatRoom/$chatRoomId").subscribe({ data ->
                 Timber.i(data.payload)
-                updateMessage(data.payload)
+                CoroutineScope(Dispatchers.IO).launch {
+                    emit(data.payload)
+                }
+
+
             }, { error -> Timber.e(error.message.toString()) })
         } catch (e: Exception) {
             Timber.e(e.message.toString())
         }
     }
-
 
     fun disConnect() {
         try {
