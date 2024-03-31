@@ -1,5 +1,6 @@
 package com.changs.android.gnuting_android.data.source
 
+import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.MessageItem
@@ -10,9 +11,13 @@ import de.hdodenhof.circleimageview.BuildConfig
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -58,14 +63,15 @@ class StompChatSource(private val chatRoomId: Int) {
             .connectTimeout(5000, TimeUnit.MILLISECONDS).addInterceptor(logger).build()
     }
 
-    fun topic() = flow<String> {
+    val sharedFlow = MutableSharedFlow<String>()
+
+fun topic() {
         try {
             subscribe = stompClient.topic("/sub/chatRoom/$chatRoomId").subscribe({ data ->
                 Timber.i(data.payload)
                 CoroutineScope(Dispatchers.IO).launch {
-                    emit(data.payload)
+                    sharedFlow.emit(data.payload)
                 }
-
 
             }, { error -> Timber.e(error.message.toString()) })
         } catch (e: Exception) {
