@@ -9,8 +9,9 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentStartBinding
 import com.changs.android.gnuting_android.util.setStatusBarOrigin
 import com.changs.android.gnuting_android.util.setStatusBarTransparent
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class StartFragment : BaseFragment<FragmentStartBinding>(FragmentStartBinding::bind, R.layout.fragment_start) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

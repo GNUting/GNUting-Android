@@ -2,10 +2,9 @@ package com.changs.android.gnuting_android.data.repository
 
 import com.changs.android.gnuting_android.data.source.remote.AlarmInterface
 import retrofit2.Retrofit
+import javax.inject.Inject
 
-class AlarmRepository(retrofit: Retrofit) {
-    private val service = retrofit.create(AlarmInterface::class.java)
-
+class AlarmRepository @Inject constructor(private val service: AlarmInterface) {
     suspend fun getAlarmList() = service.getAlarmList()
     suspend fun deleteNotification(id: Int) = service.deleteNotification(id)
 }

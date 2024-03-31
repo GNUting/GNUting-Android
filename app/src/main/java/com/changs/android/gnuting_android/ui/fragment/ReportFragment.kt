@@ -20,9 +20,11 @@ import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.ReportViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class ReportFragment :
     BaseFragment<FragmentReportBinding>(FragmentReportBinding::bind, R.layout.fragment_report) {
     private val args: ReportFragmentArgs by navArgs()

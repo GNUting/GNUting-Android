@@ -23,6 +23,8 @@ import androidx.core.view.WindowCompat
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.BaseResponse
+import com.changs.android.gnuting_android.data.model.MessageItem
+import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -66,9 +68,7 @@ fun Uri.getBitmap(contentResolver: ContentResolver): Bitmap {
 }
 
 fun getErrorResponse(errorBody: ResponseBody): BaseResponse? {
-    return GNUApplication.retrofit.responseBodyConverter<BaseResponse>(
-        BaseResponse::class.java, BaseResponse::class.java.annotations
-    ).convert(errorBody)
+    return GsonBuilder().create().fromJson(errorBody.string(), BaseResponse::class.java)
 }
 
 fun convertMillisecondsToTime(milliseconds: Long): String {

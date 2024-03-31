@@ -16,13 +16,15 @@ import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class ChatListFragment :
     BaseFragment<FragmentChatListBinding>(FragmentChatListBinding::bind, R.layout.fragment_chat_list) {
     private val viewModel: HomeMainViewModel by activityViewModels()
-    private val chatViewModel: ChatViewModel by viewModels() { ChatViewModel.Factory }
+    private val chatViewModel: ChatViewModel by viewModels()
     private var adapter: ChatListAdapter? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -11,9 +11,11 @@ import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentPhotoBinding
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class PhotoFragment : BaseFragment<FragmentPhotoBinding>(FragmentPhotoBinding::bind, R.layout.fragment_photo) {
     private val args: PhotoFragmentArgs by navArgs()
     private val viewModel: HomeMainViewModel by activityViewModels()

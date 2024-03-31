@@ -15,12 +15,14 @@ import com.changs.android.gnuting_android.databinding.FragmentSearchPostListBind
 import com.changs.android.gnuting_android.ui.adapter.PostSearchListPagingAdapter
 import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class SearchPostListFragment : BaseFragment<FragmentSearchPostListBinding>(FragmentSearchPostListBinding::bind, R.layout.fragment_search_post_list), PostItemNavigator {
     private val viewModel: HomeMainViewModel by activityViewModels()
     private lateinit var adapter: PostSearchListPagingAdapter

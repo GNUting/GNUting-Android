@@ -11,12 +11,14 @@ import com.changs.android.gnuting_android.databinding.FragmentMyPostListBinding
 import com.changs.android.gnuting_android.ui.adapter.PostListPagingAdapter
 import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
 @ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class MyPostListFragment : BaseFragment<FragmentMyPostListBinding>(FragmentMyPostListBinding::bind, R.layout.fragment_my_post_list), PostItemNavigator {
     private val viewModel: HomeMainViewModel by activityViewModels()
     private lateinit var adapter: PostListPagingAdapter

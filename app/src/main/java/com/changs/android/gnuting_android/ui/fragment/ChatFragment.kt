@@ -27,14 +27,16 @@ import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class ChatFragment :
     BaseFragment<FragmentChatBinding>(FragmentChatBinding::bind, R.layout.fragment_chat) {
     private val viewModel: HomeMainViewModel by activityViewModels()
-    private val chatViewModel: ChatViewModel by viewModels { ChatViewModel.Factory }
+    private val chatViewModel: ChatViewModel by viewModels()
     private val args: ChatFragmentArgs by navArgs()
     private var adapter: ChatAdapter? = null
 

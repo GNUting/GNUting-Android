@@ -30,9 +30,11 @@ import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel) :
     BottomSheetDialogFragment() {
     private var _binding: SearchMemberBottomSheetBinding? = null

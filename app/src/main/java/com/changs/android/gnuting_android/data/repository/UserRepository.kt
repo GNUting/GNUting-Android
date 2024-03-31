@@ -23,9 +23,9 @@ import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
+import javax.inject.Inject
 
-class UserRepository(retrofit: Retrofit, room: AppDatabase) {
-    private val service = retrofit.create(UserInterface::class.java)
+class UserRepository @Inject constructor(private val service: UserInterface, room: AppDatabase) {
     private val dao = room.userDao()
     suspend fun postMailCertification(mailCertificationRequest: MailCertificationRequest): Response<MailCertificationResponse> =
         service.postMailCertification(mailCertificationRequest)

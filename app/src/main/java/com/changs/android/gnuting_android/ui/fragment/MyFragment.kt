@@ -17,10 +17,12 @@ import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.showTwoButtonDialog
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.layout.fragment_my) {
     private val viewModel: HomeMainViewModel by activityViewModels()
 

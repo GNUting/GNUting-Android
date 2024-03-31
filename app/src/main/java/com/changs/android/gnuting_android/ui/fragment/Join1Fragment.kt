@@ -17,7 +17,9 @@ import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.CertificationViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class Join1Fragment :
     BaseFragment<FragmentJoin1Binding>(FragmentJoin1Binding::bind, R.layout.fragment_join1) {
     private val viewModel: MainViewModel by activityViewModels()

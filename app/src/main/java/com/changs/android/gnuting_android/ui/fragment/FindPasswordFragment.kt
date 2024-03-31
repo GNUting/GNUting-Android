@@ -19,8 +19,10 @@ import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.CertificationViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentFindPasswordBinding::bind, R.layout.fragment_find_password) {
     private val viewModel: MainViewModel by activityViewModels()
     private val certificationViewModel: CertificationViewModel by viewModels()

@@ -22,9 +22,11 @@ import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class SearchDepartmentBottomSheetFragment : BottomSheetDialogFragment() {
     private val viewModel: MainViewModel by activityViewModels()
     private var _binding: SearchDepartmentBottomSheetBinding? = null

@@ -14,10 +14,13 @@ import com.changs.android.gnuting_android.data.repository.PostRepository
 import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import javax.inject.Inject
 
-class MemberAddViewModel(private val postRepository: PostRepository) : ViewModel() {
+@HiltViewModel
+class MemberAddViewModel @Inject constructor(private val postRepository: PostRepository) : ViewModel() {
     val currentMember = MutableLiveData<MutableList<InUser>>()
 
     val searchUserResponse = MutableLiveData<UserSearchResponse>()
@@ -77,20 +80,6 @@ class MemberAddViewModel(private val postRepository: PostRepository) : ViewModel
                 }
             } catch (e: Exception) {
                 _snackbar.value = "네트워크 에러가 발생했습니다."
-            }
-        }
-    }
-
-
-    companion object {
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>, extras: CreationExtras
-            ): T {
-                return MemberAddViewModel(
-                    GNUApplication.postRepository
-                ) as T
             }
         }
     }

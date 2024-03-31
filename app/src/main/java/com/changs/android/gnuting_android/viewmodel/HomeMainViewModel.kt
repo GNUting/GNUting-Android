@@ -39,6 +39,7 @@ import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -50,10 +51,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import timber.log.Timber
+import javax.inject.Inject
 import kotlin.Exception
 
 @ExperimentalCoroutinesApi
-class HomeMainViewModel(
+@HiltViewModel
+class HomeMainViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val postRepository: PostRepository,
     private val applicationRepository: ApplicationRepository,
@@ -771,24 +774,6 @@ class HomeMainViewModel(
             }
         } else {
             _expirationToken.value = Event(true)
-        }
-    }
-
-
-    companion object {
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>, extras: CreationExtras
-            ): T {
-                return HomeMainViewModel(
-                    GNUApplication.userRepository,
-                    GNUApplication.postRepository,
-                    GNUApplication.applicationRepository,
-                    GNUApplication.chatRepository,
-                    GNUApplication.alarmRepository
-                ) as T
-            }
         }
     }
 }

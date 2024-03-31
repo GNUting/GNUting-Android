@@ -19,9 +19,11 @@ import com.changs.android.gnuting_android.ui.adapter.ApplicationAdapter
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::bind, R.layout.fragment_list) {
     private val viewModel: HomeMainViewModel by activityViewModels()
     val applyStateAdapter by lazy { ApplicationAdapter(::applicationItemListener) }

@@ -25,10 +25,12 @@ import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.getBitmap
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
     FragmentEditProflieBinding::bind, R.layout.fragment_edit_proflie
 ) {

@@ -19,13 +19,15 @@ import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class DetailFragment :
     BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::bind, R.layout.fragment_detail) {
     private val viewModel: HomeMainViewModel by activityViewModels()
-    private val memberAddViewModel: MemberAddViewModel by viewModels { MemberAddViewModel.Factory }
+    private val memberAddViewModel: MemberAddViewModel by viewModels()
     private val args: DetailFragmentArgs by navArgs()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -17,12 +17,14 @@ import com.changs.android.gnuting_android.ui.adapter.HomeAdapter
 import com.changs.android.gnuting_android.ui.adapter.ViewPagerAdapter
 import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class HomeFragment :
     BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home),
     PostItemNavigator {

@@ -21,11 +21,14 @@ import com.changs.android.gnuting_android.util.Constant.X_ACCESS_TOKEN
 import com.changs.android.gnuting_android.util.Constant.X_REFRESH_TOKEN
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import javax.inject.Inject
 
-class MainViewModel(private val repository: UserRepository) : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(private val repository: UserRepository) : ViewModel() {
     // 사용자 정보
     var birthDate: String? = null
     var department: String? = null
@@ -315,16 +318,4 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    companion object {
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>, extras: CreationExtras
-            ): T {
-                return MainViewModel(
-                    GNUApplication.userRepository
-                ) as T
-            }
-        }
-    }
 }

@@ -19,7 +19,9 @@ import com.changs.android.gnuting_android.ui.adapter.PostCurrentMemberAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CurrentMemberBottomSheetFragment(private val currentMember: List<InUser>) : BottomSheetDialogFragment() {
     private var _binding: CurrentMemberBottomSheetBinding? = null
     private val binding get() = _binding!!

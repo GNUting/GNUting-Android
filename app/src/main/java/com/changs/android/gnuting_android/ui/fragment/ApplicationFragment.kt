@@ -18,10 +18,12 @@ import com.changs.android.gnuting_android.databinding.FragmentListBinding
 import com.changs.android.gnuting_android.ui.adapter.ApplicationMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(
     FragmentApplicationBinding::bind,
     R.layout.fragment_application

@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import com.changs.android.gnuting_android.R
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 
+@AndroidEntryPoint
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
     lateinit var listener: (Int, Int, Int) -> Unit
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

@@ -1,5 +1,7 @@
 package com.changs.android.gnuting_android.viewmodel
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,12 +19,15 @@ import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
 import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import javax.inject.Inject
 
-class ChatViewModel(
+@HiltViewModel
+class ChatViewModel @Inject constructor(
     private val userRepository: UserRepository, private val chatRepository: ChatRepository
 ) : ViewModel() {
     private var stompChatSource: StompChatSource? = null
@@ -32,10 +37,11 @@ class ChatViewModel(
         stompChatSource = StompChatSource(chatRoomId)
         stompChatSource?.run {
             viewModelScope.launch {
-                topic().collectLatest {
+                sharedFlow.collectLatest {
                     _message.value = it
                 }
             }
+            topic()
             connect()
             setLifecycleSubscribe()
         }
@@ -177,16 +183,4 @@ class ChatViewModel(
         }
     }
 
-    companion object {
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>, extras: CreationExtras
-            ): T {
-                return ChatViewModel(
-                    GNUApplication.userRepository, GNUApplication.chatRepository
-                ) as T
-            }
-        }
-    }
 }

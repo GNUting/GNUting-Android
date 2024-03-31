@@ -14,7 +14,9 @@ import com.changs.android.gnuting_android.databinding.FragmentLoginBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment :
     BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::bind, R.layout.fragment_login) {
     private val viewModel: MainViewModel by activityViewModels()

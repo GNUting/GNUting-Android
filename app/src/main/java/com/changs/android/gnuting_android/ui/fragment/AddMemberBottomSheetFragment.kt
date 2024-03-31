@@ -27,10 +27,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class AddMemberBottomSheetFragment(
     private val memberAddViewModel: MemberAddViewModel, private val boardId: Int
 ) : BottomSheetDialogFragment() {

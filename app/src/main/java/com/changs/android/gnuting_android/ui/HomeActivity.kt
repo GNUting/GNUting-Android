@@ -24,13 +24,15 @@ import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.internal.notify
 
 @ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
-    private val viewModel: HomeMainViewModel by viewModels { HomeMainViewModel.Factory }
+    private val viewModel: HomeMainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -15,8 +15,10 @@ import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.getBitmap
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class Join3Fragment :
     BaseFragment<FragmentJoin3Binding>(FragmentJoin3Binding::bind, R.layout.fragment_join3) {
     private val viewModel: MainViewModel by activityViewModels()

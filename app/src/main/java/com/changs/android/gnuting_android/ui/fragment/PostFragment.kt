@@ -21,13 +21,15 @@ import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class PostFragment :
     BaseFragment<FragmentPostBinding>(FragmentPostBinding::bind, R.layout.fragment_post) {
     private val viewModel: HomeMainViewModel by activityViewModels()
-    private val memberAddViewModel: MemberAddViewModel by viewModels() { MemberAddViewModel.Factory }
+    private val memberAddViewModel: MemberAddViewModel by viewModels()
     private lateinit var adapter: PostMemberAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

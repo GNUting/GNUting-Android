@@ -23,9 +23,11 @@ import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@AndroidEntryPoint
 class ProfileSearchDepartmentBottomSheetFragment : BottomSheetDialogFragment() {
     private val viewModel: HomeMainViewModel by activityViewModels()
     private var _binding: SearchDepartmentBottomSheetBinding? = null

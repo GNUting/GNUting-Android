@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
+import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -17,8 +18,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
 class MyFirebaseMessagingService: FirebaseMessagingService() {
+
+    @Inject
+    lateinit var userRepository : UserRepository
     @OptIn(DelicateCoroutinesApi::class)
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -26,7 +31,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         GlobalScope.launch {
             try {
                 Timber.d("FCM 토큰 저장 $token")
-                GNUApplication.userRepository.postSaveFCMToken(SaveFCMTokenRequest(token))
+                userRepository.postSaveFCMToken(SaveFCMTokenRequest(token))
             } catch (e: Exception) {
                 Timber.d("FCM 토큰 저장 API 에러")
             }
