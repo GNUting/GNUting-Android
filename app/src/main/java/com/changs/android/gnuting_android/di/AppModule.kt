@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android.di
 
 import android.content.Context
 import androidx.room.Room
+import com.changs.android.gnuting_android.BuildConfig
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.source.local.AppDatabase
 import com.changs.android.gnuting_android.data.source.local.UserDao
@@ -18,7 +19,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import de.hdodenhof.circleimageview.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request

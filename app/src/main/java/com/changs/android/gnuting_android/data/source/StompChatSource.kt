@@ -7,7 +7,7 @@ import com.changs.android.gnuting_android.data.model.MessageItem
 import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Constant.CHAT_URL
 import com.google.gson.GsonBuilder
-import de.hdodenhof.circleimageview.BuildConfig
+import com.changs.android.gnuting_android.BuildConfig
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +30,7 @@ import ua.naiksoftware.stomp.dto.StompCommand
 import ua.naiksoftware.stomp.dto.StompHeader
 import ua.naiksoftware.stomp.dto.StompMessage
 import java.util.concurrent.TimeUnit
+
 
 class StompChatSource(private val chatRoomId: Int) {
     private var subscribe: Disposable? = null
