@@ -12,9 +12,11 @@ import com.changs.android.gnuting_android.data.model.PasswordRequest
 import com.changs.android.gnuting_android.data.model.ProfileResponse
 import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenResponse
+import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.model.SignUpResponse
+import com.changs.android.gnuting_android.data.model.UserReportRequest
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -84,4 +86,7 @@ interface UserInterface {
 
     @PATCH("/api/v1/setNewPassword")
     suspend fun patchPassword(@Body request: PasswordRequest): Response<DefaultResponse>
+
+    @POST("/api/v1/userReport")
+    suspend fun postUserReport(@Body reportRequest: UserReportRequest): Response<DefaultResponse>
 }

@@ -30,6 +30,7 @@ import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
+import com.changs.android.gnuting_android.data.model.UserReportRequest
 import com.changs.android.gnuting_android.data.repository.AlarmRepository
 import com.changs.android.gnuting_android.data.repository.ApplicationRepository
 import com.changs.android.gnuting_android.data.repository.ChatRepository
@@ -39,6 +40,7 @@ import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -46,6 +48,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import timber.log.Timber
 import kotlin.Exception
 
@@ -97,6 +100,11 @@ class HomeMainViewModel(
 
     val reportResponse: LiveData<Event<DefaultResponse>>
         get() = _reportResponse
+
+    private val _userReportResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val userReportResponse: LiveData<Event<DefaultResponse>>
+        get() = _userReportResponse
 
     private val _expirationToken = MutableLiveData<Event<Boolean>>()
 
@@ -266,49 +274,12 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = applicationRepository.getReceiveApplicationList()
-                if (result.isSuccessful && result.body() != null) {
-                    _applicationReceiveStateResponse.value = result.body()
-                    _spinner.value = false
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
+                val response = applicationRepository.getReceiveApplicationList()
 
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        getApplicationReceiveList()
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _applicationReceiveStateResponse.value = response.body()
+                }) {
+                    handleTokenExpiration { getApplicationReceiveList() }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -321,50 +292,12 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = applicationRepository.getApplyApplicationList()
-                if (result.isSuccessful && result.body() != null) {
-                    _applicationApplyStateResponse.value = result.body()
-                    _spinner.value = false
+                val response = applicationRepository.getApplyApplicationList()
 
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        getApplicationApplyList()
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _applicationApplyStateResponse.value = response.body()
+                }) {
+                    handleTokenExpiration { getApplicationApplyList() }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -378,50 +311,12 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = postRepository.getPostList(page)
-                if (result.isSuccessful && result.body() != null) {
-                    _postResponse.value = result.body()
-                    _spinner.value = false
+                val response = postRepository.getPostList(page)
 
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        getPostList(page)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _postResponse.value = response.body()
+                }) {
+                    handleTokenExpiration { getPostList(page) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -435,46 +330,12 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = postRepository.getPostDetail(id)
-                if (result.isSuccessful && result.body() != null) {
-                    _postDetailResponse.value = result.body()
-                    _spinner.value = false
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+                val response = postRepository.getPostDetail(id)
 
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        getPostDetail(id)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _postDetailResponse.value = response.body()
+                }) {
+                    handleTokenExpiration { getPostDetail(id) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -487,51 +348,13 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = postRepository.postSave(saveRequest)
-                if (result.isSuccessful && result.body() != null) {
-                    _saveResponse.value = Event(result.body()!!)
+                val response = postRepository.postSave(saveRequest)
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _saveResponse.value = Event(response.body()!!)
                     _snackbar.value = "게시물 작성이 완료되었습니다."
-                    _spinner.value = false
-
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        postSave(saveRequest)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                }) {
+                    handleTokenExpiration { postSave(saveRequest) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -544,50 +367,12 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = applicationRepository.patchRefuse(id)
-                if (result.isSuccessful && result.body() != null) {
-                    _refuseResponse.value = Event(result.body()!!)
-                    _spinner.value = false
+                val response = applicationRepository.patchRefuse(id)
 
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        refuse(id)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _refuseResponse.value = Event(response.body()!!)
+                }) {
+                    handleTokenExpiration { refuse(id) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -600,50 +385,12 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = applicationRepository.postAccept(id)
-                if (result.isSuccessful && result.body() != null) {
-                    _acceptResponse.value = Event(result.body()!!)
-                    _spinner.value = false
+                val response = applicationRepository.postAccept(id)
 
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        accept(id)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _acceptResponse.value = Event(response.body()!!)
+                }) {
+                    handleTokenExpiration { accept(id) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -656,50 +403,12 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = applicationRepository.deleteCancel(id)
-                if (result.isSuccessful && result.body() != null) {
-                    _cancelResponse.value = Event(result.body()!!)
-                    _spinner.value = false
+                val response = applicationRepository.deleteCancel(id)
 
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        cancel(id)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _cancelResponse.value = Event(response.body()!!)
+                }) {
+                    handleTokenExpiration { cancel(id) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -712,51 +421,32 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = postRepository.postReport(reportRequest)
-                if (result.isSuccessful && result.body() != null) {
-                    _reportResponse.value = Event(result.body()!!)
-                    _snackbar.value = result.body()!!.result
-                    _spinner.value = false
+                val response = postRepository.postReport(reportRequest)
 
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
+                handleResult(response = response, handleSuccess = fun() {
+                    _reportResponse.value = Event(response.body()!!)
+                    _snackbar.value = response.body()!!.result
+                }) {
+                    handleTokenExpiration { report(reportRequest) }
+                }
+            } catch (e: Exception) {
+                _spinner.value = false
+                _snackbar.value = "네트워크 에러가 발생했습니다."
+            }
+        }
+    }
 
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
+    fun userReport(reportRequest: UserReportRequest) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val response = userRepository.postUserReport(reportRequest)
 
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        report(reportRequest)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _userReportResponse.value = Event(response.body()!!)
+                    _snackbar.value = response.body()!!.result
+                }) {
+                    handleTokenExpiration { userReport(reportRequest) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -769,51 +459,13 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = postRepository.patchPostDetail(id, saveRequest)
-                if (result.isSuccessful && result.body() != null) {
-                    _patchPostDetailResponse.value = Event(result.body()!!)
+                val response = postRepository.patchPostDetail(id, saveRequest)
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _patchPostDetailResponse.value = Event(response.body()!!)
                     _snackbar.value = "게시물 수정이 완료되었습니다."
-                    _spinner.value = false
-
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        patchSave(id, saveRequest)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                }) {
+                    handleTokenExpiration { patchSave(id, saveRequest) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -826,51 +478,13 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = postRepository.deletePost(id)
-                if (result.isSuccessful && result.body() != null) {
-                    _deletePostResponse.value = Event(result.body()!!)
+                val response = postRepository.deletePost(id)
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _deletePostResponse.value = Event(response.body()!!)
                     _snackbar.value = "게시물 삭제가 완료되었습니다."
-                    _spinner.value = false
-
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        deletePost(id)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                }) {
+                    handleTokenExpiration { deletePost(id) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -883,50 +497,13 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = postRepository.postApply(id, inUser)
-                if (result.isSuccessful && result.body() != null) {
-                    _applyChatResponse.value = Event(result.body()!!)
-                    _spinner.value = false
+                val response = postRepository.postApply(id, inUser)
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _applyChatResponse.value = Event(response.body()!!)
                     _snackbar.value = "채팅 신청하기가 완료되었습니다."
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        postApplyChat(id, inUser)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = error.message
-                            }
-                        }
-                    }
+                }) {
+                    handleTokenExpiration { postApplyChat(id, inUser) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -939,47 +516,12 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = userRepository.postSaveFCMToken(SaveFCMTokenRequest(token))
-                if (result.isSuccessful && result.body() != null) {
+                val response = userRepository.postSaveFCMToken(SaveFCMTokenRequest(token))
+
+                handleResult(response = response, handleSuccess = fun() {
                     _saveFcmTokenResponse.value = Event(true)
-                    _spinner.value = false
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        postSaveFcmToken(token)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            }
-                        }
-                    }
+                }) {
+                    handleTokenExpiration { postSaveFcmToken(token) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -991,56 +533,24 @@ class HomeMainViewModel(
     fun updateProfile(department: String?, nickname: String, userSelfIntroduction: String?) {
         viewModelScope.launch {
             nickNameCheck.value = false
+
             try {
                 _spinner.value = true
-                val result = userRepository.patchProfile(
+                val response = userRepository.patchProfile(
                     department = department,
                     nickname = nickname,
                     profileImage = profileImage,
                     userSelfIntroduction = userSelfIntroduction
                 )
-                if (result.isSuccessful && result.body() != null) {
-                    _profileResponse.value = Event(result.body()!!)
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _profileResponse.value = Event(response.body()!!)
                     _snackbar.value = "프로필 수정이 완료되었습니다."
-                    _spinner.value = false
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        updateProfile(department, nickname, userSelfIntroduction)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
+                }) {
+                    handleTokenExpiration {
+                        updateProfile(
+                            department, nickname, userSelfIntroduction
+                        )
                     }
                 }
             } catch (e: Exception) {
@@ -1060,42 +570,16 @@ class HomeMainViewModel(
                     _expirationToken.value = Event(true)
                     return@launch
                 }
-                val result = userRepository.postLogout(RefreshTokenRequest(refreshToken))
-                if (result.isSuccessful && result.body() != null) {
-                    _logoutResponse.value = Event(result.body()!!)
+                val response = userRepository.postLogout(RefreshTokenRequest(refreshToken))
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _logoutResponse.value = Event(response.body()!!)
                     GNUApplication.sharedPreferences.edit().clear().apply()
-                    myInfo.value?.let { userRepository.deleteUser(it) }
-                    _spinner.value = false
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val response = userRepository.postReIssueAccessToken(
-                                    RefreshTokenRequest(refreshToken)
-                                )
-
-                                if (response.isSuccessful && response.body() != null) {
-                                    val accessToken = response.body()!!.result.accessToken
-                                    GNUApplication.sharedPreferences.edit()
-                                        .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                    logoutUser()
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
+                    myInfo.value?.let {
+                        launch { userRepository.deleteUser(it) }
                     }
+                }) {
+                    handleTokenExpiration { logoutUser() }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -1108,51 +592,14 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = userRepository.deleteWithdrawal()
-                if (result.isSuccessful && result.body() != null) {
-                    _withdrawalResponse.value = Event(result.body()!!)
+                val response = userRepository.deleteWithdrawal()
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _withdrawalResponse.value = Event(response.body()!!)
                     GNUApplication.sharedPreferences.edit().clear().apply()
-                    myInfo.value?.let { userRepository.deleteUser(it) }
-                    _spinner.value = false
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
-
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        withdrawal()
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            } else {
-                                _snackbar.value = "네트워크 에러가 발생했습니다."
-                            }
-                        }
-                    }
+                    myInfo.value?.let { launch { userRepository.deleteUser(it) } }
+                }) {
+                    handleTokenExpiration { withdrawal() }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -1193,49 +640,16 @@ class HomeMainViewModel(
 
     fun getChatRoomList() {
         viewModelScope.launch {
+            delay(1000)
+
             try {
                 _spinner.value = true
-                val result = chatRepository.getChatRoomList()
-                if (result.isSuccessful && result.body() != null) {
-                    _chatRoomListResponse.value = result.body()!!
-                    _spinner.value = false
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
+                val response = chatRepository.getChatRoomList()
 
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        getChatRoomList()
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _chatRoomListResponse.value = response.body()!!
+                }) {
+                    handleTokenExpiration { getChatRoomList() }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -1248,47 +662,12 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = chatRepository.getChats(chatRoomId)
-                if (result.isSuccessful && result.body() != null) {
-                    _chatsResponse.value = result.body()!!
-                    _spinner.value = false
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
+                val response = chatRepository.getChats(chatRoomId)
 
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        getChats(chatRoomId)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _chatsResponse.value = response.body()!!
+                }) {
+                    handleTokenExpiration { getChats(chatRoomId) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -1301,47 +680,12 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = alarmRepository.deleteNotification(id)
-                if (result.isSuccessful && result.body() != null) {
-                    _deleteAlarmResponse.value = Event(result.body()!!)
-                    _spinner.value = false
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
+                val response = alarmRepository.deleteNotification(id)
 
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        deleteAlarm(id)
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _deleteAlarmResponse.value = Event(response.body()!!)
+                }) {
+                    handleTokenExpiration { deleteAlarm(id) }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
@@ -1354,52 +698,79 @@ class HomeMainViewModel(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val result = alarmRepository.getAlarmList()
-                if (result.isSuccessful && result.body() != null) {
-                    _alarmListResponse.value = result.body()!!
-                    _spinner.value = false
-                } else {
-                    result.errorBody()?.let {
-                        val errorBody = getErrorResponse(it)
-                        errorBody?.let { error ->
-                            _spinner.value = false
-                            if (error.code == "BOARD5003") {
+                val response = alarmRepository.getAlarmList()
 
-                            } else if (error.code == "TOKEN4001-1") {
-                                GNUApplication.sharedPreferences.edit()
-                                    .putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                                val refreshToken = GNUApplication.sharedPreferences.getString(
-                                    Constant.X_REFRESH_TOKEN, null
-                                )
-
-                                if (refreshToken != null) {
-                                    val response = userRepository.postReIssueAccessToken(
-                                        RefreshTokenRequest(refreshToken)
-                                    )
-
-                                    if (response.isSuccessful && response.body() != null) {
-                                        val accessToken = response.body()!!.result.accessToken
-                                        GNUApplication.sharedPreferences.edit()
-                                            .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                        getAlarmList()
-                                    } else {
-                                        _expirationToken.value = Event(true)
-                                    }
-                                } else {
-                                    _expirationToken.value = Event(true)
-                                }
-
-                            } else if (error.code != null && error.code.contains("TOKEN4001")) {
-                                _expirationToken.value = Event(true)
-                            }
-                        }
-                    }
+                handleResult(response = response, handleSuccess = fun() {
+                    _alarmListResponse.value = response.body()!!
+                }) {
+                    handleTokenExpiration { getAlarmList() }
                 }
             } catch (e: Exception) {
                 _spinner.value = false
                 _snackbar.value = "네트워크 에러가 발생했습니다."
             }
+        }
+    }
+
+    private suspend fun <T : Any> handleResult(
+        response: Response<T>,
+        handleSuccess: () -> Unit,
+        handleError: (() -> Unit)? = null,
+        handleTokenExpiration: suspend () -> Unit
+    ) {
+        if (response.isSuccessful && response.body() != null) {
+            handleSuccess()
+            _spinner.value = false
+        } else {
+            response.errorBody()?.let { errorBody ->
+                val error = getErrorResponse(errorBody)
+                error?.let {
+                    _spinner.value = false
+                    when {
+                        it.code == "BOARD5003" -> {
+                            // Handle specific error
+                        }
+
+                        it.code == "TOKEN4001-1" -> {
+                            handleTokenExpiration()
+                        }
+
+                        it.code != null && it.code.contains("TOKEN4001") -> {
+                            _expirationToken.value = Event(true)
+                        }
+
+                        else -> {
+                            handleError?.let { handle ->
+                                handle()
+                            }
+                            _snackbar.value = "네트워크 에러가 발생했습니다."
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    private suspend fun handleTokenExpiration(reCallApi: () -> Unit) {
+        GNUApplication.sharedPreferences.edit().putString(Constant.X_ACCESS_TOKEN, null).apply()
+        val refreshToken =
+            GNUApplication.sharedPreferences.getString(Constant.X_REFRESH_TOKEN, null)
+        if (refreshToken != null) {
+            val response = userRepository.postReIssueAccessToken(
+                RefreshTokenRequest(refreshToken)
+            )
+            if (response.isSuccessful && response.body() != null) {
+                val accessToken = response.body()!!.result.accessToken
+                GNUApplication.sharedPreferences.edit()
+                    .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
+
+                reCallApi()
+            } else {
+                _expirationToken.value = Event(true)
+            }
+        } else {
+            _expirationToken.value = Event(true)
         }
     }
 

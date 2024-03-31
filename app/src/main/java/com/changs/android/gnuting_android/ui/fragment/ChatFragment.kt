@@ -1,6 +1,8 @@
 package com.changs.android.gnuting_android.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.InputFilter
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -18,45 +20,27 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.MessageItem
 import com.changs.android.gnuting_android.databinding.FragmentChatBinding
+import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
-import com.changs.android.gnuting_android.util.Constant
+import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
-import de.hdodenhof.circleimageview.BuildConfig
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.logging.HttpLoggingInterceptor
-import org.json.JSONObject
-import timber.log.Timber
-import ua.naiksoftware.stomp.Stomp
-import ua.naiksoftware.stomp.dto.LifecycleEvent
-import ua.naiksoftware.stomp.dto.StompCommand
-import ua.naiksoftware.stomp.dto.StompHeader
-import ua.naiksoftware.stomp.dto.StompMessage
-import java.util.concurrent.TimeUnit
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ChatFragment :
     BaseFragment<FragmentChatBinding>(FragmentChatBinding::bind, R.layout.fragment_chat) {
     private val viewModel: HomeMainViewModel by activityViewModels()
-    private val chatViewModel: ChatViewModel by viewModels()
+    private val chatViewModel: ChatViewModel by viewModels { ChatViewModel.Factory }
     private val args: ChatFragmentArgs by navArgs()
-    private val adapter by lazy {
-        ChatAdapter(
-            viewModel.myInfo.value?.nickname ?: "",
-            ::navigateListener
-        )
-    }
+    private var adapter: ChatAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getChats(args.id)
+        chatViewModel.getChats(args.id)
         setRecyclerView()
         setObserver()
         setListener()
@@ -65,20 +49,18 @@ class ChatFragment :
         binding.chatTxtInfo.text = args.info
     }
 
-    private fun updateMessage(data: String) {
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-            val messageItem: MessageItem =
-                GsonBuilder().create().fromJson(data, MessageItem::class.java)
-
-            val currentList = adapter.currentList.toMutableList()
-            currentList.add(messageItem)
-            adapter.submitList(currentList) {
-                binding.chatRecyclerview.scrollToPosition(adapter.currentList.size - 1)
-            }
-        }
-    }
-
     private fun setListener() {
+        val inputFilter = InputFilter { _, _, _, dest, dstart, _ ->
+            // 입력된 텍스트에서 줄 수 계산
+            val lineCount = dest.toString().substring(0, dstart).split("\n").size
+
+            // 20줄 이상인 경우 입력 제한
+            if (lineCount >= 20) ""
+            else null
+        }
+
+        binding.chatEdit.filters = arrayOf(inputFilter)
+
         binding.postListImgBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -93,15 +75,52 @@ class ChatFragment :
     }
 
     private fun setRecyclerView() {
+        adapter = ChatAdapter(
+            viewModel.myInfo.value?.nickname ?: "", ::navigateListener
+        )
         binding.chatRecyclerview.adapter = adapter
         binding.chatRecyclerview.itemAnimator = null
     }
 
     private fun setObserver() {
-        viewModel.chatsResponse.observe(viewLifecycleOwner) {
-            adapter.submitList(it.result)
+        chatViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
+            GNUApplication.sharedPreferences.edit().clear().apply()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
 
-            chatViewModel.connectChatRoom(args.id, ::updateMessage)
+        chatViewModel.spinner.observe(viewLifecycleOwner) { show ->
+            binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        chatViewModel.snackbar.observe(viewLifecycleOwner) { text ->
+            text?.let {
+                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+                chatViewModel.onSnackbarShown()
+            }
+        }
+
+        chatViewModel.message.observe(viewLifecycleOwner) {
+            val messageItem: MessageItem =
+                GsonBuilder().create().fromJson(it, MessageItem::class.java)
+
+            adapter?.let {
+                val currentList = it.currentList.toMutableList()
+                currentList.add(messageItem)
+                it.submitList(currentList) {
+                    binding.chatRecyclerview.scrollToPosition(it.currentList.size - 1)
+                }
+            }
+        }
+        chatViewModel.chatsResponse.observe(viewLifecycleOwner) { response ->
+            adapter?.let {
+                it.submitList(response.result) {
+                    binding.chatRecyclerview.scrollToPosition(it.currentList.size - 1)
+                }
+            }
+
+            chatViewModel.connectChatRoom(args.id)
         }
     }
 
@@ -118,6 +137,7 @@ class ChatFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         chatViewModel.disConnectChatRoom()
+        adapter = null
     }
 
     private fun navigateListener(user: InUser) {

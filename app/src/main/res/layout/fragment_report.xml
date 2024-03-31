@@ -239,6 +239,8 @@
         android:background="@drawable/background_radius_10dp_stroke_gray9"
         android:gravity="start"
         android:hint="기타 사유를 입력해주세요"
+        android:maxLines="20"
+        android:maxLength="300"
         android:minHeight="100dp"
         android:padding="12dp"
         android:textColorHint="#BEBDBD"

@@ -7,6 +7,8 @@ data class ChatListResult(
     val applyLeaderDepartment: String,
     @SerializedName("id")
     val id: Int,
+    @SerializedName("hasNewMessage")
+    val hasNewMessage: Boolean,
     @SerializedName("leaderUserDepartment")
     val leaderUserDepartment: String,
     @SerializedName("title")

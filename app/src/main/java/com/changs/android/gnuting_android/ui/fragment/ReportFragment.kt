@@ -1,6 +1,7 @@
 package com.changs.android.gnuting_android.ui.fragment
 
 import android.os.Bundle
+import android.text.InputFilter
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.ReportCategory
 import com.changs.android.gnuting_android.data.model.ReportRequest
+import com.changs.android.gnuting_android.data.model.UserReportRequest
 import com.changs.android.gnuting_android.databinding.FragmentReportBinding
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
@@ -69,9 +71,24 @@ class ReportFragment :
         viewModel.reportResponse.eventObserve(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
+
+        viewModel.userReportResponse.eventObserve(viewLifecycleOwner) {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setListener() {
+        val inputFilter = InputFilter { _, _, _, dest, dstart, _ ->
+            // 입력된 텍스트에서 줄 수 계산
+            val lineCount = dest.toString().substring(0, dstart).split("\n").size
+
+            // 20줄 이상인 경우 입력 제한
+            if (lineCount >= 20) ""
+            else null
+        }
+
+        binding.reportEdit.filters = arrayOf(inputFilter)
+
         binding.reportBtnCancel.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -114,8 +131,12 @@ class ReportFragment :
 
         binding.reportBtnReport.setOnClickListener {
             if (args.nickname != null) {
-                // 유저 신고하기
-                Snackbar.make(binding.root, "유저 신고하기는 아직 구현되지 않았습니다.", Snackbar.LENGTH_SHORT).show()
+                val reportRequest = UserReportRequest(
+                    args.nickname!!,
+                    reportViewModel.reportCategory.name,
+                    binding.reportEdit.text.toString()
+                )
+                viewModel.userReport(reportRequest)
             } else {
                 // 게시물 신고하기
                 if (binding.reportEdit.text.isNullOrEmpty()) {

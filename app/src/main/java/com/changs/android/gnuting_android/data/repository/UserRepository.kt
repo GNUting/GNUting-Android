@@ -12,6 +12,7 @@ import com.changs.android.gnuting_android.data.model.PasswordRequest
 import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SignUpResponse
+import com.changs.android.gnuting_android.data.model.UserReportRequest
 import com.changs.android.gnuting_android.data.source.local.AppDatabase
 import com.changs.android.gnuting_android.data.source.remote.UserInterface
 import com.changs.android.gnuting_android.util.FormDataUtil
@@ -116,4 +117,6 @@ class UserRepository(retrofit: Retrofit, room: AppDatabase) {
     suspend fun postEmailVerify(request: EmailVerifyRequest) = service.postEmailVerify(request)
 
     suspend fun patchPassword(request: PasswordRequest) = service.patchPassword(request)
+
+    suspend fun postUserReport(reportRequest: UserReportRequest) = service.postUserReport(reportRequest)
 }

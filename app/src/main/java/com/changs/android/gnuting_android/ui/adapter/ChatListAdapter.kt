@@ -40,6 +40,8 @@ class ChatListAdapter(private val listener: (Int, String, String) -> Unit) :
 
             val info = "${item.applyLeaderDepartment} | ${item.leaderUserDepartment}"
 
+            binding.chatItemImgNew.isVisible = item.hasNewMessage
+
             binding.chatItemTxtTitle.text = item.title
             binding.chatItemTxtInfo.text = info
 
