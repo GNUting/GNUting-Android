@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.StartFragment">
+    tools:context=".ui.fragment.user.StartFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/appCompatImageView"

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingTop="16dp"
     android:paddingHorizontal="24dp"
-    tools:context=".ui.fragment.SearchPostListFragment">
+    tools:context=".ui.fragment.post.SearchPostListFragment">
 
     <ImageView
         android:id="@+id/search_post_list_img_back"

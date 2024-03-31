@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingTop="16dp"
     android:paddingHorizontal="24dp"
-    tools:context=".ui.fragment.PostListFragment">
+    tools:context=".ui.fragment.post.PostListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         app:layout_constraintTop_toTopOf="parent"

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.StartFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.user.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/fragment_start" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.LoginFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.user.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/passwordFragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.PasswordFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.user.PasswordFragment"
         android:label="fragment_password"
         tools:layout="@layout/fragment_password" >
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/policyFragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.PolicyFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.user.PolicyFragment"
         android:label="fragment_policy"
         tools:layout="@layout/fragment_policy" >
         <action
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/join1Fragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.Join1Fragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.user.Join1Fragment"
         android:label="fragment_join1"
         tools:layout="@layout/fragment_join1" >
         <action
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/join2Fragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.Join2Fragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.user.Join2Fragment"
         android:label="fragment_join2"
         tools:layout="@layout/fragment_join2" >
         <action
@@ -64,12 +64,12 @@
     </fragment>
     <fragment
         android:id="@+id/join3Fragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.Join3Fragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.user.Join3Fragment"
         android:label="fragment_join3"
         tools:layout="@layout/fragment_join3" />
     <fragment
         android:id="@+id/findPasswordFragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.FindPasswordFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.user.FindPasswordFragment"
         android:label="fragment_find_password"
         tools:layout="@layout/fragment_find_password" />
 </navigation>
