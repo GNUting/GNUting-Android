@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:textColor="@color/black"
+        android:maxLength="7"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -42,7 +43,7 @@
         app:layout_constraintTop_toTopOf="@+id/application_list_txt_department"
         tools:text="3명" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    정<androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/application_list_ll_status_container"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
