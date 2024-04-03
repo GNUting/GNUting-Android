@@ -109,6 +109,8 @@ class DetailFragment :
                         binding.detailTxtMenuRemove.visibility = View.VISIBLE
                         binding.detailViewMenuLine1.visibility = View.VISIBLE
                         binding.detailViewMenuLine2.visibility = View.VISIBLE
+                    } else {
+                        binding.detailBtnChatRequest.visibility = View.VISIBLE
                     }
                 }
 
@@ -137,6 +139,7 @@ class DetailFragment :
                 binding.detailTxtInfo.text = "${user.department} | ${user.studentId}"
                 binding.detailTxtDetail.text = detail
                 binding.detailTxtCurrentParticipant.text = "과팅 멤버 정보 ${inUser.size}명"
+                binding.detailTxtCurrentParticipant.visibility = View.VISIBLE
                 binding.detailTxtTime.text = time
 
                 binding.detailTxtCurrentParticipant.setOnClickListener {
@@ -146,7 +149,7 @@ class DetailFragment :
 
                 if (status != "OPEN") {
                     binding.detailBtnChatRequest.isEnabled = false
-                    // TODO: 비활성화 색상 표시
+                    binding.detailBtnChatRequest.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
                 }
 
                 binding.detailBtnChatRequest.setOnClickListener {
