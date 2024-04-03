@@ -23,7 +23,7 @@ import com.changs.android.gnuting_android.databinding.PostListItemBinding
 import com.changs.android.gnuting_android.databinding.PostMemberItemBinding
 
 
-class ApplicationAdapter(private val type: Int = 0, private val listener: (ApplicationResult) -> Unit) :
+class ApplicationAdapter(private val type: ApplicationType, private val listener: (ApplicationResult) -> Unit) :
     ListAdapter<ApplicationResult, ApplicationAdapter.ViewHolder>(object : DiffUtil.ItemCallback<ApplicationResult>() {
         override fun areItemsTheSame(oldItem: ApplicationResult, newItem: ApplicationResult): Boolean {
             return oldItem == newItem
@@ -46,14 +46,21 @@ class ApplicationAdapter(private val type: Int = 0, private val listener: (Appli
     ) {
         private val binding = ApplicationListItemBinding.bind(itemView)
 
-        fun bind(type: Int, item: ApplicationResult) {
+        fun bind(type: ApplicationType, item: ApplicationResult) {
             binding.root.setOnClickListener {
                 listener(item)
             }
 
             binding.applicationListTxtMemberCount.text = "${item.applyUserCount}명"
-            if (type == 0) binding.applicationListTxtDepartment.text = item.participantUserDepartment
-            else binding.applicationListTxtDepartment.text = item.applyUserDepartment
+            when(type) {
+                ApplicationType.APPLY -> {
+                    binding.applicationListTxtDepartment.text = item.participantUserDepartment
+                }
+
+                ApplicationType.PARTICIPANT -> {
+                    binding.applicationListTxtDepartment.text = item.applyUserDepartment
+                }
+            }
 
             when (item.applyStatus) {
                 "대기중" -> {
@@ -70,5 +77,9 @@ class ApplicationAdapter(private val type: Int = 0, private val listener: (Appli
                 }
             }
         }
+    }
+
+    enum class ApplicationType {
+        APPLY, PARTICIPANT
     }
 }

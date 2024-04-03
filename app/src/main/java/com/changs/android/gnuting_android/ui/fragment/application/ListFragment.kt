@@ -24,10 +24,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
-class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::bind, R.layout.fragment_list) {
+class ListFragment :
+    BaseFragment<FragmentListBinding>(FragmentListBinding::bind, R.layout.fragment_list) {
     private val applicationViewModel: ApplicationViewModel by viewModels()
-    private val applyStateAdapter by lazy { ApplicationAdapter(0, ::applicationItemListener) }
-    private val receiveStateAdapter by lazy { ApplicationAdapter(1, ::applicationItemListener) }
+    private val applyStateAdapter by lazy {
+        ApplicationAdapter(
+            ApplicationAdapter.ApplicationType.APPLY, ::applicationItemListener
+        )
+    }
+    private val receiveStateAdapter by lazy {
+        ApplicationAdapter(
+            ApplicationAdapter.ApplicationType.PARTICIPANT, ::applicationItemListener
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +48,7 @@ class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::bind
         binding.listTl.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    when(it.position) {
+                    when (it.position) {
                         0 -> {
                             binding.listRecyclerview.adapter = applyStateAdapter
                         }
