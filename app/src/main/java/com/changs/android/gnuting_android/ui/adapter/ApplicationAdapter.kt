@@ -23,7 +23,7 @@ import com.changs.android.gnuting_android.databinding.PostListItemBinding
 import com.changs.android.gnuting_android.databinding.PostMemberItemBinding
 
 
-class ApplicationAdapter(private val listener: (ApplicationResult) -> Unit) :
+class ApplicationAdapter(private val type: Int = 0, private val listener: (ApplicationResult) -> Unit) :
     ListAdapter<ApplicationResult, ApplicationAdapter.ViewHolder>(object : DiffUtil.ItemCallback<ApplicationResult>() {
         override fun areItemsTheSame(oldItem: ApplicationResult, newItem: ApplicationResult): Boolean {
             return oldItem == newItem
@@ -38,7 +38,7 @@ class ApplicationAdapter(private val listener: (ApplicationResult) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.bind(type, currentList[position])
     }
 
     class ViewHolder(parent: ViewGroup, val listener: (ApplicationResult) -> Unit) : RecyclerView.ViewHolder(
@@ -46,13 +46,14 @@ class ApplicationAdapter(private val listener: (ApplicationResult) -> Unit) :
     ) {
         private val binding = ApplicationListItemBinding.bind(itemView)
 
-        fun bind(item: ApplicationResult) {
+        fun bind(type: Int, item: ApplicationResult) {
             binding.root.setOnClickListener {
                 listener(item)
             }
 
             binding.applicationListTxtMemberCount.text = "${item.applyUserCount}명"
-            binding.applicationListTxtDepartment.text = item.applyUserDepartment
+            if (type == 0) binding.applicationListTxtDepartment.text = item.participantUserDepartment
+            else binding.applicationListTxtDepartment.text = item.applyUserDepartment
 
             when (item.applyStatus) {
                 "대기중" -> {

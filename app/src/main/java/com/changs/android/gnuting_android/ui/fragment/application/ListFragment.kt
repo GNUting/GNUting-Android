@@ -19,8 +19,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ListFragment : BaseFragment<FragmentListBinding>(FragmentListBinding::bind, R.layout.fragment_list) {
     private val viewModel: HomeMainViewModel by activityViewModels()
-    val applyStateAdapter by lazy { ApplicationAdapter(::applicationItemListener) }
-    val receiveStateAdapter by lazy { ApplicationAdapter(::applicationItemListener) }
+    val applyStateAdapter by lazy { ApplicationAdapter(0, ::applicationItemListener) }
+    val receiveStateAdapter by lazy { ApplicationAdapter(1, ::applicationItemListener) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
