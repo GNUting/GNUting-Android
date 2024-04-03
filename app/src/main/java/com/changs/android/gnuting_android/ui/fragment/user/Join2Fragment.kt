@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android.ui.fragment.user
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -119,8 +120,7 @@ class Join2Fragment :
             viewModel.nickNameCheck.value?.let {
                 if (it && !viewModel.nickname.isNullOrEmpty() && binding.join2EditNickname.text.toString() == viewModel.nickname) {
                     if (viewModel.name == null || viewModel.phoneNumber == null || viewModel.gender == null || viewModel.department == null || viewModel.studentId == null) {
-                        Snackbar.make(binding.root, "입력되지 않은 항목이 있습니다.", Snackbar.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(requireContext(), "입력되지 않은 항목이 있습니다.", Toast.LENGTH_SHORT).show()
                     } else {
                         val regex = Regex("^\\d{3}-\\d{4}-\\d{4}$")
                         val isValid = regex.matches(viewModel.phoneNumber!!)
@@ -128,15 +128,13 @@ class Join2Fragment :
                         if (isValid) {
                             findNavController().navigate(R.id.action_join2Fragment_to_join3Fragment)
                         } else {
-                            Snackbar.make(
-                                binding.root, "전화번호 형식이 올바르지 않습니다.", Snackbar.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(requireContext(), "전화번호 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } else {
-                    Snackbar.make(binding.root, "닉네임 인증이 완료되지 않았습니다.", Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
                 }
-            } ?: Snackbar.make(binding.root, "닉네임 인증이 완료되지 않았습니다.", Snackbar.LENGTH_SHORT).show()
+            } ?:     Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 

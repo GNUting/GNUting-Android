@@ -1,18 +1,22 @@
 package com.changs.android.gnuting_android.ui.fragment.report
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.ReportCategory
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.UserReportRequest
 import com.changs.android.gnuting_android.databinding.FragmentReportBinding
+import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.ReportViewModel
@@ -67,11 +71,28 @@ class ReportFragment :
     }
 
     private fun setObserver() {
-        viewModel.reportResponse.eventObserve(viewLifecycleOwner) {
+        reportViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
+            GNUApplication.sharedPreferences.edit().clear().apply()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        reportViewModel.spinner.observe(viewLifecycleOwner) { show ->
+            binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        reportViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
+            text?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        reportViewModel.reportResponse.eventObserve(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
 
-        viewModel.userReportResponse.eventObserve(viewLifecycleOwner) {
+        reportViewModel.userReportResponse.eventObserve(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
     }
@@ -135,19 +156,18 @@ class ReportFragment :
                     reportViewModel.reportCategory.name,
                     binding.reportEdit.text.toString()
                 )
-                viewModel.userReport(reportRequest)
+                reportViewModel.userReport(reportRequest)
             } else {
                 // 게시물 신고하기
                 if (binding.reportEdit.text.isNullOrEmpty()) {
-                    Snackbar.make(binding.root, "신고 사유를 작성해주세요.", Snackbar.LENGTH_SHORT).show()
-                    viewModel.onSnackbarShown()
+                    Toast.makeText(requireContext(), "신고 사유를 작성해주세요.", Toast.LENGTH_SHORT).show()
                 } else {
                     val reportRequest = ReportRequest(
                         args.id,
                         reportViewModel.reportCategory.name,
                         binding.reportEdit.text.toString()
                     )
-                    viewModel.report(reportRequest)
+                    reportViewModel.report(reportRequest)
                 }
             }
         }

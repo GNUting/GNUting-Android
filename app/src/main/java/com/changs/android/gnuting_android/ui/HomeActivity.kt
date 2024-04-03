@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -68,7 +69,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         viewModel.expirationToken.eventObserve(this) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
+            sharedPreferences.edit().clear().apply()
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
@@ -78,10 +79,9 @@ class HomeActivity : AppCompatActivity() {
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
 
-        viewModel.snackbar.observe(this) { text ->
+        viewModel.toast.eventObserve(this) { text ->
             text?.let {
-                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
-                viewModel.onSnackbarShown()
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -90,7 +90,7 @@ class HomeActivity : AppCompatActivity() {
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
                 viewModel.postSaveFcmToken(it)
         }.addOnFailureListener {
-            Snackbar.make(binding.root, "네트워크 에러가 발생했습니다.", Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, "네트워크 에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -91,10 +92,9 @@ class ChatFragment :
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
 
-        chatViewModel.snackbar.observe(viewLifecycleOwner) { text ->
+        chatViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
-                chatViewModel.onSnackbarShown()
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }
 

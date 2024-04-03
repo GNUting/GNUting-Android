@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android.ui.fragment.post
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -20,6 +21,7 @@ import com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchMemberBo
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
+import com.changs.android.gnuting_android.viewmodel.PostViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,13 +32,14 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
     FragmentEditPostBinding::bind, R.layout.fragment_edit_post
 ) {
     private val viewModel: HomeMainViewModel by activityViewModels()
+    private val postViewModel: PostViewModel by viewModels()
     private val memberAddViewModel: MemberAddViewModel by viewModels()
     private lateinit var adapter: PostMemberAdapter
     private val args: EditPostFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getPostDetail(args.id)
+        postViewModel.getPostDetail(args.id)
         setRecyclerView()
         setListener()
         setObserver()
@@ -59,10 +62,10 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
                         title = binding.editPostEditTitle.text.toString(),
                         inUser = memberAddViewModel.currentMember.value!!.toList()
                     )
-                    viewModel.patchSave(args.id, request)
+                    postViewModel.patchSave(args.id, request)
                 }
             } else {
-                Snackbar.make(binding.root, "게시글 작성을 완료해주세요.", Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "게시글 작성을 완료해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -73,6 +76,22 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
     }
 
     private fun setObserver() {
+        postViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
+            GNUApplication.sharedPreferences.edit().clear().apply()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        postViewModel.spinner.observe(viewLifecycleOwner) { show ->
+            binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        postViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
+            text?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
         memberAddViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
             GNUApplication.sharedPreferences.edit().clear().apply()
             val intent = Intent(requireContext(), MainActivity::class.java)
@@ -80,7 +99,7 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
             startActivity(intent)
         }
 
-        viewModel.postDetailResponse.observe(viewLifecycleOwner) {
+        postViewModel.postDetailResponse.observe(viewLifecycleOwner) {
             it.result.apply {
                 binding.editPostEditTitle.setText(title)
                 binding.editPostEditDetail.setText(detail)
@@ -109,7 +128,7 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
             memberAddViewModel.currentMember.value = mutableListOf(myUserInfo)
         }
 
-        viewModel.patchPostDetailResponse.eventObserve(viewLifecycleOwner) {
+        postViewModel.patchPostDetailResponse.eventObserve(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
     }

@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android.ui.fragment.post
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -21,6 +22,8 @@ import com.changs.android.gnuting_android.ui.fragment.bottomsheet.CurrentMemberB
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
+import com.changs.android.gnuting_android.viewmodel.PostViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -29,11 +32,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class DetailFragment :
     BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::bind, R.layout.fragment_detail) {
     private val viewModel: HomeMainViewModel by activityViewModels()
+    private val postViewModel: PostViewModel by viewModels()
     private val memberAddViewModel: MemberAddViewModel by viewModels()
     private val args: DetailFragmentArgs by navArgs()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getPostDetail(args.id)
+        postViewModel.getPostDetail(args.id)
         setListener()
         setObserver()
     }
@@ -59,7 +63,7 @@ class DetailFragment :
         }
 
         binding.detailTxtMenuRemove.setOnClickListener {
-            viewModel.deletePost(args.id)
+            postViewModel.deletePost(args.id)
         }
 
         binding.detailTxtMenuReportd.setOnClickListener {
@@ -69,6 +73,23 @@ class DetailFragment :
     }
 
     private fun setObserver() {
+        postViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
+            GNUApplication.sharedPreferences.edit().clear().apply()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        postViewModel.spinner.observe(viewLifecycleOwner) { show ->
+            binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        postViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
+            text?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
+
         memberAddViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
             GNUApplication.sharedPreferences.edit().clear().apply()
             val intent = Intent(requireContext(), MainActivity::class.java)
@@ -76,10 +97,10 @@ class DetailFragment :
             startActivity(intent)
         }
 
-        viewModel.deletePostResponse.eventObserve(viewLifecycleOwner) {
+        postViewModel.deletePostResponse.eventObserve(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
-        viewModel.postDetailResponse.observe(viewLifecycleOwner) {
+        postViewModel.postDetailResponse.observe(viewLifecycleOwner) {
             it.result.apply {
                 viewModel.myInfo.value?.let { myInfo ->
                     if (myInfo.nickname == user.nickname) {

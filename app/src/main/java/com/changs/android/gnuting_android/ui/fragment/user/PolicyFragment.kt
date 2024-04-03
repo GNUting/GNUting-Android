@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
@@ -21,8 +22,7 @@ class PolicyFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fun isAllChecked() =
-            binding.policyCheck1.isChecked && binding.policyCheck2.isChecked
+        fun isAllChecked() = binding.policyCheck1.isChecked && binding.policyCheck2.isChecked
 
         binding.policyImgBack.setOnClickListener {
             findNavController().popBackStack()
@@ -40,7 +40,7 @@ class PolicyFragment :
             if (binding.policyCheck1.isChecked && binding.policyCheck2.isChecked) findNavController().navigate(
                 R.id.action_policyFragment_to_join1Fragment
             )
-            else Snackbar.make(binding.root, "필수 항목을 모두 체크해주세요.", Snackbar.LENGTH_SHORT).show()
+            else Toast.makeText(requireContext(), "필수 항목을 모두 체크해주세요.", Toast.LENGTH_SHORT).show()
         }
 
         viewModel.isAllChecked.observe(viewLifecycleOwner) {

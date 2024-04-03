@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AnticipateInterpolator
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -21,11 +22,13 @@ import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.databinding.ActivityMainBinding
 import com.changs.android.gnuting_android.util.Constant
+import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -38,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.w("test", "Fetching FCM registration token failed", task.exception)
+                Timber.w("Fetching FCM registration token failed: ${task.exception}")
                 return@OnCompleteListener
             }
 
@@ -46,13 +49,22 @@ class MainActivity : AppCompatActivity() {
             val token = task.result
 
             // Log and toast
-            Log.d("fcmtoken", token.toString())
+            Timber.d("FCM Token: $token")
         })
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             splashScreen.setOnExitAnimationListener {
-                if (GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null) != null) {
-                    Log.d("token", GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null).toString())
+                if (GNUApplication.sharedPreferences.getString(
+                        Constant.X_ACCESS_TOKEN, null
+                    ) != null
+                ) {
+                    Timber.d(
+                        "Token: ${
+                            GNUApplication.sharedPreferences.getString(
+                                Constant.X_ACCESS_TOKEN, null
+                            )
+                        }"
+                    )
                     val intent = Intent(this, HomeActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
@@ -62,9 +74,12 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             if (GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null) != null) {
-                Log.d("token",
-                    GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null)
-                        .toString()
+                Timber.d(
+                    "Token: ${
+                        GNUApplication.sharedPreferences.getString(
+                            Constant.X_ACCESS_TOKEN, null
+                        )
+                    }"
                 )
                 val intent = Intent(this, HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -76,10 +91,9 @@ class MainActivity : AppCompatActivity() {
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
 
-        viewModel.snackbar.observe(this) { text ->
+        viewModel.toast.eventObserve(this) { text ->
             text?.let {
-                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
-                viewModel.onSnackbarShown()
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
 

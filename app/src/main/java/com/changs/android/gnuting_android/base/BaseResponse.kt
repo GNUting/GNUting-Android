@@ -1,4 +1,4 @@
-package com.changs.android.gnuting_android.data.model
+package com.changs.android.gnuting_android.base
 
 import com.google.gson.annotations.SerializedName
 

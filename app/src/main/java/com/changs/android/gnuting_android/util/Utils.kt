@@ -15,15 +15,11 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.WindowCompat
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
-import com.changs.android.gnuting_android.data.model.BaseResponse
-import com.changs.android.gnuting_android.data.model.MessageItem
+import com.changs.android.gnuting_android.base.BaseResponse
 import com.google.gson.GsonBuilder
 import okhttp3.ResponseBody
 import timber.log.Timber

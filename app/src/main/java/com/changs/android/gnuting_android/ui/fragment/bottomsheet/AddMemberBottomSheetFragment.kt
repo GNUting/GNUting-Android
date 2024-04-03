@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
@@ -19,9 +21,11 @@ import com.changs.android.gnuting_android.ui.adapter.PostCurrentMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
+import com.changs.android.gnuting_android.viewmodel.PostViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -33,6 +37,7 @@ class AddMemberBottomSheetFragment(
 ) : BottomSheetDialogFragment() {
     private var _binding: AddMemberBottomSheetBinding? = null
     private val viewModel: HomeMainViewModel by activityViewModels()
+    private val postViewModel: PostViewModel by viewModels()
     private lateinit var adapter: PostCurrentMemberAdapter
     private val binding get() = _binding!!
 
@@ -98,13 +103,29 @@ class AddMemberBottomSheetFragment(
 
         binding.addMemberBottomSheetBtnChatRequest.setOnClickListener {
             memberAddViewModel.currentMember.value?.let {
-                viewModel.postApplyChat(boardId, it.toList())
-                dismiss()
+                postViewModel.postApplyChat(boardId, it.toList())
             }
         }
     }
 
     private fun setObserver() {
+        postViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
+            GNUApplication.sharedPreferences.edit().clear().apply()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        postViewModel.spinner.observe(viewLifecycleOwner) { show ->
+            binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        postViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
+            text?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
+
         memberAddViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
             GNUApplication.sharedPreferences.edit().clear().apply()
 
@@ -136,8 +157,8 @@ class AddMemberBottomSheetFragment(
             memberAddViewModel.currentMember.value = mutableListOf(myUserInfo)
         }
 
-        viewModel.applyChatResponse.eventObserve(viewLifecycleOwner) {
-            findNavController().popBackStack()
+        postViewModel.applyChatResponse.eventObserve(viewLifecycleOwner) {
+            dismiss()
         }
     }
 

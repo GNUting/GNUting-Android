@@ -2,6 +2,7 @@ package com.changs.android.gnuting_android.ui.fragment.user
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -32,7 +33,7 @@ class Join1Fragment :
     private fun setListener() {
         binding.join1BtnCertificationConfirmation.setOnClickListener {
             if (certificationViewModel.customTimerDuration.value == 0L) {
-                Snackbar.make(binding.root, "인증 시간이 초과되었습니다.", Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "인증 시간이 초과되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
                 val certificationNumber = binding.join1EditCertificationNumber.text.toString()
                 viewModel.postEmailVerify(certificationNumber)
@@ -82,7 +83,7 @@ class Join1Fragment :
                 if (binding.join1EditPassword.text.toString()
                         .isEmpty() || binding.join1EditPasswordCheck.text.toString().isEmpty()
                 ) {
-                    Snackbar.make(binding.root, "비빌번호 입력이 완료되지 않았습니다.", Snackbar.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), "비빌번호 입력이 완료되지 않았습니다.", Toast.LENGTH_SHORT)
                         .show()
                 } else {
                     if (binding.join1EditPassword.text.toString() == binding.join1EditPasswordCheck.text.toString()) {
@@ -90,7 +91,7 @@ class Join1Fragment :
                             viewModel.password = binding.join1EditPassword.text.toString()
                             findNavController().navigate(R.id.action_join1Fragment_to_join2Fragment)
                         } else {
-                            Snackbar.make(binding.root, "비밀번호가 유효하지 않습니다.", Snackbar.LENGTH_SHORT)
+                            Toast.makeText(requireContext(), "비밀번호가 유효하지 않습니다.", Toast.LENGTH_SHORT)
                                 .show()
                         }
                     } else {
@@ -99,7 +100,7 @@ class Join1Fragment :
                     }
                 }
             } else {
-                Snackbar.make(binding.root, "이메일 인증이 완료되지 않았습니다.", Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "이메일 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }

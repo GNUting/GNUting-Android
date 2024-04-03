@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
@@ -85,11 +86,12 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
                             userSelfIntroduction = binding.editProfileEditIntro.text.toString()
                         )
                     } else {
-                        Snackbar.make(binding.root, "닉네임 인증이 완료되지 않았습니다.", Snackbar.LENGTH_SHORT)
+                        Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT)
                             .show()
                     }
-                } ?: Snackbar.make(binding.root, "닉네임 인증이 완료되지 않았습니다.", Snackbar.LENGTH_SHORT)
+                } ?: Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT)
                     .show()
+
             } else {
                 viewModel.updateProfile(
                     department = binding.editProfileTxtMajor.text.toString(),

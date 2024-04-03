@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.changs.android.gnuting_android.GNUApplication
+import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.ChatListResponse
 import com.changs.android.gnuting_android.data.model.ChatResponse
 import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
@@ -27,9 +28,8 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatViewModel @Inject constructor(
-    private val userRepository: UserRepository, private val chatRepository: ChatRepository
-) : ViewModel() {
+class ChatViewModel @Inject constructor(private val chatRepository: ChatRepository
+) : BaseViewModel() {
     private var stompChatSource: StompChatSource? = null
     private val _message: MutableLiveData<String> = MutableLiveData()
     val message: LiveData<String> get() = _message
@@ -55,26 +55,6 @@ class ChatViewModel @Inject constructor(
         stompChatSource?.sendMessage(message)
     }
 
-    private val _snackbar = MutableLiveData<String?>()
-
-    val snackbar: LiveData<String?>
-        get() = _snackbar
-
-    private val _spinner = MutableLiveData<Boolean>(false)
-
-    val spinner: LiveData<Boolean>
-        get() = _spinner
-
-
-    fun onSnackbarShown() {
-        _snackbar.value = null
-    }
-
-    private val _expirationToken = MutableLiveData<Event<Boolean>>()
-
-    val expirationToken: LiveData<Event<Boolean>>
-        get() = _expirationToken
-
     private val _chatRoomListResponse: MutableLiveData<ChatListResponse> = MutableLiveData()
 
     val chatRoomListResponse: LiveData<ChatListResponse> get() = _chatRoomListResponse
@@ -94,7 +74,7 @@ class ChatViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _spinner.value = false
-                _snackbar.value = "네트워크 에러가 발생했습니다."
+                _toast.value = Event("네트워크 에러가 발생했습니다.")
             }
         }
     }
@@ -116,70 +96,8 @@ class ChatViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _spinner.value = false
-                _snackbar.value = "네트워크 에러가 발생했습니다."
+                _toast.value = Event("네트워크 에러가 발생했습니다.")
             }
-        }
-    }
-
-    private suspend fun <T : Any> handleResult(
-        response: Response<T>,
-        handleSuccess: () -> Unit,
-        handleError: (() -> Unit)? = null,
-        handleTokenExpiration: suspend () -> Unit
-    ) {
-        if (response.isSuccessful && response.body() != null) {
-            handleSuccess()
-            _spinner.value = false
-        } else {
-            response.errorBody()?.let { errorBody ->
-                val error = getErrorResponse(errorBody)
-                error?.let {
-                    _spinner.value = false
-                    when {
-                        it.code == "BOARD5003" -> {
-                            // Handle specific error
-                        }
-
-                        it.code == "TOKEN4001-1" -> {
-                            handleTokenExpiration()
-                        }
-
-                        it.code != null && it.code.contains("TOKEN4001") -> {
-                            _expirationToken.value = Event(true)
-                        }
-
-                        else -> {
-                            handleError?.let { handle ->
-                                handle()
-                            }
-                            _snackbar.value = "네트워크 에러가 발생했습니다."
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    private suspend fun handleTokenExpiration(reCallApi: () -> Unit) {
-        GNUApplication.sharedPreferences.edit().putString(Constant.X_ACCESS_TOKEN, null).apply()
-        val refreshToken =
-            GNUApplication.sharedPreferences.getString(Constant.X_REFRESH_TOKEN, null)
-        if (refreshToken != null) {
-            val response = userRepository.postReIssueAccessToken(
-                RefreshTokenRequest(refreshToken)
-            )
-            if (response.isSuccessful && response.body() != null) {
-                val accessToken = response.body()!!.result.accessToken
-                GNUApplication.sharedPreferences.edit()
-                    .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-
-                reCallApi()
-            } else {
-                _expirationToken.value = Event(true)
-            }
-        } else {
-            _expirationToken.value = Event(true)
         }
     }
 

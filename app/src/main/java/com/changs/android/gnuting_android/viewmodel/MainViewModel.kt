@@ -75,19 +75,16 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
     val passwordResponse: LiveData<Event<DefaultResponse>>
         get() = _passwordResponse
 
-    private val _snackbar = MutableLiveData<String?>()
+    private val _toast = MutableLiveData<Event<String?>>()
 
-    val snackbar: LiveData<String?>
-        get() = _snackbar
+    val toast: LiveData<Event<String?>>
+        get() = _toast
+
 
     private val _spinner = MutableLiveData<Boolean>(false)
 
     val spinner: LiveData<Boolean>
         get() = _spinner
-
-    fun onSnackbarShown() {
-        _snackbar.value = null
-    }
 
     fun getCheckNickName(inputNickname: String?) {
         viewModelScope.launch {
@@ -98,7 +95,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                     if (result.isSuccessful && result.body() != null) {
                         nickname = inputNickname
                         _nickNameCheck.value = result.body()!!.result
-                        _snackbar.value = result.body()!!.message
+                        _toast.value = Event(result.body()!!.message)
                         _spinner.value = false
                     } else {
                         nickname = null
@@ -107,7 +104,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _snackbar.value = error.message
+                                _toast.value = Event(error.message)
                             }
                         }
                     }
@@ -115,7 +112,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                     nickname = null
                     _nickNameCheck.value = false
                     _spinner.value = false
-                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                 }
             }
         }
@@ -136,13 +133,13 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _snackbar.value = error.message
+                                _toast.value = Event(error.message)
                             }
                         }
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                 }
             }
         }
@@ -182,16 +179,16 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _snackbar.value = error.message
+                                _toast.value = Event(error.message)
                             }
                         }
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                 }
             } else {
-                _snackbar.value = "네트워크 에러가 발생했습니다."
+                _toast.value = Event("네트워크 에러가 발생했습니다.")
             }
         }
     }
@@ -210,13 +207,13 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _snackbar.value = error.message
+                                _toast.value = Event(error.message)
                             }
                         }
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                 }
             }
         }
@@ -244,16 +241,16 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _snackbar.value = error.message
+                                _toast.value = Event(error.message)
                             }
                         }
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                 }
             } else {
-                _snackbar.value = "이메일 또는 패스워드 입력이 완료되지 않았습니다."
+                _toast.value = Event("이메일 또는 패스워드 입력이 완료되지 않았습니다.")
             }
         }
     }
@@ -268,22 +265,22 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                     if (result.isSuccessful && result.body() != null) {
                         _emailVerifyResponse.value = Event(result.body()!!)
                         _spinner.value = false
-                        _snackbar.value = result.body()!!.result
+                        _toast.value = Event(result.body()!!.result)
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _snackbar.value = error.message
+                                _toast.value = Event(error.message)
                             }
                         }
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                 }
             } else {
-                _snackbar.value = "이메일 입력이 완료되지 않았습니다."
+                _toast.value = Event("이메일 입력이 완료되지 않았습니다.")
             }
         }
     }
@@ -296,24 +293,23 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                     val result = repository.patchPassword(PasswordRequest(email!!, password!!))
                     if (result.isSuccessful && result.body() != null) {
                         _spinner.value = false
-                        _snackbar.value = result.body()!!.result
-                        delay(1000)
+                        _toast.value = Event(result.body()!!.result)
                         _passwordResponse.value = Event(result.body()!!)
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _snackbar.value = error.message
+                                _toast.value = Event(error.message)
                             }
                         }
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _snackbar.value = "네트워크 에러가 발생했습니다."
+                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                 }
             } else {
-                _snackbar.value = "입력이 완료되지 않았습니다."
+                _toast.value = Event("입력이 완료되지 않았습니다.")
             }
         }
     }

@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android.ui.fragment.user
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -35,7 +36,7 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
     private fun setListener() {
         binding.findPasswordBtnCertificationConfirmation.setOnClickListener {
             if (certificationViewModel.customTimerDuration.value == 0L) {
-                Snackbar.make(binding.root, "인증 시간이 초과되었습니다.", Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "인증 시간이 초과되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
                 val certificationNumber = binding.findPasswordEditCertificationNumber.text.toString()
                 viewModel.postEmailVerify(certificationNumber)
@@ -47,16 +48,14 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
                 if (binding.findPasswordEditPassword.text.toString()
                         .isEmpty() || binding.findPasswordEditPasswordCheck.text.toString().isEmpty()
                 ) {
-                    Snackbar.make(binding.root, "비빌번호 입력이 완료되지 않았습니다.", Snackbar.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(requireContext(), "비빌번호 입력이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     if (binding.findPasswordEditPassword.text.toString() == binding.findPasswordEditPasswordCheck.text.toString()) {
                         if (validatePassword(binding.findPasswordEditPassword.text.toString())) {
                             viewModel.password = binding.findPasswordEditPassword.text.toString()
                             viewModel.patchPassword()
                         } else {
-                            Snackbar.make(binding.root, "비밀번호가 유효하지 않습니다.", Snackbar.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(requireContext(), "비밀번호가 유효하지 않습니다.", Toast.LENGTH_SHORT).show()
                         }
                     } else {
                         binding.findPasswordTxtVerificationPasswordCheck.text = "비밀번호가 일치하지 않습니다."
@@ -64,7 +63,7 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
                     }
                 }
             } else {
-                Snackbar.make(binding.root, "이메일 인증이 완료되지 않았습니다.", Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "이메일 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
