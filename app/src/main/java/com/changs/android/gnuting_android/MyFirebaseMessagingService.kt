@@ -4,12 +4,12 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.ui.HomeActivity
-import com.changs.android.gnuting_android.ui.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -60,8 +60,9 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         val channelId = getString(R.string.channel_id)
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setColor(getColor(R.color.main))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setSmallIcon(R.mipmap.ic_launcher_round)
+            .setSmallIcon(R.drawable.ic_fcm_logo)
             .setContentTitle(title)
             .setContentText(body)
             .setContentIntent(pIntent)
