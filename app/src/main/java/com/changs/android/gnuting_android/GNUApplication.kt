@@ -13,7 +13,6 @@ import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Constant.BASE_URL
 import com.changs.android.gnuting_android.util.Constant.X_ACCESS_TOKEN
 import dagger.hilt.android.HiltAndroidApp
-import de.hdodenhof.circleimageview.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
