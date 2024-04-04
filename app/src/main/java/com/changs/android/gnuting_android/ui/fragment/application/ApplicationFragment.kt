@@ -19,7 +19,6 @@ import com.changs.android.gnuting_android.ui.adapter.ApplicationMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.ApplicationViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

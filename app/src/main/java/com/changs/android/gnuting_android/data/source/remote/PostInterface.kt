@@ -1,14 +1,14 @@
 package com.changs.android.gnuting_android.data.source.remote
 
+import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.PostDetailResponse
 import com.changs.android.gnuting_android.data.model.PostResponse
 import com.changs.android.gnuting_android.data.model.PostSearchResponse
+import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenResponse
+import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveRequest
-import com.changs.android.gnuting_android.data.model.DefaultResponse
-import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
-import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenResponse
 import com.changs.android.gnuting_android.data.model.UserSearchResponse
 import retrofit2.Response
 import retrofit2.http.Body

@@ -21,7 +21,6 @@ import com.changs.android.gnuting_android.ui.fragment.bottomsheet.ProfileSearchD
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.getBitmap
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber

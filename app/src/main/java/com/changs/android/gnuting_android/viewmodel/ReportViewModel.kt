@@ -2,7 +2,6 @@ package com.changs.android.gnuting_android.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.DefaultResponse

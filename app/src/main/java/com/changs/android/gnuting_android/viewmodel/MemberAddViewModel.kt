@@ -1,23 +1,14 @@
 package com.changs.android.gnuting_android.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.InUser
-import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.UserSearchResponse
 import com.changs.android.gnuting_android.data.repository.PostRepository
-import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Event
-import com.changs.android.gnuting_android.util.getErrorResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel

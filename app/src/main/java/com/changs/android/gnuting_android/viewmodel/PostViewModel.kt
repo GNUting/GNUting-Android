@@ -12,12 +12,10 @@ import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.PostDetailResponse
 import com.changs.android.gnuting_android.data.model.PostResponse
 import com.changs.android.gnuting_android.data.model.PostResult
-import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.data.repository.PostRepository
 import com.changs.android.gnuting_android.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject

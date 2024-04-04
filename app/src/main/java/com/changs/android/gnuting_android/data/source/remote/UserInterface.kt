@@ -10,9 +10,8 @@ import com.changs.android.gnuting_android.data.model.MailCertificationResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
 import com.changs.android.gnuting_android.data.model.PasswordRequest
 import com.changs.android.gnuting_android.data.model.ProfileResponse
-import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.ReIssueAccessTokenResponse
-import com.changs.android.gnuting_android.data.model.ReportRequest
+import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.model.SignUpResponse

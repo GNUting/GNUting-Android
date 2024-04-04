@@ -17,7 +17,6 @@ import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.CertificationViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 

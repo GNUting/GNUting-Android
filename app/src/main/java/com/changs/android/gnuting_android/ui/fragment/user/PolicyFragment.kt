@@ -11,7 +11,6 @@ import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentPolicyBinding
 import com.changs.android.gnuting_android.viewmodel.PolicyViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

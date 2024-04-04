@@ -21,7 +21,6 @@ import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi

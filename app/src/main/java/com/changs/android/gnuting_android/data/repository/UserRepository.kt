@@ -2,7 +2,6 @@ package com.changs.android.gnuting_android.data.repository
 
 import android.graphics.Bitmap
 import com.changs.android.gnuting_android.data.model.CheckNickNameResponse
-import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.EmailVerifyRequest
 import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
@@ -21,8 +20,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.http.Body
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(private val service: UserInterface, room: AppDatabase) {

@@ -4,9 +4,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.EmailVerifyRequest
@@ -22,9 +20,7 @@ import com.changs.android.gnuting_android.util.Constant.X_REFRESH_TOKEN
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel

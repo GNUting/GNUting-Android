@@ -5,37 +5,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.base.BaseViewModel
-import com.changs.android.gnuting_android.data.model.AlarmListResponse
-import com.changs.android.gnuting_android.data.model.ApplicationResponse
-import com.changs.android.gnuting_android.data.model.Content
-import com.changs.android.gnuting_android.data.model.InUser
+import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResult
-import com.changs.android.gnuting_android.data.model.PostDetailResponse
-import com.changs.android.gnuting_android.data.model.PostResponse
-import com.changs.android.gnuting_android.data.model.PostResult
-import com.changs.android.gnuting_android.data.model.SaveRequest
-import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.ProfileResponse
 import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
-import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
-import com.changs.android.gnuting_android.data.model.UserReportRequest
-import com.changs.android.gnuting_android.data.repository.AlarmRepository
-import com.changs.android.gnuting_android.data.repository.ApplicationRepository
-import com.changs.android.gnuting_android.data.repository.PostRepository
 import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
@@ -44,7 +28,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.Exception
 
 @ExperimentalCoroutinesApi
 @HiltViewModel

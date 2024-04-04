@@ -6,7 +6,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.changs.android.gnuting_android.data.model.Content
-import com.changs.android.gnuting_android.data.model.PostResult
 import com.changs.android.gnuting_android.databinding.PostListItemBinding
 import com.changs.android.gnuting_android.util.PostItemNavigator
 

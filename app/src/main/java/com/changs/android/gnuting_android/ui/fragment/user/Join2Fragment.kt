@@ -14,7 +14,6 @@ import com.changs.android.gnuting_android.databinding.FragmentJoin2Binding
 import com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchDepartmentBottomSheetFragment
 import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar

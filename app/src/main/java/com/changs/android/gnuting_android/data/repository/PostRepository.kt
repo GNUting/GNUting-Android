@@ -13,10 +13,8 @@ import com.changs.android.gnuting_android.data.source.MyPostListPagingSource
 import com.changs.android.gnuting_android.data.source.PostListPagingSource
 import com.changs.android.gnuting_android.data.source.PostSearchListPagingSource
 import com.changs.android.gnuting_android.data.source.remote.PostInterface
-import com.changs.android.gnuting_android.data.source.remote.UserInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Retrofit
 import javax.inject.Inject
 
 @OptIn(androidx.paging.ExperimentalPagingApi::class)

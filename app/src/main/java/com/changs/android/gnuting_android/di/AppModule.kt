@@ -13,7 +13,6 @@ import com.changs.android.gnuting_android.data.source.remote.ChatInterface
 import com.changs.android.gnuting_android.data.source.remote.PostInterface
 import com.changs.android.gnuting_android.data.source.remote.UserInterface
 import com.changs.android.gnuting_android.util.Constant
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
