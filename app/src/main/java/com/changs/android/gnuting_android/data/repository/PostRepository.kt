@@ -31,7 +31,7 @@ class PostRepository @Inject constructor(private val service: PostInterface) {
     suspend fun patchPostDetail(id: Int, saveRequest: SaveRequest) =
         service.patchPostDetail(id, saveRequest)
 
-    suspend fun getMyPostList(page: Int = 1) = service.getMyPostList(page)
+    suspend fun getMyPostList() = service.getMyPostList()
 
     suspend fun deletePost(id: Int) = service.deletePost(id)
 

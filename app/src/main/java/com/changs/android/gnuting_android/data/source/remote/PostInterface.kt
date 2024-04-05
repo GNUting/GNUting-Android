@@ -25,6 +25,9 @@ interface PostInterface {
     suspend fun getPostList(@Query("page") page: Int = 1): Response<PostResponse>
 
     @GET("api/v1/board/myboard")
+    suspend fun getMyPostList(): Response<PostResponse>
+
+    @GET("api/v1/board/myboard")
     suspend fun getMyPostList(@Query("page") page: Int = 1): Response<PostResponse>
 
     @GET("api/v1/board/{id}")

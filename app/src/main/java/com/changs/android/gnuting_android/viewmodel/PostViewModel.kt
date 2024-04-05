@@ -90,6 +90,24 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
         }
     }
 
+    fun getMyPostList() {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val response = postRepository.getMyPostList()
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _postResponse.value = response.body()
+                }) {
+                    handleTokenExpiration { getMyPostList() }
+                }
+            } catch (e: Exception) {
+                _spinner.value = false
+                _toast.value = Event("네트워크 에러가 발생했습니다.")
+            }
+        }
+    }
+
 
     fun getPostDetail(id: Int) {
         viewModelScope.launch {
