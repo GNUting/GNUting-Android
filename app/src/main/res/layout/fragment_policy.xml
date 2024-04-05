@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingHorizontal="19dp"
-    tools:context=".ui.fragment.PolicyFragment">
+    tools:context=".ui.fragment.user.PolicyFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/policy_img_back"

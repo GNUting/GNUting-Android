@@ -1,29 +1,16 @@
 package com.changs.android.gnuting_android.ui.adapter
 
-import android.provider.Settings.Global.getString
-import android.text.Html
-import android.text.Html.FROM_HTML_MODE_LEGACY
-import android.text.Spanned
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.changs.android.gnuting_android.R
-import com.changs.android.gnuting_android.data.model.ApplicationItem
 import com.changs.android.gnuting_android.data.model.ApplicationResult
-import com.changs.android.gnuting_android.data.model.HomePostItem
-import com.changs.android.gnuting_android.data.model.Member
-import com.changs.android.gnuting_android.data.model.PostListItem
-import com.changs.android.gnuting_android.databinding.AddMemberItemBinding
 import com.changs.android.gnuting_android.databinding.ApplicationListItemBinding
-import com.changs.android.gnuting_android.databinding.HomeListItemBinding
-import com.changs.android.gnuting_android.databinding.PostListItemBinding
-import com.changs.android.gnuting_android.databinding.PostMemberItemBinding
 
 
-class ApplicationAdapter(private val listener: (ApplicationResult) -> Unit) :
+class ApplicationAdapter(private val type: ApplicationType, private val listener: (ApplicationResult) -> Unit) :
     ListAdapter<ApplicationResult, ApplicationAdapter.ViewHolder>(object : DiffUtil.ItemCallback<ApplicationResult>() {
         override fun areItemsTheSame(oldItem: ApplicationResult, newItem: ApplicationResult): Boolean {
             return oldItem == newItem
@@ -38,7 +25,7 @@ class ApplicationAdapter(private val listener: (ApplicationResult) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.bind(type, currentList[position])
     }
 
     class ViewHolder(parent: ViewGroup, val listener: (ApplicationResult) -> Unit) : RecyclerView.ViewHolder(
@@ -46,13 +33,21 @@ class ApplicationAdapter(private val listener: (ApplicationResult) -> Unit) :
     ) {
         private val binding = ApplicationListItemBinding.bind(itemView)
 
-        fun bind(item: ApplicationResult) {
+        fun bind(type: ApplicationType, item: ApplicationResult) {
             binding.root.setOnClickListener {
                 listener(item)
             }
 
             binding.applicationListTxtMemberCount.text = "${item.applyUserCount}명"
-            binding.applicationListTxtDepartment.text = item.applyUserDepartment
+            when(type) {
+                ApplicationType.APPLY -> {
+                    binding.applicationListTxtDepartment.text = item.participantUserDepartment
+                }
+
+                ApplicationType.PARTICIPANT -> {
+                    binding.applicationListTxtDepartment.text = item.applyUserDepartment
+                }
+            }
 
             when (item.applyStatus) {
                 "대기중" -> {
@@ -69,5 +64,9 @@ class ApplicationAdapter(private val listener: (ApplicationResult) -> Unit) :
                 }
             }
         }
+    }
+
+    enum class ApplicationType {
+        APPLY, PARTICIPANT
     }
 }

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingTop="16dp"
     android:paddingHorizontal="24dp"
-    tools:context=".ui.fragment.SearchPostListFragment">
+    tools:context=".ui.fragment.post.SearchPostListFragment">
 
     <ImageView
         android:id="@+id/search_post_list_img_back"
@@ -79,6 +79,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_post_list_ll_search"
         tools:listitem="@layout/post_list_item" />
+
+
+    <ProgressBar
+        android:id="@+id/spinner"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 

@@ -6,6 +6,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.gms.google-services'
     id 'com.google.android.gms.oss-licenses-plugin'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -39,6 +40,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        buildConfig = true
     }
 }
 
@@ -116,12 +118,17 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
 
+    // Paging
     def paging_version = "3.0.0-alpha07"
 
     implementation "androidx.paging:paging-runtime:$paging_version"
 
     // alternatively - without Android dependencies for tests
     testImplementation "androidx.paging:paging-common:$paging_version"
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:2.50"
+    kapt "com.google.dagger:hilt-compiler:2.50"
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:32.7.4')
@@ -130,4 +137,8 @@ dependencies {
     // Licenses
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
 
+}
+
+kapt {
+    correctErrorTypes true
 }

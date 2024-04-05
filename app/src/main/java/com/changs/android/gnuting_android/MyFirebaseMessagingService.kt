@@ -7,8 +7,8 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
+import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.ui.HomeActivity
-import com.changs.android.gnuting_android.ui.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -17,25 +17,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
 class MyFirebaseMessagingService: FirebaseMessagingService() {
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-
-        GlobalScope.launch {
-            try {
-                Timber.d("FCM 토큰 저장 $token")
-                GNUApplication.userRepository.postSaveFCMToken(SaveFCMTokenRequest(token))
-            } catch (e: Exception) {
-                Timber.d("FCM 토큰 저장 API 에러")
-            }
-        }
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        //수신한 메시지를 처리
         val title = message.notification?.title
         val body = message.notification?.body
         sendNotification(title, body)
@@ -55,8 +45,9 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         val channelId = getString(R.string.channel_id)
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setColor(getColor(R.color.main))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setSmallIcon(R.mipmap.ic_launcher_round)
+            .setSmallIcon(R.drawable.ic_fcm_logo)
             .setContentTitle(title)
             .setContentText(body)
             .setContentIntent(pIntent)

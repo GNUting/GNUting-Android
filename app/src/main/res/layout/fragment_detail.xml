@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.DetailFragment">
+    tools:context=".ui.fragment.post.DetailFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -199,6 +199,7 @@
     </ScrollView>
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/detail_txt_current_participant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -212,19 +213,30 @@
         app:layout_constraintEnd_toEndOf="@+id/detail_btn_chat_request"
         app:layout_constraintStart_toStartOf="@+id/detail_btn_chat_request" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/detail_btn_chat_request"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
         android:layout_marginBottom="22dp"
-        android:paddingVertical="10dp"
+        android:visibility="gone"
+        android:paddingVertical="20dp"
         android:text="채팅 신청하기"
         android:background="@drawable/background_radius_10dp_solid_main"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         style="?android:attr/borderlessButtonStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/spinner"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

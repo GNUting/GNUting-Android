@@ -4,33 +4,32 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.GNUApplication.Companion.sharedPreferences
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.databinding.ActivityHomeBinding
 import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import okhttp3.internal.notify
 
 @ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
-    private val viewModel: HomeMainViewModel by viewModels { HomeMainViewModel.Factory }
+    private var toast: Toast? = null
+    private val viewModel: HomeMainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,30 +64,22 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.expirationToken.eventObserve(this) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
         viewModel.spinner.observe(this) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
 
-        viewModel.snackbar.observe(this) { text ->
+        viewModel.toast.eventObserve(this) { text ->
             text?.let {
-                Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
-                viewModel.onSnackbarShown()
+                showToast(it)
             }
         }
     }
 
     private fun initFirebaseFcm() {
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
-                viewModel.postSaveFcmToken(it)
+            viewModel.postSaveFcmToken(it)
         }.addOnFailureListener {
-            Snackbar.make(binding.root, "네트워크 에러가 발생했습니다.", Snackbar.LENGTH_SHORT).show()
+            showToast("네트워크 에러가 발생했습니다.")
         }
     }
 
@@ -120,5 +111,16 @@ class HomeActivity : AppCompatActivity() {
 
     fun selectedItemId(menuId: Int) {
         binding.bottomNav.selectedItemId = menuId
+    }
+
+    fun showToast(msg: String) {
+        toast?.cancel()
+        toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT)
+        toast?.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        toast = null
     }
 }
