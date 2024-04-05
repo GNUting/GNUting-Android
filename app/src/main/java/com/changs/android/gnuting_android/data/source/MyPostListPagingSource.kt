@@ -3,22 +3,15 @@ package com.changs.android.gnuting_android.data.source
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.PostResult
-import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
-import com.changs.android.gnuting_android.data.source.remote.PostInterface
-import com.changs.android.gnuting_android.util.Constant
-import com.changs.android.gnuting_android.util.getErrorResponse
+import com.changs.android.gnuting_android.data.source.remote.PostService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import java.io.IOException
+import timber.log.Timber
 
 
 class MyPostListPagingSource(
-    private val ioDispatcher: CoroutineDispatcher,
-    private val service: PostInterface,
-    private val listener: () -> Unit
+    private val ioDispatcher: CoroutineDispatcher, private val service: PostService
 ) : PagingSource<Int, PostResult>() {
 
     @ExperimentalPagingApi
@@ -34,38 +27,7 @@ class MyPostListPagingSource(
             val page = params.key ?: 1
 
             val response = withContext(ioDispatcher) {
-                var result = service.getMyPostList(page)
-                result.errorBody()?.let {
-                    val errorBody = getErrorResponse(it)
-                    errorBody?.let { error ->
-                        if (error.code == "TOKEN4001-1") {
-                            GNUApplication.sharedPreferences.edit().putString(Constant.X_ACCESS_TOKEN, null).apply()
-
-                            val refreshToken = GNUApplication.sharedPreferences.getString(
-                                Constant.X_REFRESH_TOKEN, null
-                            )
-
-                            if (refreshToken != null) {
-                                val response = service.postReIssueAccessToken(
-                                    RefreshTokenRequest(refreshToken)
-                                )
-
-                                if (response.isSuccessful && response.body() != null) {
-                                    val accessToken = response.body()!!.result.accessToken
-                                    GNUApplication.sharedPreferences.edit()
-                                        .putString(Constant.X_ACCESS_TOKEN, accessToken).apply()
-                                    result = service.getMyPostList(page)
-                                } else {
-                                    listener()
-                                }
-                            } else {
-                                listener()
-                            }
-                        }
-                    }
-                }
-
-                result
+                service.getMyPostList(page)
             }
 
             val postList = response.body()?.result ?: listOf()
@@ -79,9 +41,8 @@ class MyPostListPagingSource(
                 data = postList, prevKey = prevKey, nextKey = nextKey
             )
 
-        } catch (exception: IOException) {
-            return LoadResult.Error(exception)
-        } catch (exception: HttpException) {
+        } catch (exception: Exception) {
+            Timber.e(exception.message ?: "paging error")
             return LoadResult.Error(exception)
         }
     }

@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
@@ -24,7 +26,9 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class PostListFragment : BaseFragment<FragmentPostListBinding>(FragmentPostListBinding::bind, R.layout.fragment_post_list), PostItemNavigator {
+class PostListFragment : BaseFragment<FragmentPostListBinding>(
+    FragmentPostListBinding::bind, R.layout.fragment_post_list
+), PostItemNavigator {
     private val postViewModel: PostViewModel by viewModels()
     private lateinit var adapter: PostListPagingAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,13 +43,6 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(FragmentPostListB
             postViewModel.getPostPagingList().collectLatest {
                 adapter.submitData(it)
             }
-        }
-
-        postViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
         }
 
         postViewModel.spinner.observe(viewLifecycleOwner) { show ->
@@ -75,6 +72,15 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(FragmentPostListB
 
     private fun setRecyclerView() {
         adapter = PostListPagingAdapter(this)
+        adapter.addLoadStateListener {
+            when (it.refresh) {
+                is LoadState.Loading -> binding.spinner.isVisible = true
+                is LoadState.NotLoading -> binding.spinner.isVisible = false
+                is LoadState.Error -> Toast.makeText(
+                    requireContext(), "네트워크 에러가 발생했습니다.", Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
         binding.postListRecyclerview.adapter = adapter
     }
 

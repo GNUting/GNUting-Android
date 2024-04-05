@@ -1,9 +1,9 @@
 package com.changs.android.gnuting_android.data.repository
 
-import com.changs.android.gnuting_android.data.source.remote.ApplicationInterface
+import com.changs.android.gnuting_android.data.source.remote.ApplicationService
 import javax.inject.Inject
 
-class ApplicationRepository @Inject constructor(private val service: ApplicationInterface) {
+class ApplicationRepository @Inject constructor(private val service: ApplicationService) {
     suspend fun getReceiveApplicationList() = service.getReceiveApplicationList()
 
     suspend fun getApplyApplicationList() = service.getApplyApplicationList()

@@ -81,13 +81,6 @@ class PostFragment :
     }
 
     private fun setObserver() {
-        postViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
         postViewModel.spinner.observe(viewLifecycleOwner) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
@@ -121,13 +114,6 @@ class PostFragment :
 
         postViewModel.saveResponse.eventObserve(viewLifecycleOwner) {
             findNavController().popBackStack()
-        }
-
-        memberAddViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
         }
     }
 

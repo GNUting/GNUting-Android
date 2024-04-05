@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.databinding.SearchPostListBottomSheetBinding
@@ -105,13 +107,6 @@ class SearchPostListBottomSheetFragment : BottomSheetDialogFragment(), PostItemN
             }
         }
 
-        postViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
         postViewModel.spinner.observe(viewLifecycleOwner) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
@@ -126,6 +121,15 @@ class SearchPostListBottomSheetFragment : BottomSheetDialogFragment(), PostItemN
 
     private fun setRecyclerView() {
         adapter = PostSearchListPagingAdapter(this)
+        adapter.addLoadStateListener {
+            when (it.refresh) {
+                is LoadState.Loading -> binding.spinner.isVisible = true
+                is LoadState.NotLoading -> binding.spinner.isVisible = false
+                is LoadState.Error -> Toast.makeText(
+                    requireContext(), "네트워크 에러가 발생했습니다.", Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
         binding.searchPostListBottomSheetRecyclerview.adapter = adapter
     }
 

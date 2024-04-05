@@ -26,9 +26,7 @@ class MemberAddViewModel @Inject constructor(private val postRepository: PostRep
 
                 handleResult(response = response, handleSuccess = fun() {
                     searchUserResponse.value = response.body()
-                }) {
-                    handleTokenExpiration { getSearchUser(nickname) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")

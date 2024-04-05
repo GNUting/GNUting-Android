@@ -7,12 +7,18 @@ import com.changs.android.gnuting_android.BuildConfig
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.source.local.AppDatabase
 import com.changs.android.gnuting_android.data.source.local.UserDao
-import com.changs.android.gnuting_android.data.source.remote.AlarmInterface
-import com.changs.android.gnuting_android.data.source.remote.ApplicationInterface
-import com.changs.android.gnuting_android.data.source.remote.ChatInterface
-import com.changs.android.gnuting_android.data.source.remote.PostInterface
-import com.changs.android.gnuting_android.data.source.remote.UserInterface
-import com.changs.android.gnuting_android.util.Constant
+import com.changs.android.gnuting_android.data.source.remote.AlarmService
+import com.changs.android.gnuting_android.data.source.remote.ApplicationService
+import com.changs.android.gnuting_android.data.source.remote.Authenticator
+import com.changs.android.gnuting_android.data.source.remote.ChatService
+import com.changs.android.gnuting_android.data.source.remote.PostService
+import com.changs.android.gnuting_android.data.source.remote.UserService
+import com.changs.android.gnuting_android.util.Constant.BASE_URL
+import com.changs.android.gnuting_android.util.Constant.CONNECT_TIME_OUT
+import com.changs.android.gnuting_android.util.Constant.DATABASE_NAME
+import com.changs.android.gnuting_android.util.Constant.READ_TIME_OUT
+import com.changs.android.gnuting_android.util.Constant.TOKEN_HEADER
+import com.changs.android.gnuting_android.util.Constant.X_ACCESS_TOKEN
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,67 +38,85 @@ import javax.inject.Singleton
 object AppModule {
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
-        val requestInterceptor = Interceptor { chain ->
-            with(chain) {
-                val builder: Request.Builder = chain.request().newBuilder()
-                val jwtToken: String? =
-                    GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null)
-                if (jwtToken != null) {
-                    builder.addHeader("Authorization", "Bearer $jwtToken")
-                }
-
-                proceed(builder.build())
-            }
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.NONE
         }
-
-        val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
-            level = if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.BODY
-            } else {
-                HttpLoggingInterceptor.Level.NONE
-            }
-        }
-        return OkHttpClient.Builder().readTimeout(5000, TimeUnit.MILLISECONDS)
-            .connectTimeout(5000, TimeUnit.MILLISECONDS).addInterceptor(httpLoggingInterceptor)
-            .addNetworkInterceptor(requestInterceptor).build()
     }
 
     @Singleton
     @Provides
+    fun provideAuthenticator(@ApplicationContext context: Context): Authenticator =
+        Authenticator(context)
+
+    @Singleton
+    @Provides
+    fun provideRequestInterceptor(): Interceptor = Interceptor { chain ->
+        with(chain) {
+            val builder: Request.Builder = chain.request().newBuilder()
+            val jwtToken: String? = GNUApplication.sharedPreferences.getString(
+                X_ACCESS_TOKEN, null
+            )
+            if (jwtToken != null) {
+                builder.removeHeader(TOKEN_HEADER).apply {
+                    addHeader(
+                        TOKEN_HEADER, "Bearer $jwtToken"
+                    )
+                }
+            }
+
+            proceed(builder.build())
+        }
+    }
+
+    @Singleton
+    @Provides
+    fun provideOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        requestInterceptor: Interceptor,
+        authenticator: Authenticator
+    ): OkHttpClient = OkHttpClient.Builder().readTimeout(READ_TIME_OUT, TimeUnit.MILLISECONDS)
+        .connectTimeout(CONNECT_TIME_OUT, TimeUnit.MILLISECONDS)
+        .addInterceptor(httpLoggingInterceptor).addInterceptor(requestInterceptor)
+        .authenticator(authenticator).build()
+
+    @Singleton
+    @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder().baseUrl(Constant.BASE_URL).client(okHttpClient)
+        return Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create()).build()
     }
 
     @Singleton
     @Provides
-    fun provideUserApiService(retrofit: Retrofit): UserInterface {
-        return retrofit.create(UserInterface::class.java)
+    fun provideUserApiService(retrofit: Retrofit): UserService {
+        return retrofit.create(UserService::class.java)
     }
 
     @Singleton
     @Provides
-    fun providePostApiService(retrofit: Retrofit): PostInterface {
-        return retrofit.create(PostInterface::class.java)
+    fun providePostApiService(retrofit: Retrofit): PostService {
+        return retrofit.create(PostService::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideChatApiService(retrofit: Retrofit): ChatInterface {
-        return retrofit.create(ChatInterface::class.java)
+    fun provideChatApiService(retrofit: Retrofit): ChatService {
+        return retrofit.create(ChatService::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideApplicationApiService(retrofit: Retrofit): ApplicationInterface {
-        return retrofit.create(ApplicationInterface::class.java)
+    fun provideApplicationApiService(retrofit: Retrofit): ApplicationService {
+        return retrofit.create(ApplicationService::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideAlarmApiService(retrofit: Retrofit): AlarmInterface {
-        return retrofit.create(AlarmInterface::class.java)
+    fun provideAlarmApiService(retrofit: Retrofit): AlarmService {
+        return retrofit.create(AlarmService::class.java)
     }
 
     @Singleton
@@ -100,7 +124,7 @@ object AppModule {
     fun provideAppDatabase(
         @ApplicationContext context: Context
     ): AppDatabase = Room.databaseBuilder(
-        context, AppDatabase::class.java, Constant.DATABASE_NAME
+        context, AppDatabase::class.java, DATABASE_NAME
     ).build()
 
     @Singleton

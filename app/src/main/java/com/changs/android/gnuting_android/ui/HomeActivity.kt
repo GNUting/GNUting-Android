@@ -63,13 +63,6 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.expirationToken.eventObserve(this) {
-            sharedPreferences.edit().clear().apply()
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
         viewModel.spinner.observe(this) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }

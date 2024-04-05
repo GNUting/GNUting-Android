@@ -44,9 +44,7 @@ class ApplicationViewModel @Inject constructor(private val applicationRepository
 
                 handleResult(response = response, handleSuccess = fun() {
                     _applicationApplyStateResponse.value = response.body()
-                }) {
-                    handleTokenExpiration { getApplicationApplyList() }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -62,9 +60,7 @@ class ApplicationViewModel @Inject constructor(private val applicationRepository
 
                 handleResult(response = response, handleSuccess = fun() {
                     _applicationReceiveStateResponse.value = response.body()
-                }) {
-                    handleTokenExpiration { getApplicationReceiveList() }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -80,9 +76,7 @@ class ApplicationViewModel @Inject constructor(private val applicationRepository
 
                 handleResult(response = response, handleSuccess = fun() {
                     _refuseResponse.value = Event(response.body()!!)
-                }) {
-                    handleTokenExpiration { refuse(id) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -98,9 +92,7 @@ class ApplicationViewModel @Inject constructor(private val applicationRepository
 
                 handleResult(response = response, handleSuccess = fun() {
                     _acceptResponse.value = Event(response.body()!!)
-                }) {
-                    handleTokenExpiration { accept(id) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -116,9 +108,7 @@ class ApplicationViewModel @Inject constructor(private val applicationRepository
 
                 handleResult(response = response, handleSuccess = fun() {
                     _cancelResponse.value = Event(response.body()!!)
-                }) {
-                    handleTokenExpiration { cancel(id) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")

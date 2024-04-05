@@ -53,13 +53,6 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
             viewModel.getAlarmList()
         }
 
-        viewModel.expirationToken.eventObserve(viewLifecycleOwner) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
         viewModel.spinner.observe(viewLifecycleOwner) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }

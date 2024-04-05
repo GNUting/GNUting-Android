@@ -7,7 +7,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface AlarmInterface {
+interface AlarmService {
     @GET("/api/v1/notification")
     suspend fun getAlarmList(): Response<AlarmListResponse>
 

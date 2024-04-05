@@ -12,13 +12,13 @@ import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.data.source.MyPostListPagingSource
 import com.changs.android.gnuting_android.data.source.PostListPagingSource
 import com.changs.android.gnuting_android.data.source.PostSearchListPagingSource
-import com.changs.android.gnuting_android.data.source.remote.PostInterface
+import com.changs.android.gnuting_android.data.source.remote.PostService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @OptIn(androidx.paging.ExperimentalPagingApi::class)
-class PostRepository @Inject constructor(private val service: PostInterface) {
+class PostRepository @Inject constructor(private val service: PostService) {
 
     suspend fun getPostList(page: Int = 1) = service.getPostList(page)
 
@@ -44,23 +44,23 @@ class PostRepository @Inject constructor(private val service: PostInterface) {
     suspend fun postReIssueAccessToken(request: RefreshTokenRequest) =
         service.postReIssueAccessToken(request)
 
-    fun getPostListPagingData(listener: () -> Unit): Flow<PagingData<PostResult>> {
+    fun getPostListPagingData(): Flow<PagingData<PostResult>> {
         return Pager(PagingConfig(pageSize = 20)) {
-            PostListPagingSource(Dispatchers.IO, service, listener)
+            PostListPagingSource(Dispatchers.IO, service)
         }.flow
     }
 
-    fun getMyPostListPagingData(listener: () -> Unit): Flow<PagingData<PostResult>> {
+    fun getMyPostListPagingData(): Flow<PagingData<PostResult>> {
         return Pager(PagingConfig(pageSize = 20)) {
-            MyPostListPagingSource(Dispatchers.IO, service, listener)
+            MyPostListPagingSource(Dispatchers.IO, service)
         }.flow
     }
 
     fun getSearchPostListPagingData(
-        query: String, listener: () -> Unit
+        query: String
     ): Flow<PagingData<Content>> {
         return Pager(PagingConfig(pageSize = 20)) {
-            PostSearchListPagingSource(Dispatchers.IO, service, query, listener)
+            PostSearchListPagingSource(Dispatchers.IO, service, query)
         }.flow
     }
 }

@@ -57,9 +57,7 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
 
                 handleResult(response = response, handleSuccess = fun() {
                     _chatRoomListResponse.value = response.body()!!
-                }) {
-                    handleTokenExpiration { getChatRoomList() }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -79,9 +77,7 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
 
                 handleResult(response = response, handleSuccess = fun() {
                     _chatsResponse.value = response.body()!!
-                }) {
-                    handleTokenExpiration { getChats(chatRoomId) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")

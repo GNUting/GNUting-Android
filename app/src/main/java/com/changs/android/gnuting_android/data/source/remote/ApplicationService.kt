@@ -9,7 +9,7 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface ApplicationInterface {
+interface ApplicationService {
     @GET("/api/v1/board/applications/receivedstate")
     suspend fun getReceiveApplicationList(): Response<ApplicationResponse>
 
