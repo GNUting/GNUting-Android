@@ -91,7 +91,7 @@ class HomeFragment :
 
         postViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast(it)
             }
         }
 

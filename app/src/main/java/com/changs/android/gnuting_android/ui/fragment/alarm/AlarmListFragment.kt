@@ -10,13 +10,16 @@ import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentAlarmListBinding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.AlarmAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.showTwoButtonDialog
 import com.changs.android.gnuting_android.viewmodel.AlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
     FragmentAlarmListBinding::bind, R.layout.fragment_alarm_list
@@ -59,7 +62,7 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
 
         viewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast(it)
             }
         }
     }

@@ -18,6 +18,7 @@ import androidx.paging.LoadState
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.databinding.SearchPostListBottomSheetBinding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.PostSearchListPagingAdapter
 import com.changs.android.gnuting_android.util.PostItemNavigator
@@ -27,10 +28,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class SearchPostListBottomSheetFragment : BottomSheetDialogFragment(), PostItemNavigator {
     private var _binding: SearchPostListBottomSheetBinding? = null
@@ -113,7 +116,7 @@ class SearchPostListBottomSheetFragment : BottomSheetDialogFragment(), PostItemN
 
         postViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast(it)
             }
         }
 
@@ -125,9 +128,7 @@ class SearchPostListBottomSheetFragment : BottomSheetDialogFragment(), PostItemN
             when (it.refresh) {
                 is LoadState.Loading -> binding.spinner.isVisible = true
                 is LoadState.NotLoading -> binding.spinner.isVisible = false
-                is LoadState.Error -> Toast.makeText(
-                    requireContext(), "네트워크 에러가 발생했습니다.", Toast.LENGTH_SHORT
-                ).show()
+                is LoadState.Error -> (requireActivity() as HomeActivity).showToast("네트워크 에러가 발생했습니다.")
             }
         }
         binding.searchPostListBottomSheetRecyclerview.adapter = adapter

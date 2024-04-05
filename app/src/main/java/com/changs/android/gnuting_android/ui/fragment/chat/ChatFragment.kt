@@ -16,6 +16,7 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.MessageItem
 import com.changs.android.gnuting_android.databinding.FragmentChatBinding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
 import com.changs.android.gnuting_android.util.eventObserve
@@ -86,7 +87,7 @@ class ChatFragment :
 
         chatViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast(it)
             }
         }
 

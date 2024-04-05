@@ -16,6 +16,7 @@ import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.FragmentDetailBinding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.fragment.bottomsheet.AddMemberBottomSheetFragment
 import com.changs.android.gnuting_android.ui.fragment.bottomsheet.CurrentMemberBottomSheetFragment
@@ -78,7 +79,7 @@ class DetailFragment :
 
         postViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast(it)
             }
         }
 

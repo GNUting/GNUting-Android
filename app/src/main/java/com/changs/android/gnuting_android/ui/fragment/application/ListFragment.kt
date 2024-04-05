@@ -11,6 +11,7 @@ import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.ApplicationResult
 import com.changs.android.gnuting_android.databinding.FragmentListBinding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.ApplicationAdapter
 import com.changs.android.gnuting_android.util.eventObserve
@@ -18,7 +19,9 @@ import com.changs.android.gnuting_android.viewmodel.ApplicationViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class ListFragment :
     BaseFragment<FragmentListBinding>(FragmentListBinding::bind, R.layout.fragment_list) {
@@ -76,7 +79,7 @@ class ListFragment :
 
         applicationViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast(it)
             }
         }
 

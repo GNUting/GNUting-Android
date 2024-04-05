@@ -15,6 +15,7 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.databinding.FragmentPostBinding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.PostMemberAdapter
 import com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchMemberBottomSheetFragment
@@ -70,7 +71,7 @@ class PostFragment :
                     postViewModel.postSave(request)
                 }
             } else {
-                Toast.makeText(requireContext(), "게시글 작성을 완료해주세요.", Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast("게시글 작성을 완료해주세요.")
             }
         }
     }
@@ -87,7 +88,7 @@ class PostFragment :
 
         postViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast(it)
             }
         }
 

@@ -12,6 +12,7 @@ import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentMyPostListBinding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.PostListAdapter
 import com.changs.android.gnuting_android.ui.adapter.PostListPagingAdapter
@@ -52,7 +53,7 @@ class MyPostListFragment : BaseFragment<FragmentMyPostListBinding>(FragmentMyPos
 
         postViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast(it)
             }
         }
     }
