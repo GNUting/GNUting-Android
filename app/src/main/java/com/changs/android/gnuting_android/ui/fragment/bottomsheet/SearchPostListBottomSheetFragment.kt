@@ -9,13 +9,16 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.databinding.SearchPostListBottomSheetBinding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.PostSearchListPagingAdapter
 import com.changs.android.gnuting_android.util.PostItemNavigator
@@ -25,10 +28,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class SearchPostListBottomSheetFragment : BottomSheetDialogFragment(), PostItemNavigator {
     private var _binding: SearchPostListBottomSheetBinding? = null
@@ -105,20 +110,13 @@ class SearchPostListBottomSheetFragment : BottomSheetDialogFragment(), PostItemN
             }
         }
 
-        postViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
         postViewModel.spinner.observe(viewLifecycleOwner) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
 
         postViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast(it)
             }
         }
 
@@ -126,6 +124,13 @@ class SearchPostListBottomSheetFragment : BottomSheetDialogFragment(), PostItemN
 
     private fun setRecyclerView() {
         adapter = PostSearchListPagingAdapter(this)
+        adapter.addLoadStateListener {
+            when (it.refresh) {
+                is LoadState.Loading -> binding.spinner.isVisible = true
+                is LoadState.NotLoading -> binding.spinner.isVisible = false
+                is LoadState.Error -> (requireActivity() as HomeActivity).showToast("네트워크 에러가 발생했습니다.")
+            }
+        }
         binding.searchPostListBottomSheetRecyclerview.adapter = adapter
     }
 

@@ -17,7 +17,11 @@ import com.changs.android.gnuting_android.data.repository.PostRepository
 import com.changs.android.gnuting_android.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -54,22 +58,16 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
         get() = _patchPostDetailResponse
 
 
-    private fun pagingSourceListener() {
-        _expirationToken.value = Event(true)
-    }
-
     fun getPostPagingList(): Flow<PagingData<PostResult>> {
-        return postRepository.getPostListPagingData(::pagingSourceListener).cachedIn(viewModelScope)
+        return postRepository.getPostListPagingData().cachedIn(viewModelScope)
     }
 
     fun getMyPostPagingList(): Flow<PagingData<PostResult>> {
-        return postRepository.getMyPostListPagingData(::pagingSourceListener)
-            .cachedIn(viewModelScope)
+        return postRepository.getMyPostListPagingData().cachedIn(viewModelScope)
     }
 
     fun getSearchPostPagingList(query: String): Flow<PagingData<Content>> {
-        return postRepository.getSearchPostListPagingData(query, ::pagingSourceListener)
-            .cachedIn(viewModelScope)
+        return postRepository.getSearchPostListPagingData(query).cachedIn(viewModelScope)
     }
 
     fun getPostList(page: Int = 1) {
@@ -80,9 +78,7 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
 
                 handleResult(response = response, handleSuccess = fun() {
                     _postResponse.value = response.body()
-                }) {
-                    handleTokenExpiration { getPostList(page) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -98,9 +94,7 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
 
                 handleResult(response = response, handleSuccess = fun() {
                     _postResponse.value = response.body()
-                }) {
-                    handleTokenExpiration { getMyPostList() }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -117,9 +111,7 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
 
                 handleResult(response = response, handleSuccess = fun() {
                     _postDetailResponse.value = response.body()
-                }) {
-                    handleTokenExpiration { getPostDetail(id) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -136,9 +128,7 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
                 handleResult(response = response, handleSuccess = fun() {
                     _saveResponse.value = Event(response.body()!!)
                     _toast.value = Event("게시물 작성이 완료되었습니다.")
-                }) {
-                    handleTokenExpiration { postSave(saveRequest) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -155,9 +145,7 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
                 handleResult(response = response, handleSuccess = fun() {
                     _patchPostDetailResponse.value = Event(response.body()!!)
                     _toast.value = Event("게시물 수정이 완료되었습니다.")
-                }) {
-                    handleTokenExpiration { patchSave(id, saveRequest) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -174,9 +162,7 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
                 handleResult(response = response, handleSuccess = fun() {
                     _deletePostResponse.value = Event(response.body()!!)
                     _toast.value = Event("게시물 삭제가 완료되었습니다.")
-                }) {
-                    handleTokenExpiration { deletePost(id) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -193,9 +179,7 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
                 handleResult(response = response, handleSuccess = fun() {
                     _toast.value = Event("채팅 신청하기가 완료되었습니다.")
                     _applyChatResponse.value = Event(response.body()!!)
-                }) {
-                    handleTokenExpiration { postApplyChat(id, inUser) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")

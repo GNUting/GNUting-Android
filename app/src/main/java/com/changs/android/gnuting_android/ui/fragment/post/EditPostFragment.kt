@@ -15,6 +15,7 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.databinding.FragmentEditPostBinding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.PostMemberAdapter
 import com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchMemberBottomSheetFragment
@@ -64,7 +65,7 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
                     postViewModel.patchSave(args.id, request)
                 }
             } else {
-                Toast.makeText(requireContext(), "게시글 작성을 완료해주세요.", Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast("게시글 작성을 완료해주세요.")
             }
         }
     }
@@ -75,27 +76,14 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
     }
 
     private fun setObserver() {
-        postViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
         postViewModel.spinner.observe(viewLifecycleOwner) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
 
         postViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast(it)
             }
-        }
-        memberAddViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
         }
 
         postViewModel.postDetailResponse.observe(viewLifecycleOwner) {

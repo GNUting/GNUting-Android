@@ -140,9 +140,7 @@ class HomeMainViewModel @Inject constructor(
 
                 handleResult(response = response, handleSuccess = fun() {
                     _saveFcmTokenResponse.value = Event(true)
-                }) {
-                    handleTokenExpiration { postSaveFcmToken(token) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -166,13 +164,7 @@ class HomeMainViewModel @Inject constructor(
                 handleResult(response = response, handleSuccess = fun() {
                     _profileResponse.value = Event(response.body()!!)
                     _toast.value = Event("프로필 수정이 완료되었습니다.")
-                }) {
-                    handleTokenExpiration {
-                        updateProfile(
-                            department, nickname, userSelfIntroduction
-                        )
-                    }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -185,11 +177,8 @@ class HomeMainViewModel @Inject constructor(
             try {
                 _spinner.value = true
                 val refreshToken =
-                    GNUApplication.sharedPreferences.getString(Constant.X_REFRESH_TOKEN, null)
-                if (refreshToken == null) {
-                    _expirationToken.value = Event(true)
-                    return@launch
-                }
+                    GNUApplication.sharedPreferences.getString(Constant.X_REFRESH_TOKEN, null) ?: ""
+
                 val response = userRepository.postLogout(RefreshTokenRequest(refreshToken))
 
                 handleResult(response = response, handleSuccess = fun() {
@@ -198,9 +187,7 @@ class HomeMainViewModel @Inject constructor(
                     myInfo.value?.let {
                         launch { userRepository.deleteUser(it) }
                     }
-                }) {
-                    handleTokenExpiration { logoutUser() }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -218,9 +205,7 @@ class HomeMainViewModel @Inject constructor(
                     _withdrawalResponse.value = Event(response.body()!!)
                     GNUApplication.sharedPreferences.edit().clear().apply()
                     myInfo.value?.let { launch { userRepository.deleteUser(it) } }
-                }) {
-                    handleTokenExpiration { withdrawal() }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")

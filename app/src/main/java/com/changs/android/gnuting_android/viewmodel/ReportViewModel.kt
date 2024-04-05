@@ -16,7 +16,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ReportViewModel @Inject constructor(private val postRepository: PostRepository, private val userRepository: UserRepository): BaseViewModel() {
+class ReportViewModel @Inject constructor(
+    private val postRepository: PostRepository, private val userRepository: UserRepository
+) : BaseViewModel() {
     var reportCategory: ReportCategory = ReportCategory.COMMERCIAL_SPAM
 
     private val _userReportResponse = MutableLiveData<Event<DefaultResponse>>()
@@ -39,9 +41,7 @@ class ReportViewModel @Inject constructor(private val postRepository: PostReposi
                 handleResult(response = response, handleSuccess = fun() {
                     _reportResponse.value = Event(response.body()!!)
                     _toast.value = Event(response.body()!!.result)
-                }) {
-                    handleTokenExpiration { report(reportRequest) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -59,9 +59,7 @@ class ReportViewModel @Inject constructor(private val postRepository: PostReposi
                 handleResult(response = response, handleSuccess = fun() {
                     _userReportResponse.value = Event(response.body()!!)
                     _toast.value = Event(response.body()!!.result)
-                }) {
-                    handleTokenExpiration { userReport(reportRequest) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")

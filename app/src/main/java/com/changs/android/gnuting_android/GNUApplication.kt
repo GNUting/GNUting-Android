@@ -1,6 +1,7 @@
 package com.changs.android.gnuting_android
 
 import android.app.Application
+import android.content.Context
 import android.content.SharedPreferences
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber

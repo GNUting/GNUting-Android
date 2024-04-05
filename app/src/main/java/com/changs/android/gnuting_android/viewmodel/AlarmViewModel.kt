@@ -31,9 +31,7 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
 
                 handleResult(response = response, handleSuccess = fun() {
                     _deleteAlarmResponse.value = Event(response.body()!!)
-                }) {
-                    handleTokenExpiration { deleteAlarm(id) }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -49,9 +47,7 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
 
                 handleResult(response = response, handleSuccess = fun() {
                     _alarmListResponse.value = response.body()!!
-                }) {
-                    handleTokenExpiration { getAlarmList() }
-                }
+                })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")

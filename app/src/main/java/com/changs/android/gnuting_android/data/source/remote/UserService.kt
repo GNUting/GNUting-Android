@@ -27,7 +27,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Query
 
-interface UserInterface {
+interface UserService {
     @POST("api/v1/mail")
     suspend fun postMailCertification(@Body mailCertificationRequest: MailCertificationRequest): Response<MailCertificationResponse>
 

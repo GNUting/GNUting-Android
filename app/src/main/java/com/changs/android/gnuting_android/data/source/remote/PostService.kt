@@ -19,7 +19,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface PostInterface {
+interface PostService {
 
     @GET("api/v1/board")
     suspend fun getPostList(@Query("page") page: Int = 1): Response<PostResponse>

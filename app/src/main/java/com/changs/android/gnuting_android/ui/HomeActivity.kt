@@ -28,6 +28,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
+    private var toast: Toast? = null
     private val viewModel: HomeMainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,29 +64,22 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.expirationToken.eventObserve(this) {
-            sharedPreferences.edit().clear().apply()
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
         viewModel.spinner.observe(this) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
 
         viewModel.toast.eventObserve(this) { text ->
             text?.let {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                showToast(it)
             }
         }
     }
 
     private fun initFirebaseFcm() {
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
-                viewModel.postSaveFcmToken(it)
+            viewModel.postSaveFcmToken(it)
         }.addOnFailureListener {
-            Toast.makeText(this, "네트워크 에러가 발생했습니다.", Toast.LENGTH_SHORT).show()
+            showToast("네트워크 에러가 발생했습니다.")
         }
     }
 
@@ -117,5 +111,16 @@ class HomeActivity : AppCompatActivity() {
 
     fun selectedItemId(menuId: Int) {
         binding.bottomNav.selectedItemId = menuId
+    }
+
+    fun showToast(msg: String) {
+        toast?.cancel()
+        toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT)
+        toast?.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        toast = null
     }
 }

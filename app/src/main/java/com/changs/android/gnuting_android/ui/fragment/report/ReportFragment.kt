@@ -16,6 +16,7 @@ import com.changs.android.gnuting_android.data.model.ReportCategory
 import com.changs.android.gnuting_android.data.model.ReportRequest
 import com.changs.android.gnuting_android.data.model.UserReportRequest
 import com.changs.android.gnuting_android.databinding.FragmentReportBinding
+import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
@@ -28,7 +29,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class ReportFragment :
     BaseFragment<FragmentReportBinding>(FragmentReportBinding::bind, R.layout.fragment_report) {
     private val args: ReportFragmentArgs by navArgs()
-    private val viewModel: HomeMainViewModel by activityViewModels()
     private val reportViewModel: ReportViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -70,20 +70,13 @@ class ReportFragment :
     }
 
     private fun setObserver() {
-        reportViewModel.expirationToken.eventObserve(viewLifecycleOwner) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
         reportViewModel.spinner.observe(viewLifecycleOwner) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
 
         reportViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                (requireActivity() as HomeActivity).showToast(it)
             }
         }
 
@@ -157,9 +150,8 @@ class ReportFragment :
                 )
                 reportViewModel.userReport(reportRequest)
             } else {
-                // 게시물 신고하기
                 if (binding.reportEdit.text.isNullOrEmpty()) {
-                    Toast.makeText(requireContext(), "신고 사유를 작성해주세요.", Toast.LENGTH_SHORT).show()
+                    (requireActivity() as HomeActivity).showToast("신고 사유를 작성해주세요.")
                 } else {
                     val reportRequest = ReportRequest(
                         args.id,

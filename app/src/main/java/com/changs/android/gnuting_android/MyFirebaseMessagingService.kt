@@ -20,26 +20,12 @@ import java.util.*
 import javax.inject.Inject
 
 class MyFirebaseMessagingService: FirebaseMessagingService() {
-
-    @Inject
-    lateinit var userRepository : UserRepository
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-
-        GlobalScope.launch {
-            try {
-                Timber.d("FCM 토큰 저장 $token")
-                userRepository.postSaveFCMToken(SaveFCMTokenRequest(token))
-            } catch (e: Exception) {
-                Timber.d("FCM 토큰 저장 API 에러")
-            }
-        }
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        //수신한 메시지를 처리
         val title = message.notification?.title
         val body = message.notification?.body
         sendNotification(title, body)

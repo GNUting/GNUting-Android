@@ -13,7 +13,7 @@ import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SignUpResponse
 import com.changs.android.gnuting_android.data.model.UserReportRequest
 import com.changs.android.gnuting_android.data.source.local.AppDatabase
-import com.changs.android.gnuting_android.data.source.remote.UserInterface
+import com.changs.android.gnuting_android.data.source.remote.UserService
 import com.changs.android.gnuting_android.util.FormDataUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import javax.inject.Inject
 
-class UserRepository @Inject constructor(private val service: UserInterface, room: AppDatabase) {
+class UserRepository @Inject constructor(private val service: UserService, room: AppDatabase) {
     private val dao = room.userDao()
     suspend fun postMailCertification(mailCertificationRequest: MailCertificationRequest): Response<MailCertificationResponse> =
         service.postMailCertification(mailCertificationRequest)
