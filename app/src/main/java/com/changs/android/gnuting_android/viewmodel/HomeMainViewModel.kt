@@ -59,6 +59,7 @@ class HomeMainViewModel @Inject constructor(
         }.onEach {
             _spinner.value = false
         }.catch { throwable ->
+            Timber.e(throwable.message ?: "network error")
             _spinner.value = false
         }.launchIn(viewModelScope)
     }
@@ -127,6 +128,7 @@ class HomeMainViewModel @Inject constructor(
                     nickNameCheck.value = false
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             }
         }
@@ -144,6 +146,7 @@ class HomeMainViewModel @Inject constructor(
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
             }
         }
     }
@@ -168,6 +171,7 @@ class HomeMainViewModel @Inject constructor(
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
             }
         }
     }
@@ -191,6 +195,7 @@ class HomeMainViewModel @Inject constructor(
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
             }
         }
     }
@@ -209,6 +214,7 @@ class HomeMainViewModel @Inject constructor(
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
             }
         }
     }
@@ -234,6 +240,7 @@ class HomeMainViewModel @Inject constructor(
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             }
         }

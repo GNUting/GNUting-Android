@@ -21,6 +21,7 @@ import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -109,6 +110,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                     _nickNameCheck.value = false
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             }
         }
@@ -136,6 +138,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             }
         }
@@ -182,6 +185,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             } else {
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -210,6 +214,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             }
         }
@@ -244,6 +249,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             } else {
                 _toast.value = Event("이메일 또는 패스워드 입력이 완료되지 않았습니다.")
@@ -274,6 +280,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             } else {
                 _toast.value = Event("이메일 입력이 완료되지 않았습니다.")
@@ -303,6 +310,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             } else {
                 _toast.value = Event("입력이 완료되지 않았습니다.")
