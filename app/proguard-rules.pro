@@ -88,6 +88,7 @@
 
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.changs.android.gnuting_android.data.model.** { <fields>; }
+-keep class com.changs.android.gnuting_android.base.BaseResponse { *; }
 
 # Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
 # JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
