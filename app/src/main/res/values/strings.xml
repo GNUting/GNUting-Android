@@ -2,7 +2,7 @@
     <string name="channel_id">지누팅</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="post_member_txt">&lt;b>%s&lt;/b> %s</string>
-    <string name="app_name">GNUting-Android</string>
+    <string name="app_name">지누팅</string>
     <string name="join">회원가입</string>
     <string name="login">로그인</string>
     <string name="app_intro">경상국립대학교 새로운 만남 과팅앱\n<b>지누팅</b>\n학교 속 새로운 인연을 만나보세요</string>
