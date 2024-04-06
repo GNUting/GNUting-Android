@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
@@ -15,24 +14,26 @@ import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.repository.UserRepository
-import com.changs.android.gnuting_android.util.Constant
+import com.changs.android.gnuting_android.data.source.local.TokenManager
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class HomeMainViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository, private val tokenManager: TokenManager
 ) : BaseViewModel() {
     private val myInfoFlow = MutableStateFlow<MyInfoResponse?>(null)
 
@@ -59,6 +60,7 @@ class HomeMainViewModel @Inject constructor(
         }.onEach {
             _spinner.value = false
         }.catch { throwable ->
+            Timber.e(throwable.message ?: "network error")
             _spinner.value = false
         }.launchIn(viewModelScope)
     }
@@ -127,6 +129,7 @@ class HomeMainViewModel @Inject constructor(
                     nickNameCheck.value = false
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             }
         }
@@ -144,6 +147,7 @@ class HomeMainViewModel @Inject constructor(
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
             }
         }
     }
@@ -168,6 +172,7 @@ class HomeMainViewModel @Inject constructor(
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
             }
         }
     }
@@ -176,14 +181,15 @@ class HomeMainViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val refreshToken =
-                    GNUApplication.sharedPreferences.getString(Constant.X_REFRESH_TOKEN, null) ?: ""
+                val refreshToken = tokenManager.getRefreshToken().firstOrNull() ?: ""
 
                 val response = userRepository.postLogout(RefreshTokenRequest(refreshToken))
 
                 handleResult(response = response, handleSuccess = fun() {
                     _logoutResponse.value = Event(response.body()!!)
-                    GNUApplication.sharedPreferences.edit().clear().apply()
+
+                    launch { tokenManager.deleteTokens() }
+
                     myInfo.value?.let {
                         launch { userRepository.deleteUser(it) }
                     }
@@ -191,6 +197,7 @@ class HomeMainViewModel @Inject constructor(
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
             }
         }
     }
@@ -203,12 +210,15 @@ class HomeMainViewModel @Inject constructor(
 
                 handleResult(response = response, handleSuccess = fun() {
                     _withdrawalResponse.value = Event(response.body()!!)
-                    GNUApplication.sharedPreferences.edit().clear().apply()
+
+                    launch { tokenManager.deleteTokens() }
+
                     myInfo.value?.let { launch { userRepository.deleteUser(it) } }
                 })
             } catch (e: Exception) {
                 _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
             }
         }
     }
@@ -234,8 +244,11 @@ class HomeMainViewModel @Inject constructor(
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             }
         }
     }
+
+    fun getAccessToken() = tokenManager.getAccessToken()
 }

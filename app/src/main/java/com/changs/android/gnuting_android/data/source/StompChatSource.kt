@@ -1,14 +1,15 @@
 package com.changs.android.gnuting_android.data.source
 
 import com.changs.android.gnuting_android.BuildConfig
-import com.changs.android.gnuting_android.GNUApplication
-import com.changs.android.gnuting_android.util.Constant
+import com.changs.android.gnuting_android.data.source.local.TokenManager
 import com.changs.android.gnuting_android.util.Constant.CHAT_URL
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
@@ -22,16 +23,17 @@ import ua.naiksoftware.stomp.dto.StompMessage
 import java.util.concurrent.TimeUnit
 
 
-class StompChatSource(private val chatRoomId: Int) {
+class StompChatSource(private val chatRoomId: Int, private val tokenManager: TokenManager) {
     private var subscribe: Disposable? = null
     private var lifecycleSubscribe: Disposable? = null
+    private val accessToken by lazy {
+        runBlocking {
+            tokenManager.getAccessToken().firstOrNull()
+        }
+    }
     private val stompClient: StompClient by lazy {
         val connectHeader: HashMap<String, String> = hashMapOf(
-            "Authorization" to "Bearer ${
-                GNUApplication.sharedPreferences.getString(
-                    Constant.X_ACCESS_TOKEN, null
-                )
-            }"
+            "Authorization" to "Bearer $accessToken"
         )
 
         Stomp.over(
@@ -56,7 +58,7 @@ class StompChatSource(private val chatRoomId: Int) {
 
     val sharedFlow = MutableSharedFlow<String>()
 
-fun topic() {
+    fun topic() {
         try {
             subscribe = stompClient.topic("/sub/chatRoom/$chatRoomId").subscribe({ data ->
                 Timber.i(data.payload)
@@ -84,11 +86,7 @@ fun topic() {
         val headerList = arrayListOf<StompHeader>()
         headerList.add(
             StompHeader(
-                "Authorization", "Bearer ${
-                    GNUApplication.sharedPreferences.getString(
-                        Constant.X_ACCESS_TOKEN, null
-                    )
-                }"
+                "Authorization", "Bearer $accessToken"
             )
         )
         stompClient.connect(headerList)
@@ -130,11 +128,7 @@ fun topic() {
         val stompMessage = StompMessage(
             StompCommand.SEND, listOf(
                 StompHeader(StompHeader.DESTINATION, "/pub/chatRoom/$chatRoomId"), StompHeader(
-                    "Authorization", "Bearer ${
-                        GNUApplication.sharedPreferences.getString(
-                            Constant.X_ACCESS_TOKEN, null
-                        )
-                    }"
+                    "Authorization", "Bearer $accessToken"
                 )
             ), data.toString()
         )

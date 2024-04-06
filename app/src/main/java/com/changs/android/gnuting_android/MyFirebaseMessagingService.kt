@@ -33,7 +33,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun sendNotification(title: String?, body: String?) {
-        if (GNUApplication.isActiveChatFragment == true) return
+        if (GNUApplication.isActiveChatFragment) return
 
         val intent = Intent(this, HomeActivity::class.java)
         val pIntent = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

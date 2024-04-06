@@ -18,10 +18,8 @@ open class BaseViewModel : ViewModel() {
     val spinner: LiveData<Boolean>
         get() = _spinner
 
-    protected suspend fun <T : Any> handleResult(
-        response: Response<T>,
-        handleSuccess: () -> Unit,
-        handleError: (() -> Unit)? = null
+    protected fun <T : Any> handleResult(
+        response: Response<T>, handleSuccess: () -> Unit, handleError: (() -> Unit)? = null
     ) {
         if (response.isSuccessful && response.body() != null) {
             handleSuccess()
@@ -31,16 +29,17 @@ open class BaseViewModel : ViewModel() {
                 val error = getErrorResponse(errorBody)
                 error?.let {
                     _spinner.value = false
-                    when {
-                        it.code == "BOARD5003" -> {
+                    when (it.code) {
+                        "BOARD5003" -> {
                             // Handle specific error
                         }
 
                         else -> {
                             handleError?.let { handle ->
                                 handle()
+                            } ?: {
+                                _toast.value = Event("네트워크 에러가 발생했습니다.")
                             }
-                            _toast.value = Event("네트워크 에러가 발생했습니다.")
                         }
                     }
                 }

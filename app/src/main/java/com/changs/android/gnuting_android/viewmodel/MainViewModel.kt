@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.EmailVerifyRequest
 import com.changs.android.gnuting_android.data.model.LoginRequest
@@ -15,16 +14,16 @@ import com.changs.android.gnuting_android.data.model.PasswordRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.model.SignUpResponse
 import com.changs.android.gnuting_android.data.repository.UserRepository
-import com.changs.android.gnuting_android.util.Constant.X_ACCESS_TOKEN
-import com.changs.android.gnuting_android.util.Constant.X_REFRESH_TOKEN
+import com.changs.android.gnuting_android.data.source.local.TokenManager
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: UserRepository) : ViewModel() {
+class MainViewModel @Inject constructor(private val repository: UserRepository, private val tokenManager: TokenManager) : ViewModel() {
     // 사용자 정보
     var birthDate: String? = null
     var department: String? = null
@@ -109,6 +108,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                     _nickNameCheck.value = false
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             }
         }
@@ -136,6 +136,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             }
         }
@@ -166,10 +167,10 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                         val accessToken = result.body()!!.result.accessToken
                         val refreshToken = result.body()!!.result.refreshToken
 
-                        GNUApplication.sharedPreferences.edit()
-                            .putString(X_ACCESS_TOKEN, accessToken).apply()
-                        GNUApplication.sharedPreferences.edit()
-                            .putString(X_REFRESH_TOKEN, refreshToken).apply()
+                        tokenManager.run {
+                            saveAccessToken(accessToken)
+                            saveRefreshToken(refreshToken)
+                        }
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
@@ -182,6 +183,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             } else {
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
@@ -210,6 +212,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             }
         }
@@ -228,10 +231,10 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                         val accessToken = result.body()!!.result.accessToken
                         val refreshToken = result.body()!!.result.refreshToken
 
-                        GNUApplication.sharedPreferences.edit()
-                            .putString(X_ACCESS_TOKEN, accessToken).apply()
-                        GNUApplication.sharedPreferences.edit()
-                            .putString(X_REFRESH_TOKEN, refreshToken).apply()
+                        tokenManager.run {
+                            saveAccessToken(accessToken)
+                            saveRefreshToken(refreshToken)
+                        }
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
@@ -244,6 +247,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             } else {
                 _toast.value = Event("이메일 또는 패스워드 입력이 완료되지 않았습니다.")
@@ -274,6 +278,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             } else {
                 _toast.value = Event("이메일 입력이 완료되지 않았습니다.")
@@ -303,11 +308,14 @@ class MainViewModel @Inject constructor(private val repository: UserRepository) 
                 } catch (e: Exception) {
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
                 }
             } else {
                 _toast.value = Event("입력이 완료되지 않았습니다.")
             }
         }
     }
+
+    fun getAccessToken() = tokenManager.getAccessToken()
 
 }
