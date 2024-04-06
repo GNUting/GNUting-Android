@@ -11,10 +11,10 @@ import com.changs.android.gnuting_android.data.source.local.TokenManager
 import com.changs.android.gnuting_android.data.source.local.UserDao
 import com.changs.android.gnuting_android.data.source.remote.AlarmService
 import com.changs.android.gnuting_android.data.source.remote.ApplicationService
-import com.changs.android.gnuting_android.util.Authenticator
 import com.changs.android.gnuting_android.data.source.remote.ChatService
 import com.changs.android.gnuting_android.data.source.remote.PostService
 import com.changs.android.gnuting_android.data.source.remote.UserService
+import com.changs.android.gnuting_android.util.Authenticator
 import com.changs.android.gnuting_android.util.Constant.BASE_URL
 import com.changs.android.gnuting_android.util.Constant.CONNECT_TIME_OUT
 import com.changs.android.gnuting_android.util.Constant.DATABASE_NAME
