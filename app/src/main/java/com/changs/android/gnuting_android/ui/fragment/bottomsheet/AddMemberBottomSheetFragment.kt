@@ -1,23 +1,19 @@
 package com.changs.android.gnuting_android.ui.fragment.bottomsheet
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.AddMemberBottomSheetBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
-import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.PostCurrentMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel

@@ -1,21 +1,17 @@
 package com.changs.android.gnuting_android.ui.fragment.application
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.FragmentApplicationBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
-import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.ApplicationMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.ApplicationViewModel

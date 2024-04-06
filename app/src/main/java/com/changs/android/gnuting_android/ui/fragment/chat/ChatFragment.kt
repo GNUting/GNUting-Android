@@ -1,10 +1,8 @@
 package com.changs.android.gnuting_android.ui.fragment.chat
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -17,7 +15,6 @@ import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.MessageItem
 import com.changs.android.gnuting_android.databinding.FragmentChatBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
-import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel

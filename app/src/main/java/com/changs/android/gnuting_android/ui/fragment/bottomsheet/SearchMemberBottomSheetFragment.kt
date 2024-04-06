@@ -1,7 +1,6 @@
 package com.changs.android.gnuting_android.ui.fragment.bottomsheet
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -12,14 +11,11 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.SearchMemberBottomSheetBinding
-import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.AddMemberAdapter
 import com.changs.android.gnuting_android.ui.adapter.SelectedMemberAdapter
-import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior

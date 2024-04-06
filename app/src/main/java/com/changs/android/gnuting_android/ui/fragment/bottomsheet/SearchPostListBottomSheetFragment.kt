@@ -1,13 +1,11 @@
 package com.changs.android.gnuting_android.ui.fragment.bottomsheet
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -15,11 +13,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.databinding.SearchPostListBottomSheetBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
-import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.ui.adapter.PostSearchListPagingAdapter
 import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.util.eventObserve
