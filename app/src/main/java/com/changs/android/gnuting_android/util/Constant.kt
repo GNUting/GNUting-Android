@@ -7,6 +7,7 @@ object Constant {
     const val TOKEN_HEADER = "Authorization"
     const val BASE_URL = "http://10.0.2.2:8080"
     const val CHAT_URL = "ws://10.0.2.2:8080/chat"
+    const val TOKEN_PREFERENCE_STORE = "token_preference_store"
     const val MIllIS_IN_FUTURE = 180000L
     const val TICK_INTERVAL = 1000L
     const val READ_TIME_OUT = 8000L

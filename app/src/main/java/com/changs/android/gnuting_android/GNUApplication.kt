@@ -9,7 +9,6 @@ import timber.log.Timber
 @HiltAndroidApp
 class GNUApplication : Application() {
     companion object {
-        lateinit var sharedPreferences: SharedPreferences
         var isActiveChatFragment = false
     }
 
@@ -18,7 +17,5 @@ class GNUApplication : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-
-        sharedPreferences = applicationContext.getSharedPreferences("GNU", MODE_PRIVATE)
     }
 }

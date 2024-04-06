@@ -12,17 +12,21 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.changs.android.gnuting_android.GNUApplication.Companion.sharedPreferences
 import com.changs.android.gnuting_android.R
+import com.changs.android.gnuting_android.data.source.local.TokenManager
 import com.changs.android.gnuting_android.databinding.ActivityHomeBinding
-import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -35,11 +39,10 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        if (sharedPreferences.getString(
-                Constant.X_ACCESS_TOKEN, null
-            ) == null
-        ) {
-            val intent = Intent(this, MainActivity::class.java)
+        val accessToken = runBlocking { viewModel.getAccessToken().firstOrNull() }
+
+        if (accessToken == null) {
+            val intent = Intent(this@HomeActivity, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }

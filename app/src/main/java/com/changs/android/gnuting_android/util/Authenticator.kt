@@ -1,12 +1,13 @@
-package com.changs.android.gnuting_android.data.source.remote
+package com.changs.android.gnuting_android.util
 
 import android.content.Context
 import android.content.Intent
 import com.changs.android.gnuting_android.BuildConfig
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
+import com.changs.android.gnuting_android.data.source.local.TokenManager
+import com.changs.android.gnuting_android.data.source.remote.UserService
 import com.changs.android.gnuting_android.ui.MainActivity
-import com.changs.android.gnuting_android.util.Constant
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.OkHttpClient
@@ -18,11 +19,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class Authenticator(private val context: Context) : Authenticator {
+class Authenticator(private val context: Context, private val tokenManager: TokenManager) :
+    Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
         return runBlocking {
             val refreshToken =
-                GNUApplication.sharedPreferences.getString(Constant.X_REFRESH_TOKEN, null)
+                tokenManager.getRefreshToken().firstOrNull()
 
             if (refreshToken == null) {
                 response.close()
@@ -36,12 +38,11 @@ class Authenticator(private val context: Context) : Authenticator {
     private suspend fun newRequestWithToken(refreshToken: String, request: Request): Request? {
         val accessToken = callApiReissueToken(refreshToken)
         return if (accessToken == null) {
-            GNUApplication.sharedPreferences.edit().clear().apply()
+            tokenManager.deleteTokens()
             startLoginActivity()
             null
         } else {
-            GNUApplication.sharedPreferences.edit().putString(Constant.X_ACCESS_TOKEN, accessToken)
-                .apply()
+            tokenManager.saveAccessToken(accessToken)
 
             request.newBuilder().removeHeader("Authorization").apply {
                 addHeader("Authorization", "Bearer $accessToken")
@@ -58,9 +59,11 @@ class Authenticator(private val context: Context) : Authenticator {
                 HttpLoggingInterceptor.Level.NONE
             }
         }
-        val okHttpClient = OkHttpClient.Builder().readTimeout(Constant.READ_TIME_OUT, TimeUnit.MILLISECONDS)
-            .connectTimeout(Constant.CONNECT_TIME_OUT, TimeUnit.MILLISECONDS).addInterceptor(httpLoggingInterceptor)
-            .build()
+        val okHttpClient =
+            OkHttpClient.Builder().readTimeout(Constant.READ_TIME_OUT, TimeUnit.MILLISECONDS)
+                .connectTimeout(Constant.CONNECT_TIME_OUT, TimeUnit.MILLISECONDS)
+                .addInterceptor(httpLoggingInterceptor)
+                .build()
 
         val reissueTokenService = Retrofit.Builder().baseUrl(Constant.BASE_URL).client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create()).build()

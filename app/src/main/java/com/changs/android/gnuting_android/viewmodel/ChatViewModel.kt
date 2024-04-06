@@ -8,6 +8,7 @@ import com.changs.android.gnuting_android.data.model.ChatListResponse
 import com.changs.android.gnuting_android.data.model.ChatResponse
 import com.changs.android.gnuting_android.data.repository.ChatRepository
 import com.changs.android.gnuting_android.data.source.StompChatSource
+import com.changs.android.gnuting_android.data.source.local.TokenManager
 import com.changs.android.gnuting_android.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -17,13 +18,13 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatViewModel @Inject constructor(private val chatRepository: ChatRepository
+class ChatViewModel @Inject constructor(private val chatRepository: ChatRepository, private val tokenManager: TokenManager
 ) : BaseViewModel() {
     private var stompChatSource: StompChatSource? = null
     private val _message: MutableLiveData<String> = MutableLiveData()
     val message: LiveData<String> get() = _message
     fun connectChatRoom(chatRoomId: Int) {
-        stompChatSource = StompChatSource(chatRoomId)
+        stompChatSource = StompChatSource(chatRoomId, tokenManager)
         stompChatSource?.run {
             viewModelScope.launch {
                 sharedFlow.collectLatest {

@@ -7,15 +7,15 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.databinding.ActivityMainBinding
-import com.changs.android.gnuting_android.util.Constant
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -28,33 +28,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Timber.w("Fetching FCM registration token failed: ${task.exception}")
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            Timber.d("FCM Token: $token")
-        })
+        val accessToken = runBlocking { viewModel.getAccessToken().firstOrNull() }
+        Timber.d("Token: $accessToken")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             splashScreen.setOnExitAnimationListener {
-                if (GNUApplication.sharedPreferences.getString(
-                        Constant.X_ACCESS_TOKEN, null
-                    ) != null
-                ) {
-                    Timber.d(
-                        "Token: ${
-                            GNUApplication.sharedPreferences.getString(
-                                Constant.X_ACCESS_TOKEN, null
-                            )
-                        }"
-                    )
-                    val intent = Intent(this, HomeActivity::class.java)
+                if (accessToken != null) {
+                    val intent = Intent(this@MainActivity, HomeActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 } else {
@@ -62,15 +42,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         } else {
-            if (GNUApplication.sharedPreferences.getString(Constant.X_ACCESS_TOKEN, null) != null) {
-                Timber.d(
-                    "Token: ${
-                        GNUApplication.sharedPreferences.getString(
-                            Constant.X_ACCESS_TOKEN, null
-                        )
-                    }"
-                )
-                val intent = Intent(this, HomeActivity::class.java)
+            if (accessToken != null) {
+                val intent = Intent(this@MainActivity, HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
             }
