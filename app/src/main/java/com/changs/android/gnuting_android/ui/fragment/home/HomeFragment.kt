@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android.ui.fragment.home
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -18,6 +19,7 @@ import com.changs.android.gnuting_android.ui.adapter.HomeAdapter
 import com.changs.android.gnuting_android.ui.adapter.ViewPagerAdapter
 import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.viewmodel.AlarmViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,10 +35,13 @@ class HomeFragment :
     PostItemNavigator {
     private val viewModel: HomeMainViewModel by activityViewModels()
     private val postViewModel: PostViewModel by viewModels()
+    private val alarmViewModel: AlarmViewModel by viewModels()
     private lateinit var adapter: HomeAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postViewModel.getPostList()
+        alarmViewModel.getNewAlarm()
+
         setListener()
         setPager()
         setRecyclerView()
@@ -103,6 +108,10 @@ class HomeFragment :
 
         postViewModel.postResponse.observe(viewLifecycleOwner) {
             adapter.submitList(it.result)
+        }
+
+        alarmViewModel.newAlarmResponse.observe(viewLifecycleOwner) {
+            binding.homeImgNewAlarm.isVisible = it.result
         }
     }
 

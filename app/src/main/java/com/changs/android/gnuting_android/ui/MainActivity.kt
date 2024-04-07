@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.changs.android.gnuting_android.databinding.ActivityMainBinding
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
@@ -23,27 +24,21 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         val accessToken = runBlocking { viewModel.getAccessToken().firstOrNull() }
         Timber.d("Token: $accessToken")
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            splashScreen.setOnExitAnimationListener {
-                if (accessToken != null) {
-                    val intent = Intent(this@MainActivity, HomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                } else {
-                    it.remove()
-                }
-            }
-        } else {
+        splashScreen.setOnExitAnimationListener {
             if (accessToken != null) {
                 val intent = Intent(this@MainActivity, HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
+            } else {
+                it.remove()
             }
         }
 

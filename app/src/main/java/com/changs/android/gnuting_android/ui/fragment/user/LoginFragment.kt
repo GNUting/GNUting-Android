@@ -32,14 +32,17 @@ class LoginFragment :
                     binding.loginEditEmail.text.toString(), binding.loginEditPassword.text.toString()
                 )
             } else {
-                Toast.makeText(requireContext(), "이메일 또는 패스워드를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "이메일, 패스워드를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
 
-        binding.loginImgBack.setOnClickListener { findNavController().popBackStack() }
 
-        binding.loginTxtForgot.setOnClickListener {
+        binding.loginTxtFindPassword.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_passwordFragment)
+        }
+
+        binding.loginTxtJoin.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_policyFragment)
         }
     }
 
