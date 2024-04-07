@@ -36,10 +36,13 @@ class LoginFragment :
             }
         }
 
-        binding.loginImgBack.setOnClickListener { findNavController().popBackStack() }
 
-        binding.loginTxtForgot.setOnClickListener {
+        binding.loginTxtFindPassword.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_passwordFragment)
+        }
+
+        binding.loginTxtJoin.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_policyFragment)
         }
     }
 

@@ -7,91 +7,113 @@
     android:paddingHorizontal="19dp"
     tools:context=".ui.fragment.user.LoginFragment">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/login_img_back"
+    <ImageView
+        android:id="@+id/login_img_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:src="@drawable/arrow_left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginBottom="13dp"
+        android:src="@drawable/ic_main_text_logo"
+        app:layout_constraintBottom_toTopOf="@+id/login_txt_text_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/login_txt_title"
+        android:id="@+id/login_txt_text_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login"
-        android:layout_marginTop="170dp"
+        android:gravity="center"
+        android:layout_marginBottom="72dp"
+        android:text="경상국립대학교 재학생 전용 과팅앱\n학교 속 새로운 인연을 만나보세요 :)"
         android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_img_back"
-        android:textStyle="bold"/>
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_edit_email"
+        app:layout_constraintEnd_toEndOf="@+id/login_img_logo"
+        app:layout_constraintStart_toStartOf="@+id/login_img_logo" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/login_edit_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="27dp"
-        android:paddingVertical="19dp"
-        android:textSize="15sp"
-        android:layout_marginTop="40dp"
-        android:textColorHint="@color/gray1"
-        android:background="@drawable/background_radius_10dp_solid_gray2"
+        android:background="@drawable/background_radius_10dp_stroke_gray10"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
-        app:layout_constraintStart_toStartOf="parent"
+        android:paddingHorizontal="13dp"
+        android:paddingVertical="19dp"
+        android:textColorHint="@color/gray1"
+        android:textSize="16sp"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/login_edit_password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_txt_title"
-        android:hint="@string/email"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/login_edit_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="27dp"
-        android:paddingVertical="19dp"
-        android:layout_marginTop="12dp"
-        android:textSize="15sp"
-        android:textColorHint="@color/gray1"
+        android:background="@drawable/background_radius_10dp_stroke_gray10"
+        android:hint="@string/password"
         android:inputType="textPassword"
-        android:background="@drawable/background_radius_10dp_solid_gray2"
-        app:layout_constraintStart_toStartOf="parent"
+        android:paddingHorizontal="13dp"
+        android:paddingVertical="19dp"
+        android:layout_marginBottom="18dp"
+        android:textColorHint="@color/gray1"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_btn_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_edit_email"
-        android:hint="@string/password"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 
-
-    <TextView
-        android:id="@+id/login_txt_forgot"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/login_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray3"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:layout_marginTop="43dp"
-        android:layout_marginBottom="37dp"
-        android:text="@string/forgot_password"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/login_btn_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_edit_password"/>
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/login_txt_find_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/find_password"
+            android:textColor="@color/gray1"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="|"
+            android:layout_marginHorizontal="20dp"
+            android:textColor="@color/gray1"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/login_txt_join"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/join"
+            android:textColor="@color/gray1"
+            android:textSize="14sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_btn_login"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/background_radius_10dp_solid_main"
+        android:paddingVertical="18dp"
         android:text="@string/login"
-        android:layout_marginBottom="18dp"
-        android:layout_marginTop="37dp"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:paddingVertical="18dp"
-        style="?android:attr/borderlessButtonStyle"
-        android:background="@drawable/background_radius_10dp_solid_main"
-        app:layout_constraintTop_toBottomOf="@+id/login_txt_forgot"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.55" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

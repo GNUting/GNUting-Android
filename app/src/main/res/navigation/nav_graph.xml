@@ -3,20 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/startFragment">
-
-    <fragment
-        android:id="@+id/startFragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.user.StartFragment"
-        android:label="fragment_start"
-        tools:layout="@layout/fragment_start" >
-        <action
-            android:id="@+id/action_startFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_startFragment_to_policyFragment"
-            app:destination="@id/policyFragment" />
-    </fragment>
+    app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.user.LoginFragment"
@@ -25,6 +12,9 @@
         <action
             android:id="@+id/action_loginFragment_to_passwordFragment"
             app:destination="@id/passwordFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_policyFragment"
+            app:destination="@id/policyFragment" />
     </fragment>
     <fragment
         android:id="@+id/passwordFragment"
