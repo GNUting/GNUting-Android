@@ -32,7 +32,7 @@ class LoginFragment :
                     binding.loginEditEmail.text.toString(), binding.loginEditPassword.text.toString()
                 )
             } else {
-                Toast.makeText(requireContext(), "이메일 또는 패스워드를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "이메일, 패스워드를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
 
