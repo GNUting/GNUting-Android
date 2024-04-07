@@ -33,6 +33,16 @@
         app:layout_constraintEnd_toStartOf="@+id/home_img_profile"
         app:layout_constraintTop_toTopOf="@+id/home_img_profile" />
 
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/home_img_new_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_new"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/home_img_alarm"
+        app:layout_constraintEnd_toEndOf="@+id/home_img_alarm" />
+
     <TextView
         android:id="@+id/home_txt_greetings"
         android:layout_width="wrap_content"
