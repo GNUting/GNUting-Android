@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.ChatListResponse
 import com.changs.android.gnuting_android.data.model.ChatResponse
+import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.repository.ChatRepository
 import com.changs.android.gnuting_android.data.source.StompChatSource
 import com.changs.android.gnuting_android.data.source.local.TokenManager
@@ -89,4 +90,24 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
         }
     }
 
+    private val _chatRoomLeaveResponse: MutableLiveData<Event<DefaultResponse>> = MutableLiveData()
+
+    val chatRoomLeaveResponse: LiveData<Event<DefaultResponse>> get() = _chatRoomLeaveResponse
+
+    fun chatRoomLeave(chatRoomId: Int) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val response = chatRepository.postChatLeave(chatRoomId)
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _chatRoomLeaveResponse.value = Event(response.body()!!)
+                })
+            } catch (e: Exception) {
+                _spinner.value = false
+                _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
+            }
+        }
+    }
 }

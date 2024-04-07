@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,7 @@ import com.changs.android.gnuting_android.data.model.MessageItem
 import com.changs.android.gnuting_android.databinding.FragmentChatBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
+import com.changs.android.gnuting_android.ui.fragment.post.DetailFragmentDirections
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
@@ -67,6 +69,18 @@ class ChatFragment :
                 binding.chatEdit.clearFocus()
             }
         }
+
+        binding.chatImgSetting.setOnClickListener {
+            if (binding.chatLlSpinner.isVisible) {
+                binding.chatLlSpinner.visibility = View.GONE
+            } else {
+                binding.chatLlSpinner.visibility = View.VISIBLE
+            }
+        }
+
+        binding.chatTxtMenuLeave.setOnClickListener {
+            chatViewModel.chatRoomLeave(args.id)
+        }
     }
 
     private fun setRecyclerView() {
@@ -108,6 +122,10 @@ class ChatFragment :
             }
 
             chatViewModel.connectChatRoom(args.id)
+        }
+
+        chatViewModel.chatRoomLeaveResponse.eventObserve(viewLifecycleOwner) {
+            findNavController().popBackStack()
         }
     }
 
