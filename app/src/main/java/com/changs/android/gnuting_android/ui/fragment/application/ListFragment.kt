@@ -2,6 +2,7 @@ package com.changs.android.gnuting_android.ui.fragment.application
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
@@ -12,6 +13,7 @@ import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.ApplicationAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.ApplicationViewModel
+import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +24,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class ListFragment :
     BaseFragment<FragmentListBinding>(FragmentListBinding::bind, R.layout.fragment_list) {
     private val applicationViewModel: ApplicationViewModel by viewModels()
+    private val viewModel: HomeMainViewModel by activityViewModels()
     private val applyStateAdapter by lazy {
         ApplicationAdapter(
             ApplicationAdapter.ApplicationType.APPLY, ::applicationItemListener
@@ -45,10 +48,12 @@ class ListFragment :
                 tab?.let {
                     when (it.position) {
                         0 -> {
+                            viewModel.currentApplicationTab = ApplicationAdapter.ApplicationType.APPLY
                             binding.listRecyclerview.adapter = applyStateAdapter
                         }
 
                         else -> {
+                            viewModel.currentApplicationTab = ApplicationAdapter.ApplicationType.PARTICIPANT
                             binding.listRecyclerview.adapter = receiveStateAdapter
                         }
                     }
@@ -61,6 +66,15 @@ class ListFragment :
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+
+        when (viewModel.currentApplicationTab) {
+            ApplicationAdapter.ApplicationType.APPLY -> {
+                binding.listTl.getTabAt(0)?.select()
+            }
+            else -> {
+                binding.listTl.getTabAt(1)?.select()
+            }
+        }
     }
 
     private fun setRecyclerView() {

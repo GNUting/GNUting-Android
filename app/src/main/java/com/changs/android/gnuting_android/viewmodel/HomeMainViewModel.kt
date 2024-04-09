@@ -15,6 +15,7 @@ import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.repository.UserRepository
 import com.changs.android.gnuting_android.data.source.local.TokenManager
+import com.changs.android.gnuting_android.ui.adapter.ApplicationAdapter
 import com.changs.android.gnuting_android.util.Event
 import com.changs.android.gnuting_android.util.getErrorResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,12 +35,13 @@ import javax.inject.Inject
 class HomeMainViewModel @Inject constructor(
     private val userRepository: UserRepository, private val tokenManager: TokenManager
 ) : BaseViewModel() {
+    var currentApplicationTab = ApplicationAdapter.ApplicationType.APPLY
+
     private val myInfoFlow = MutableStateFlow<MyInfoResponse?>(null)
 
     val myInfo: LiveData<MyInfoResult> = myInfoFlow.flatMapLatest {
         userRepository.myInfoFlow
     }.asLiveData()
-
 
     private val _saveFcmTokenResponse = MutableLiveData<Event<Boolean>>()
 
@@ -71,7 +73,6 @@ class HomeMainViewModel @Inject constructor(
     )
 
     var currentItem = 0
-
 
     private val _logoutResponse = MutableLiveData<Event<DefaultResponse>>()
 
