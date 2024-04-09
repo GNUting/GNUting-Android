@@ -1,5 +1,6 @@
 package com.changs.android.gnuting_android.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,25 +8,34 @@ import com.changs.android.gnuting_android.util.Constant
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class CertificationViewModel : ViewModel() {
     var mailCertificationNumberCheck = false
 
-    val customTimerDuration: MutableLiveData<Long> = MutableLiveData(Constant.MIllIS_IN_FUTURE)
-    private var oldTimeMills: Long = 0
+    private val _timerCount = MutableLiveData<Long>(Constant.MIllIS_IN_FUTURE)
+    private lateinit var a: Job
 
-    val timerJob: Job = viewModelScope.launch(start = CoroutineStart.LAZY) {
-        withContext(Dispatchers.IO) {
-            oldTimeMills = System.currentTimeMillis()
-            while (customTimerDuration.value!! > 0L) {
-                val delayMills = System.currentTimeMillis() - oldTimeMills
-                if (delayMills == Constant.TICK_INTERVAL) {
-                    customTimerDuration.postValue(customTimerDuration.value!! - delayMills)
-                    oldTimeMills = System.currentTimeMillis()
-                }
+    val timerCount: LiveData<Long>
+        get() = _timerCount
+
+    fun timerStart() {
+        if (::a.isInitialized) a.cancel()
+
+        _timerCount.value = Constant.MIllIS_IN_FUTURE
+        a = viewModelScope.launch {
+            while (_timerCount.value!! > 0) {
+                _timerCount.value = _timerCount.value!!.minus(1000L)
+                delay(1000L)
             }
         }
+    }
+
+    fun timerStop() {
+        if (::a.isInitialized) a.cancel()
     }
 }

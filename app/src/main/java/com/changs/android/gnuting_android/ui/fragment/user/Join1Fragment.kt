@@ -31,7 +31,7 @@ class Join1Fragment :
 
     private fun setListener() {
         binding.join1BtnCertificationConfirmation.setOnClickListener {
-            if (certificationViewModel.customTimerDuration.value == 0L) {
+            if (certificationViewModel.timerCount.value == 0L) {
                 Toast.makeText(requireContext(), "인증 시간이 초과되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
                 val certificationNumber = binding.join1EditCertificationNumber.text.toString()
@@ -106,7 +106,7 @@ class Join1Fragment :
 
     private fun setObserver() {
         viewModel.mailCertificationNumber.eventObserve(viewLifecycleOwner) {
-            certificationViewModel.timerJob.start()
+            certificationViewModel.timerStart()
             certificationViewModel.mailCertificationNumberCheck = false
             binding.join1TxtTimer.visibility = View.VISIBLE
             checkButtonActiveCondition()
@@ -117,16 +117,17 @@ class Join1Fragment :
             certificationViewModel.mailCertificationNumberCheck = true
             checkButtonActiveCondition()
 
-            certificationViewModel.timerJob.cancel()
+            certificationViewModel.timerStop()
             binding.join1TxtTimer.visibility = View.INVISIBLE
         }
 
-        certificationViewModel.customTimerDuration.observe(viewLifecycleOwner) {
+        certificationViewModel.timerCount.observe(viewLifecycleOwner) {
             val formattedTime = convertMillisecondsToTime(it)
             binding.join1TxtTimer.text = formattedTime
 
             if (it == 0L) {
                 binding.join1TxtTimer.visibility = View.INVISIBLE
+                certificationViewModel.timerStop()
             }
         }
 

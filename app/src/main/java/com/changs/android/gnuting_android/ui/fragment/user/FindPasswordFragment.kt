@@ -34,7 +34,7 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
 
     private fun setListener() {
         binding.findPasswordBtnCertificationConfirmation.setOnClickListener {
-            if (certificationViewModel.customTimerDuration.value == 0L) {
+            if (certificationViewModel.timerCount.value == 0L) {
                 Toast.makeText(requireContext(), "인증 시간이 초과되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
                 val certificationNumber = binding.findPasswordEditCertificationNumber.text.toString()
@@ -113,7 +113,7 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
         }
 
         viewModel.mailCertificationNumber.eventObserve(viewLifecycleOwner) {
-            certificationViewModel.timerJob.start()
+            certificationViewModel.timerStart()
             certificationViewModel.mailCertificationNumberCheck = false
             binding.findPasswordTxtTimer.visibility = View.VISIBLE
             checkButtonActiveCondition()
@@ -124,16 +124,17 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
             certificationViewModel.mailCertificationNumberCheck = true
             checkButtonActiveCondition()
 
-            certificationViewModel.timerJob.cancel()
+            certificationViewModel.timerStop()
             binding.findPasswordTxtTimer.visibility = View.INVISIBLE
         }
 
-        certificationViewModel.customTimerDuration.observe(viewLifecycleOwner) {
+        certificationViewModel.timerCount.observe(viewLifecycleOwner) {
             val formattedTime = convertMillisecondsToTime(it)
             binding.findPasswordTxtTimer.text = formattedTime
 
             if (it == 0L) {
                 binding.findPasswordTxtTimer.visibility = View.INVISIBLE
+                certificationViewModel.timerStop()
             }
         }
 
