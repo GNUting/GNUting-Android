@@ -69,7 +69,14 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/home_pager"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="100dp" />
+        <ImageView
+            android:id="@+id/home_img_banner"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:src="@drawable/banner_a"
+            android:layout_height="100dp"/>
     </androidx.cardview.widget.CardView>
 
 
@@ -78,6 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:dotsCornerRadius="8dp"
+        android:visibility="gone"
         app:dotsSize="8dp"
         android:layout_marginTop="10dp"
         app:dotsSpacing="8dp"
