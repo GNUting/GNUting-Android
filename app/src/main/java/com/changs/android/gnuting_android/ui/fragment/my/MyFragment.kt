@@ -19,6 +19,7 @@ import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -68,11 +69,16 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
     private fun setListener() {
         binding.myTxtMenuLegalNotice.setOnClickListener {
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("https://gnuting.github.io/GNUting-PrivacyPolicy/privacy_policy")
-            )
-            startActivity(intent)
+            runCatching {
+                val uri = Uri.parse("https://gnuting.github.io/GNUting-PrivacyPolicy/privacy_policy")
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    uri
+                )
+                startActivity(intent)
+            }.onFailure {
+                Timber.e(it.message ?: "error")
+            }
         }
 
         binding.myTxtMenuOpenSource.setOnClickListener {
@@ -98,6 +104,34 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
         binding.myTxtMenuMyPosts.setOnClickListener {
             findNavController().navigate(R.id.action_myFragment_to_myPostListFragment)
+        }
+
+        binding.myTxtMenuHelp.setOnClickListener {
+            runCatching {
+                val uri = Uri.parse("https://www.instagram.com/gnu_ting/")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                intent.setPackage("com.instagram.android")
+                startActivity(intent)
+            }.onFailure {
+                Timber.e(it.message ?: "error")
+                val uri = Uri.parse("https://www.instagram.com/gnu_ting/p/C5bIzh2yIe5/?img_index=1")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
+        }
+
+        binding.myTxtMenuAnnouncement.setOnClickListener {
+            runCatching {
+                val uri = Uri.parse("https://www.instagram.com/gnu_ting/")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                intent.setPackage("com.instagram.android")
+                startActivity(intent)
+            }.onFailure {
+                Timber.e(it.message ?: "error")
+                val uri = Uri.parse("https://www.instagram.com/gnu_ting/p/C5bIzh2yIe5/?img_index=1")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
         }
     }
 
