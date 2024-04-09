@@ -106,6 +106,20 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
             findNavController().navigate(R.id.action_myFragment_to_myPostListFragment)
         }
 
+        binding.myTxtMenuCustomerServiceCenter.setOnClickListener {
+            runCatching {
+                val uri = Uri.parse("https://www.instagram.com/gnu_ting/")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                intent.setPackage("com.instagram.android")
+                startActivity(intent)
+            }.onFailure {
+                Timber.e(it.message ?: "error")
+                val uri = Uri.parse("https://www.instagram.com/gnu_ting/p/C5bIzh2yIe5/?img_index=1")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
+        }
+
         binding.myTxtMenuHelp.setOnClickListener {
             runCatching {
                 val uri = Uri.parse("https://www.instagram.com/gnu_ting/")
