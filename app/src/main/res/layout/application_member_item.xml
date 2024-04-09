@@ -19,37 +19,44 @@
 
     <TextView
         android:id="@+id/application_member_txt_name"
-        android:layout_width="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="전재일"
-        android:textSize="16sp"
         android:layout_marginStart="5dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/application_member_item_img"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/application_member_item_img"
         app:layout_constraintTop_toTopOf="@+id/application_member_item_img"
-        app:layout_constraintBottom_toBottomOf="@+id/application_member_item_img"
-        android:textColor="@color/black"/>
+        tools:text="전재일" />
 
     <TextView
         android:id="@+id/application_member_txt_member_info"
-        android:layout_width="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="#767676"
         android:layout_marginTop="5dp"
-        tools:text="학과 | 학번 | 나이"
+        android:textColor="#767676"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/application_member_item_img"
-        app:layout_constraintStart_toStartOf="parent"/>
+        tools:text="학과 | 학번 | 나이" />
 
     <TextView
         android:id="@+id/application_member_txt_member_intro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:layout_marginTop="5dp"
-        tools:text="안녕하세요"
-        android:maxLines="1"
         android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/application_member_txt_member_info"
-        app:layout_constraintStart_toStartOf="parent"/>
+        tools:text="안녕하세요" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

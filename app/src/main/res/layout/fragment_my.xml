@@ -39,12 +39,15 @@
 
             <TextView
                 android:id="@+id/my_txt_info"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="7dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="#767676"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/my_txt_name"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/my_txt_name"
                 app:layout_constraintTop_toTopOf="@+id/my_txt_name"
                 tools:text="학과 | 나이 | 학번" />
