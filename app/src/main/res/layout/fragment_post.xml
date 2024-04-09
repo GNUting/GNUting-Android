@@ -65,6 +65,7 @@
                 android:layout_marginTop="31dp"
                 android:background="@null"
                 android:hint="제목"
+                android:maxLength="30"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColor="@color/black"

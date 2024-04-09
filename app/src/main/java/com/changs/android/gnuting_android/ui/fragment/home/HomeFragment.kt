@@ -1,5 +1,7 @@
 package com.changs.android.gnuting_android.ui.fragment.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
@@ -27,6 +29,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -43,7 +46,8 @@ class HomeFragment :
         alarmViewModel.getNewAlarm()
 
         setListener()
-        setPager()
+        // setPager()
+
         setRecyclerView()
         setObserver()
     }
@@ -59,6 +63,20 @@ class HomeFragment :
 
         binding.homeImgProfile.setOnClickListener {
             (requireActivity() as HomeActivity).selectedItemId(R.id.myFragment)
+        }
+
+        binding.homeImgBanner.setOnClickListener {
+            runCatching {
+                val uri = Uri.parse("https://www.instagram.com/gnu_ting/p/C5bIzh2yIe5/?img_index=1")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                intent.setPackage("com.instagram.android")
+                startActivity(intent)
+            }.onFailure {
+                Timber.e(it.message ?: "error")
+                val uri = Uri.parse("https://www.instagram.com/gnu_ting/p/C5bIzh2yIe5/?img_index=1")
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
         }
     }
 
