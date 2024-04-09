@@ -89,31 +89,37 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/detail_ll_profile_info"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginStart="10dp"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="@+id/detail_img_profile"
+                app:layout_constraintEnd_toStartOf="@+id/detail_txt_time"
                 app:layout_constraintStart_toEndOf="@+id/detail_img_profile"
                 app:layout_constraintTop_toTopOf="@+id/detail_img_profile">
+
                 <TextView
                     android:id="@+id/detail_txt_nickname"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    tools:text="마산 불주먹"
-                    android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="마산 불주먹" />
 
                 <TextView
                     android:id="@+id/detail_txt_info"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    tools:text="컴퓨터과학과 | 23학번"
                     android:textColor="#767676"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    tools:text="컴퓨터과학과 | 23학번" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <View
