@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingHorizontal="19dp"
     tools:context=".ui.fragment.user.Join3Fragment">
 
 
@@ -12,45 +11,103 @@
         android:id="@+id/join3_img_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="7dp"
+        android:padding="12dp"
         android:src="@drawable/arrow_left"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="3/3"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/join3_img_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/join3_img_back" />
+        app:layout_constraintTop_toTopOf="@+id/join3_img_back">
 
-    <ImageView
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/progress_stage1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:src="@drawable/progress_stage2" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/progress_stage3_active" />
+    </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/join3_img_profile"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:src="@drawable/profile"
-        app:layout_constraintBottom_toTopOf="@+id/join3_btn_next"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:elevation="3dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile"
+        app:layout_constraintBottom_toTopOf="@+id/join3_txt_pass_profile_setting"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <TextView
+        android:id="@+id/join3_txt_content1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="거의 다 왔어요!"
+        android:layout_marginTop="70dp"
+        android:layout_marginStart="30dp"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/join3_img_back" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
+        android:layout_marginStart="30dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/join3_txt_content1">
+        <TextView
+            android:id="@+id/join3_txt_content2"
+            android:text="프로필 사진"
+            android:textColor="@color/main"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/join3_txt_content3"
+            android:text="을 등록해 주세요 :)"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/join3_txt_pass_profile_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/join3_content"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintEnd_toEndOf="@id/join3_img_profile"
-        app:layout_constraintStart_toStartOf="@+id/join3_img_profile"
-        app:layout_constraintTop_toBottomOf="@+id/join3_img_profile" />
+        android:text="@string/join3_txt_pass"
+        android:layout_marginBottom="12dp"
+        android:textColor="@color/gray7"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/join3_btn_next"
+        app:layout_constraintEnd_toEndOf="@+id/join3_btn_next"
+        app:layout_constraintStart_toStartOf="@+id/join3_btn_next" />
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/join3_btn_next"
         style="?android:attr/borderlessButtonStyle"
@@ -58,9 +115,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_radius_10dp_solid_main"
         android:paddingVertical="18dp"
-        android:text="@string/join_complete"
+        android:text="프로필 사진 등록하기"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:layout_marginHorizontal="50dp"
         android:textStyle="bold"
         android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"

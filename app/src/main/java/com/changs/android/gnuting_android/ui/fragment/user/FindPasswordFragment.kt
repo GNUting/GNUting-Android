@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android.ui.fragment.user
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
@@ -14,6 +15,7 @@ import com.changs.android.gnuting_android.databinding.FragmentFindPasswordBindin
 import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.util.convertMillisecondsToTime
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.util.hideSoftKeyboard
 import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.CertificationViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
@@ -21,23 +23,31 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentFindPasswordBinding::bind, R.layout.fragment_find_password) {
+class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(
+    FragmentFindPasswordBinding::bind, R.layout.fragment_find_password
+) {
     private val viewModel: MainViewModel by activityViewModels()
     private val certificationViewModel: CertificationViewModel by viewModels()
     private val buttonActiveCheckViewModel: ButtonActiveCheckViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setObserver()
         setListener()
-
+        setObserver()
     }
 
     private fun setListener() {
         binding.findPasswordBtnCertificationConfirmation.setOnClickListener {
             if (certificationViewModel.timerCount.value == 0L) {
-                Toast.makeText(requireContext(), "인증 시간이 초과되었습니다.", Toast.LENGTH_SHORT).show()
+                binding.findPasswordTxtVerificationCertification.text = "인증 시간이 초과되었습니다."
+                binding.findPasswordTxtVerificationCertification.setTextColor(
+                    resources.getColor(
+                        R.color.main, null
+                    )
+                )
+                binding.findPasswordTxtVerificationCertification.visibility = View.VISIBLE
             } else {
-                val certificationNumber = binding.findPasswordEditCertificationNumber.text.toString()
+                val certificationNumber =
+                    binding.findPasswordEditCertificationNumber.text.toString()
                 viewModel.postEmailVerify(certificationNumber)
             }
         }
@@ -45,24 +55,48 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
         binding.findPasswordBtnNext.setOnClickListener {
             if (certificationViewModel.mailCertificationNumberCheck) {
                 if (binding.findPasswordEditPassword.text.toString()
-                        .isEmpty() || binding.findPasswordEditPasswordCheck.text.toString().isEmpty()
+                        .isEmpty() || binding.findPasswordEditPasswordCheck.text.toString()
+                        .isEmpty()
                 ) {
-                    Toast.makeText(requireContext(), "비빌번호 입력이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
+                    binding.findPasswordTxtVerificationPassword.text = "비빌번호 입력이 완료되지 않았습니다."
+                    binding.findPasswordTxtVerificationPassword.setTextColor(
+                        resources.getColor(
+                            R.color.main, null
+                        )
+                    )
+                    binding.findPasswordTxtVerificationPassword.visibility = View.VISIBLE
                 } else {
                     if (binding.findPasswordEditPassword.text.toString() == binding.findPasswordEditPasswordCheck.text.toString()) {
                         if (validatePassword(binding.findPasswordEditPassword.text.toString())) {
                             viewModel.password = binding.findPasswordEditPassword.text.toString()
                             viewModel.patchPassword()
                         } else {
-                            Toast.makeText(requireContext(), "비밀번호가 유효하지 않습니다.", Toast.LENGTH_SHORT).show()
+                            binding.findPasswordTxtVerificationPassword.text = "비밀번호가 유효하지 않습니다."
+                            binding.findPasswordTxtVerificationPassword.setTextColor(
+                                resources.getColor(
+                                    R.color.main, null
+                                )
+                            )
+                            binding.findPasswordTxtVerificationPassword.visibility = View.VISIBLE
                         }
                     } else {
                         binding.findPasswordTxtVerificationPasswordCheck.text = "비밀번호가 일치하지 않습니다."
+                        binding.findPasswordTxtVerificationPasswordCheck.setTextColor(
+                            resources.getColor(
+                                R.color.main, null
+                            )
+                        )
                         binding.findPasswordTxtVerificationPasswordCheck.visibility = View.VISIBLE
                     }
                 }
             } else {
-                Toast.makeText(requireContext(), "이메일 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
+                binding.findPasswordTxtVerificationCertification.text = "인증이 완료되지 않았습니다."
+                binding.findPasswordTxtVerificationCertification.setTextColor(
+                    resources.getColor(
+                        R.color.main, null
+                    )
+                )
+                binding.findPasswordTxtVerificationCertification.visibility = View.VISIBLE
             }
         }
 
@@ -93,16 +127,54 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
         }
 
         binding.findPasswordEditPassword.doOnTextChanged { text, start, count, after ->
+            binding.findPasswordTxtVerificationPassword.visibility = View.INVISIBLE
             binding.findPasswordTxtVerificationPasswordCheck.visibility = View.INVISIBLE
             checkButtonActiveCondition()
         }
 
         binding.findPasswordEditPasswordCheck.doOnTextChanged { text, start, count, after ->
+            binding.findPasswordTxtVerificationPassword.visibility = View.INVISIBLE
             binding.findPasswordTxtVerificationPasswordCheck.visibility = View.INVISIBLE
             checkButtonActiveCondition()
         }
 
         binding.findPasswordImgBack.setOnClickListener { findNavController().popBackStack() }
+
+        binding.findPasswordEditPassword.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                if (validatePassword(binding.findPasswordEditPassword.text.toString())) {
+                    binding.findPasswordTxtVerificationPassword.visibility = View.INVISIBLE
+                    binding.findPasswordEditPasswordCheck.requestFocus()
+                } else {
+                    binding.findPasswordTxtVerificationPassword.text = "비밀번호가 유효하지 않습니다."
+                    binding.findPasswordTxtVerificationPassword.setTextColor(
+                        resources.getColor(
+                            R.color.main, null
+                        )
+                    )
+                    binding.findPasswordTxtVerificationPassword.visibility = View.VISIBLE
+                }
+            }
+            true
+        }
+
+        binding.findPasswordEditPasswordCheck.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (binding.findPasswordEditPassword.text.toString() == binding.findPasswordEditPasswordCheck.text.toString()) {
+                    binding.findPasswordTxtVerificationPasswordCheck.visibility = View.INVISIBLE
+                    binding.root.hideSoftKeyboard()
+                } else {
+                    binding.findPasswordTxtVerificationPasswordCheck.text = "비밀번호가 일치하지 않습니다."
+                    binding.findPasswordTxtVerificationPasswordCheck.setTextColor(
+                        resources.getColor(
+                            R.color.main, null
+                        )
+                    )
+                    binding.findPasswordTxtVerificationPasswordCheck.visibility = View.VISIBLE
+                }
+            }
+            true
+        }
     }
 
     private fun setObserver() {
@@ -119,13 +191,32 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
             checkButtonActiveCondition()
         }
 
-        viewModel.emailVerifyResponse.eventObserve(viewLifecycleOwner) {
-            binding.findPasswordTxtVerificationCertification.visibility = View.INVISIBLE
-            certificationViewModel.mailCertificationNumberCheck = true
-            checkButtonActiveCondition()
+        viewModel.emailVerifyResponse.eventObserve(viewLifecycleOwner) { isSuccess ->
+            if (isSuccess) {
+                binding.findPasswordTxtVerificationCertification.text = "인증이 완료되었습니다."
+                binding.findPasswordTxtVerificationCertification.setTextColor(
+                    resources.getColor(
+                        R.color.secondary, null
+                    )
+                )
 
-            certificationViewModel.timerStop()
-            binding.findPasswordTxtTimer.visibility = View.INVISIBLE
+                certificationViewModel.mailCertificationNumberCheck = true
+                certificationViewModel.timerStop()
+
+                binding.findPasswordTxtTimer.visibility = View.INVISIBLE
+            } else {
+                binding.findPasswordTxtVerificationCertification.text = "인증번호가 일치하지 않습니다."
+                binding.findPasswordTxtVerificationCertification.setTextColor(
+                    resources.getColor(
+                        R.color.main, null
+                    )
+                )
+
+                certificationViewModel.mailCertificationNumberCheck = false
+            }
+
+            binding.findPasswordTxtVerificationCertification.visibility = View.VISIBLE
+            checkButtonActiveCondition()
         }
 
         certificationViewModel.timerCount.observe(viewLifecycleOwner) {
@@ -151,7 +242,9 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(FragmentF
 
     private fun checkButtonActiveCondition() {
         buttonActiveCheckViewModel.buttonActiveCheck.value =
-            (certificationViewModel.mailCertificationNumberCheck && !binding.findPasswordEditPassword.text.isNullOrBlank() && !binding.findPasswordEditPasswordCheck.text.isNullOrBlank() && !binding.findPasswordEditEmail.text.isNullOrBlank())
+            binding.findPasswordEditPassword.text.toString() == binding.findPasswordEditPasswordCheck.text.toString() && validatePassword(
+                binding.findPasswordEditPassword.text.toString()
+            ) && certificationViewModel.mailCertificationNumberCheck && !binding.findPasswordEditPassword.text.isNullOrBlank() && !binding.findPasswordEditPasswordCheck.text.isNullOrBlank() && !binding.findPasswordEditEmail.text.isNullOrBlank()
     }
 
     private fun validatePassword(password: String): Boolean {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -37,19 +38,34 @@ class Join3Fragment :
                 if (uri != null) {
                     Timber.d("Selected URI: $uri")
                     viewModel.profileImage = uri.getBitmap(requireContext().contentResolver)
+
                     Glide.with(this).load(uri).circleCrop().error(R.drawable.ic_profile)
                         .into(binding.join3ImgProfile)
+
+                    binding.join3TxtContent1.text = "프로필 사진 등록 완료!"
+                    binding.join3TxtContent2.text = "지누팅"
+                    binding.join3TxtContent3.text = "을 시작해 볼까요?"
+
+                    binding.join3TxtPassProfileSetting.visibility = View.INVISIBLE
+                    binding.join3BtnNext.text = "지누팅 시작하기"
+
                 } else {
                     Timber.d("No media selected")
                 }
             }
 
-        binding.join3ImgProfile.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
+        if (binding.join3TxtPassProfileSetting.isVisible) {
+            binding.join3TxtPassProfileSetting.setOnClickListener {
+                viewModel.postSignUp()
+            }
 
-        binding.join3BtnNext.setOnClickListener {
-            viewModel.postSignUp()
+            binding.join3BtnNext.setOnClickListener {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+        } else {
+            binding.join3BtnNext.setOnClickListener {
+                viewModel.postSignUp()
+            }
         }
     }
 

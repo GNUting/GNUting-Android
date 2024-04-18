@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingHorizontal="19dp"
     tools:context=".ui.fragment.user.PolicyFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/policy_img_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:padding="12dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="7dp"
         android:src="@drawable/arrow_left"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,10 +31,11 @@
         app:layout_constraintTop_toTopOf="@+id/policy_img_back" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginHorizontal="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
@@ -48,7 +50,6 @@
                 android:background="@android:color/transparent"
                 android:button="@drawable/custom_checkbox"
                 android:id="@+id/policy_check_all"
-                android:buttonTint="@color/gray1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -76,7 +77,6 @@
                 android:background="@android:color/transparent"
                 android:button="@drawable/custom_checkbox"
                 android:id="@+id/policy_check1"
-                android:buttonTint="@color/gray1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
@@ -114,7 +114,6 @@
                 android:background="@android:color/transparent"
                 android:button="@drawable/custom_checkbox"
                 android:id="@+id/policy_check2"
-                android:buttonTint="@color/gray1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -151,6 +150,7 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:layout_marginHorizontal="25dp"
         android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

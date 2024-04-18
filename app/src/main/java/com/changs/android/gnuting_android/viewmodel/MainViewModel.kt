@@ -60,9 +60,9 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
     val loginResponse: LiveData<Event<LoginResponse>>
         get() = _loginResponse
 
-    private val _emailVerifyResponse = MutableLiveData<Event<DefaultResponse>>()
+    private val _emailVerifyResponse = MutableLiveData<Event<Boolean>>()
 
-    val emailVerifyResponse: LiveData<Event<DefaultResponse>>
+    val emailVerifyResponse: LiveData<Event<Boolean>>
         get() = _emailVerifyResponse
 
     private val _passwordResponse = MutableLiveData<Event<DefaultResponse>>()
@@ -90,7 +90,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     if (result.isSuccessful && result.body() != null) {
                         nickname = inputNickname
                         _nickNameCheck.value = result.body()!!.result
-                        _toast.value = Event(result.body()!!.message)
                         _spinner.value = false
                     } else {
                         nickname = null
@@ -99,7 +98,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _toast.value = Event(error.message)
                             }
                         }
                     }
@@ -263,15 +261,14 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     _spinner.value = true
                     val result = repository.postEmailVerify(EmailVerifyRequest(email!!, number))
                     if (result.isSuccessful && result.body() != null) {
-                        _emailVerifyResponse.value = Event(result.body()!!)
+                        _emailVerifyResponse.value = Event(true)
                         _spinner.value = false
-                        _toast.value = Event(result.body()!!.result)
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _toast.value = Event(error.message)
+                                _emailVerifyResponse.value = Event(false)
                             }
                         }
                     }

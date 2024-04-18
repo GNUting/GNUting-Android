@@ -33,6 +33,7 @@ class Join2Fragment :
     private fun setListener() {
         binding.join2BtnNicknameCheck.setOnClickListener {
             viewModel.getCheckNickName(binding.join2EditNickname.text.toString())
+            binding.join2TxtVerificationNickname.visibility = View.INVISIBLE
         }
 
         binding.join2EditName.doOnTextChanged { text, start, count, after ->
@@ -53,6 +54,8 @@ class Join2Fragment :
         }
 
         binding.join2EditNickname.doOnTextChanged { text, start, count, after ->
+            binding.join2TxtVerificationNickname.visibility = View.INVISIBLE
+
             if (!text.isNullOrEmpty()) {
                 binding.join2BtnNicknameCheck.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
                 binding.join2BtnNicknameCheck.isEnabled = true
@@ -119,7 +122,8 @@ class Join2Fragment :
             viewModel.nickNameCheck.value?.let {
                 if (it && !viewModel.nickname.isNullOrEmpty() && binding.join2EditNickname.text.toString() == viewModel.nickname) {
                     if (viewModel.name == null || viewModel.phoneNumber == null || viewModel.gender == null || viewModel.department == null || viewModel.studentId == null) {
-                        Toast.makeText(requireContext(), "입력되지 않은 항목이 있습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "입력되지 않은 항목이 있습니다.", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
                         val regex = Regex("^\\d{3}-\\d{4}-\\d{4}$")
                         val isValid = regex.matches(viewModel.phoneNumber!!)
@@ -127,13 +131,16 @@ class Join2Fragment :
                         if (isValid) {
                             findNavController().navigate(R.id.action_join2Fragment_to_join3Fragment)
                         } else {
-                            Toast.makeText(requireContext(), "전화번호 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(), "전화번호 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 } else {
-                    Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT)
+                        .show()
                 }
-            } ?:     Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
+            } ?: Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -154,13 +161,29 @@ class Join2Fragment :
             }
         }
 
-        viewModel.nickNameCheck.observe(viewLifecycleOwner) {
+        viewModel.nickNameCheck.observe(viewLifecycleOwner) { isSuccess ->
+            if (isSuccess) {
+                binding.join2TxtVerificationNickname.text = "사용할 수 있는 닉네임 입니다."
+                binding.join2TxtVerificationNickname.setTextColor(
+                    resources.getColor(
+                        R.color.secondary, null
+                    )
+                )
+            } else {
+                binding.join2TxtVerificationNickname.text = "중복된 닉네임 입니다."
+                binding.join2TxtVerificationNickname.setTextColor(
+                    resources.getColor(
+                        R.color.main, null
+                    )
+                )
+            }
+            binding.join2TxtVerificationNickname.visibility = View.VISIBLE
             checkButtonActiveCondition()
         }
     }
 
     private fun checkButtonActiveCondition() {
         buttonActiveCheckViewModel.buttonActiveCheck.value =
-            (viewModel.nickNameCheck.value?: false && !viewModel.name.isNullOrEmpty() && !viewModel.phoneNumber.isNullOrEmpty() && !viewModel.nickname.isNullOrEmpty() && !viewModel.gender.isNullOrEmpty() && !viewModel.birthDate.isNullOrEmpty() && !viewModel.studentId.isNullOrEmpty())
+            (viewModel.nickNameCheck.value ?: false && !viewModel.name.isNullOrEmpty() && !viewModel.phoneNumber.isNullOrEmpty() && !viewModel.nickname.isNullOrEmpty() && !viewModel.gender.isNullOrEmpty() && !viewModel.birthDate.isNullOrEmpty() && !viewModel.studentId.isNullOrEmpty())
     }
 }
