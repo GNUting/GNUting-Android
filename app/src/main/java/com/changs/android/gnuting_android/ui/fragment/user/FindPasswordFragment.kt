@@ -203,7 +203,7 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(
                 certificationViewModel.mailCertificationNumberCheck = true
                 certificationViewModel.timerStop()
 
-                binding.findPasswordTxtTimer.visibility = View.INVISIBLE
+                binding.findPasswordTxtTimer.visibility = View.GONE
             } else {
                 binding.findPasswordTxtVerificationCertification.text = "인증번호가 일치하지 않습니다."
                 binding.findPasswordTxtVerificationCertification.setTextColor(
@@ -224,7 +224,7 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(
             binding.findPasswordTxtTimer.text = formattedTime
 
             if (it == 0L) {
-                binding.findPasswordTxtTimer.visibility = View.INVISIBLE
+                binding.findPasswordTxtTimer.visibility = View.GONE
                 certificationViewModel.timerStop()
             }
         }

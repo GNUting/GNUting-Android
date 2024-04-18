@@ -191,7 +191,7 @@ class Join1Fragment :
                 certificationViewModel.mailCertificationNumberCheck = true
                 certificationViewModel.timerStop()
 
-                binding.join1TxtTimer.visibility = View.INVISIBLE
+                binding.join1TxtTimer.visibility = View.GONE
             } else {
                 binding.join1TxtVerificationCertification.text = "인증번호가 일치하지 않습니다."
                 binding.join1TxtVerificationCertification.setTextColor(
@@ -212,7 +212,7 @@ class Join1Fragment :
             binding.join1TxtTimer.text = formattedTime
 
             if (it == 0L) {
-                binding.join1TxtTimer.visibility = View.INVISIBLE
+                binding.join1TxtTimer.visibility = View.GONE
                 certificationViewModel.timerStop()
             }
         }
