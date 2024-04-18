@@ -67,6 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="이름"
+                android:layout_marginStart="4dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -91,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:text="전화번호"
+                android:layout_marginStart="4dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -115,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:text="성별"
+                android:layout_marginStart="4dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -132,6 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="15dp"
                     android:layout_weight="1"
+                    android:layout_marginHorizontal="4dp"
                     android:background="@drawable/selector_radio_button"
                     android:button="@null"
                     android:gravity="center"
@@ -162,6 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:text="생년월일"
+                android:layout_marginStart="4dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -170,6 +175,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
+                android:layout_marginHorizontal="4dp"
                 android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"
                 android:orientation="horizontal"
                 android:paddingHorizontal="25dp"
@@ -236,6 +242,7 @@
                 android:layout_marginTop="22dp"
                 android:text="닉네임"
                 android:textColor="@color/black"
+                android:layout_marginStart="4dp"
                 android:textSize="14sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -282,7 +289,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/main"
                 android:textSize="14sp"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="4dp"
                 android:visibility="invisible" />
 
             <TextView
@@ -290,6 +297,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:text="학과"
+                android:layout_marginStart="4dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -304,6 +312,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:layout_marginStart="4dp"
                     android:text="클릭하여 학과를 선택해주세요."
                     android:textColor="@color/gray6"
                     android:textSize="14sp" />
@@ -311,6 +320,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginHorizontal="3dp"
                     android:background="@color/gray9" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -320,6 +330,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:text="입학년도"
+                android:layout_marginStart="4dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -344,6 +355,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:text="한줄 소개"
+                android:layout_marginStart="4dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
