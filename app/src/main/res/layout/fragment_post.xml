@@ -10,6 +10,8 @@
         android:id="@+id/nestedScrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scrollbars="none"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,6 +115,7 @@
                 android:id="@+id/post_ll_add_member"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/background_radius_10dp_stroke_gray9"
                 android:gravity="center">
 
