@@ -15,6 +15,7 @@ import com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchDepartme
 import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -26,6 +27,19 @@ class Join2Fragment :
     private val buttonActiveCheckViewModel: ButtonActiveCheckViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (viewModel.birthDate != null) {
+            try {
+                val (year, month, day) = viewModel.birthDate!!.split("-")
+
+                with(binding) {
+                    join2TxtYear.text = year.toString()
+                    join2TxtMonth.text = month.toString()
+                    join2TxtDay.text = day.toString()
+                }
+            } catch (e: Exception) {
+                Timber.e(e.message)
+            }
+        }
         setListener()
         setObserver()
     }
@@ -67,8 +81,6 @@ class Join2Fragment :
             checkButtonActiveCondition()
         }
 
-
-
         binding.join2EditIntro.doOnTextChanged { text, start, count, after ->
             viewModel.userSelfIntroduction = text.toString()
             checkButtonActiveCondition()
@@ -90,7 +102,7 @@ class Join2Fragment :
         }
 
         binding.join2LlMajorContainer.setOnClickListener {
-            val bottomDialogFragment = SearchDepartmentBottomSheetFragment()
+            val bottomDialogFragment = SearchDepartmentBottomSheetFragment { checkButtonActiveCondition() }
             bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
         }
 
@@ -162,6 +174,8 @@ class Join2Fragment :
         }
 
         viewModel.nickNameCheck.observe(viewLifecycleOwner) { isSuccess ->
+            isSuccess ?: return@observe
+
             if (isSuccess) {
                 binding.join2TxtVerificationNickname.text = "사용할 수 있는 닉네임 입니다."
                 binding.join2TxtVerificationNickname.setTextColor(
@@ -184,6 +198,22 @@ class Join2Fragment :
 
     private fun checkButtonActiveCondition() {
         buttonActiveCheckViewModel.buttonActiveCheck.value =
-            (viewModel.nickNameCheck.value ?: false && !viewModel.name.isNullOrEmpty() && !viewModel.phoneNumber.isNullOrEmpty() && !viewModel.nickname.isNullOrEmpty() && !viewModel.gender.isNullOrEmpty() && !viewModel.birthDate.isNullOrEmpty() && !viewModel.studentId.isNullOrEmpty())
+            (viewModel.nickNameCheck.value ?: false && !viewModel.name.isNullOrEmpty() && !viewModel.phoneNumber.isNullOrEmpty() && !viewModel.nickname.isNullOrEmpty() && !viewModel.gender.isNullOrEmpty() && !viewModel.birthDate.isNullOrEmpty() && !viewModel.studentId.isNullOrEmpty() && !viewModel.department.isNullOrEmpty())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        with(viewModel) {
+            name = null
+            phoneNumber = null
+            gender = null
+            nickname = null
+            birthDate = null
+            nickname = null
+            department = null
+            studentId = null
+            userSelfIntroduction = null
+            nickNameCheck.value = null
+        }
     }
 }

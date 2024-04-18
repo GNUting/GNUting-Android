@@ -62,7 +62,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="거의 다 왔어요!"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
         android:textColor="@color/black"
         android:textSize="22sp"

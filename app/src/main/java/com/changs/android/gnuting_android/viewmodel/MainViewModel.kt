@@ -37,9 +37,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
     var password: String? = null
     var userSelfIntroduction: String? = null
 
-    private val _nickNameCheck = MutableLiveData<Boolean>()
-
-    val nickNameCheck: LiveData<Boolean> get() = _nickNameCheck
+    val nickNameCheck: MutableLiveData<Boolean?> = MutableLiveData()
 
     private val _mailCertificationNumber = MutableLiveData<Event<String>>()
 
@@ -89,11 +87,11 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     val result = repository.getCheckNickName(it)
                     if (result.isSuccessful && result.body() != null) {
                         nickname = inputNickname
-                        _nickNameCheck.value = result.body()!!.result
+                        nickNameCheck.value = result.body()!!.result
                         _spinner.value = false
                     } else {
                         nickname = null
-                        _nickNameCheck.value = false
+                        nickNameCheck.value = false
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
@@ -103,7 +101,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     }
                 } catch (e: Exception) {
                     nickname = null
-                    _nickNameCheck.value = false
+                    nickNameCheck.value = false
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
                     Timber.e(e.message ?: "network error")

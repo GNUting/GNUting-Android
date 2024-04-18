@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentPolicyBinding
+import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.PolicyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,11 +18,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class PolicyFragment :
     BaseFragment<FragmentPolicyBinding>(FragmentPolicyBinding::bind, R.layout.fragment_policy) {
     private val viewModel: PolicyViewModel by viewModels()
+    private val buttonActiveCheckViewModel: ButtonActiveCheckViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        fun isAllChecked() = binding.policyCheck1.isChecked && binding.policyCheck2.isChecked
 
         binding.policyImgBack.setOnClickListener {
             findNavController().popBackStack()
@@ -48,6 +48,8 @@ class PolicyFragment :
                 policyCheck1.isChecked = it
                 policyCheck2.isChecked = it
             }
+
+            buttonActiveCheckViewModel.buttonActiveCheck.value = it
         }
 
         binding.policyCheck1.setOnClickListener {
@@ -62,11 +64,20 @@ class PolicyFragment :
             viewModel.isAllChecked.value = binding.policyCheckAll.isChecked
         }
 
-
+        buttonActiveCheckViewModel.buttonActiveCheck.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.policyBtnNext.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                binding.policyBtnNext.isEnabled = true
+            } else {
+                binding.policyBtnNext.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                binding.policyBtnNext.isEnabled = false
+            }
+        }
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.isAllChecked.value = false
+    private fun isAllChecked(): Boolean {
+        val isAllChecked = binding.policyCheck1.isChecked && binding.policyCheck2.isChecked
+        buttonActiveCheckViewModel.buttonActiveCheck.value = isAllChecked
+        return isAllChecked
     }
 }

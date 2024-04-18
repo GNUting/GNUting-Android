@@ -240,4 +240,11 @@ class Join1Fragment :
         return passwordRegex.matches(password)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        with(viewModel) {
+            email = null
+            password = null
+        }
+    }
 }
