@@ -29,7 +29,6 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
 
     val postResponse: LiveData<PostResponse> get() = _postResponse
 
-
     private val _postDetailResponse = MutableLiveData<PostDetailResponse>()
 
     val postDetailResponse: LiveData<PostDetailResponse> get() = _postDetailResponse

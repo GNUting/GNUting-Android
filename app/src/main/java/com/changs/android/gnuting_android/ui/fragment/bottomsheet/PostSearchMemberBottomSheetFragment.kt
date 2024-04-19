@@ -27,13 +27,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
-class SearchMemberBottomSheetFragment :
+class PostSearchMemberBottomSheetFragment :
     BottomSheetDialogFragment() {
     private var _binding: SearchMemberBottomSheetBinding? = null
     private lateinit var adapter: AddMemberAdapter
     private lateinit var selectedMemberAdapter: SelectedMemberAdapter
     private val homeViewModel: HomeMainViewModel by activityViewModels()
-    private val viewModel: MemberAddViewModel by hiltNavGraphViewModels(R.id.detail_graph)
+    private val viewModel: MemberAddViewModel by hiltNavGraphViewModels(R.id.post_graph)
     private val binding get() = _binding!!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchDepartmentBottomSheetFragment(private val departmentChoiceListener: () -> Unit) : BottomSheetDialogFragment() {
+class SearchDepartmentBottomSheetFragment : BottomSheetDialogFragment() {
     private val viewModel: MainViewModel by activityViewModels()
     private var _binding: SearchDepartmentBottomSheetBinding? = null
     private val binding get() = _binding!!
@@ -49,7 +49,6 @@ class SearchDepartmentBottomSheetFragment(private val departmentChoiceListener: 
 
         val adapter = DepartmentAdapter {
             viewModel.choiceDepartment.value = it
-            departmentChoiceListener()
             dismiss()
         }
         binding.searchDepartmentBottomSheetRecyclerview.adapter = adapter

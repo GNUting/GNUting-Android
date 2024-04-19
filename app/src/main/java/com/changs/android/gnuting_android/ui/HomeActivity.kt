@@ -63,10 +63,6 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.spinner.observe(this) { show ->
-            binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
-        }
-
         viewModel.toast.eventObserve(this) { text ->
             text?.let {
                 showToast(it)

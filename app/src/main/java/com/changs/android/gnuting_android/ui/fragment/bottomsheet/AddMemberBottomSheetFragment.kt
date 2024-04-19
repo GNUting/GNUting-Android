@@ -9,7 +9,9 @@ import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.AddMemberBottomSheetBinding
@@ -28,12 +30,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
-class AddMemberBottomSheetFragment(
-    private val memberAddViewModel: MemberAddViewModel, private val boardId: Int
-) : BottomSheetDialogFragment() {
+class AddMemberBottomSheetFragment: BottomSheetDialogFragment() {
+    private val args: AddMemberBottomSheetFragmentArgs by navArgs()
     private var _binding: AddMemberBottomSheetBinding? = null
     private val viewModel: HomeMainViewModel by activityViewModels()
     private val postViewModel: PostViewModel by viewModels()
+    private val memberAddViewModel: MemberAddViewModel by hiltNavGraphViewModels(R.id.detail_graph)
     private lateinit var adapter: PostCurrentMemberAdapter
     private val binding get() = _binding!!
 
@@ -88,9 +90,7 @@ class AddMemberBottomSheetFragment(
 
     private fun setListener() {
         binding.addMemberBottomSheetLlAddMember.setOnClickListener {
-            val searchMemberBottomSheetFragment =
-                SearchMemberBottomSheetFragment(memberAddViewModel)
-            searchMemberBottomSheetFragment.show(childFragmentManager, null)
+            findNavController().navigate(R.id.action_addMemberBottomSheetFragment_to_searchMemberBottomSheetFragment)
         }
 
         binding.addMemberBottomSheetImgClose.setOnClickListener {
@@ -99,7 +99,7 @@ class AddMemberBottomSheetFragment(
 
         binding.addMemberBottomSheetBtnChatRequest.setOnClickListener {
             memberAddViewModel.currentMember.value?.let {
-                postViewModel.postApplyChat(boardId, it.toList())
+                postViewModel.postApplyChat(args.boardId, it.toList())
             }
         }
     }
@@ -146,7 +146,6 @@ class AddMemberBottomSheetFragment(
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        memberAddViewModel.currentMember.value = null
     }
 
     private fun navigateListener(user: InUser) {

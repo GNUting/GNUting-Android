@@ -1,140 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="19dp"
+    android:fillViewport="true"
+    android:scrollbars="none"
     tools:context=".ui.fragment.user.LoginFragment">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/login_img_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="95dp"
-        android:src="@drawable/ic_main_text_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/login_txt_text_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:gravity="center"
-        android:text="경상국립대학교 재학생 전용 과팅앱\n학교 속 새로운 인연을 만나보세요 :)"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/login_img_logo"
-        app:layout_constraintStart_toStartOf="@+id/login_img_logo"
-        app:layout_constraintTop_toBottomOf="@+id/login_img_logo" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/login_card1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_txt_text_logo"
-        app:strokeColor="@color/gray10"
-        app:strokeWidth="1dp">
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/login_edit_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:paddingHorizontal="13dp"
-            android:paddingVertical="19dp"
-            android:textColorHint="@color/gray1"
-            android:textSize="16sp" />
-    </com.google.android.material.card.MaterialCardView>
-
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/login_card2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_card1"
-        app:strokeColor="@color/gray10"
-        app:strokeWidth="1dp">
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/login_edit_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:paddingHorizontal="13dp"
-            android:paddingVertical="19dp"
-            android:textColorHint="@color/gray1"
-            android:textSize="16sp" />
-    </com.google.android.material.card.MaterialCardView>
-
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/login_ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_btn_login">
-
-        <TextView
-            android:id="@+id/login_txt_find_password"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingHorizontal="19dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/login_img_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/find_password"
-            android:textColor="@color/gray1"
-            android:textSize="14sp" />
+            android:layout_marginTop="95dp"
+            android:src="@drawable/ic_main_text_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/login_txt_text_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:text="|"
-            android:textColor="@color/gray1"
-            android:textSize="14sp" />
+            android:layout_marginTop="13dp"
+            android:gravity="center"
+            android:text="경상국립대학교 재학생 전용 과팅앱\n학교 속 새로운 인연을 만나보세요 :)"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/login_img_logo"
+            app:layout_constraintStart_toStartOf="@+id/login_img_logo"
+            app:layout_constraintTop_toBottomOf="@+id/login_img_logo" />
 
-        <TextView
-            android:id="@+id/login_txt_join"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/login_card1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_txt_text_logo"
+            app:strokeColor="@color/gray10"
+            app:strokeWidth="1dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/login_edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="13dp"
+                android:paddingVertical="19dp"
+                android:textColorHint="@color/gray1"
+                android:textSize="16sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/login_card2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_card1"
+            app:strokeColor="@color/gray10"
+            app:strokeWidth="1dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/login_edit_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:paddingHorizontal="13dp"
+                android:paddingVertical="19dp"
+                android:textColorHint="@color/gray1"
+                android:textSize="16sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/login_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/join"
-            android:textColor="@color/gray1"
-            android:textSize="14sp" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_btn_login">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_btn_login"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:background="@drawable/background_radius_10dp_solid_main"
-        android:paddingVertical="18dp"
-        android:text="@string/login"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.578"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_card2" />
+            <TextView
+                android:id="@+id/login_txt_find_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/find_password"
+                android:textColor="@color/gray1"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:text="|"
+                android:textColor="@color/gray1"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/login_txt_join"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/join"
+                android:textColor="@color/gray1"
+                android:textSize="14sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/login_btn_login"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/background_radius_10dp_solid_main"
+            android:paddingVertical="18dp"
+            android:text="@string/login"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.578"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_card2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

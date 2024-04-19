@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:padding="20dp">
+    android:paddingHorizontal="20dp"
+    android:paddingTop="20dp">
 
     <TextView
         android:id="@+id/current_member_bottom_sheet_txt_title"
@@ -31,14 +32,18 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/current_member_bottom_sheet_recyclerview"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
         android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/current_member_bottom_sheet_img_close" />
+        app:layout_constraintTop_toBottomOf="@+id/current_member_bottom_sheet_img_close"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

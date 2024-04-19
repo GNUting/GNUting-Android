@@ -54,16 +54,14 @@ class Join3Fragment :
                 }
             }
 
-        if (binding.join3TxtPassProfileSetting.isVisible) {
-            binding.join3TxtPassProfileSetting.setOnClickListener {
-                viewModel.postSignUp()
-            }
+        binding.join3TxtPassProfileSetting.setOnClickListener {
+            viewModel.postSignUp()
+        }
 
-            binding.join3BtnNext.setOnClickListener {
+        binding.join3BtnNext.setOnClickListener {
+            if (binding.join3TxtPassProfileSetting.isVisible) {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            }
-        } else {
-            binding.join3BtnNext.setOnClickListener {
+            } else {
                 viewModel.postSignUp()
             }
         }

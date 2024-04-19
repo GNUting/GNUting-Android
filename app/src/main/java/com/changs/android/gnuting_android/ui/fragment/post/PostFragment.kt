@@ -51,9 +51,7 @@ class PostFragment :
         binding.postImgBack.setOnClickListener { findNavController().popBackStack() }
 
         binding.postLlAddMember.setOnClickListener {
-            val searchMemberBottomSheetFragment =
-                SearchMemberBottomSheetFragment(memberAddViewModel)
-            searchMemberBottomSheetFragment.show(childFragmentManager, null)
+            findNavController().navigate(R.id.action_postFragment_to_postSearchMemberBottomSheetFragment)
         }
 
         binding.postTxtComplete.setOnClickListener {

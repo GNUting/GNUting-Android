@@ -17,6 +17,7 @@ import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.fragment.bottomsheet.AddMemberBottomSheetFragment
 import com.changs.android.gnuting_android.ui.fragment.bottomsheet.CurrentMemberBottomSheetFragment
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.util.hideSoftKeyboard
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
 import com.changs.android.gnuting_android.viewmodel.PostViewModel
@@ -29,8 +30,8 @@ class DetailFragment :
     BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::bind, R.layout.fragment_detail) {
     private val viewModel: HomeMainViewModel by activityViewModels()
     private val postViewModel: PostViewModel by viewModels()
-    private val memberAddViewModel: MemberAddViewModel by viewModels()
     private val args: DetailFragmentArgs by navArgs()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         postViewModel.getPostDetail(args.id)
@@ -39,6 +40,11 @@ class DetailFragment :
     }
 
     private fun setListener() {
+
+        binding.detailCl.setOnClickListener {
+            binding.detailLlSpinner.visibility = View.GONE
+        }
+
         binding.detailImgBack.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -125,8 +131,8 @@ class DetailFragment :
                 binding.detailTxtTime.text = time
 
                 binding.detailTxtCurrentParticipant.setOnClickListener {
-                    val bottomDialogFragment = CurrentMemberBottomSheetFragment(inUser)
-                    bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
+                    val bundle = bundleOf("currentMember" to inUser.toTypedArray())
+                    findNavController().navigate(R.id.action_detailFragment_to_currentMemberBottomSheetFragment, bundle)
                 }
 
                 if (status != "OPEN") {
@@ -135,9 +141,8 @@ class DetailFragment :
                 }
 
                 binding.detailBtnChatRequest.setOnClickListener {
-                    AddMemberBottomSheetFragment(memberAddViewModel, args.id).show(
-                        childFragmentManager, null
-                    )
+                    val bundle = bundleOf("boardId" to args.id)
+                    findNavController().navigate(R.id.action_detailFragment_to_addMemberBottomSheetFragment, bundle)
                 }
             }
         }

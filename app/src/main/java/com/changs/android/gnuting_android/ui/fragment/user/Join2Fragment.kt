@@ -102,7 +102,7 @@ class Join2Fragment :
         }
 
         binding.join2LlMajorContainer.setOnClickListener {
-            val bottomDialogFragment = SearchDepartmentBottomSheetFragment { checkButtonActiveCondition() }
+            val bottomDialogFragment = SearchDepartmentBottomSheetFragment()
             bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
         }
 
@@ -161,6 +161,7 @@ class Join2Fragment :
             viewModel.department = it
             binding.join2TxtMajor.setTextColor(resources.getColor(R.color.black, null))
             binding.join2TxtMajor.text = it
+            checkButtonActiveCondition()
         }
 
         buttonActiveCheckViewModel.buttonActiveCheck.observe(viewLifecycleOwner) {

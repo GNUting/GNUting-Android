@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.changs.android.gnuting_android.R
@@ -29,7 +30,7 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
 ) {
     private val viewModel: HomeMainViewModel by activityViewModels()
     private val postViewModel: PostViewModel by viewModels()
-    private val memberAddViewModel: MemberAddViewModel by viewModels()
+    private val memberAddViewModel: MemberAddViewModel by hiltNavGraphViewModels(R.id.detail_graph)
     private lateinit var adapter: PostMemberAdapter
     private val args: EditPostFragmentArgs by navArgs()
 
@@ -45,9 +46,7 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
         binding.editPostImgBack.setOnClickListener { findNavController().popBackStack() }
 
         binding.editPostLlAddMember.setOnClickListener {
-            val searchMemberBottomSheetFragment =
-                SearchMemberBottomSheetFragment(memberAddViewModel)
-            searchMemberBottomSheetFragment.show(childFragmentManager, null)
+            findNavController().navigate(R.id.action_editPostFragment_to_searchMemberBottomSheetFragment)
         }
 
         binding.editPostTxtComplete.setOnClickListener {
@@ -107,8 +106,6 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
                 userRole = myInfo.userRole,
                 userSelfIntroduction = myInfo.userSelfIntroduction
             )
-
-            memberAddViewModel.currentMember.value = mutableListOf(myUserInfo)
         }
 
         postViewModel.patchPostDetailResponse.eventObserve(viewLifecycleOwner) {
