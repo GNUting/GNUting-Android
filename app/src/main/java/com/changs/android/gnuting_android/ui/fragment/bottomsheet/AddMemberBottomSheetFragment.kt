@@ -94,7 +94,7 @@ class AddMemberBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         binding.addMemberBottomSheetImgClose.setOnClickListener {
-            dismiss()
+            findNavController().popBackStack()
         }
 
         binding.addMemberBottomSheetBtnChatRequest.setOnClickListener {
@@ -141,7 +141,7 @@ class AddMemberBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         postViewModel.applyChatResponse.eventObserve(viewLifecycleOwner) {
-            dismiss()
+            findNavController().popBackStack()
         }
     }
 

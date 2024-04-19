@@ -64,7 +64,7 @@ class CurrentMemberBottomSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.currentMemberBottomSheetImgClose.setOnClickListener {
-            dismiss()
+            findNavController().popBackStack()
         }
 
         val adapter = PostCurrentMemberAdapter(::navigateListener)
