@@ -31,6 +31,10 @@ class MyPostListFragment : BaseFragment<FragmentMyPostListBinding>(FragmentMyPos
     }
 
     private fun setListener() {
+        binding.myPostListCardPost.setOnClickListener {
+            findNavController().navigate(R.id.action_myPostListFragment_to_post_graph)
+        }
+
         binding.myPostListImgBack.setOnClickListener { findNavController().popBackStack() }
     }
 

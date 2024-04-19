@@ -25,6 +25,15 @@
         <action
             android:id="@+id/action_homeFragment_to_alarmListFragment"
             app:destination="@id/alarmListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_myPostListFragment"
+            app:destination="@id/myPostListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_post_graph"
+            app:destination="@id/post_graph" />
+        <action
+            android:id="@+id/action_homeFragment_to_postSearchFragment"
+            app:destination="@id/postSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/myFragment"
@@ -55,9 +64,6 @@
         <action
             android:id="@+id/action_postListFragment_to_postFragment"
             app:destination="@id/post_graph" />
-        <action
-            android:id="@+id/action_postListFragment_to_searchPostListFragment"
-            app:destination="@id/searchPostListFragment" />
     </fragment>
     <action android:id="@+id/action_global_detailFragment"
         app:destination="@id/detail_graph"/>
@@ -83,7 +89,11 @@
         android:id="@+id/myPostListFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.post.MyPostListFragment"
         android:label="fragment_my_post_list"
-        tools:layout="@layout/fragment_my_post_list" />
+        tools:layout="@layout/fragment_my_post_list" >
+        <action
+            android:id="@+id/action_myPostListFragment_to_post_graph"
+            app:destination="@id/post_graph" />
+    </fragment>
     <fragment
         android:id="@+id/reportFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.report.ReportFragment"
@@ -100,11 +110,6 @@
             android:defaultValue="@null"/>
     </fragment>
     <action android:id="@+id/action_global_reportFragment" app:destination="@id/reportFragment" />
-    <fragment
-        android:id="@+id/searchPostListFragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.post.SearchPostListFragment"
-        android:label="fragment_search_post_list"
-        tools:layout="@layout/fragment_search_post_list" />
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.chat.ChatFragment"
@@ -208,4 +213,8 @@
             android:name="com.changs.android.gnuting_android.ui.fragment.bottomsheet.PostSearchMemberBottomSheetFragment"
             android:label="PostSearchMemberBottomSheetFragment" />
     </navigation>
+    <fragment
+        android:id="@+id/postSearchFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.post.PostSearchFragment"
+        android:label="PostSearchFragment" />
 </navigation>
