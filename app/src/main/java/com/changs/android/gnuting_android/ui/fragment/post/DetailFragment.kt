@@ -40,7 +40,6 @@ class DetailFragment :
     }
 
     private fun setListener() {
-
         binding.detailCl.setOnClickListener {
             binding.detailLlSpinner.visibility = View.GONE
         }
@@ -55,13 +54,6 @@ class DetailFragment :
             } else {
                 binding.detailLlSpinner.visibility = View.VISIBLE
             }
-        }
-
-        binding.detailTxtMenuEdit.setOnClickListener {
-            val action = DetailFragmentDirections.actionDetailFragmentToEditPostFragment(
-                args.id
-            )
-            findNavController().navigate(action)
         }
 
         binding.detailTxtMenuRemove.setOnClickListener {
@@ -88,8 +80,13 @@ class DetailFragment :
         postViewModel.deletePostResponse.eventObserve(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
-        postViewModel.postDetailResponse.observe(viewLifecycleOwner) {
-            it.result.apply {
+        postViewModel.postDetailResponse.observe(viewLifecycleOwner) { response ->
+            binding.detailTxtMenuEdit.setOnClickListener {
+                val bundle = bundleOf("id" to args.id, "detail" to response.result)
+                findNavController().navigate(R.id.action_detailFragment_to_editPostFragment, bundle)
+            }
+
+            response.result.apply {
                 viewModel.myInfo.value?.let { myInfo ->
                     if (myInfo.nickname == user.nickname) {
                         binding.detailBtnChatRequest.visibility = View.GONE

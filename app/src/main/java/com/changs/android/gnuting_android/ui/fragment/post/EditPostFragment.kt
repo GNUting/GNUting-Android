@@ -28,7 +28,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
     FragmentEditPostBinding::bind, R.layout.fragment_edit_post
 ) {
-    private val viewModel: HomeMainViewModel by activityViewModels()
     private val postViewModel: PostViewModel by viewModels()
     private val memberAddViewModel: MemberAddViewModel by hiltNavGraphViewModels(R.id.detail_graph)
     private lateinit var adapter: PostMemberAdapter
@@ -36,7 +35,14 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        postViewModel.getPostDetail(args.id)
+        args.detail.apply {
+            binding.editPostEditTitle.setText(title)
+            binding.editPostEditDetail.setText(detail)
+
+            if (memberAddViewModel.currentMember.value == null)
+                memberAddViewModel.currentMember.value = inUser.toMutableList()
+        }
+
         setRecyclerView()
         setListener()
         setObserver()
@@ -81,31 +87,9 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
             }
         }
 
-        postViewModel.postDetailResponse.observe(viewLifecycleOwner) {
-            it.result.apply {
-                binding.editPostEditTitle.setText(title)
-                binding.editPostEditDetail.setText(detail)
-                memberAddViewModel.currentMember.value = inUser.toMutableList()
-            }
-        }
-
         memberAddViewModel.currentMember.observe(viewLifecycleOwner) {
             binding.editPostTxtMemberTitle.text = "멤버 (${it.size})"
             adapter.submitList(it)
-        }
-
-        viewModel.myInfo.value?.let { myInfo ->
-            val myUserInfo = InUser(
-                age = myInfo.age,
-                department = myInfo.department,
-                gender = myInfo.gender,
-                id = myInfo.id,
-                nickname = myInfo.nickname,
-                profileImage = myInfo.profileImage,
-                studentId = myInfo.studentId,
-                userRole = myInfo.userRole,
-                userSelfIntroduction = myInfo.userSelfIntroduction
-            )
         }
 
         postViewModel.patchPostDetailResponse.eventObserve(viewLifecycleOwner) {
@@ -115,6 +99,6 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
 
     private fun navigateListener(user: InUser) {
         val args = bundleOf("user" to user)
-        findNavController().navigate(R.id.photoFragment, args)
+        findNavController().navigate(R.id.action_editPostFragment_to_photoFragment3, args)
     }
 }

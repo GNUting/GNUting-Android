@@ -1,7 +1,10 @@
 package com.changs.android.gnuting_android.data.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class PostDetailResult(
     @SerializedName("detail")
     val detail: String,
@@ -21,4 +24,4 @@ data class PostDetailResult(
     val user: User,
     @SerializedName("time")
     val time: String
-)
+) : Parcelable

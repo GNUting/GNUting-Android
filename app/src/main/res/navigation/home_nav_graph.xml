@@ -178,6 +178,9 @@
             <action
                 android:id="@+id/action_editPostFragment_to_photoFragment3"
                 app:destination="@id/photoFragment3" />
+            <argument
+                android:name="detail"
+                app:argType="com.changs.android.gnuting_android.data.model.PostDetailResult" />
         </fragment>
         <fragment
             android:id="@+id/currentMemberBottomSheetFragment"

@@ -1,7 +1,10 @@
 package com.changs.android.gnuting_android.data.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class User(
     @SerializedName("department")
     val department: String,
@@ -11,4 +14,4 @@ data class User(
     val studentId: String,
     @SerializedName("image")
     val profileImage: String? = null
-)
+) : Parcelable
