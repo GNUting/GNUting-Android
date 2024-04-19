@@ -5,8 +5,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="16dp"
-    android:paddingHorizontal="24dp"
     tools:context=".ui.fragment.post.MyPostListFragment">
 
 
@@ -22,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/arrow_left"
+            android:padding="25dp"
             app:layout_constraintBottom_toBottomOf="@+id/my_post_list_txt_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/my_post_list_txt_title" />
@@ -31,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="내가 쓴 글"
+            android:layout_marginTop="20dp"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -47,6 +47,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="27dp"
         android:layout_weight="1"
+        android:layout_marginHorizontal="25dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"

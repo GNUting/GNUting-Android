@@ -30,7 +30,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
-class AddMemberBottomSheetFragment: BottomSheetDialogFragment() {
+class AddMemberBottomSheetFragment : BottomSheetDialogFragment() {
     private val args: AddMemberBottomSheetFragmentArgs by navArgs()
     private var _binding: AddMemberBottomSheetBinding? = null
     private val viewModel: HomeMainViewModel by activityViewModels()
@@ -135,7 +135,9 @@ class AddMemberBottomSheetFragment: BottomSheetDialogFragment() {
                 userSelfIntroduction = myInfo.userSelfIntroduction
             )
 
-            memberAddViewModel.currentMember.value = mutableListOf(myUserInfo)
+            if (memberAddViewModel.currentMember.value == null) {
+                memberAddViewModel.currentMember.value = mutableListOf(myUserInfo)
+            }
         }
 
         postViewModel.applyChatResponse.eventObserve(viewLifecycleOwner) {
@@ -150,6 +152,9 @@ class AddMemberBottomSheetFragment: BottomSheetDialogFragment() {
 
     private fun navigateListener(user: InUser) {
         val args = bundleOf("user" to user)
-        findNavController().navigate(R.id.photoFragment, args)
+        findNavController().navigate(
+            R.id.action_addMemberBottomSheetFragment_to_photoFragment3,
+            args
+        )
     }
 }

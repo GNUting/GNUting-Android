@@ -70,7 +70,7 @@ class ChatFragment :
             }
         }
 
-        binding.chatImgSetting.setOnClickListener {
+/*        binding.chatImgSetting.setOnClickListener {
             if (binding.chatLlSpinner.isVisible) {
                 binding.chatLlSpinner.visibility = View.GONE
             } else {
@@ -80,7 +80,7 @@ class ChatFragment :
 
         binding.chatTxtMenuLeave.setOnClickListener {
             chatViewModel.chatRoomLeave(args.id)
-        }
+        }*/
     }
 
     private fun setRecyclerView() {

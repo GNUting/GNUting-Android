@@ -24,11 +24,13 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>(FragmentPhotoBinding::b
 
         args.user?.let { user ->
             Glide.with(requireContext()).load(user.profileImage).error(R.drawable.ic_profile).into(binding.photoImg)
+            binding.photoTxtName.text = user.nickname
+            binding.photoTxtInfo.text = "${user.studentId} | ${user.department}"
 
             if ((viewModel.myInfo.value?.nickname) == user.nickname) {
-                binding.photoImgReport.isVisible = false
+                binding.photoTxtReport.visibility = View.INVISIBLE
             } else {
-                binding.photoImgReport.setOnClickListener {
+                binding.photoTxtReport.setOnClickListener {
                     val action = PhotoFragmentDirections.actionGlobalReportFragment(nickname = user.nickname)
                     findNavController().navigate(action)
                 }

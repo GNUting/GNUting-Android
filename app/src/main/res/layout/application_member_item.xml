@@ -4,57 +4,58 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_radius_10dp_stroke_gray9"
-    android:padding="15dp"
-    android:layout_marginTop="8dp">
+    android:layout_marginBottom="8dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/application_member_item_img"
-        android:layout_width="27dp"
-        android:layout_height="27dp"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_profile"
+        app:layout_constraintBottom_toBottomOf="@+id/application_member_txt_member_intro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="@+id/application_member_txt_name" />
 
     <TextView
         android:id="@+id/application_member_txt_name"
-        android:ellipsize="end"
-        android:maxLines="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/application_member_item_img"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/application_member_item_img"
-        app:layout_constraintTop_toTopOf="@+id/application_member_item_img"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="전재일" />
 
     <TextView
         android:id="@+id/application_member_txt_member_info"
-        android:ellipsize="end"
-        android:maxLines="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textColor="#767676"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/gray7"
+        android:textSize="12sp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/application_member_txt_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/application_member_item_img"
-        tools:text="학과 | 학번 | 나이" />
+        app:layout_constraintStart_toEndOf="@+id/application_member_txt_name"
+        app:layout_constraintTop_toTopOf="@+id/application_member_txt_name"
+        app:layout_constraintVertical_bias="0.7"
+        tools:text="학번 | 학과" />
 
     <TextView
         android:id="@+id/application_member_txt_member_intro"
-        android:ellipsize="end"
-        android:maxLines="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/black"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:textSize="12sp"
+        android:maxLines="1"
+        android:textColor="@color/gray7"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/application_member_txt_name"
         app:layout_constraintTop_toBottomOf="@+id/application_member_txt_member_info"
         tools:text="안녕하세요" />
 

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
@@ -28,7 +29,7 @@ class PostFragment :
     BaseFragment<FragmentPostBinding>(FragmentPostBinding::bind, R.layout.fragment_post) {
     private val viewModel: HomeMainViewModel by activityViewModels()
     private val postViewModel: PostViewModel by viewModels()
-    private val memberAddViewModel: MemberAddViewModel by viewModels()
+    private val memberAddViewModel: MemberAddViewModel by hiltNavGraphViewModels(R.id.post_graph)
     private lateinit var adapter: PostMemberAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -104,7 +105,9 @@ class PostFragment :
                 userSelfIntroduction = myInfo.userSelfIntroduction
             )
 
-            memberAddViewModel.currentMember.value = mutableListOf(myUserInfo)
+            if (memberAddViewModel.currentMember.value == null) {
+                memberAddViewModel.currentMember.value = mutableListOf(myUserInfo)
+            }
         }
 
         postViewModel.saveResponse.eventObserve(viewLifecycleOwner) {
@@ -114,6 +117,6 @@ class PostFragment :
 
     private fun navigateListener(user: InUser) {
         val args = bundleOf("user" to user)
-        findNavController().navigate(R.id.photoFragment, args)
+        findNavController().navigate(R.id.action_postFragment_to_photoFragment2, args)
     }
 }

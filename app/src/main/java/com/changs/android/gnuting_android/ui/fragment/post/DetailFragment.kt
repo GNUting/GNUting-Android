@@ -108,17 +108,17 @@ class DetailFragment :
                 binding.detailImgProfile.setOnClickListener {
                     val inUser = InUser(
                         age = "",
-                        department = "",
+                        department = user.department,
                         gender = "",
                         nickname = user.nickname,
                         id = -1,
                         profileImage = user.profileImage,
-                        studentId = "",
+                        studentId = user.studentId,
                         userRole = "",
                         userSelfIntroduction = ""
                     )
                     val args = bundleOf("user" to inUser)
-                    findNavController().navigate(R.id.photoFragment, args)
+                    findNavController().navigate(R.id.action_detailFragment_to_photoFragment3, args)
                 }
 
 

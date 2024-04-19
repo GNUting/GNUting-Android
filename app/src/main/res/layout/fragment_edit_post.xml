@@ -20,9 +20,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="24dp"
-            android:paddingTop="16dp">
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -33,6 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/arrow_left"
+                    android:padding="25dp"
                     app:layout_constraintBottom_toBottomOf="@+id/edit_post_txt_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/edit_post_txt_title" />
@@ -42,6 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="수정하기"
+                    android:layout_marginTop="20dp"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -54,6 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="완료"
+                    android:layout_marginEnd="25dp"
                     android:textColor="@color/secondary"
                     app:layout_constraintBottom_toBottomOf="@+id/edit_post_txt_title"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -65,6 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="31dp"
+                android:layout_marginHorizontal="25dp"
                 android:background="@null"
                 android:hint="제목"
                 android:textColor="@color/black"
@@ -83,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:gravity="top"
+                android:layout_marginHorizontal="25dp"
                 android:hint="내용을 입력해주세요."
                 android:minHeight="200dp"
                 android:textColor="@color/black"
@@ -95,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:text="멤버 (0)"
                 android:textColor="@color/black"
+                android:layout_marginHorizontal="25dp"
                 android:textSize="18sp" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -103,6 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical"
+                android:layout_marginHorizontal="25dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/post_member_item" />
 
@@ -111,6 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginBottom="30dp"
+                android:layout_marginHorizontal="25dp"
                 android:background="@drawable/background_radius_10dp_stroke_gray9"
                 android:gravity="center">
 

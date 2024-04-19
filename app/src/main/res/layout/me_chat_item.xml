@@ -6,39 +6,18 @@
     android:layout_marginBottom="20dp"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/me_chat_item_img"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        tools:src="@drawable/ic_profile"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/me_chat_item_txt_nickname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="11dp"
-        android:textColor="#6B6B6B"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/me_chat_item_img"
-        app:layout_constraintEnd_toStartOf="@+id/me_chat_item_img"
-        app:layout_constraintTop_toTopOf="@id/me_chat_item_img"
-        tools:text="닉네임" />
-
     <TextView
         android:id="@+id/me_chat_item_txt_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingVertical="8dp"
+        android:background="@drawable/background_me_chat"
         android:maxWidth="250dp"
         android:paddingHorizontal="10dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/background_me_chat"
+        android:paddingVertical="8dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/me_chat_item_txt_nickname"
-        app:layout_constraintTop_toBottomOf="@+id/me_chat_item_txt_nickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="안녕하세요" />
 
     <TextView

@@ -79,7 +79,7 @@ class CurrentMemberBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun navigateListener(user: InUser) {
         val args = bundleOf("user" to user)
-        findNavController().navigate(R.id.photoFragment, args)
+        findNavController().navigate(R.id.action_currentMemberBottomSheetFragment_to_photoFragment3, args)
     }
 
 }

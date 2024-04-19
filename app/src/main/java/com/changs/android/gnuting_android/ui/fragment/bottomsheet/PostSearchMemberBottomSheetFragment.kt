@@ -161,7 +161,7 @@ class PostSearchMemberBottomSheetFragment :
 
     private fun navigateListener(user: InUser) {
         val args = bundleOf("user" to user)
-        findNavController().navigate(R.id.photoFragment, args)
+        findNavController().navigate(R.id.action_postSearchMemberBottomSheetFragment_to_photoFragment2, args)
     }
 
 }

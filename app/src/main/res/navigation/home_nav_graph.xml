@@ -160,6 +160,9 @@
             <action
                 android:id="@+id/action_detailFragment_to_addMemberBottomSheetFragment"
                 app:destination="@id/addMemberBottomSheetFragment" />
+            <action
+                android:id="@+id/action_detailFragment_to_photoFragment3"
+                app:destination="@id/photoFragment3" />
         </fragment>
         <fragment
             android:id="@+id/editPostFragment"
@@ -172,16 +175,22 @@
             <action
                 android:id="@+id/action_editPostFragment_to_searchMemberBottomSheetFragment"
                 app:destination="@id/searchMemberBottomSheetFragment" />
+            <action
+                android:id="@+id/action_editPostFragment_to_photoFragment3"
+                app:destination="@id/photoFragment3" />
         </fragment>
-        <dialog
+        <fragment
             android:id="@+id/currentMemberBottomSheetFragment"
             android:name="com.changs.android.gnuting_android.ui.fragment.bottomsheet.CurrentMemberBottomSheetFragment"
             android:label="CurrentMemberBottomSheetFragment" >
             <argument
                 android:name="currentMember"
                 app:argType="com.changs.android.gnuting_android.data.model.InUser[]" />
-        </dialog>
-        <dialog
+            <action
+                android:id="@+id/action_currentMemberBottomSheetFragment_to_photoFragment3"
+                app:destination="@id/photoFragment3" />
+        </fragment>
+        <fragment
             android:id="@+id/addMemberBottomSheetFragment"
             android:name="com.changs.android.gnuting_android.ui.fragment.bottomsheet.AddMemberBottomSheetFragment"
             android:label="AddMemberBottomSheetFragment">
@@ -191,11 +200,29 @@
             <argument
                 android:name="boardId"
                 app:argType="integer" />
-        </dialog>
+            <action
+                android:id="@+id/action_addMemberBottomSheetFragment_to_photoFragment3"
+                app:destination="@id/photoFragment3" />
+        </fragment>
         <dialog
             android:id="@+id/searchMemberBottomSheetFragment"
             android:name="com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchMemberBottomSheetFragment"
-            android:label="SearchMemberBottomSheetFragment" />
+            android:label="SearchMemberBottomSheetFragment" >
+            <action
+                android:id="@+id/action_searchMemberBottomSheetFragment_to_photoFragment3"
+                app:destination="@id/photoFragment3" />
+        </dialog>
+        <fragment
+            android:id="@+id/photoFragment3"
+            android:name="com.changs.android.gnuting_android.ui.fragment.user.PhotoFragment"
+            android:label="fragment_photo3"
+            tools:layout="@layout/fragment_photo" >
+            <argument
+                android:name="user"
+                app:argType="com.changs.android.gnuting_android.data.model.InUser"
+                app:nullable="true"
+                android:defaultValue="@null" />
+        </fragment>
     </navigation>
     <navigation android:id="@+id/post_graph"
         app:startDestination="@id/postFragment">
@@ -207,11 +234,30 @@
             <action
                 android:id="@+id/action_postFragment_to_postSearchMemberBottomSheetFragment"
                 app:destination="@id/postSearchMemberBottomSheetFragment" />
+            <action
+                android:id="@+id/action_postFragment_to_photoFragment2"
+                app:destination="@id/photoFragment2" />
         </fragment>
         <dialog
             android:id="@+id/postSearchMemberBottomSheetFragment"
             android:name="com.changs.android.gnuting_android.ui.fragment.bottomsheet.PostSearchMemberBottomSheetFragment"
-            android:label="PostSearchMemberBottomSheetFragment" />
+            android:label="PostSearchMemberBottomSheetFragment" >
+            <action
+                android:id="@+id/action_postSearchMemberBottomSheetFragment_to_photoFragment2"
+                app:destination="@id/photoFragment2" />
+        </dialog>
+        <fragment
+            android:id="@+id/photoFragment2"
+            android:name="com.changs.android.gnuting_android.ui.fragment.user.PhotoFragment"
+            android:label="fragment_photo2"
+            tools:layout="@layout/fragment_photo" >
+            <argument
+                android:name="user"
+                app:argType="com.changs.android.gnuting_android.data.model.InUser"
+                app:nullable="true"
+                android:defaultValue="@null" />
+        </fragment>
+
     </navigation>
     <fragment
         android:id="@+id/postSearchFragment"

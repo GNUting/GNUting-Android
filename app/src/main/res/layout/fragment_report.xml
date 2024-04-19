@@ -10,9 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="16dp">
+        android:layout_height="wrap_content">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/report_cl_header"
             android:layout_width="match_parent"
@@ -26,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_close"
+                android:padding="25dp"
                 app:layout_constraintBottom_toBottomOf="@+id/report_txt_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/report_txt_title" />
@@ -35,6 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="신고하기"
+                android:layout_marginTop="20dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -49,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:layout_marginStart="25dp"
             android:text="신고하기 전에 잠깐!"
             android:textColor="@color/black"
             android:textSize="12sp"
@@ -63,7 +64,10 @@
             android:layout_marginTop="5dp"
             android:text="이 글이 운영진에 의해 삭제되어야 마땅하다고 생각된다면 신고해주세요!\n이용규칙에 위배되는 글을 여러 차례 계시하여 신고를 많이 받은 회원은 제한 조취가 취해집니다.\n\n신고는 사용자의 반대 의견을 표시하는 것이 아닙니다.\n사용자의 신고가 건전하고 올바른 지누팅 문화를 만듭니다.\n허위 신고의 경우 신고자가 제재를 받을 수 있습니다."
             android:textColor="@color/black"
+            android:layout_marginStart="25dp"
             android:textSize="9sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/report_txt_notice" />
 
@@ -73,6 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="신고 사유"
+            android:layout_marginStart="25dp"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -85,6 +90,7 @@
             android:layout_height="wrap_content"
             android:columnCount="2"
             android:orientation="vertical"
+            android:layout_marginHorizontal="25dp"
             android:rowCount="3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -244,6 +250,7 @@
             android:background="@drawable/background_radius_10dp_stroke_gray9"
             android:gravity="start"
             android:hint="기타 사유를 입력해주세요"
+            android:layout_marginHorizontal="25dp"
             android:maxLines="20"
             android:maxLength="200"
             android:minHeight="100dp"
@@ -268,6 +275,7 @@
             android:textColor="@color/black"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="20dp"
+            android:layout_marginStart="25dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/report_btn_report"
@@ -285,6 +293,7 @@
             android:textStyle="bold"
             android:background="@drawable/background_radius_10dp_solid_main"
             android:text="신고하기"
+            android:layout_marginEnd="25dp"
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
