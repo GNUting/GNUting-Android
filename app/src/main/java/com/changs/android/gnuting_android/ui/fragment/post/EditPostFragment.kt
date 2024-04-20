@@ -1,6 +1,7 @@
 package com.changs.android.gnuting_android.ui.fragment.post
 
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -49,6 +50,9 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
     }
 
     private fun setListener() {
+        binding.editPostEditTitle.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
+        binding.editPostEditDetail.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(300))
+
         binding.editPostImgBack.setOnClickListener { findNavController().popBackStack() }
 
         binding.editPostLlAddMember.setOnClickListener {

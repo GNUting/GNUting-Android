@@ -2,6 +2,7 @@ package com.changs.android.gnuting_android.ui.fragment.user
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.InputFilter
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
@@ -45,6 +46,15 @@ class Join2Fragment :
     }
 
     private fun setListener() {
+        binding.join2EditName.filters = arrayOf<InputFilter>(
+            InputFilter.LengthFilter(8))
+
+        binding.join2EditNickname.filters = arrayOf<InputFilter>(
+            InputFilter.LengthFilter(10))
+
+        binding.join2EditIntro.filters = arrayOf<InputFilter>(
+            InputFilter.LengthFilter(30))
+
         binding.join2BtnNicknameCheck.setOnClickListener {
             viewModel.getCheckNickName(binding.join2EditNickname.text.toString())
             binding.join2TxtVerificationNickname.visibility = View.INVISIBLE
@@ -210,7 +220,6 @@ class Join2Fragment :
             gender = null
             nickname = null
             birthDate = null
-            nickname = null
             department = null
             studentId = null
             userSelfIntroduction = null

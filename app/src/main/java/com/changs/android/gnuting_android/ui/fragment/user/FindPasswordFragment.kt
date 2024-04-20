@@ -102,7 +102,7 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(
 
         binding.findPasswordBtnVerify.setOnClickListener {
             binding.findPasswordTxtVerificationCertification.visibility = View.INVISIBLE
-            viewModel.postMailCertification()
+            viewModel.postFindPasswordMailCertification()
         }
 
         binding.findPasswordEditEmail.doOnTextChanged { text, start, count, after ->

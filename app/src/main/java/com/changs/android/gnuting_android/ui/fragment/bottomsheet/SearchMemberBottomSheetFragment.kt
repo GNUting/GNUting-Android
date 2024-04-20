@@ -17,6 +17,7 @@ import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.SearchMemberBottomSheetBinding
 import com.changs.android.gnuting_android.ui.adapter.AddMemberAdapter
 import com.changs.android.gnuting_android.ui.adapter.SelectedMemberAdapter
+import com.changs.android.gnuting_android.util.hideSoftKeyboard
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -57,9 +58,17 @@ class SearchMemberBottomSheetFragment :
         setRecyclerView()
         setObserver()
 
+        binding.root.setOnClickListener {
+            it.hideSoftKeyboard()
+        }
+
         viewModel.getSearchUser("")
 
         binding.searchMemberBottomSheetTxtMemberAdd.setOnClickListener {
+            dismiss()
+        }
+
+        binding.searchMemberBottomSheetClose.setOnClickListener {
             dismiss()
         }
 

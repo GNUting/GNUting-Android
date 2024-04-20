@@ -17,6 +17,7 @@ import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.showTwoButtonDialog
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
@@ -90,7 +91,11 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
             showTwoButtonDialog(
                 context = requireContext(), titleText = "로그아웃 하시겠습니까?", rightButtonText = "로그아웃"
             ) {
-                viewModel.logoutUser()
+                FirebaseMessaging.getInstance().token.addOnSuccessListener {
+                    viewModel.logoutUser(it)
+                }.addOnFailureListener {
+                    Timber.e(it.message)
+                }
             }
         }
 

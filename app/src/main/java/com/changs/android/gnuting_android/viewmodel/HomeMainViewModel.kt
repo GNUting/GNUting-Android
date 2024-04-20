@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.DefaultResponse
+import com.changs.android.gnuting_android.data.model.LogoutRequest
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResult
 import com.changs.android.gnuting_android.data.model.ProfileResponse
@@ -84,10 +85,7 @@ class HomeMainViewModel @Inject constructor(
 
     val choiceDepartment = MutableLiveData<String>()
 
-    val nickNameCheck = MutableLiveData<Boolean>()
-
-    var department: String? = null
-    var nickname: String? = null
+    val nickNameCheck = MutableLiveData<Boolean?>()
     var profileImage: Bitmap? = null
 
     fun fetchRecentMyInfo() {
@@ -108,7 +106,6 @@ class HomeMainViewModel @Inject constructor(
                     val result = userRepository.getCheckNickName(it)
                     if (result.isSuccessful && result.body() != null) {
                         nickNameCheck.value = result.body()!!.result
-                        nickname = it
                         _toast.value = Event(result.body()!!.message)
                         _spinner.value = false
                     } else {
@@ -171,13 +168,13 @@ class HomeMainViewModel @Inject constructor(
         }
     }
 
-    fun logoutUser() {
+    fun logoutUser(fcmToken: String) {
         viewModelScope.launch {
             try {
                 _spinner.value = true
                 val refreshToken = tokenManager.getRefreshToken().firstOrNull() ?: ""
 
-                val response = userRepository.postLogout(RefreshTokenRequest(refreshToken))
+                val response = userRepository.postLogout(LogoutRequest(refreshToken, fcmToken))
 
                 handleResult(response = response, handleSuccess = fun() {
                     _logoutResponse.value = Event(response.body()!!)

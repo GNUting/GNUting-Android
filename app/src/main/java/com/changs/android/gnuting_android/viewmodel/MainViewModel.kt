@@ -138,6 +138,34 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
         }
     }
 
+    fun postFindPasswordMailCertification() {
+        viewModelScope.launch {
+            email?.let {
+                try {
+                    _spinner.value = true
+                    val requestBody = MailCertificationRequest(it)
+                    val result = repository.postFindPasswordMailCertification(requestBody)
+                    if (result.isSuccessful && result.body() != null) {
+                        _mailCertificationNumber.value = Event(result.body()!!.result.number)
+                        _spinner.value = false
+                    } else {
+                        result.errorBody()?.let {
+                            val errorBody = getErrorResponse(it)
+                            errorBody?.let { error ->
+                                _spinner.value = false
+                                _toast.value = Event(error.message)
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    _spinner.value = false
+                    _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
+                }
+            }
+        }
+    }
+
     fun postSignUp() {
         viewModelScope.launch {
             if (birthDate != null && email != null && gender != null && nickname != null && password != null && phoneNumber != null && studentId != null) {

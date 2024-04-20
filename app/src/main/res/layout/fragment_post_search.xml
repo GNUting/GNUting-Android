@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:paddingHorizontal="20dp"
-    android:paddingTop="20dp">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/post_search_img_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/arrow_left"
+        android:padding="25dp"
         app:layout_constraintBottom_toBottomOf="@+id/post_search_txt_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/post_search_txt_title" />
@@ -22,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="게시물 검색"
+        android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -42,21 +42,26 @@
             android:id="@+id/post_search_edit_search"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:textSize="15sp"
+            android:layout_height="wrap_content"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:paddingStart="10dp"
+            android:layout_marginStart="25dp"
             android:maxLines="1"
             android:drawablePadding="10dp"
-            android:background="@drawable/background_radius_10dp_solid_gray10"
-            android:hint="글제목, 학과 검색"
-            android:drawableStart="@drawable/ic_search2" />
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textColorHint="#BEBEBE"
+            android:textSize="15sp"
+            android:background="@drawable/background_radius_5dp_solid_gray14"
+            android:drawableStart="@drawable/ic_search3"
+            android:hint="글제목, 학과 검색" />
 
         <TextView
             android:id="@+id/post_search_txt_cancel"
             android:textSize="17sp"
             android:textColor="@color/black"
+            android:layout_marginEnd="25dp"
             android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,6 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginHorizontal="25dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"

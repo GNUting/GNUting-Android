@@ -124,6 +124,9 @@
         <argument
             android:name="info"
             app:argType="string" />
+        <argument
+            android:name="chatRoomUsers"
+            app:argType="com.changs.android.gnuting_android.data.model.ChatRoomUser[]" />
     </fragment>
     <fragment
         android:id="@+id/photoFragment"

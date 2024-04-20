@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.ChatListResult
+import com.changs.android.gnuting_android.data.model.ChatRoomUser
 import com.changs.android.gnuting_android.databinding.ChatItemBinding
 
 
-class ChatListAdapter(private val listener: (Int, String, String) -> Unit) :
+class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomUser>) -> Unit) :
     ListAdapter<ChatListResult, ChatListAdapter.ViewHolder>(object :
         DiffUtil.ItemCallback<ChatListResult>() {
         override fun areItemsTheSame(oldItem: ChatListResult, newItem: ChatListResult): Boolean {
@@ -36,7 +37,7 @@ class ChatListAdapter(private val listener: (Int, String, String) -> Unit) :
     ) {
         private val binding = ChatItemBinding.bind(itemView)
 
-        fun bind(item: ChatListResult, listener: (Int, String, String) -> Unit) {
+        fun bind(item: ChatListResult, listener: (Int, String, String, List<ChatRoomUser>) -> Unit) {
 
             val info = "${item.applyLeaderDepartment} | ${item.leaderUserDepartment}"
 
@@ -46,7 +47,7 @@ class ChatListAdapter(private val listener: (Int, String, String) -> Unit) :
             binding.chatItemTxtInfo.text = info
 
             binding.root.setOnClickListener {
-                listener(item.id, item.title, info)
+                listener(item.id, item.title, info, item.chatRoomUsers)
             }
 
             binding.chatItemImgProfile.isVisible = false
