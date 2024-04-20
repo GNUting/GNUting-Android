@@ -41,8 +41,6 @@ class Join3Fragment :
                     viewModel.profileImage = uri.getBitmap(requireContext().contentResolver)
 
                     Glide.with(this).load(uri)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
                         .circleCrop()
                         .error(R.drawable.ic_profile)
                         .into(binding.join3ImgProfile)

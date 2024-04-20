@@ -47,8 +47,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             viewModel.choiceDepartment.value = it.department
 
             Glide.with(this).load(it.profileImage)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
                 .error(R.drawable.ic_profile)
                 .into(binding.editProfileImg)
 
@@ -59,8 +57,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
 
             it.profileImage?.let { img ->
                 Glide.with(this).asBitmap().load(img)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
                     .into(object : CustomTarget<Bitmap>() {
                         override fun onResourceReady(
                             resource: Bitmap, transition: Transition<in Bitmap>?
@@ -136,8 +132,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
                     viewModel.profileImage = uri.getBitmap(requireContext().contentResolver)
 
                     Glide.with(this).load(uri)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
                         .circleCrop().error(R.drawable.ic_profile)
                         .into(binding.editProfileImg)
                 } else {

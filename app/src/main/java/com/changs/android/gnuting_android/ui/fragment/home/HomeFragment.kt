@@ -114,8 +114,6 @@ class HomeFragment :
             it?.let {
                 binding.homeTxtGreetings.text = "${it.nickname} 님 안녕하세요 :)"
                 Glide.with(binding.root).load(it.profileImage)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
                     .error(R.drawable.ic_profile)
                     .into(binding.homeImgProfile)
             }

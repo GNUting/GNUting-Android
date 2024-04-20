@@ -100,8 +100,6 @@ class AddMemberAdapter(
 
             Glide.with(binding.root.context)
                 .load(item.profileImage)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
                 .error(R.drawable.ic_profile)
                 .into(binding.addMemberItemImg)
 

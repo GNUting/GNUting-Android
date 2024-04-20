@@ -59,7 +59,7 @@ class UserRepository @Inject constructor(private val service: UserService, room:
             studentId = FormDataUtil.getTextBody("studentId", studentId),
             profileImage = profileImage?.let {
                 FormDataUtil.getImageBody(
-                    profileImage, "profileImage", "profileImage"
+                    profileImage, "${System.currentTimeMillis()}", "${System.currentTimeMillis()}"
                 )
             },
             userSelfIntroduction = FormDataUtil.getTextBody(
@@ -80,7 +80,7 @@ class UserRepository @Inject constructor(private val service: UserService, room:
     },
         profileImage = profileImage?.let {
             FormDataUtil.getImageBody(
-                profileImage, "profileImage", "profileImage"
+                profileImage, "${System.currentTimeMillis()}", "${System.currentTimeMillis()}"
             )
         },
         nickname = nickname?.let { FormDataUtil.getTextBody("nickname", it) },
