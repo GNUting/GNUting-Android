@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        splashScreen.setKeepOnScreenCondition{ true }
+        splashScreen.setKeepOnScreenCondition { true }
 
         val accessToken = runBlocking { viewModel.getAccessToken().firstOrNull() }
         Timber.d("Token: $accessToken")
@@ -38,6 +38,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, HomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+        } else {
+            splashScreen.setKeepOnScreenCondition { false }
         }
 
         viewModel.spinner.observe(this) { show ->
