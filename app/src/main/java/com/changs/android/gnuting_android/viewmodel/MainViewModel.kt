@@ -37,9 +37,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
     var password: String? = null
     var userSelfIntroduction: String? = null
 
-    private val _nickNameCheck = MutableLiveData<Boolean>()
-
-    val nickNameCheck: LiveData<Boolean> get() = _nickNameCheck
+    val nickNameCheck: MutableLiveData<Boolean?> = MutableLiveData()
 
     private val _mailCertificationNumber = MutableLiveData<Event<String>>()
 
@@ -60,9 +58,9 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
     val loginResponse: LiveData<Event<LoginResponse>>
         get() = _loginResponse
 
-    private val _emailVerifyResponse = MutableLiveData<Event<DefaultResponse>>()
+    private val _emailVerifyResponse = MutableLiveData<Event<Boolean>>()
 
-    val emailVerifyResponse: LiveData<Event<DefaultResponse>>
+    val emailVerifyResponse: LiveData<Event<Boolean>>
         get() = _emailVerifyResponse
 
     private val _passwordResponse = MutableLiveData<Event<DefaultResponse>>()
@@ -89,23 +87,21 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     val result = repository.getCheckNickName(it)
                     if (result.isSuccessful && result.body() != null) {
                         nickname = inputNickname
-                        _nickNameCheck.value = result.body()!!.result
-                        _toast.value = Event(result.body()!!.message)
+                        nickNameCheck.value = result.body()!!.result
                         _spinner.value = false
                     } else {
                         nickname = null
-                        _nickNameCheck.value = false
+                        nickNameCheck.value = false
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _toast.value = Event(error.message)
                             }
                         }
                     }
                 } catch (e: Exception) {
                     nickname = null
-                    _nickNameCheck.value = false
+                    nickNameCheck.value = false
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
                     Timber.e(e.message ?: "network error")
@@ -121,6 +117,34 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     _spinner.value = true
                     val requestBody = MailCertificationRequest(it)
                     val result = repository.postMailCertification(requestBody)
+                    if (result.isSuccessful && result.body() != null) {
+                        _mailCertificationNumber.value = Event(result.body()!!.result.number)
+                        _spinner.value = false
+                    } else {
+                        result.errorBody()?.let {
+                            val errorBody = getErrorResponse(it)
+                            errorBody?.let { error ->
+                                _spinner.value = false
+                                _toast.value = Event(error.message)
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    _spinner.value = false
+                    _toast.value = Event("네트워크 에러가 발생했습니다.")
+                    Timber.e(e.message ?: "network error")
+                }
+            }
+        }
+    }
+
+    fun postFindPasswordMailCertification() {
+        viewModelScope.launch {
+            email?.let {
+                try {
+                    _spinner.value = true
+                    val requestBody = MailCertificationRequest(it)
+                    val result = repository.postFindPasswordMailCertification(requestBody)
                     if (result.isSuccessful && result.body() != null) {
                         _mailCertificationNumber.value = Event(result.body()!!.result.number)
                         _spinner.value = false
@@ -263,15 +287,14 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     _spinner.value = true
                     val result = repository.postEmailVerify(EmailVerifyRequest(email!!, number))
                     if (result.isSuccessful && result.body() != null) {
-                        _emailVerifyResponse.value = Event(result.body()!!)
+                        _emailVerifyResponse.value = Event(true)
                         _spinner.value = false
-                        _toast.value = Event(result.body()!!.result)
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _toast.value = Event(error.message)
+                                _emailVerifyResponse.value = Event(false)
                             }
                         }
                     }

@@ -10,12 +10,14 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.SearchMemberBottomSheetBinding
 import com.changs.android.gnuting_android.ui.adapter.AddMemberAdapter
 import com.changs.android.gnuting_android.ui.adapter.SelectedMemberAdapter
+import com.changs.android.gnuting_android.util.hideSoftKeyboard
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -26,12 +28,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
-class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel) :
+class SearchMemberBottomSheetFragment :
     BottomSheetDialogFragment() {
     private var _binding: SearchMemberBottomSheetBinding? = null
     private lateinit var adapter: AddMemberAdapter
     private lateinit var selectedMemberAdapter: SelectedMemberAdapter
     private val homeViewModel: HomeMainViewModel by activityViewModels()
+    private val viewModel: MemberAddViewModel by hiltNavGraphViewModels(R.id.detail_graph)
     private val binding get() = _binding!!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -55,9 +58,17 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
         setRecyclerView()
         setObserver()
 
+        binding.root.setOnClickListener {
+            it.hideSoftKeyboard()
+        }
+
         viewModel.getSearchUser("")
 
         binding.searchMemberBottomSheetTxtMemberAdd.setOnClickListener {
+            dismiss()
+        }
+
+        binding.searchMemberBottomSheetClose.setOnClickListener {
             dismiss()
         }
 
@@ -159,7 +170,7 @@ class SearchMemberBottomSheetFragment(private val viewModel: MemberAddViewModel)
 
     private fun navigateListener(user: InUser) {
         val args = bundleOf("user" to user)
-        findNavController().navigate(R.id.photoFragment, args)
+        // findNavController().navigate(R.id.action_searchMemberBottomSheetFragment_to_photoFragment3, args)
     }
 
 }

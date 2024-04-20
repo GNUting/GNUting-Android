@@ -29,7 +29,6 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
 
     val postResponse: LiveData<PostResponse> get() = _postResponse
 
-
     private val _postDetailResponse = MutableLiveData<PostDetailResponse>()
 
     val postDetailResponse: LiveData<PostDetailResponse> get() = _postDetailResponse
@@ -182,6 +181,8 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
                 handleResult(response = response, handleSuccess = fun() {
                     _toast.value = Event("채팅 신청하기가 완료되었습니다.")
                     _applyChatResponse.value = Event(response.body()!!)
+                }, handleError = fun(message: String) {
+                    _toast.value = Event(message)
                 })
             } catch (e: Exception) {
                 _spinner.value = false

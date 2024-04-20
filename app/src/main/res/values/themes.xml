@@ -61,7 +61,7 @@
     </style>
 
     <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorControlNormal">@color/gray7</item>
+        <item name="colorControlNormal">@color/gray9</item>
         <item name="colorControlActivated">@color/main</item>
         <item name="colorControlHighlight">@color/main</item>
     </style>

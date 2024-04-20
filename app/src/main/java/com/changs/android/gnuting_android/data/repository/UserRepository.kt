@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.changs.android.gnuting_android.data.model.CheckNickNameResponse
 import com.changs.android.gnuting_android.data.model.EmailVerifyRequest
 import com.changs.android.gnuting_android.data.model.LoginRequest
+import com.changs.android.gnuting_android.data.model.LogoutRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResult
@@ -26,6 +27,9 @@ class UserRepository @Inject constructor(private val service: UserService, room:
     private val dao = room.userDao()
     suspend fun postMailCertification(mailCertificationRequest: MailCertificationRequest): Response<MailCertificationResponse> =
         service.postMailCertification(mailCertificationRequest)
+
+    suspend fun postFindPasswordMailCertification(mailCertificationRequest: MailCertificationRequest): Response<MailCertificationResponse> =
+        service.postFindPasswordMailCertification(mailCertificationRequest)
 
     suspend fun getCheckNickName(nickname: String): Response<CheckNickNameResponse> =
         service.getCheckNickName(nickname)
@@ -107,7 +111,7 @@ class UserRepository @Inject constructor(private val service: UserService, room:
 
     suspend fun postSaveFCMToken(request: SaveFCMTokenRequest) = service.postSaveFCMToken(request)
 
-    suspend fun postLogout(request: RefreshTokenRequest) = service.postLogout(request)
+    suspend fun postLogout(request: LogoutRequest) = service.postLogout(request)
 
     suspend fun deleteWithdrawal() = service.deleteWithdrawal()
 

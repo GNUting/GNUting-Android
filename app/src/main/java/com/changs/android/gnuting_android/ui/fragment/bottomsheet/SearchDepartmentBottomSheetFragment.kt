@@ -62,6 +62,4 @@ class SearchDepartmentBottomSheetFragment : BottomSheetDialogFragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

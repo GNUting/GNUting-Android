@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
@@ -28,7 +29,7 @@ class PostFragment :
     BaseFragment<FragmentPostBinding>(FragmentPostBinding::bind, R.layout.fragment_post) {
     private val viewModel: HomeMainViewModel by activityViewModels()
     private val postViewModel: PostViewModel by viewModels()
-    private val memberAddViewModel: MemberAddViewModel by viewModels()
+    private val memberAddViewModel: MemberAddViewModel by hiltNavGraphViewModels(R.id.post_graph)
     private lateinit var adapter: PostMemberAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,22 +39,12 @@ class PostFragment :
     }
 
     private fun setListener() {
-        val inputFilter = InputFilter { _, _, _, dest, dstart, _ ->
-            // 입력된 텍스트에서 줄 수 계산
-            val lineCount = dest.toString().substring(0, dstart).split("\n").size
-
-            // 20줄 이상인 경우 입력 제한
-            if (lineCount >= 20) ""
-            else null
-        }
-
-        binding.postEditDetail.filters = arrayOf(inputFilter)
+        binding.postEditTitle.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
+        binding.postEditDetail.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(300))
         binding.postImgBack.setOnClickListener { findNavController().popBackStack() }
 
         binding.postLlAddMember.setOnClickListener {
-            val searchMemberBottomSheetFragment =
-                SearchMemberBottomSheetFragment(memberAddViewModel)
-            searchMemberBottomSheetFragment.show(childFragmentManager, null)
+            findNavController().navigate(R.id.action_postFragment_to_postSearchMemberBottomSheetFragment)
         }
 
         binding.postTxtComplete.setOnClickListener {
@@ -106,7 +97,9 @@ class PostFragment :
                 userSelfIntroduction = myInfo.userSelfIntroduction
             )
 
-            memberAddViewModel.currentMember.value = mutableListOf(myUserInfo)
+            if (memberAddViewModel.currentMember.value == null) {
+                memberAddViewModel.currentMember.value = mutableListOf(myUserInfo)
+            }
         }
 
         postViewModel.saveResponse.eventObserve(viewLifecycleOwner) {
@@ -116,6 +109,6 @@ class PostFragment :
 
     private fun navigateListener(user: InUser) {
         val args = bundleOf("user" to user)
-        findNavController().navigate(R.id.photoFragment, args)
+        findNavController().navigate(R.id.action_postFragment_to_photoFragment2, args)
     }
 }

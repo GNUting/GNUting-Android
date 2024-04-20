@@ -62,11 +62,6 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(
         binding.postListCardPost.setOnClickListener {
             findNavController().navigate(R.id.action_postListFragment_to_postFragment)
         }
-
-        binding.postListImgSearch.setOnClickListener {
-            val bottomDialogFragment = SearchPostListBottomSheetFragment()
-            bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
-        }
     }
 
     private fun setRecyclerView() {

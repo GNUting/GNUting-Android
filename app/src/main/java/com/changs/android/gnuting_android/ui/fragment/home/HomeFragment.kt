@@ -1,7 +1,9 @@
 package com.changs.android.gnuting_android.ui.fragment.home
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
@@ -19,7 +21,9 @@ import com.changs.android.gnuting_android.databinding.FragmentHomeBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.HomeAdapter
 import com.changs.android.gnuting_android.ui.adapter.ViewPagerAdapter
+import com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchPostListBottomSheetFragment
 import com.changs.android.gnuting_android.util.PostItemNavigator
+import com.changs.android.gnuting_android.util.changeStatusBarColor
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.AlarmViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
@@ -34,27 +38,34 @@ import timber.log.Timber
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class HomeFragment :
-    BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home),
-    PostItemNavigator {
+    BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home) {
     private val viewModel: HomeMainViewModel by activityViewModels()
-    private val postViewModel: PostViewModel by viewModels()
     private val alarmViewModel: AlarmViewModel by viewModels()
-    private lateinit var adapter: HomeAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        postViewModel.getPostList()
         alarmViewModel.getNewAlarm()
-
+        requireActivity().changeStatusBarColor(R.color.pink)
         setListener()
-        // setPager()
-
-        setRecyclerView()
         setObserver()
+        // setPager()
     }
 
     private fun setListener() {
-        binding.homeTxtMoreList.setOnClickListener {
+        binding.homeImgSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_postSearchFragment)
+        }
+
+        binding.homeBtnPost.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_post_graph)
+        }
+
+        binding.homeCardPostList.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_postListFragment)
+        }
+
+        binding.homeCardMyPostList.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_myPostListFragment)
         }
 
         binding.homeImgAlarm.setOnClickListener {
@@ -80,15 +91,9 @@ class HomeFragment :
         }
     }
 
-    private fun setRecyclerView() {
-        adapter = HomeAdapter(this)
-        binding.homeRecyclerview.adapter = adapter
-    }
-
     private fun setPager() {
         binding.homePager.adapter = ViewPagerAdapter(viewModel.images)
         binding.dotsIndicator.attachTo(binding.homePager)
-
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -104,28 +109,12 @@ class HomeFragment :
     }
 
     private fun setObserver() {
-        postViewModel.spinner.observe(viewLifecycleOwner) { show ->
-            binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
-        }
-
-        postViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
-            text?.let {
-                (requireActivity() as HomeActivity).showToast(it)
-            }
-        }
-
-
         viewModel.myInfo.observe(viewLifecycleOwner) {
             it?.let {
-                binding.homeTxtGreetings.text = "${it.nickname}님 안녕하세요!"
+                binding.homeTxtGreetings.text = "${it.nickname} 님 안녕하세요 :)"
                 Glide.with(binding.root).load(it.profileImage).error(R.drawable.ic_profile)
                     .into(binding.homeImgProfile)
             }
-
-        }
-
-        postViewModel.postResponse.observe(viewLifecycleOwner) {
-            adapter.submitList(it.result)
         }
 
         alarmViewModel.newAlarmResponse.observe(viewLifecycleOwner) {
@@ -133,8 +122,9 @@ class HomeFragment :
         }
     }
 
-    override fun navigateToDetail(id: Int) {
-        val bundle = bundleOf("id" to id)
-        findNavController().navigate(R.id.action_global_detailFragment, bundle)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireActivity().changeStatusBarColor(R.color.white)
     }
+
 }

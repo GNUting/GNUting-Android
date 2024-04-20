@@ -45,6 +45,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             .setContentText(body)
             .setContentIntent(pIntent)
             .setAutoCancel(true)
+            .setStyle(NotificationCompat.BigTextStyle())
 
         getSystemService(NotificationManager::class.java).run {
             val channel = NotificationChannel(channelId, "알림", NotificationManager.IMPORTANCE_HIGH)

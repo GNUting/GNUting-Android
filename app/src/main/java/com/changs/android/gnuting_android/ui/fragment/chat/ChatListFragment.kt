@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
+import com.changs.android.gnuting_android.data.model.ChatRoomUser
 import com.changs.android.gnuting_android.databinding.FragmentChatListBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.ChatListAdapter
@@ -27,8 +28,8 @@ class ChatListFragment :
         setObserver()
     }
 
-    private fun itemClickListener(id: Int, title: String, info: String) {
-        val action = ChatListFragmentDirections.actionChatListFragmentToChatFragment(id = id, title = title, info = info)
+    private fun itemClickListener(id: Int, title: String, info: String, chatRoomUsers: List<ChatRoomUser>) {
+        val action = ChatListFragmentDirections.actionChatListFragmentToChatFragment(id = id, title = title, info = info, chatRoomUsers = chatRoomUsers.toTypedArray())
         findNavController().navigate(action)
     }
 

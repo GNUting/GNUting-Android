@@ -19,7 +19,7 @@ open class BaseViewModel : ViewModel() {
         get() = _spinner
 
     protected fun <T : Any> handleResult(
-        response: Response<T>, handleSuccess: () -> Unit, handleError: (() -> Unit)? = null
+        response: Response<T>, handleSuccess: () -> Unit, handleError: ((String) -> Unit)? = null
     ) {
         if (response.isSuccessful && response.body() != null) {
             handleSuccess()
@@ -36,7 +36,7 @@ open class BaseViewModel : ViewModel() {
 
                         else -> {
                             handleError?.let { handle ->
-                                handle()
+                                handle(error.message ?: "네트워크 에러가 발생했습니다.")
                             } ?: {
                                 _toast.value = Event("네트워크 에러가 발생했습니다.")
                             }

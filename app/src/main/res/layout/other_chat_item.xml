@@ -35,6 +35,7 @@
         android:maxWidth="250dp"
         android:paddingHorizontal="10dp"
         android:layout_marginTop="2dp"
+        android:textColor="@color/black"
         android:background="@drawable/background_other_chat"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/other_chat_item_txt_nickname"

@@ -1,7 +1,9 @@
 package com.changs.android.gnuting_android.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +27,7 @@ class AddMemberAdapter(
     }
 }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(parent, myUserId, navigateListener,  listener)
+        return ViewHolder(parent, myUserId, navigateListener, listener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -43,33 +45,69 @@ class AddMemberAdapter(
         private val binding = AddMemberItemBinding.bind(itemView)
 
         fun bind(item: InUser) {
-            binding.addMemberItemCheckableLayout.isChecked = item.isChecked
+            if (item.isChecked) {
+                binding.addMemberItemBtn.text = "삭제"
+                binding.addMemberItemBtn.setTextColor(
+                    binding.root.context.resources.getColor(
+                        R.color.white, null
+                    )
+                )
+                binding.addMemberItemBtn.setBackgroundResource(R.drawable.background_radius_100dp_solid_secondary)
+            } else {
+                binding.addMemberItemBtn.text = "추가"
+                binding.addMemberItemBtn.setBackgroundResource(R.drawable.background_radius_100dp_stroke_secondary)
+                binding.addMemberItemBtn.setTextColor(
+                    binding.root.context.resources.getColor(
+                        R.color.secondary, null
+                    )
+                )
+            }
 
-            binding.addMemberItemCheckableLayout.setOnClickListener {
+            if (myUserId == item.id) {
+                binding.addMemberItemBtn.visibility = View.INVISIBLE
+            } else {
+                binding.addMemberItemBtn.visibility = View.VISIBLE
+            }
+
+            binding.addMemberItemBtn.setOnClickListener {
                 if (myUserId != item.id) {
-                    binding.addMemberItemCheckableLayout.isChecked =
-                        !binding.addMemberItemCheckableLayout.isChecked
-                    item.isChecked = binding.addMemberItemCheckableLayout.isChecked
-                    listener(item, binding.addMemberItemCheckableLayout.isChecked)
-                } else {
-                    item.isChecked = true
-                    binding.addMemberItemCheckableLayout.isChecked = true
+                    item.isChecked = !item.isChecked
+
+                    if (item.isChecked) {
+                        binding.addMemberItemBtn.text = "삭제"
+                        binding.addMemberItemBtn.setBackgroundResource(R.drawable.background_radius_100dp_solid_secondary)
+                        binding.addMemberItemBtn.setTextColor(
+                            binding.root.context.resources.getColor(
+                                R.color.white, null
+                            )
+                        )
+                    } else {
+                        binding.addMemberItemBtn.text = "추가"
+                        binding.addMemberItemBtn.setBackgroundResource(R.drawable.background_radius_100dp_stroke_secondary)
+                        binding.addMemberItemBtn.setTextColor(
+                            binding.root.context.resources.getColor(
+                                R.color.secondary, null
+                            )
+                        )
+                    }
+
+                    listener(item, item.isChecked)
                 }
             }
 
-            binding.postCurrentMemberTxtName.text = item.nickname
+            binding.addMemberItemTxtName.text = item.nickname
 
             Glide.with(binding.root.context).load(item.profileImage).error(R.drawable.ic_profile)
-                .into(binding.postCurrentMemberItemImg)
+                .into(binding.addMemberItemImg)
 
-            binding.postCurrentMemberItemImg.setOnClickListener {
+            binding.addMemberItemImg.setOnClickListener {
                 navigateListener(item)
             }
 
-            val info = "${item.department} | ${item.studentId} | ${item.age}"
+            val info = "${item.studentId} | ${item.department}"
 
-            binding.addMemberItemInfo.text = info
-            binding.addMemberItemIntro.text = item.userSelfIntroduction
+            binding.addMemberItemTxtMemberInfo.text = info
+            binding.addMemberItemTxtMemberIntro.text = item.userSelfIntroduction
         }
     }
 }

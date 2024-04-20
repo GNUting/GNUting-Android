@@ -38,7 +38,7 @@ class LoginFragment :
 
 
         binding.loginTxtFindPassword.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_passwordFragment)
+            findNavController().navigate(R.id.action_loginFragment_to_findPasswordFragment)
         }
 
         binding.loginTxtJoin.setOnClickListener {

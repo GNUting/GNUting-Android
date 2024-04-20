@@ -1,56 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.changs.android.gnuting_android.util.CheckableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:paddingHorizontal="19dp"
-    android:paddingVertical="14dp"
-    android:layout_marginBottom="15dp"
-    android:id="@+id/add_member_item_checkable_layout"
-    android:background="@drawable/selector_radio_member_item">
+    android:paddingVertical="20dp"
+    android:paddingHorizontal="18dp"
+    android:background="@drawable/background_radius_10dp_solid_white_stroke_gray9"
+    android:layout_marginBottom="15dp">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/add_member_item_img"
+        android:layout_width="37dp"
+        android:layout_height="37dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile"
+        app:layout_constraintBottom_toBottomOf="@+id/add_member_item_txt_member_intro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_member_item_txt_name" />
+
+    <TextView
+        android:id="@+id/add_member_item_txt_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/add_member_item_img"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="전재일" />
+
+    <TextView
+        android:id="@+id/add_member_item_txt_member_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/gray7"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/add_member_item_txt_name"
+        app:layout_constraintEnd_toStartOf="@+id/add_member_item_btn"
+        app:layout_constraintStart_toEndOf="@+id/add_member_item_txt_name"
+        app:layout_constraintTop_toTopOf="@+id/add_member_item_txt_name"
+        app:layout_constraintVertical_bias="0.7"
+        tools:text="학번 | 학과" />
+
+    <TextView
+        android:id="@+id/add_member_item_txt_member_intro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/gray7"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/add_member_item_txt_member_info"
+        app:layout_constraintStart_toStartOf="@+id/add_member_item_txt_name"
+        app:layout_constraintTop_toBottomOf="@+id/add_member_item_txt_member_info"
+        tools:text="안녕하세요" />
+
+    <TextView
+        android:id="@+id/add_member_item_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/post_current_member_item_img"
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_profile" />
+        android:background="@drawable/background_radius_100dp_solid_secondary"
+        android:paddingHorizontal="21dp"
+        android:paddingVertical="6dp"
+        android:text="삭제"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/add_member_item_txt_member_intro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/add_member_item_txt_name" />
 
-        <TextView
-            android:id="@+id/post_current_member_txt_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="전재일"
-            android:textSize="16sp"
-            android:layout_marginStart="5dp"
-            android:textColor="@color/black"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <TextView
-        android:id="@+id/add_member_item_info"
-        android:maxLines="1"
-        tools:text="20학번 | 23살 | ENFJ"
-        android:textSize="16sp"
-        android:ellipsize="end"
-        android:textColor="#767676"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/add_member_item_intro"
-        android:maxLines="1"
-        android:textSize="16sp"
-        tools:text="안녕하세요 저는 컴퓨터과학과이고 컴퓨터과학을 공부하고 있습니다."
-        android:textColor="@color/black"
-        android:layout_marginTop="5dp"
-        android:ellipsize="end"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-</com.changs.android.gnuting_android.util.CheckableLinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

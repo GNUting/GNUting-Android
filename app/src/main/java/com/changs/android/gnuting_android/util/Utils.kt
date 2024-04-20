@@ -28,6 +28,13 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
+
+fun Activity.changeStatusBarColor(colorResId: Int) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        window?.statusBarColor = getColor(colorResId)
+    }
+}
+
 fun Activity.setStatusBarOrigin() {
     window.apply {
         clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)

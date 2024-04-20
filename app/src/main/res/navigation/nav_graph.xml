@@ -10,19 +10,10 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_passwordFragment"
-            app:destination="@id/passwordFragment" />
-        <action
             android:id="@+id/action_loginFragment_to_policyFragment"
             app:destination="@id/policyFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/passwordFragment"
-        android:name="com.changs.android.gnuting_android.ui.fragment.user.PasswordFragment"
-        android:label="fragment_password"
-        tools:layout="@layout/fragment_password" >
         <action
-            android:id="@+id/action_passwordFragment_to_findPasswordFragment"
+            android:id="@+id/action_loginFragment_to_findPasswordFragment"
             app:destination="@id/findPasswordFragment" />
     </fragment>
     <fragment

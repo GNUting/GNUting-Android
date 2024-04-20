@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,8 +17,9 @@ import com.changs.android.gnuting_android.data.model.MessageItem
 import com.changs.android.gnuting_android.databinding.FragmentChatBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
-import com.changs.android.gnuting_android.ui.fragment.post.DetailFragmentDirections
+import com.changs.android.gnuting_android.ui.adapter.ChatRoomCurrentMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.util.hideSoftKeyboard
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.gson.GsonBuilder
@@ -47,16 +48,34 @@ class ChatFragment :
     }
 
     private fun setListener() {
-        val inputFilter = InputFilter { _, _, _, dest, dstart, _ ->
-            // 입력된 텍스트에서 줄 수 계산
-            val lineCount = dest.toString().substring(0, dstart).split("\n").size
+        with(binding.chatLayoutDrawer) {
+            drawerChatImgChatout.setOnClickListener {
+                chatViewModel.chatRoomLeave(args.id)
+            }
 
-            // 20줄 이상인 경우 입력 제한
-            if (lineCount >= 20) ""
-            else null
+            val adapter = ChatRoomCurrentMemberAdapter(viewModel.myInfo.value?.id, ::navigateListener)
+            drawerChatRecycler.adapter = adapter
+
+            val chatRoomUsers = args.chatRoomUsers.toMutableList()
+            val index = chatRoomUsers.indexOfFirst {
+                it.userId == (viewModel.myInfo.value?.id ?: -1)
+            }
+
+            if (index != -1) {
+                val user = chatRoomUsers.removeAt(index)
+                chatRoomUsers.add(0, user)
+            }
+
+            adapter.submitList(chatRoomUsers.toList())
+
+
+        }
+        binding.chatImgSetting.setOnClickListener {
+            it.hideSoftKeyboard()
+            if (!binding.chatDrawerMain.isOpen) binding.chatDrawerMain.openDrawer(GravityCompat.END)
         }
 
-        binding.chatEdit.filters = arrayOf(inputFilter)
+        binding.chatEdit.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(300))
 
         binding.postListImgBack.setOnClickListener {
             findNavController().popBackStack()
@@ -68,18 +87,6 @@ class ChatFragment :
                 binding.chatEdit.text?.clear()
                 binding.chatEdit.clearFocus()
             }
-        }
-
-        binding.chatImgSetting.setOnClickListener {
-            if (binding.chatLlSpinner.isVisible) {
-                binding.chatLlSpinner.visibility = View.GONE
-            } else {
-                binding.chatLlSpinner.visibility = View.VISIBLE
-            }
-        }
-
-        binding.chatTxtMenuLeave.setOnClickListener {
-            chatViewModel.chatRoomLeave(args.id)
         }
     }
 

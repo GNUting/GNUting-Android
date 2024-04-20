@@ -3,214 +3,248 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:fillViewport="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.user.Join2Fragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="19dp">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/join2_img_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:padding="12dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="7dp"
             android:src="@drawable/arrow_left"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2/3"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@+id/join2_img_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/join2_img_back" />
+            app:layout_constraintTop_toTopOf="@+id/join2_img_back">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/progress_stage1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:src="@drawable/progress_stage2_active" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/progress_stage3" />
+        </LinearLayout>
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="60dp"
+            android:layout_marginHorizontal="25dp"
             app:layout_constraintBottom_toTopOf="@+id/join2_btn_next"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
+            app:layout_constraintTop_toBottomOf="@+id/join2_img_back">
+
             <TextView
-                android:layout_marginTop="22dp"
-                android:textColor="@color/gray6"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이름"/>
+                android:text="이름"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/join2_edit_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="이름 입력"
+                android:inputType="text"
+                android:maxLength="8"
+                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:maxLines="1"
-                android:maxLength="8"
-                android:hint="이름을 입력해주세요."
                 android:theme="@style/EditTextTheme"
-                android:inputType="text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
-                android:layout_marginTop="22dp"
-                android:textColor="@color/gray6"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="전화번호"/>
+                android:layout_marginTop="22dp"
+                android:text="전화번호"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/join2_edit_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                android:hint="전화번호 입력"
+                android:inputType="phone"
                 android:maxLength="13"
                 android:maxLines="1"
-                android:hint="전화번호를 입력해주세요."
+                android:textColor="@color/black"
+                android:textSize="14sp"
                 android:theme="@style/EditTextTheme"
-                android:inputType="phone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
-                android:layout_marginTop="22dp"
-                android:textColor="@color/gray6"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="성별"/>
+                android:layout_marginTop="22dp"
+                android:text="성별"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <RadioGroup
-                android:layout_marginVertical="15dp"
                 android:id="@+id/join2_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
                 android:orientation="horizontal">
 
 
                 <RadioButton
                     android:id="@+id/join2_radio_male"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="4dp"
                     android:background="@drawable/selector_radio_button"
                     android:button="@null"
                     android:gravity="center"
                     android:paddingVertical="10dp"
-                    android:textStyle="bold"
                     android:text="남"
-                    android:layout_marginEnd="15dp"
                     android:textColor="@drawable/selector_radio_text"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/join2_radio_female"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@drawable/selector_radio_button"
                     android:button="@null"
                     android:gravity="center"
                     android:paddingVertical="10dp"
-                    android:textStyle="bold"
                     android:text="여"
                     android:textColor="@drawable/selector_radio_text"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </RadioGroup>
 
 
             <TextView
-                android:layout_marginTop="22dp"
-                android:textColor="@color/gray6"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="생년월일"/>
+                android:layout_marginTop="22dp"
+                android:text="생년월일"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/join2_ll_birthday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="25dp"
-                android:paddingVertical="14dp"
                 android:layout_marginTop="13dp"
+                android:layout_marginHorizontal="4dp"
                 android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingHorizontal="25dp"
+                android:paddingVertical="14dp">
+
                 <TextView
                     android:id="@+id/join2_txt_year"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="YYYY"
                     android:textColor="#7d7d7d"
-                    android:textSize="17sp"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="17sp" />
+
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:textColor="#7d7d7d"
-                    android:textSize="17sp"
-                    android:text="/"
-                    android:gravity="center"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content"/>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="/"
+                    android:textColor="#7d7d7d"
+                    android:textSize="17sp" />
+
                 <TextView
                     android:id="@+id/join2_txt_month"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:textColor="#7d7d7d"
-                    android:textSize="17sp"
-                    android:text="MM"
-                    android:gravity="center"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content"/>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="MM"
+                    android:textColor="#7d7d7d"
+                    android:textSize="17sp" />
+
                 <TextView
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:textColor="#7d7d7d"
-                    android:textSize="17sp"
                     android:gravity="center"
                     android:text="/"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content"/>
+                    android:textColor="#7d7d7d"
+                    android:textSize="17sp" />
+
                 <TextView
                     android:id="@+id/join2_txt_day"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:textColor="#7d7d7d"
-                    android:text="DD"
-                    android:textSize="17sp"
-                    android:gravity="center"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content"/>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="DD"
+                    android:textColor="#7d7d7d"
+                    android:textSize="17sp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 
             <TextView
-                android:layout_marginTop="22dp"
-                android:textColor="@color/gray6"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="닉네임"/>
+                android:layout_marginTop="22dp"
+                android:text="닉네임"
+                android:textColor="@color/black"
+                android:layout_marginStart="4dp"
+                android:textSize="14sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -219,13 +253,14 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/join2_edit_nickname"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="사용할 닉네임 입력"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:inputType="text"
                     android:textColor="@color/black"
                     android:textSize="14sp"
-                    android:maxLines="1"
-                    android:maxLength="10"
-                    android:hint="닉네임을 입력해주세요."
                     android:theme="@style/EditTextTheme"
-                    android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/join2_btn_nickname_check"
                     app:layout_constraintStart_toStartOf="parent"
@@ -234,17 +269,17 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/join2_btn_nickname_check"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:background="@drawable/background_radius_10dp_solid_gray7"
-                    android:text="중복확인"
-                    android:enabled="false"
-                    style="?android:attr/borderlessButtonStyle"
                     android:layout_marginVertical="5dp"
+                    android:background="@drawable/background_radius_10dp_solid_gray7"
+                    android:enabled="false"
+                    android:text="중복확인"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -253,84 +288,90 @@
                 android:id="@+id/join2_txt_verification_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
                 android:textColor="@color/main"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:layout_marginStart="4dp"
                 android:visibility="invisible" />
 
             <TextView
-                android:layout_marginTop="22dp"
-                android:textColor="@color/gray6"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="학과"/>
+                android:layout_marginTop="22dp"
+                android:text="학과"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/join2_ll_major_container"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/join2_txt_major"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/gray6"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="4dp"
                     android:text="클릭하여 학과를 선택해주세요."
-                    android:layout_marginTop="20dp"
+                    android:textColor="@color/gray6"
                     android:textSize="14sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginHorizontal="3dp"
-                    android:background="@color/gray7"/>
+                    android:background="@color/gray9" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <TextView
-                android:layout_marginTop="22dp"
-                android:textColor="@color/gray6"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="학번"/>
+                android:layout_marginTop="22dp"
+                android:text="입학년도"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/join2_edit_student_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="입학년도 입력 (예: 24)"
+                android:inputType="number"
+                android:maxLength="2"
+                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:maxLength="2"
-                android:hint="입학년도만 입력해주세요 Ex 24"
-                android:maxLines="1"
                 android:theme="@style/EditTextTheme"
-                android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:layout_marginTop="22dp"
-                android:textColor="@color/gray6"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="한줄 소개"/>
+                android:layout_marginTop="22dp"
+                android:text="한줄 소개"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/join2_edit_intro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:hint="한줄 소개 작성"
+                android:maxLength="30"
+                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:maxLength="30"
-                android:maxLines="2"
-                android:hint="자신을 한줄로 표현해주세요."
+                android:inputType="text"
                 android:theme="@style/EditTextTheme"
-                android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -345,6 +386,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="18dp"
             android:text="@string/next"
+            android:layout_marginHorizontal="25dp"
             android:background="@drawable/background_radius_10dp_solid_gray7"
             android:enabled="false"
             android:textColor="@color/white"

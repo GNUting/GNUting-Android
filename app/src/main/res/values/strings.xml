@@ -13,7 +13,7 @@
     <string name="password_content">가입시 등록한 <b>학교 이메일</b>로\n 본인인증 후 Password를 찾을 수 있습니다.</string>
     <string name="consent_service">서비스 이용 동의</string>
     <string name="next">다음</string>
-    <string name="join1_content">지누팅 서비스 이용을 위해서\n회원님의 정보가 필요해요.</string>
     <string name="join_complete">가입 완료</string>
     <string name="join3_content">아이콘을 눌러\n회원님의 <b>프로필 사진</b>을 등록해주세요.</string>
+    <string name="join3_txt_pass"><u>나중에 할게요</u></string>
 </resources>

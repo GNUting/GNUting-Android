@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.DefaultResponse
+import com.changs.android.gnuting_android.data.model.LogoutRequest
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResult
 import com.changs.android.gnuting_android.data.model.ProfileResponse
@@ -56,13 +57,9 @@ class HomeMainViewModel @Inject constructor(
 
     init {
         myInfoFlow.onEach {
-            _spinner.value = true
             userRepository.fetchRecentMyInfo()
-        }.onEach {
-            _spinner.value = false
         }.catch { throwable ->
             Timber.e(throwable.message ?: "network error")
-            _spinner.value = false
         }.launchIn(viewModelScope)
     }
 
@@ -88,10 +85,7 @@ class HomeMainViewModel @Inject constructor(
 
     val choiceDepartment = MutableLiveData<String>()
 
-    val nickNameCheck = MutableLiveData<Boolean>()
-
-    var department: String? = null
-    var nickname: String? = null
+    val nickNameCheck = MutableLiveData<Boolean?>()
     var profileImage: Bitmap? = null
 
     fun fetchRecentMyInfo() {
@@ -112,7 +106,6 @@ class HomeMainViewModel @Inject constructor(
                     val result = userRepository.getCheckNickName(it)
                     if (result.isSuccessful && result.body() != null) {
                         nickNameCheck.value = result.body()!!.result
-                        nickname = it
                         _toast.value = Event(result.body()!!.message)
                         _spinner.value = false
                     } else {
@@ -138,14 +131,12 @@ class HomeMainViewModel @Inject constructor(
     fun postSaveFcmToken(token: String) {
         viewModelScope.launch {
             try {
-                _spinner.value = true
                 val response = userRepository.postSaveFCMToken(SaveFCMTokenRequest(token))
 
                 handleResult(response = response, handleSuccess = fun() {
                     _saveFcmTokenResponse.value = Event(true)
                 })
             } catch (e: Exception) {
-                _spinner.value = false
                 _toast.value = Event("네트워크 에러가 발생했습니다.")
                 Timber.e(e.message ?: "network error")
             }
@@ -177,13 +168,13 @@ class HomeMainViewModel @Inject constructor(
         }
     }
 
-    fun logoutUser() {
+    fun logoutUser(fcmToken: String) {
         viewModelScope.launch {
             try {
                 _spinner.value = true
                 val refreshToken = tokenManager.getRefreshToken().firstOrNull() ?: ""
 
-                val response = userRepository.postLogout(RefreshTokenRequest(refreshToken))
+                val response = userRepository.postLogout(LogoutRequest(refreshToken, fcmToken))
 
                 handleResult(response = response, handleSuccess = fun() {
                     _logoutResponse.value = Event(response.body()!!)

@@ -1,10 +1,12 @@
 package com.changs.android.gnuting_android.ui.fragment.post
 
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.changs.android.gnuting_android.R
@@ -27,27 +29,34 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
     FragmentEditPostBinding::bind, R.layout.fragment_edit_post
 ) {
-    private val viewModel: HomeMainViewModel by activityViewModels()
     private val postViewModel: PostViewModel by viewModels()
-    private val memberAddViewModel: MemberAddViewModel by viewModels()
+    private val memberAddViewModel: MemberAddViewModel by hiltNavGraphViewModels(R.id.detail_graph)
     private lateinit var adapter: PostMemberAdapter
     private val args: EditPostFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        postViewModel.getPostDetail(args.id)
+        args.detail.apply {
+            binding.editPostEditTitle.setText(title)
+            binding.editPostEditDetail.setText(detail)
+
+            if (memberAddViewModel.currentMember.value == null)
+                memberAddViewModel.currentMember.value = inUser.toMutableList()
+        }
+
         setRecyclerView()
         setListener()
         setObserver()
     }
 
     private fun setListener() {
+        binding.editPostEditTitle.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
+        binding.editPostEditDetail.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(300))
+
         binding.editPostImgBack.setOnClickListener { findNavController().popBackStack() }
 
         binding.editPostLlAddMember.setOnClickListener {
-            val searchMemberBottomSheetFragment =
-                SearchMemberBottomSheetFragment(memberAddViewModel)
-            searchMemberBottomSheetFragment.show(childFragmentManager, null)
+            findNavController().navigate(R.id.action_editPostFragment_to_searchMemberBottomSheetFragment)
         }
 
         binding.editPostTxtComplete.setOnClickListener {
@@ -82,33 +91,9 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
             }
         }
 
-        postViewModel.postDetailResponse.observe(viewLifecycleOwner) {
-            it.result.apply {
-                binding.editPostEditTitle.setText(title)
-                binding.editPostEditDetail.setText(detail)
-                memberAddViewModel.currentMember.value = inUser.toMutableList()
-            }
-        }
-
         memberAddViewModel.currentMember.observe(viewLifecycleOwner) {
             binding.editPostTxtMemberTitle.text = "멤버 (${it.size})"
             adapter.submitList(it)
-        }
-
-        viewModel.myInfo.value?.let { myInfo ->
-            val myUserInfo = InUser(
-                age = myInfo.age,
-                department = myInfo.department,
-                gender = myInfo.gender,
-                id = myInfo.id,
-                nickname = myInfo.nickname,
-                profileImage = myInfo.profileImage,
-                studentId = myInfo.studentId,
-                userRole = myInfo.userRole,
-                userSelfIntroduction = myInfo.userSelfIntroduction
-            )
-
-            memberAddViewModel.currentMember.value = mutableListOf(myUserInfo)
         }
 
         postViewModel.patchPostDetailResponse.eventObserve(viewLifecycleOwner) {
@@ -118,6 +103,6 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
 
     private fun navigateListener(user: InUser) {
         val args = bundleOf("user" to user)
-        findNavController().navigate(R.id.photoFragment, args)
+        findNavController().navigate(R.id.action_editPostFragment_to_photoFragment3, args)
     }
 }

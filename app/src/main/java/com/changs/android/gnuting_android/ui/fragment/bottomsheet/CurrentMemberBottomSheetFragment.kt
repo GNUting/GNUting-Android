@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.CurrentMemberBottomSheetBinding
@@ -18,7 +19,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CurrentMemberBottomSheetFragment(private val currentMember: List<InUser>) : BottomSheetDialogFragment() {
+class CurrentMemberBottomSheetFragment : BottomSheetDialogFragment() {
+    private val args: CurrentMemberBottomSheetFragmentArgs by navArgs()
     private var _binding: CurrentMemberBottomSheetBinding? = null
     private val binding get() = _binding!!
 
@@ -62,12 +64,12 @@ class CurrentMemberBottomSheetFragment(private val currentMember: List<InUser>) 
         super.onViewCreated(view, savedInstanceState)
 
         binding.currentMemberBottomSheetImgClose.setOnClickListener {
-            dismiss()
+            findNavController().popBackStack()
         }
 
         val adapter = PostCurrentMemberAdapter(::navigateListener)
         binding.currentMemberBottomSheetRecyclerview.adapter = adapter
-        adapter.submitList(currentMember)
+        adapter.submitList(args.currentMember.toList())
     }
 
     override fun onDestroyView() {
@@ -77,7 +79,7 @@ class CurrentMemberBottomSheetFragment(private val currentMember: List<InUser>) 
 
     private fun navigateListener(user: InUser) {
         val args = bundleOf("user" to user)
-        findNavController().navigate(R.id.photoFragment, args)
+        findNavController().navigate(R.id.action_currentMemberBottomSheetFragment_to_photoFragment3, args)
     }
 
 }

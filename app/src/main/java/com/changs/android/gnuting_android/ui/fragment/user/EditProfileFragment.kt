@@ -3,12 +3,14 @@ package com.changs.android.gnuting_android.ui.fragment.user
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -38,15 +40,15 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         args.member.let {
             binding.editProfileEditNickName.setText(it.nickname)
             preNickName = it.nickname
-            viewModel.nickname = it.nickname
-            viewModel.nickNameCheck.value = false
-            binding.editProfileTxtMajor.text = it.department
+            viewModel.nickNameCheck.value = true
             binding.editProfileEditIntro.setText(it.userSelfIntroduction)
-
-            viewModel.department = it.department
+            viewModel.choiceDepartment.value = it.department
 
             Glide.with(this).load(it.profileImage).error(R.drawable.ic_profile)
                 .into(binding.editProfileImg)
+
+            binding.editProfileEditNickName.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(10))
+            binding.editProfileEditIntro.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
 
             it.profileImage?.let { img ->
                 Glide.with(this).asBitmap().load(img).into(object : CustomTarget<Bitmap>() {
@@ -78,7 +80,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         binding.editProfileTxtEditProfile.setOnClickListener {
             if (preNickName != binding.editProfileEditNickName.text.toString()) {
                 viewModel.nickNameCheck.value?.let {
-                    if (it && binding.editProfileEditNickName.text.toString() == viewModel.nickname) {
+                    if (it && binding.editProfileEditNickName.text.toString() == preNickName) {
                         viewModel.updateProfile(
                             department = binding.editProfileTxtMajor.text.toString(),
                             nickname = binding.editProfileEditNickName.text.toString(),
@@ -101,7 +103,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         }
 
         binding.editProfileEditNickName.doOnTextChanged { text, start, count, after ->
-            if (!text.isNullOrEmpty()) {
+            if (!text.isNullOrEmpty() && preNickName != binding.editProfileEditNickName.text.toString()) {
                 binding.editProfileBtnConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
                 binding.editProfileBtnConfirmation.isEnabled = true
             } else {
@@ -134,15 +136,29 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
     }
 
     private fun setObserver() {
+        viewModel.nickNameCheck.observe(viewLifecycleOwner) {
+            if (it == true) {
+            } else {
+                binding.editProfileBtnConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
+                binding.editProfileBtnConfirmation.isEnabled = true
+            }
+        }
+
         viewModel.choiceDepartment.observe(viewLifecycleOwner) {
-            viewModel.department = it
             binding.editProfileTxtMajor.text = it
         }
 
         viewModel.profileResponse.eventObserve(viewLifecycleOwner) {
             viewModel.fetchRecentMyInfo()
-            preNickName = viewModel.nickname
+            findNavController().popBackStack()
         }
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        with(viewModel) {
+            nickNameCheck.value = null
+            choiceDepartment.value = null
+        }
     }
 }

@@ -5,6 +5,7 @@ import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.EmailVerifyRequest
 import com.changs.android.gnuting_android.data.model.LoginRequest
 import com.changs.android.gnuting_android.data.model.LoginResponse
+import com.changs.android.gnuting_android.data.model.LogoutRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationRequest
 import com.changs.android.gnuting_android.data.model.MailCertificationResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
@@ -30,6 +31,10 @@ import retrofit2.http.Query
 interface UserService {
     @POST("api/v1/mail")
     suspend fun postMailCertification(@Body mailCertificationRequest: MailCertificationRequest): Response<MailCertificationResponse>
+
+    @POST("/api/v1/mail/findPassword")
+    suspend fun postFindPasswordMailCertification(@Body mailCertificationRequest: MailCertificationRequest): Response<MailCertificationResponse>
+
 
     @GET("/api/v1/check-nickname")
     suspend fun getCheckNickName(@Query("nickname") nickname: String): Response<CheckNickNameResponse>
@@ -75,7 +80,7 @@ interface UserService {
     ): Response<ProfileResponse>
 
     @POST("/api/v1/logout")
-    suspend fun postLogout(@Body request: RefreshTokenRequest): Response<DefaultResponse>
+    suspend fun postLogout(@Body request: LogoutRequest): Response<DefaultResponse>
 
     @DELETE("/api/v1/deleteUser")
     suspend fun deleteWithdrawal(): Response<DefaultResponse>

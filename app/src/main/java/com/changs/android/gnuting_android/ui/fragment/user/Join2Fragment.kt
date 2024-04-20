@@ -2,6 +2,7 @@ package com.changs.android.gnuting_android.ui.fragment.user
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.InputFilter
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
@@ -15,6 +16,7 @@ import com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchDepartme
 import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -26,13 +28,36 @@ class Join2Fragment :
     private val buttonActiveCheckViewModel: ButtonActiveCheckViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (viewModel.birthDate != null) {
+            try {
+                val (year, month, day) = viewModel.birthDate!!.split("-")
+
+                with(binding) {
+                    join2TxtYear.text = year.toString()
+                    join2TxtMonth.text = month.toString()
+                    join2TxtDay.text = day.toString()
+                }
+            } catch (e: Exception) {
+                Timber.e(e.message)
+            }
+        }
         setListener()
         setObserver()
     }
 
     private fun setListener() {
+        binding.join2EditName.filters = arrayOf<InputFilter>(
+            InputFilter.LengthFilter(8))
+
+        binding.join2EditNickname.filters = arrayOf<InputFilter>(
+            InputFilter.LengthFilter(10))
+
+        binding.join2EditIntro.filters = arrayOf<InputFilter>(
+            InputFilter.LengthFilter(30))
+
         binding.join2BtnNicknameCheck.setOnClickListener {
             viewModel.getCheckNickName(binding.join2EditNickname.text.toString())
+            binding.join2TxtVerificationNickname.visibility = View.INVISIBLE
         }
 
         binding.join2EditName.doOnTextChanged { text, start, count, after ->
@@ -53,6 +78,8 @@ class Join2Fragment :
         }
 
         binding.join2EditNickname.doOnTextChanged { text, start, count, after ->
+            binding.join2TxtVerificationNickname.visibility = View.INVISIBLE
+
             if (!text.isNullOrEmpty()) {
                 binding.join2BtnNicknameCheck.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
                 binding.join2BtnNicknameCheck.isEnabled = true
@@ -63,8 +90,6 @@ class Join2Fragment :
 
             checkButtonActiveCondition()
         }
-
-
 
         binding.join2EditIntro.doOnTextChanged { text, start, count, after ->
             viewModel.userSelfIntroduction = text.toString()
@@ -119,7 +144,8 @@ class Join2Fragment :
             viewModel.nickNameCheck.value?.let {
                 if (it && !viewModel.nickname.isNullOrEmpty() && binding.join2EditNickname.text.toString() == viewModel.nickname) {
                     if (viewModel.name == null || viewModel.phoneNumber == null || viewModel.gender == null || viewModel.department == null || viewModel.studentId == null) {
-                        Toast.makeText(requireContext(), "입력되지 않은 항목이 있습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "입력되지 않은 항목이 있습니다.", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
                         val regex = Regex("^\\d{3}-\\d{4}-\\d{4}$")
                         val isValid = regex.matches(viewModel.phoneNumber!!)
@@ -127,13 +153,16 @@ class Join2Fragment :
                         if (isValid) {
                             findNavController().navigate(R.id.action_join2Fragment_to_join3Fragment)
                         } else {
-                            Toast.makeText(requireContext(), "전화번호 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(), "전화번호 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 } else {
-                    Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT)
+                        .show()
                 }
-            } ?:     Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
+            } ?: Toast.makeText(requireContext(), "닉네임 인증이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -142,6 +171,7 @@ class Join2Fragment :
             viewModel.department = it
             binding.join2TxtMajor.setTextColor(resources.getColor(R.color.black, null))
             binding.join2TxtMajor.text = it
+            checkButtonActiveCondition()
         }
 
         buttonActiveCheckViewModel.buttonActiveCheck.observe(viewLifecycleOwner) {
@@ -154,13 +184,46 @@ class Join2Fragment :
             }
         }
 
-        viewModel.nickNameCheck.observe(viewLifecycleOwner) {
+        viewModel.nickNameCheck.observe(viewLifecycleOwner) { isSuccess ->
+            isSuccess ?: return@observe
+
+            if (isSuccess) {
+                binding.join2TxtVerificationNickname.text = "사용할 수 있는 닉네임 입니다."
+                binding.join2TxtVerificationNickname.setTextColor(
+                    resources.getColor(
+                        R.color.secondary, null
+                    )
+                )
+            } else {
+                binding.join2TxtVerificationNickname.text = "중복된 닉네임 입니다."
+                binding.join2TxtVerificationNickname.setTextColor(
+                    resources.getColor(
+                        R.color.main, null
+                    )
+                )
+            }
+            binding.join2TxtVerificationNickname.visibility = View.VISIBLE
             checkButtonActiveCondition()
         }
     }
 
     private fun checkButtonActiveCondition() {
         buttonActiveCheckViewModel.buttonActiveCheck.value =
-            (viewModel.nickNameCheck.value?: false && !viewModel.name.isNullOrEmpty() && !viewModel.phoneNumber.isNullOrEmpty() && !viewModel.nickname.isNullOrEmpty() && !viewModel.gender.isNullOrEmpty() && !viewModel.birthDate.isNullOrEmpty() && !viewModel.studentId.isNullOrEmpty())
+            (viewModel.nickNameCheck.value ?: false && !viewModel.name.isNullOrEmpty() && !viewModel.phoneNumber.isNullOrEmpty() && !viewModel.nickname.isNullOrEmpty() && !viewModel.gender.isNullOrEmpty() && !viewModel.birthDate.isNullOrEmpty() && !viewModel.studentId.isNullOrEmpty() && !viewModel.department.isNullOrEmpty())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        with(viewModel) {
+            name = null
+            phoneNumber = null
+            gender = null
+            nickname = null
+            birthDate = null
+            department = null
+            studentId = null
+            userSelfIntroduction = null
+            nickNameCheck.value = null
+        }
     }
 }

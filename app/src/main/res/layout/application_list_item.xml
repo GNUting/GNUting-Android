@@ -11,41 +11,44 @@
     android:paddingHorizontal="12dp"
     android:paddingVertical="10dp">
 
-    <TextView
-        android:id="@+id/application_list_txt_department"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:textColor="@color/black"
-        android:maxLength="7"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/application_list_txt_member_count"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="산업시스템공학부" />
-
-    <TextView
-        android:id="@+id/application_list_txt_member_count"
+    <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/application_list_txt_department"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/application_list_ll_status_container"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/application_list_txt_department"
-        app:layout_constraintTop_toTopOf="@+id/application_list_txt_department"
-        tools:text="3명" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    정<androidx.appcompat.widget.LinearLayoutCompat
+        <TextView
+            android:id="@+id/application_list_txt_department"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="산업시스템공학부" />
+
+        <TextView
+            android:id="@+id/application_list_txt_member_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            tools:text="3명" />
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/application_list_ll_status_container"
-        android:layout_width="140dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:background="@drawable/background_radius_10dp_solid_main"
         android:gravity="center"
@@ -53,15 +56,16 @@
         android:paddingVertical="13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout5"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/application_list_txt_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="대기중"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:maxLines="1"
+            android:text="대기중"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
