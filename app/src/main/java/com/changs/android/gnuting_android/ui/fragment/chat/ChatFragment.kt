@@ -20,6 +20,7 @@ import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
 import com.changs.android.gnuting_android.ui.adapter.ChatRoomCurrentMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.hideSoftKeyboard
+import com.changs.android.gnuting_android.util.showTwoButtonDialog
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.gson.GsonBuilder
@@ -50,7 +51,11 @@ class ChatFragment :
     private fun setListener() {
         with(binding.chatLayoutDrawer) {
             drawerChatImgChatout.setOnClickListener {
-                chatViewModel.chatRoomLeave(args.id)
+                showTwoButtonDialog(
+                    context = requireContext(), titleText = "채팅방을 나가시겠습니까?", rightButtonText = "나가기"
+                ) {
+                    chatViewModel.chatRoomLeave(args.id)
+                }
             }
 
             val adapter = ChatRoomCurrentMemberAdapter(viewModel.myInfo.value?.id, ::navigateListener)
