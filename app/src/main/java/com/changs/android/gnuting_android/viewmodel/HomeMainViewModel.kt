@@ -145,8 +145,6 @@ class HomeMainViewModel @Inject constructor(
 
     fun updateProfile(department: String?, nickname: String, userSelfIntroduction: String?) {
         viewModelScope.launch {
-            nickNameCheck.value = false
-
             try {
                 _spinner.value = true
                 val response = userRepository.patchProfile(

@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
@@ -100,7 +101,10 @@ class DetailFragment :
                     }
                 }
 
-                Glide.with(this@DetailFragment).load(user.profileImage).error(R.drawable.ic_profile)
+                Glide.with(this@DetailFragment).load(user.profileImage)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .error(R.drawable.ic_profile)
                     .into(binding.detailImgProfile)
 
                 binding.detailImgProfile.setOnClickListener {

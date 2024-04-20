@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.ChatRoomUser
 import com.changs.android.gnuting_android.data.model.InUser
@@ -53,7 +54,10 @@ class ChatRoomCurrentMemberAdapter(
                 binding.chatRoomCurrentMemberItemImgUserMe.isVisible = false
             }
 
-            Glide.with(binding.root.context).load(item.profileImage).error(R.drawable.ic_profile)
+            Glide.with(binding.root.context).load(item.profileImage)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .error(R.drawable.ic_profile)
                 .into(binding.chatRoomCurrentMemberItemImgProfile)
 
             binding.chatRoomCurrentMemberItemImgProfile.setOnClickListener {

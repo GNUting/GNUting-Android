@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentJoin3Binding
@@ -39,7 +40,11 @@ class Join3Fragment :
                     Timber.d("Selected URI: $uri")
                     viewModel.profileImage = uri.getBitmap(requireContext().contentResolver)
 
-                    Glide.with(this).load(uri).circleCrop().error(R.drawable.ic_profile)
+                    Glide.with(this).load(uri)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .circleCrop()
+                        .error(R.drawable.ic_profile)
                         .into(binding.join3ImgProfile)
 
                     binding.join3TxtContent1.text = "프로필 사진 등록 완료!"

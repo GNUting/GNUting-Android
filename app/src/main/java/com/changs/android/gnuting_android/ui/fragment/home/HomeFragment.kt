@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentHomeBinding
@@ -112,7 +113,10 @@ class HomeFragment :
         viewModel.myInfo.observe(viewLifecycleOwner) {
             it?.let {
                 binding.homeTxtGreetings.text = "${it.nickname} 님 안녕하세요 :)"
-                Glide.with(binding.root).load(it.profileImage).error(R.drawable.ic_profile)
+                Glide.with(binding.root).load(it.profileImage)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .error(R.drawable.ic_profile)
                     .into(binding.homeImgProfile)
             }
         }
