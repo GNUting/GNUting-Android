@@ -59,8 +59,6 @@ class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomU
                 1 -> {
                     Glide.with(binding.root.context)
                         .load(item.chatRoomUserProfileImages[0])
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
                         .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfile)
 
@@ -69,20 +67,14 @@ class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomU
 
                 3 -> {
                     Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0])
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
                         .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount3Img1)
 
                     Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1])
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
                         .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount3Img2)
 
                     Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[2])
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
                         .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount3Img3)
 
@@ -91,26 +83,18 @@ class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomU
 
                 in 4..10 -> {
                     Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0])
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
                         .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount4Img1)
 
                     Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1])
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
                         .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount4Img2)
 
                     Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[2])
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
                         .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount4Img3)
 
                     Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[3])
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
                         .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount4Img4)
 

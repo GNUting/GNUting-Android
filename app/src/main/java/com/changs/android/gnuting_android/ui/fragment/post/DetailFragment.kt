@@ -102,8 +102,6 @@ class DetailFragment :
                 }
 
                 Glide.with(this@DetailFragment).load(user.profileImage)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
                     .error(R.drawable.ic_profile)
                     .into(binding.detailImgProfile)
 

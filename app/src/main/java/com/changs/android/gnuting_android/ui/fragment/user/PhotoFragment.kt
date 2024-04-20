@@ -25,8 +25,6 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>(FragmentPhotoBinding::b
 
         args.user?.let { user ->
             Glide.with(requireContext()).load(user.profileImage)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
                 .error(R.drawable.ic_profile).into(binding.photoImg)
             binding.photoTxtName.text = user.nickname
             binding.photoTxtInfo.text = "${user.studentId} | ${user.department}"

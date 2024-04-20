@@ -38,8 +38,6 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
             binding.myTxtIntro.text = myInfo.userSelfIntroduction
 
             Glide.with(this@MyFragment).load(myInfo.profileImage)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
                 .error(R.drawable.ic_profile)
                 .into(binding.myImgProfile)
 
@@ -168,8 +166,6 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
                 Glide.with(this@MyFragment)
                     .load(myInfo.profileImage)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
                     .error(R.drawable.ic_profile)
                     .into(binding.myImgProfile)
 
