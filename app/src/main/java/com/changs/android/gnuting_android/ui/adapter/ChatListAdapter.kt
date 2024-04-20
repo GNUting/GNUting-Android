@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.ChatListResult
 import com.changs.android.gnuting_android.data.model.ChatRoomUser
@@ -56,36 +57,61 @@ class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomU
 
             when (item.chatRoomUserProfileImages.size) {
                 1 -> {
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0]).error(R.drawable.ic_profile)
+                    Glide.with(binding.root.context)
+                        .load(item.chatRoomUserProfileImages[0])
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfile)
 
                     binding.chatItemImgProfile.isVisible = true
                 }
 
                 3 -> {
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0]).error(R.drawable.ic_profile)
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0])
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount3Img1)
 
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1]).error(R.drawable.ic_profile)
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1])
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount3Img2)
 
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[2]).error(R.drawable.ic_profile)
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[2])
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount3Img3)
 
                     binding.chatItemClProfileImgCount3Container.isVisible = true
                 }
 
                 in 4..10 -> {
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0]).error(R.drawable.ic_profile)
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0])
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount4Img1)
 
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1]).error(R.drawable.ic_profile)
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1])
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount4Img2)
 
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[2]).error(R.drawable.ic_profile)
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[2])
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount4Img3)
 
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[3]).error(R.drawable.ic_profile)
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[3])
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .error(R.drawable.ic_profile)
                         .into(binding.chatItemImgProfileImgTypeCount4Img4)
 
                     binding.chatItemClProfileImgCount4Container.isVisible = true

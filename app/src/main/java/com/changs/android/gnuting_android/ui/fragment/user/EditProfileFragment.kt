@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.changs.android.gnuting_android.R
@@ -37,6 +38,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
     private val viewModel: HomeMainViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         args.member.let {
             binding.editProfileEditNickName.setText(it.nickname)
             preNickName = it.nickname
@@ -44,26 +46,35 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             binding.editProfileEditIntro.setText(it.userSelfIntroduction)
             viewModel.choiceDepartment.value = it.department
 
-            Glide.with(this).load(it.profileImage).error(R.drawable.ic_profile)
+            Glide.with(this).load(it.profileImage)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .error(R.drawable.ic_profile)
                 .into(binding.editProfileImg)
 
-            binding.editProfileEditNickName.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(10))
-            binding.editProfileEditIntro.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
+            binding.editProfileEditNickName.filters =
+                arrayOf<InputFilter>(InputFilter.LengthFilter(10))
+            binding.editProfileEditIntro.filters =
+                arrayOf<InputFilter>(InputFilter.LengthFilter(30))
 
             it.profileImage?.let { img ->
-                Glide.with(this).asBitmap().load(img).into(object : CustomTarget<Bitmap>() {
-                    override fun onResourceReady(
-                        resource: Bitmap, transition: Transition<in Bitmap>?
-                    ) {
-                        viewModel.profileImage = resource
-                    }
+                Glide.with(this).asBitmap().load(img)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap, transition: Transition<in Bitmap>?
+                        ) {
+                            viewModel.profileImage = resource
+                        }
 
-                    override fun onLoadCleared(placeholder: Drawable?) {
+                        override fun onLoadCleared(placeholder: Drawable?) {
 
-                    }
-                })
+                        }
+                    })
             }
         }
+
         setListener()
         setObserver()
     }
@@ -123,7 +134,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
                 if (uri != null) {
                     Timber.d("Selected URI: $uri")
                     viewModel.profileImage = uri.getBitmap(requireContext().contentResolver)
-                    Glide.with(this).load(uri).circleCrop().error(R.drawable.ic_profile)
+
+                    Glide.with(this).load(uri)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .circleCrop().error(R.drawable.ic_profile)
                         .into(binding.editProfileImg)
                 } else {
                     Timber.d("No media selected")
@@ -138,6 +153,9 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
     private fun setObserver() {
         viewModel.nickNameCheck.observe(viewLifecycleOwner) {
             if (it == true) {
+                preNickName = binding.editProfileEditNickName.text.toString()
+                binding.editProfileBtnConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
+                binding.editProfileBtnConfirmation.isEnabled = false
             } else {
                 binding.editProfileBtnConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
                 binding.editProfileBtnConfirmation.isEnabled = true

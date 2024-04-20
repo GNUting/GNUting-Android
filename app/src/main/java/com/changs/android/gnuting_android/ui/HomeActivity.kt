@@ -68,6 +68,11 @@ class HomeActivity : AppCompatActivity() {
                 showToast(it)
             }
         }
+
+        viewModel.spinner.observe(this) { show ->
+            binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
     }
 
     private fun initFirebaseFcm() {

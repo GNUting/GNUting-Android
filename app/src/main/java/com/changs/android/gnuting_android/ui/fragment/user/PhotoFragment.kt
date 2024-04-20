@@ -7,6 +7,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentPhotoBinding
@@ -23,7 +24,10 @@ class PhotoFragment : BaseFragment<FragmentPhotoBinding>(FragmentPhotoBinding::b
         super.onViewCreated(view, savedInstanceState)
 
         args.user?.let { user ->
-            Glide.with(requireContext()).load(user.profileImage).error(R.drawable.ic_profile).into(binding.photoImg)
+            Glide.with(requireContext()).load(user.profileImage)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .error(R.drawable.ic_profile).into(binding.photoImg)
             binding.photoTxtName.text = user.nickname
             binding.photoTxtInfo.text = "${user.studentId} | ${user.department}"
 

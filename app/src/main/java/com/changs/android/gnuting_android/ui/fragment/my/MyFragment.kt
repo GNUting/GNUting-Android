@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
@@ -36,7 +37,10 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
             binding.myTxtInfo.text = "${myInfo.department} | ${myInfo.age} | ${myInfo.studentId}"
             binding.myTxtIntro.text = myInfo.userSelfIntroduction
 
-            Glide.with(this@MyFragment).load(myInfo.profileImage).error(R.drawable.ic_profile)
+            Glide.with(this@MyFragment).load(myInfo.profileImage)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .error(R.drawable.ic_profile)
                 .into(binding.myImgProfile)
 
             binding.myImgProfile.setOnClickListener {
@@ -162,7 +166,11 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
                     "${myInfo.department} | ${myInfo.age} | ${myInfo.studentId}"
                 binding.myTxtIntro.text = myInfo.userSelfIntroduction
 
-                Glide.with(this@MyFragment).load(myInfo.profileImage).error(R.drawable.ic_profile)
+                Glide.with(this@MyFragment)
+                    .load(myInfo.profileImage)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .error(R.drawable.ic_profile)
                     .into(binding.myImgProfile)
 
                 binding.myTxtEditProfile.setOnClickListener {
