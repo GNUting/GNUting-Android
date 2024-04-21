@@ -36,7 +36,7 @@
                 android:textSize="18sp"
                 android:layout_marginStart="14dp"
                 android:textColor="@color/black"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_semi_bold"
                 tools:text="이름"/>
 
             <TextView
@@ -48,11 +48,12 @@
                 android:maxLines="1"
                 android:textColor="#767676"
                 android:textSize="14sp"
+                android:fontFamily="@font/pretendard_medium"
                 app:layout_constraintBottom_toBottomOf="@+id/my_txt_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/my_txt_name"
                 app:layout_constraintTop_toTopOf="@+id/my_txt_name"
-                tools:text="학과 | 나이 | 학번" />
+                tools:text="학번 | 학과" />
 
             <TextView
                 android:id="@+id/my_txt_intro"
@@ -62,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                android:fontFamily="@font/pretendard_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/my_txt_name"
                 app:layout_constraintTop_toBottomOf="@+id/my_txt_name"
@@ -77,6 +79,7 @@
             android:layout_marginVertical="16dp"
             android:textColor="@color/black"
             android:text="프로필 수정"
+            android:fontFamily="@font/pretendard_medium"
             android:textSize="16sp"
             android:background="@drawable/background_radius_10dp_solid_gray8_stroke_gray9"/>
 
@@ -88,14 +91,14 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginBottom="17dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             app:drawableEndCompat="@drawable/ic_arrow_right2" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             android:textColor="#767676"
             android:text="고객 지원"/>
 
@@ -114,7 +117,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginBottom="17dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             app:drawableEndCompat="@drawable/ic_arrow_right2" />
 
         <TextView
@@ -122,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             android:textColor="#767676"
             android:text="계정 관리"/>
 
@@ -140,7 +143,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginBottom="17dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             app:drawableEndCompat="@drawable/ic_arrow_right2" />
 
         <TextView
@@ -151,7 +154,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginBottom="17dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             app:drawableEndCompat="@drawable/ic_arrow_right2" />
 
 
@@ -160,7 +163,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             android:textColor="#767676"
             android:text="알림"/>
 
@@ -178,7 +181,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginBottom="17dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             app:drawableEndCompat="@drawable/ic_arrow_right2" />
 
 
@@ -187,7 +190,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             android:textColor="#767676"
             android:text="안내"/>
 
@@ -205,7 +208,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginBottom="17dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             app:drawableEndCompat="@drawable/ic_arrow_right2" />
 
         <TextView
@@ -216,7 +219,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginBottom="17dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             app:drawableEndCompat="@drawable/ic_arrow_right2" />
 
         <TextView
@@ -227,7 +230,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginBottom="17dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             app:drawableEndCompat="@drawable/ic_arrow_right2" />
 
         <TextView
@@ -238,7 +241,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginBottom="17dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             app:drawableEndCompat="@drawable/ic_arrow_right2" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

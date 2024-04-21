@@ -32,7 +32,7 @@
             android:layout_marginTop="20dp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -83,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:text="글쓰기"
                 android:textColor="@color/black"
+                android:fontFamily="@font/pretendard_regular"
                 android:textSize="16sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

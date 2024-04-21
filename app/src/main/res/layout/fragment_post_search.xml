@@ -21,10 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="게시물 검색"
+        android:fontFamily="@font/pretendard_medium"
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -46,6 +46,7 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:paddingStart="10dp"
+            android:fontFamily="@font/pretendard_medium"
             android:layout_marginStart="25dp"
             android:maxLines="1"
             android:drawablePadding="10dp"
@@ -64,6 +65,7 @@
             android:layout_marginEnd="25dp"
             android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
+            android:fontFamily="@font/pretendard_regular"
             android:layout_height="wrap_content"
             android:text="취소"/>
 

@@ -37,7 +37,7 @@
                 android:layout_marginTop="20dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +53,7 @@
             android:text="신고하기 전에 잠깐!"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/report_cl_header" />
 
@@ -66,6 +66,7 @@
             android:textColor="@color/black"
             android:layout_marginStart="25dp"
             android:textSize="9sp"
+            android:fontFamily="@font/pretendard_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +81,7 @@
             android:layout_marginStart="25dp"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/report_txt_notice_detail" />
 
@@ -117,6 +118,7 @@
                     android:layout_height="wrap_content"
                     android:text="영리목적/홍보성"
                     android:textColor="@color/black"
+                    android:fontFamily="@font/pretendard_regular"
                     android:textSize="12sp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -140,6 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="욕설/인신공격"
+                    android:fontFamily="@font/pretendard_regular"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -165,6 +168,7 @@
                     android:layout_height="wrap_content"
                     android:text="음란성/선정성"
                     android:textColor="@color/black"
+                    android:fontFamily="@font/pretendard_regular"
                     android:textSize="12sp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -188,6 +192,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="도배/반복"
+                    android:fontFamily="@font/pretendard_regular"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -212,6 +217,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="개인정보노출"
+                    android:fontFamily="@font/pretendard_regular"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -236,6 +242,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="기타"
+                    android:fontFamily="@font/pretendard_regular"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -251,6 +258,7 @@
             android:gravity="start"
             android:hint="기타 사유를 입력해주세요"
             android:layout_marginHorizontal="25dp"
+            android:fontFamily="@font/pretendard_regular"
             android:maxLines="20"
             android:maxLength="200"
             android:minHeight="100dp"
@@ -276,7 +284,7 @@
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="30dp"
             android:layout_marginStart="25dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/report_btn_report"
             app:layout_constraintHorizontal_bias="0.5"
@@ -290,7 +298,7 @@
             android:textSize="14sp"
             style="?android:attr/borderlessButtonStyle"
             android:textColor="@color/white"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             android:background="@drawable/background_radius_10dp_solid_main"
             android:text="신고하기"
             android:layout_marginEnd="25dp"

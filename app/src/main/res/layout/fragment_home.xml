@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/white"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,20 +87,32 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView">
 
             <TextView
+                android:id="@+id/home_txt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:layout_marginStart="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="김지누" />
+
+            <TextView
                 android:id="@+id/home_txt_greetings"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="25dp"
                 android:layout_marginEnd="14dp"
                 android:drawablePadding="5dp"
+                android:fontFamily="@font/pretendard_regular"
                 android:textColor="@color/black"
                 android:textSize="22sp"
-                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/home_txt_name"
                 app:layout_constraintEnd_toStartOf="@+id/home_img_profile"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="ooo님 안녕하세요 :)" />
+                app:layout_constraintStart_toEndOf="@+id/home_txt_name"
+                app:layout_constraintTop_toTopOf="@+id/home_txt_name"
+                tools:text=" 님 안녕하세요 :)" />
 
             <TextView
                 android:id="@+id/home_txt_content"
@@ -107,12 +120,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="14dp"
+                android:fontFamily="@font/pretendard_medium"
                 android:text="지누팅에서 아름다운 만남을 가져보세요!"
                 android:textColor="@color/gray7"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/home_img_profile"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/home_txt_greetings"
+                app:layout_constraintStart_toStartOf="@+id/home_txt_name"
                 app:layout_constraintTop_toBottomOf="@+id/home_txt_greetings" />
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -135,6 +148,7 @@
                 android:paddingHorizontal="17dp"
                 android:paddingVertical="8dp"
                 android:text="게시물 작성하기"
+                android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/home_txt_content"
@@ -190,7 +204,7 @@
                 android:text="모든 글은 여기서 볼 수 있어요"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_img_banner" />

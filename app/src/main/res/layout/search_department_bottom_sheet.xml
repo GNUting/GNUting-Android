@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:fontFamily="@font/pretendard_medium"
         android:background="@drawable/background_radius_5dp_solid_gray14"
         android:drawableStart="@drawable/ic_search3"
         android:drawablePadding="10dp"
