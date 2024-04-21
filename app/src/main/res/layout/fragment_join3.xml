@@ -70,7 +70,7 @@
             android:layout_marginStart="30dp"
             android:textColor="@color/black"
             android:textSize="22sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/join3_img_back" />
@@ -88,7 +88,7 @@
                 android:text="프로필 사진"
                 android:textColor="@color/main"
                 android:textSize="22sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
@@ -96,7 +96,7 @@
                 android:text="을 등록해 주세요 :)"
                 android:textColor="@color/black"
                 android:textSize="22sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -109,6 +109,7 @@
             android:layout_marginBottom="12dp"
             android:textColor="@color/gray7"
             android:textSize="14sp"
+            android:fontFamily="@font/pretendard_regular"
             app:layout_constraintBottom_toTopOf="@+id/join3_btn_next"
             app:layout_constraintEnd_toEndOf="@+id/join3_btn_next"
             app:layout_constraintStart_toStartOf="@+id/join3_btn_next" />
@@ -123,7 +124,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:layout_marginHorizontal="50dp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_bold"
             android:layout_marginBottom="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

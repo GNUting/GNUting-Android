@@ -154,6 +154,34 @@
             android:textStyle="bold"
             app:drawableEndCompat="@drawable/ic_arrow_right2" />
 
+
+        <TextView
+            android:layout_marginTop="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#767676"
+            android:text="알림"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="13dp"
+            android:background="#E9E9E9"/>
+        <TextView
+            android:id="@+id/my_txt_menu_alarm_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="알림 설정"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="17dp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_arrow_right2" />
+
+
         <TextView
             android:layout_marginTop="32dp"
             android:layout_width="wrap_content"

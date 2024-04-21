@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:scrollbars="none"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.user.PolicyFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/policy_img_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="12dp"
             android:layout_marginStart="13dp"
             android:layout_marginTop="7dp"
+            android:padding="12dp"
             android:src="@drawable/arrow_left"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -26,52 +27,52 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
             android:text="@string/consent_service"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/policy_img_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/policy_img_back" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginHorizontal="35dp"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView">
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:background="@android:color/transparent"
-                    android:button="@drawable/custom_checkbox"
                     android:id="@+id/policy_check_all"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/custom_checkbox" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_semi_bold"
                     android:text="약관 전체 동의"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <View
-                android:layout_marginVertical="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/gray5"/>
+                android:layout_marginVertical="5dp"
+                android:background="@color/gray5" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -79,15 +80,17 @@
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:background="@android:color/transparent"
-                    android:button="@drawable/custom_checkbox"
                     android:id="@+id/policy_check1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/custom_checkbox" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="(필수) "
+                    android:fontFamily="@font/pretendard_regular"
                     android:textColor="@color/main"
                     android:textSize="15sp" />
 
@@ -96,16 +99,18 @@
                     android:layout_height="wrap_content"
                     android:text="경상국립대학교"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:fontFamily="@font/pretendard_semi_bold"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text=" 재학중입니다."
+                    android:fontFamily="@font/pretendard_regular"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:layout_weight="1" />
+                    android:textSize="15sp" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -116,16 +121,17 @@
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:background="@android:color/transparent"
-                    android:button="@drawable/custom_checkbox"
                     android:id="@+id/policy_check2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/custom_checkbox" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="(필수) "
+                    android:fontFamily="@font/pretendard_regular"
                     android:textColor="@color/main"
                     android:textSize="15sp" />
 
@@ -133,11 +139,12 @@
                     android:id="@+id/policy_txt_privacy_policy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:drawableEnd="@drawable/arrow_right"
                     android:text="개인 정보 처리 방침"
                     android:textColor="@color/black"
-                    android:drawableEnd="@drawable/arrow_right"
-                    android:textSize="15sp"
-                    android:layout_weight="1" />
+                    android:textSize="15sp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -149,14 +156,14 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/background_radius_10dp_solid_main"
             android:paddingVertical="18dp"
             android:text="@string/next"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginHorizontal="25dp"
-            android:layout_marginBottom="30dp"
+            android:fontFamily="@font/pretendard_bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
