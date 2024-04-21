@@ -12,39 +12,19 @@
         android:id="@+id/search_member_bottom_sheet_txt_member_add"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/background_radius_10dp_solid_main"
+        android:fontFamily="@font/pretendard_medium"
         android:gravity="center"
         android:paddingHorizontal="18dp"
         android:paddingVertical="18dp"
         android:text="완료"
         android:textColor="@color/white"
-        android:layout_marginBottom="30dp"
-        android:fontFamily="@font/pretendard_medium"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintStart_toStartOf="@+id/guideline4" />
-
-    <TextView
-        android:id="@+id/search_member_bottom_sheet_close"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_radius_10dp_stroke_gray9"
-        android:gravity="center"
-        android:paddingHorizontal="18dp"
-        android:paddingVertical="18dp"
-        android:text="닫기"
-        android:fontFamily="@font/pretendard_medium"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="30dp"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/search_member_bottom_sheet_txt_member_add"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/search_member_bottom_sheet_txt_member_add" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <View
@@ -103,12 +83,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_member_bottom_sheet_recyclerview_selected_member"
         app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

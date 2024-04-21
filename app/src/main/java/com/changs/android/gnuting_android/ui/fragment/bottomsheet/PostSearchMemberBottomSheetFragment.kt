@@ -68,10 +68,6 @@ class PostSearchMemberBottomSheetFragment :
             dismiss()
         }
 
-        binding.searchMemberBottomSheetClose.setOnClickListener {
-            dismiss()
-        }
-
         binding.searchMemberBottomSheetEdit.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
