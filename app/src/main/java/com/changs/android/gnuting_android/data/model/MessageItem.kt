@@ -18,5 +18,9 @@ data class MessageItem(
     @SerializedName("nickname")
     val nickname: String,
     @SerializedName("profileImage")
-    val profileImage: String
+    val profileImage: String,
+    @SerializedName("department")
+    val department: String,
+    @SerializedName("studentId")
+    val studentId: String
 )

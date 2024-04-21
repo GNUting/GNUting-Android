@@ -116,12 +116,12 @@ class ChatAdapter(private val myNickName: String, private val navigateListener: 
             binding.otherChatItemImg.setOnClickListener {
                 val inUser = InUser(
                     age = "",
-                    department = "",
+                    department = item.department,
                     gender = "",
                     nickname = item.nickname,
                     id = item.id,
                     profileImage = item.profileImage,
-                    studentId = "",
+                    studentId = item.studentId,
                     userRole = "",
                     userSelfIntroduction = ""
                 )
