@@ -36,24 +36,32 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
     private val args: EditProfileFragmentArgs by navArgs()
     private var preNickName: String? = null
     private val viewModel: HomeMainViewModel by activityViewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setListener()
+        setObserver()
+    }
 
+    override fun onResume() {
+        super.onResume()
         args.member.let {
             binding.editProfileEditNickName.setText(it.nickname)
-            preNickName = it.nickname
-            viewModel.nickNameCheck.value = true
             binding.editProfileEditIntro.setText(it.userSelfIntroduction)
-            viewModel.choiceDepartment.value = it.department
-
-            Glide.with(this).load(it.profileImage)
-                .error(R.drawable.ic_profile)
-                .into(binding.editProfileImg)
 
             binding.editProfileEditNickName.filters =
                 arrayOf<InputFilter>(InputFilter.LengthFilter(10))
             binding.editProfileEditIntro.filters =
                 arrayOf<InputFilter>(InputFilter.LengthFilter(30))
+
+
+            preNickName = it.nickname
+            viewModel.nickNameCheck.value = true
+            viewModel.choiceDepartment.value = it.department
+
+            Glide.with(this).load(it.profileImage)
+                .error(R.drawable.ic_profile)
+                .into(binding.editProfileImg)
 
             it.profileImage?.let { img ->
                 Glide.with(this).asBitmap().load(img)
@@ -71,8 +79,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             }
         }
 
-        setListener()
-        setObserver()
     }
 
     private fun setListener() {
@@ -171,6 +177,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         with(viewModel) {
             nickNameCheck.value = null
             choiceDepartment.value = null
+            preNickName = null
         }
     }
 }

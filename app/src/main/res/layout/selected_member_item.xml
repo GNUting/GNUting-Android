@@ -16,12 +16,14 @@
         android:layout_height="wrap_content"
         android:textColor="@color/gray7"
         tools:text="창스"
+        android:fontFamily="@font/pretendard_medium"
         android:layout_marginEnd="4dp"
         android:textSize="14sp"/>
 
     <ImageView
         android:id="@+id/selected_member_item_img"
         android:layout_width="16dp"
+        android:contentDescription="멤버 선택 취소 버튼"
         android:layout_height="16dp"
         android:src="@drawable/ic_selected_member_delete"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

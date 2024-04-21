@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/white"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +36,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="25dp"
             android:src="@drawable/ic_logo"
+            android:contentDescription="앱 로고"
             app:layout_constraintBottom_toBottomOf="@+id/home_img_alarm"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/home_img_alarm" />
@@ -46,6 +48,7 @@
             android:padding="5dp"
             android:layout_marginEnd="20dp"
             android:src="@drawable/ic_bell"
+            android:contentDescription="알림 목록 화면으로 이동하는 버튼"
             app:layout_constraintBottom_toBottomOf="@+id/home_img_search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/home_img_search" />
@@ -56,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:src="@drawable/ic_new"
+            android:contentDescription="새로운 알림이 있을 때 표시되는 아이콘"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/home_img_alarm"
             app:layout_constraintEnd_toEndOf="@+id/home_img_alarm" />
@@ -67,6 +71,7 @@
             android:layout_marginEnd="5dp"
             android:padding="5dp"
             android:layout_marginTop="20dp"
+            android:contentDescription="검색 화면으로 이동하는 버튼"
             android:src="@drawable/ic_home_search"
             app:layout_constraintEnd_toStartOf="@+id/home_img_alarm"
             app:layout_constraintTop_toTopOf="parent" />
@@ -86,32 +91,45 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView">
 
             <TextView
+                android:id="@+id/home_txt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:layout_marginStart="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="김지누" />
+
+            <TextView
                 android:id="@+id/home_txt_greetings"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="14dp"
                 android:drawablePadding="5dp"
+                android:fontFamily="@font/pretendard_regular"
                 android:textColor="@color/black"
                 android:textSize="22sp"
-                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/home_txt_name"
                 app:layout_constraintEnd_toStartOf="@+id/home_img_profile"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="ooo님 안녕하세요 :)" />
+                app:layout_constraintStart_toEndOf="@+id/home_txt_name"
+                app:layout_constraintTop_toTopOf="@+id/home_txt_name"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text=" 님 안녕하세요 :)" />
 
             <TextView
                 android:id="@+id/home_txt_content"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="14dp"
+                android:fontFamily="@font/pretendard_medium"
                 android:text="지누팅에서 아름다운 만남을 가져보세요!"
                 android:textColor="@color/gray7"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@+id/home_txt_greetings"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/home_txt_greetings"
+                app:layout_constraintEnd_toStartOf="@+id/home_img_profile"
+                app:layout_constraintStart_toStartOf="@+id/home_txt_name"
                 app:layout_constraintTop_toBottomOf="@+id/home_txt_greetings" />
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -120,6 +138,7 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="1dp"
                 android:layout_marginEnd="25dp"
+                android:contentDescription="사용자의 프로필 이미지: 클릭 시 마이 페이지로 이동"
                 android:src="@drawable/ic_profile"
                 app:layout_constraintBottom_toBottomOf="@+id/home_txt_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -134,6 +153,8 @@
                 android:paddingHorizontal="17dp"
                 android:paddingVertical="8dp"
                 android:text="게시물 작성하기"
+                android:contentDescription="게시물 작성하기 화면으로 이동하는 버튼"
+                android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/home_txt_content"
@@ -148,6 +169,7 @@
                 android:layout_marginTop="45dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/banner"
+                android:contentDescription="지누팅 인스타그램 앱 프로필 화면으로 이동하는 버튼"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_btn_post" />
@@ -189,7 +211,7 @@
                 android:text="모든 글은 여기서 볼 수 있어요"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_img_banner" />
@@ -225,6 +247,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/home_content1"
+                            android:contentDescription="과팅 게시판 설명 글 이미지: 많은 분들이 기다리고 있어요 좋은 인연을 만들어 보세요"
                             app:layout_constraintBottom_toTopOf="@+id/imageView1"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
@@ -237,6 +260,7 @@
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:src="@drawable/ic_home_love"
+                            android:contentDescription="편지 모양 아이콘"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -266,6 +290,7 @@
                             android:src="@drawable/home_content2"
                             app:layout_constraintBottom_toTopOf="@+id/imageView2"
                             app:layout_constraintEnd_toEndOf="parent"
+                            android:contentDescription="내가 쓴 게시글 설명 글 이미지: 내가 쓴 게시물을 한번에 모아서 볼 수 있어요"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -276,6 +301,7 @@
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:layout_gravity="end"
+                            android:contentDescription="글쓰기 모양 아이콘"
                             android:src="@drawable/ic_home_document"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />

@@ -22,6 +22,7 @@
                 android:id="@+id/detail_img_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="뒤로 가기 버튼"
                 android:src="@drawable/arrow_left"
                 android:padding="25dp"
                 app:layout_constraintBottom_toBottomOf="@+id/detail_txt_title"
@@ -33,6 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="과팅 게시판"
+                android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -43,6 +45,7 @@
             <ImageView
                 android:id="@+id/detail_img_setting"
                 android:layout_width="wrap_content"
+                android:contentDescription="게시글 화면 메뉴를 띄우는 버튼"
                 android:layout_height="wrap_content"
                 android:padding="25dp"
                 android:src="@drawable/baseline_more_vert_24"
@@ -56,10 +59,10 @@
                 android:layout_height="wrap_content"
                 tools:text="4:4 과팅 하실분 연락 주세요"
                 android:textColor="@color/black"
+                android:fontFamily="@font/pretendard_bold"
                 android:textSize="20sp"
                 android:maxLength="30"
                 android:layout_marginHorizontal="25dp"
-                android:textStyle="bold"
                 android:layout_marginTop="27dp"
                 app:layout_constraintTop_toBottomOf="@+id/detail_txt_title"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -78,6 +81,7 @@
                 android:id="@+id/detail_img_profile"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="25dp"
+                android:contentDescription="사용자 프로필 이미지"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 app:layout_constraintStart_toStartOf="@+id/detail_view_line1"
@@ -90,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray6"
                 android:textSize="16sp"
+                android:fontFamily="@font/pretendard_regular"
                 android:layout_marginEnd="25dp"
                 app:layout_constraintBottom_toTopOf="@+id/detail_view_line2"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +121,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/pretendard_semi_bold"
                     tools:text="마산 불주먹" />
 
                 <TextView
@@ -128,6 +133,7 @@
                     android:layout_weight="1"
                     android:textColor="#767676"
                     android:textSize="14sp"
+                    android:fontFamily="@font/pretendard_regular"
                     tools:text="컴퓨터과학과 | 23학번" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -148,6 +154,7 @@
                 android:layout_marginTop="16dp"
                 android:minHeight="400dp"
                 android:maxLength="300"
+                android:fontFamily="@font/pretendard_regular"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginBottom="100dp"
                 android:textColor="@color/black"
@@ -177,7 +184,7 @@
                     android:gravity="center"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/pretendard_semi_bold"
                     android:visibility="gone"
                     android:layout_marginVertical="14dp"
                     android:text="수정"/>
@@ -195,7 +202,7 @@
                     android:gravity="center"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/pretendard_semi_bold"
                     android:layout_marginVertical="14dp"
                     android:text="삭제"/>
                 <View
@@ -211,7 +218,7 @@
                     android:gravity="center"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/pretendard_semi_bold"
                     android:layout_marginVertical="14dp"
                     android:text="신고"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -228,6 +235,7 @@
         android:gravity="center_vertical"
         tools:text="현재 채팅/참여중인 사람 O명"
         android:textColor="@color/main"
+        android:fontFamily="@font/pretendard_medium"
         android:layout_marginBottom="11dp"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/detail_btn_chat_request"
@@ -239,14 +247,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
-        android:layout_marginBottom="22dp"
+        android:layout_marginBottom="30dp"
         android:visibility="gone"
         android:paddingVertical="20dp"
         android:text="채팅 신청하기"
         android:background="@drawable/background_radius_10dp_solid_main"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/pretendard_semi_bold"
         style="?android:attr/borderlessButtonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

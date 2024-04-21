@@ -31,6 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/arrow_left"
+                    android:contentDescription="뒤로 가기 버튼"
                     android:padding="25dp"
                     app:layout_constraintBottom_toBottomOf="@+id/post_txt_title"
                     app:layout_constraintStart_toStartOf="parent"
@@ -41,10 +42,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="글쓰기"
+                    android:fontFamily="@font/pretendard_medium"
                     android:layout_marginTop="20dp"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -54,7 +55,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="완료"
-                    android:layout_marginEnd="25dp"
+                    android:padding="25dp"
+                    android:fontFamily="@font/pretendard_medium"
                     android:textColor="@color/secondary"
                     app:layout_constraintBottom_toBottomOf="@+id/post_txt_title"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -66,6 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="31dp"
+                android:fontFamily="@font/pretendard_medium"
                 android:background="@null"
                 android:layout_marginHorizontal="25dp"
                 android:hint="제목"
@@ -87,6 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:fontFamily="@font/pretendard_medium"
                 android:gravity="top"
                 android:hint="내용을 입력해주세요."
                 android:layout_marginHorizontal="25dp"
@@ -102,6 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="멤버 (0)"
+                android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="25dp"
                 android:textSize="18sp" />
@@ -126,6 +131,7 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:contentDescription="멤버 추가 버튼"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_round" />

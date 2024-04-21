@@ -18,6 +18,7 @@
             android:id="@+id/post_list_img_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="뒤로 가기 버튼"
             android:src="@drawable/arrow_left"
             android:padding="25dp"
             app:layout_constraintBottom_toBottomOf="@+id/post_list_txt_title"
@@ -32,7 +33,7 @@
             android:layout_marginTop="20dp"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -75,6 +76,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="글쓰기 이미지"
                 android:layout_marginEnd="2dp"
                 android:src="@drawable/ic_edit"/>
 
@@ -83,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:text="글쓰기"
                 android:textColor="@color/black"
+                android:fontFamily="@font/pretendard_regular"
                 android:textSize="16sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

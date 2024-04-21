@@ -45,13 +45,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
+            android:contentDescription="채팅방 떠나기 버튼"
             android:src="@drawable/ic_chatout" />
 
-        <ImageView
-            android:id="@+id/drawer_chat_img_bell"
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/drawer_chat_check_bell"
+            android:background="@android:color/transparent"
+            android:button="@drawable/custom_bell_checkbox"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_notification_bell_fill" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 

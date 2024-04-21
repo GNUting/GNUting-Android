@@ -34,7 +34,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
         viewModel.myInfo.value?.let { myInfo ->
             binding.myTxtName.text = myInfo.nickname
-            binding.myTxtInfo.text = "${myInfo.department} | ${myInfo.age} | ${myInfo.studentId}"
+            binding.myTxtInfo.text = "${myInfo.studentId} | ${myInfo.department}"
             binding.myTxtIntro.text = myInfo.userSelfIntroduction
 
             Glide.with(this@MyFragment).load(myInfo.profileImage)
@@ -71,6 +71,10 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
 
     private fun setListener() {
+        binding.myTxtMenuAlarmSetting.setOnClickListener {
+            findNavController().navigate(R.id.action_myFragment_to_alarmSettingFragment)
+        }
+
         binding.myTxtMenuLegalNotice.setOnClickListener {
             runCatching {
                 val uri = Uri.parse("https://gnuting.github.io/GNUting-PrivacyPolicy/privacy_policy")
@@ -109,39 +113,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
             }
         }
 
-        binding.myTxtMenuMyPosts.setOnClickListener {
-            findNavController().navigate(R.id.action_myFragment_to_myPostListFragment)
-        }
-
         binding.myTxtMenuCustomerServiceCenter.setOnClickListener {
-            runCatching {
-                val uri = Uri.parse("https://www.instagram.com/gnu_ting/")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                intent.setPackage("com.instagram.android")
-                startActivity(intent)
-            }.onFailure {
-                Timber.e(it.message ?: "error")
-                val uri = Uri.parse("https://www.instagram.com/gnu_ting/p/C5bIzh2yIe5/?img_index=1")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
-            }
-        }
-
-        binding.myTxtMenuHelp.setOnClickListener {
-            runCatching {
-                val uri = Uri.parse("https://www.instagram.com/gnu_ting/")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                intent.setPackage("com.instagram.android")
-                startActivity(intent)
-            }.onFailure {
-                Timber.e(it.message ?: "error")
-                val uri = Uri.parse("https://www.instagram.com/gnu_ting/p/C5bIzh2yIe5/?img_index=1")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
-            }
-        }
-
-        binding.myTxtMenuAnnouncement.setOnClickListener {
             runCatching {
                 val uri = Uri.parse("https://www.instagram.com/gnu_ting/")
                 val intent = Intent(Intent.ACTION_VIEW, uri)
@@ -161,7 +133,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
             it?.let { myInfo ->
                 binding.myTxtName.text = myInfo.nickname
                 binding.myTxtInfo.text =
-                    "${myInfo.department} | ${myInfo.age} | ${myInfo.studentId}"
+                    "${myInfo.studentId} | ${myInfo.department}"
                 binding.myTxtIntro.text = myInfo.userSelfIntroduction
 
                 Glide.with(this@MyFragment)

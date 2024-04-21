@@ -19,6 +19,7 @@
             android:id="@+id/my_post_list_img_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="뒤로 가기 버튼"
             android:src="@drawable/arrow_left"
             android:padding="25dp"
             app:layout_constraintBottom_toBottomOf="@+id/my_post_list_txt_title"
@@ -30,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="내가 쓴 글"
+            android:fontFamily="@font/pretendard_medium"
             android:layout_marginTop="20dp"
             android:textColor="@color/black"
             android:textSize="18sp"
@@ -74,6 +76,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal" >
             <ImageView
+                android:contentDescription="글쓰기 이미지"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
@@ -83,6 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="글쓰기"
+                android:fontFamily="@font/pretendard_regular"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>

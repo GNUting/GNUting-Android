@@ -26,6 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
+                android:contentDescription="뒤로 가기 버튼"
                 android:layout_marginStart="13dp"
                 android:src="@drawable/arrow_left"
                 app:layout_constraintBottom_toBottomOf="@+id/application_txt_title"
@@ -40,7 +41,7 @@
                 android:layout_marginTop="20dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +54,7 @@
                 android:layout_marginTop="30dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_bold"
                 android:layout_marginStart="25dp"
                 android:drawablePadding="5dp"
                 android:drawableStart="@drawable/ic_heart_arrow"
@@ -69,6 +70,7 @@
                 android:textColor="@color/gray7"
                 android:textSize="14sp"
                 android:layout_marginEnd="25dp"
+                android:fontFamily="@font/pretendard_medium"
                 app:layout_constraintBottom_toBottomOf="@+id/application_txt_member"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/application_txt_member"
@@ -100,7 +102,7 @@
                         android:textSize="16sp"
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="15dp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/pretendard_bold"
                         tools:text="▶ 컴퓨터과학과" />
 
                     <View
@@ -153,7 +155,7 @@
                         android:textColor="@color/main"
                         android:textSize="16sp"
                         android:layout_marginHorizontal="25dp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/pretendard_bold"
                         tools:text="◀ 일반사회교육과" />
 
                     <View
@@ -187,7 +189,7 @@
                 android:visibility="invisible"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_semi_bold"
                 android:layout_marginEnd="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -208,7 +210,7 @@
                 android:visibility="invisible"
                 android:textColor="@color/secondary"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_semi_bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/application_btn_accept"
                 app:layout_constraintStart_toStartOf="parent"
@@ -226,7 +228,7 @@
                 android:layout_marginHorizontal="25dp"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/pretendard_semi_bold"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

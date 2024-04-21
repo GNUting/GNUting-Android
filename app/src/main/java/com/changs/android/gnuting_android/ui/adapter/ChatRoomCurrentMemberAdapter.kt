@@ -61,12 +61,12 @@ class ChatRoomCurrentMemberAdapter(
             binding.chatRoomCurrentMemberItemImgProfile.setOnClickListener {
                 val inUser = InUser(
                     age = "",
-                    department = "",
+                    department = item.department,
                     gender = "",
                     nickname = item.nickname,
                     id = item.userId,
                     profileImage = item.profileImage,
-                    studentId = "",
+                    studentId = item.studentId,
                     userRole = "",
                     userSelfIntroduction = ""
                 )

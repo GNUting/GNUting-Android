@@ -30,6 +30,7 @@
                     android:id="@+id/edit_post_img_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="뒤로 가기 버튼"
                     android:src="@drawable/arrow_left"
                     android:padding="25dp"
                     app:layout_constraintBottom_toBottomOf="@+id/edit_post_txt_title"
@@ -44,7 +45,7 @@
                     android:layout_marginTop="20dp"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/pretendard_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -54,8 +55,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="완료"
-                    android:layout_marginEnd="25dp"
+                    android:padding="25dp"
                     android:textColor="@color/secondary"
+                    android:fontFamily="@font/pretendard_medium"
                     app:layout_constraintBottom_toBottomOf="@+id/edit_post_txt_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/edit_post_txt_title" />
@@ -68,6 +70,7 @@
                 android:layout_marginTop="31dp"
                 android:maxLength="30"
                 android:layout_marginHorizontal="25dp"
+                android:fontFamily="@font/pretendard_medium"
                 android:background="@null"
                 android:hint="제목"
                 android:textColor="@color/black"
@@ -88,6 +91,7 @@
                 android:gravity="top"
                 android:maxLength="300"
                 android:layout_marginHorizontal="25dp"
+                android:fontFamily="@font/pretendard_medium"
                 android:hint="내용을 입력해주세요."
                 android:minHeight="200dp"
                 android:textColor="@color/black"
@@ -101,6 +105,7 @@
                 android:text="멤버 (0)"
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="25dp"
+                android:fontFamily="@font/pretendard_medium"
                 android:textSize="18sp" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -123,6 +128,7 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:contentDescription="멤버 추가 버튼"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_round" />

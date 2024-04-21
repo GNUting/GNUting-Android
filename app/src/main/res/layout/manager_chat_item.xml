@@ -11,6 +11,7 @@
         android:id="@+id/manager_chat_item_txt_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_regular"
         android:paddingVertical="8dp"
         android:paddingHorizontal="10dp"
         android:background="@drawable/background_radius_10dp_solid_gray8"

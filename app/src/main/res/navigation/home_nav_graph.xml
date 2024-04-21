@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_myFragment_to_myPostListFragment"
             app:destination="@id/myPostListFragment" />
+        <action
+            android:id="@+id/action_myFragment_to_alarmSettingFragment"
+            app:destination="@id/alarmSettingFragment" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
@@ -269,4 +272,9 @@
         android:id="@+id/postSearchFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.post.PostSearchFragment"
         android:label="PostSearchFragment" />
+    <fragment
+        android:id="@+id/alarmSettingFragment"
+        android:name="com.changs.android.gnuting_android.ui.fragment.alarm.AlarmSettingFragment"
+        android:label="fragment_alarm_setting"
+        tools:layout="@layout/fragment_alarm_setting" />
 </navigation>

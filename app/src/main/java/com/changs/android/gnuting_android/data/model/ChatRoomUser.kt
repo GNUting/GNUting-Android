@@ -15,5 +15,9 @@ data class ChatRoomUser(
     @SerializedName("profileImage")
     val profileImage: String,
     @SerializedName("userId")
-    val userId: Int
+    val userId: Int,
+    @SerializedName("department")
+    val department: String,
+    @SerializedName("studentId")
+    val studentId: String
 ) : Parcelable

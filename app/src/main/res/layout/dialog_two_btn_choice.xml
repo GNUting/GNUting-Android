@@ -15,6 +15,7 @@
         android:gravity="center_horizontal"
         android:layout_marginHorizontal="40dp"
         android:text="탈퇴하시겠습니까?"
+        android:fontFamily="@font/pretendard_medium"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:layout_marginVertical="40dp"/>
@@ -41,7 +42,7 @@
             android:textColor="@color/black"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="20dp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/pretendard_semi_bold"/>
 
         <TextView
             android:id="@+id/dialog_two_btn_choice_txt_right"
@@ -53,7 +54,7 @@
             android:textSize="14sp"
             style="?android:attr/borderlessButtonStyle"
             android:textColor="@color/white"
-            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_semi_bold"
             android:background="@drawable/background_radius_10dp_solid_main"
             android:text="탈퇴하기" />
     </LinearLayout>
