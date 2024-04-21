@@ -110,8 +110,8 @@
                 android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="@+id/home_txt_name"
                 app:layout_constraintEnd_toStartOf="@+id/home_img_profile"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/home_txt_name"
-                app:layout_constraintTop_toTopOf="@+id/home_txt_name"
                 tools:text=" 님 안녕하세요 :)" />
 
             <TextView
