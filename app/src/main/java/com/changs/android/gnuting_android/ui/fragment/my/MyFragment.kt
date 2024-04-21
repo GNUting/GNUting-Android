@@ -34,7 +34,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
         viewModel.myInfo.value?.let { myInfo ->
             binding.myTxtName.text = myInfo.nickname
-            binding.myTxtInfo.text = "${myInfo.department} | ${myInfo.age} | ${myInfo.studentId}"
+            binding.myTxtInfo.text = "${myInfo.studentId} | ${myInfo.department}"
             binding.myTxtIntro.text = myInfo.userSelfIntroduction
 
             Glide.with(this@MyFragment).load(myInfo.profileImage)
@@ -71,6 +71,10 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
 
     private fun setListener() {
+        binding.myTxtMenuAlarmSetting.setOnClickListener {
+            findNavController().navigate(R.id.action_myFragment_to_alarmSettingFragment)
+        }
+
         binding.myTxtMenuLegalNotice.setOnClickListener {
             runCatching {
                 val uri = Uri.parse("https://gnuting.github.io/GNUting-PrivacyPolicy/privacy_policy")
