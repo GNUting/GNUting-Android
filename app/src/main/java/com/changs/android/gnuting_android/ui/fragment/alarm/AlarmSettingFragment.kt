@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.AlarmStatus
@@ -25,6 +26,10 @@ class AlarmSettingFragment : BaseFragment<FragmentAlarmSettingBinding>(
         super.onViewCreated(view, savedInstanceState)
         viewModel.getNotificationStatus()
         setObserver()
+
+        binding.alarmSettingImgBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setObserver() {
