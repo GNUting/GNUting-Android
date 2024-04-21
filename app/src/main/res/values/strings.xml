@@ -16,4 +16,5 @@
     <string name="join_complete">가입 완료</string>
     <string name="join3_content">아이콘을 눌러\n회원님의 <b>프로필 사진</b>을 등록해주세요.</string>
     <string name="join3_txt_pass"><u>나중에 할게요</u></string>
+    <string name="alarm_setting_txt"><font color='#000000'>기기 설정 내</font> <font color='#FF6F61'>지누팅 알림</font><font color='#000000'>을</font> <font color='#FF6F61'>꼭! 허용</font><font color='#000000'>해 주세요</font></string>
 </resources>
