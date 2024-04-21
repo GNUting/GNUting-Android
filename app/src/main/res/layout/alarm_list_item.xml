@@ -16,6 +16,7 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="1"
+            android:fontFamily="@font/pretendard_medium"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="15sp"
@@ -29,6 +30,7 @@
             android:ellipsize="end"
             android:textColor="@color/black"
             android:textSize="12sp"
+            android:fontFamily="@font/pretendard_regular"
             android:layout_marginStart="9dp"
             tools:text="body"/>
 
