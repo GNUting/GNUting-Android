@@ -12,8 +12,10 @@ import androidx.navigation.fragment.navArgs
 import com.changs.android.gnuting_android.GNUApplication
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
+import com.changs.android.gnuting_android.data.model.AlarmStatus
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.data.model.MessageItem
+import com.changs.android.gnuting_android.data.model.NotificationSettingRequest
 import com.changs.android.gnuting_android.databinding.FragmentChatBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
@@ -21,6 +23,7 @@ import com.changs.android.gnuting_android.ui.adapter.ChatRoomCurrentMemberAdapte
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.hideSoftKeyboard
 import com.changs.android.gnuting_android.util.showTwoButtonDialog
+import com.changs.android.gnuting_android.viewmodel.AlarmViewModel
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.gson.GsonBuilder
@@ -34,12 +37,14 @@ class ChatFragment :
     BaseFragment<FragmentChatBinding>(FragmentChatBinding::bind, R.layout.fragment_chat) {
     private val viewModel: HomeMainViewModel by activityViewModels()
     private val chatViewModel: ChatViewModel by viewModels()
+    private val alarmViewModel: AlarmViewModel by viewModels()
     private val args: ChatFragmentArgs by navArgs()
     private var adapter: ChatAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chatViewModel.getChats(args.id)
+        alarmViewModel.getCurrentChatRoomNotificationStatus(args.id)
         setRecyclerView()
         setObserver()
         setListener()
@@ -58,7 +63,8 @@ class ChatFragment :
                 }
             }
 
-            val adapter = ChatRoomCurrentMemberAdapter(viewModel.myInfo.value?.id, ::navigateListener)
+            val adapter =
+                ChatRoomCurrentMemberAdapter(viewModel.myInfo.value?.id, ::navigateListener)
             drawerChatRecycler.adapter = adapter
 
             val chatRoomUsers = args.chatRoomUsers.toMutableList()
@@ -104,6 +110,28 @@ class ChatFragment :
     }
 
     private fun setObserver() {
+        alarmViewModel.currentChatRoomAlarmStatusResponse.observe(viewLifecycleOwner) {
+            when (it.result.notificationSetting) {
+                AlarmStatus.ENABLE.name -> {
+                    binding.chatLayoutDrawer.drawerChatCheckBell.isChecked = true
+                }
+
+                AlarmStatus.DISABLE.name -> {
+                    binding.chatLayoutDrawer.drawerChatCheckBell.isChecked = false
+                }
+            }
+
+            binding.chatLayoutDrawer.drawerChatCheckBell.setOnCheckedChangeListener { buttonView, isChecked ->
+                val requestSettingStatus =
+                    if (isChecked) AlarmStatus.ENABLE.name else AlarmStatus.DISABLE.name
+
+                alarmViewModel.putCurrentChatRoomNotificationSetting(
+                    args.id, NotificationSettingRequest(requestSettingStatus)
+                )
+
+            }
+        }
+
         chatViewModel.spinner.observe(viewLifecycleOwner) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
