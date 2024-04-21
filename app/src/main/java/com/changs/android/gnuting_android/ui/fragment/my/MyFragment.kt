@@ -165,7 +165,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
             it?.let { myInfo ->
                 binding.myTxtName.text = myInfo.nickname
                 binding.myTxtInfo.text =
-                    "${myInfo.department} | ${myInfo.age} | ${myInfo.studentId}"
+                    "${myInfo.studentId} | ${myInfo.department}"
                 binding.myTxtIntro.text = myInfo.userSelfIntroduction
 
                 Glide.with(this@MyFragment)
