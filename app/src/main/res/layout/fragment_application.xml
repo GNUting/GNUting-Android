@@ -26,6 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
+                android:contentDescription="뒤로 가기 버튼"
                 android:layout_marginStart="13dp"
                 android:src="@drawable/arrow_left"
                 app:layout_constraintBottom_toBottomOf="@+id/application_txt_title"

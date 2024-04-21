@@ -45,12 +45,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
+            android:contentDescription="채팅방 떠나기 버튼"
             android:src="@drawable/ic_chatout" />
 
         <ImageView
             android:id="@+id/drawer_chat_img_bell"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="현재 채팅방의 알림을 끄고 킬 수 있는 버튼"
             android:src="@drawable/ic_notification_bell_fill" />
     </LinearLayout>
 

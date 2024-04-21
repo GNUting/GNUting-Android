@@ -10,6 +10,7 @@
         android:id="@+id/other_chat_item_img"
         android:layout_width="45dp"
         android:layout_height="45dp"
+        android:contentDescription="사용자 프로필 이미지"
         tools:src="@drawable/ic_profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

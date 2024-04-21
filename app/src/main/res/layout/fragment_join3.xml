@@ -16,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
+            android:contentDescription="뒤로 가기 버튼"
             android:layout_marginTop="7dp"
             android:padding="12dp"
             android:src="@drawable/arrow_left"
@@ -33,17 +34,20 @@
             app:layout_constraintTop_toTopOf="@+id/join3_img_back">
 
             <ImageView
+                android:contentDescription="회원가입 진행 상태 표시 이미지"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/progress_stage1" />
 
             <ImageView
+                android:contentDescription="회원가입 진행 상태 표시 이미지"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:src="@drawable/progress_stage2" />
 
             <ImageView
+                android:contentDescription="회원가입 진행 상태 표시 이미지"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/progress_stage3_active" />
@@ -53,6 +57,7 @@
             android:id="@+id/join3_img_profile"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:contentDescription="프로필 이미지"
             android:elevation="3dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_profile"

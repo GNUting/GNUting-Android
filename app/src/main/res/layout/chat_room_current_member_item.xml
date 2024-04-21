@@ -11,6 +11,7 @@
         android:id="@+id/chat_room_current_member_item_img_profile"
         android:layout_width="45dp"
         android:layout_height="45dp"
+        android:contentDescription="사용자 프로필 이미지"
         android:scaleType="centerCrop"
         tools:src="@drawable/ic_profile"/>
 

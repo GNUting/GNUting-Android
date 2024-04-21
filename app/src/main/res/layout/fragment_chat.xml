@@ -15,6 +15,7 @@
             android:id="@+id/post_list_img_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="뒤로 가기 버튼"
             android:layout_marginStart="15dp"
             android:padding="11dp"
             android:src="@drawable/arrow_left"
@@ -57,6 +58,7 @@
         <ImageView
             android:id="@+id/chat_img_setting"
             android:layout_width="wrap_content"
+            android:contentDescription="채팅방 메뉴창을 띄우는 버튼"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:padding="11dp"
@@ -130,6 +132,7 @@
             <ImageView
                 android:id="@+id/chat_img_send"
                 android:layout_width="wrap_content"
+                android:contentDescription="채팅방에 메세지를 보내는 버튼"
                 android:layout_height="wrap_content"
                 android:layout_margin="9dp"
                 android:src="@drawable/ic_send"

@@ -23,6 +23,7 @@
     <ImageView
         android:id="@+id/selected_member_item_img"
         android:layout_width="16dp"
+        android:contentDescription="멤버 선택 취소 버튼"
         android:layout_height="16dp"
         android:src="@drawable/ic_selected_member_delete"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

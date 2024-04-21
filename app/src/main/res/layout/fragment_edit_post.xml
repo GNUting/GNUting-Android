@@ -30,6 +30,7 @@
                     android:id="@+id/edit_post_img_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="뒤로 가기 버튼"
                     android:src="@drawable/arrow_left"
                     android:padding="25dp"
                     app:layout_constraintBottom_toBottomOf="@+id/edit_post_txt_title"
@@ -127,6 +128,7 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:contentDescription="멤버 추가 버튼"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_round" />

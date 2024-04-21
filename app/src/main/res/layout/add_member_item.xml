@@ -13,6 +13,7 @@
         android:id="@+id/add_member_item_img"
         android:layout_width="37dp"
         android:layout_height="37dp"
+        android:contentDescription="사용자 프로필 이미지"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_profile"
         app:layout_constraintBottom_toBottomOf="@+id/add_member_item_txt_member_intro"

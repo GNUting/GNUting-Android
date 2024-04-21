@@ -17,6 +17,7 @@
             android:id="@+id/join2_img_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="뒤로 가기 버튼"
             android:padding="12dp"
             android:layout_marginStart="13dp"
             android:layout_marginTop="7dp"
@@ -35,17 +36,20 @@
             app:layout_constraintTop_toTopOf="@+id/join2_img_back">
 
             <ImageView
+                android:contentDescription="회원가입 진행 상태 표시 이미지"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/progress_stage1" />
 
             <ImageView
+                android:contentDescription="회원가입 진행 상태 표시 이미지"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:src="@drawable/progress_stage2_active" />
 
             <ImageView
+                android:contentDescription="회원가입 진행 상태 표시 이미지"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/progress_stage3" />

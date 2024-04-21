@@ -22,6 +22,7 @@
                 android:id="@+id/detail_img_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="뒤로 가기 버튼"
                 android:src="@drawable/arrow_left"
                 android:padding="25dp"
                 app:layout_constraintBottom_toBottomOf="@+id/detail_txt_title"
@@ -44,6 +45,7 @@
             <ImageView
                 android:id="@+id/detail_img_setting"
                 android:layout_width="wrap_content"
+                android:contentDescription="게시글 화면 메뉴를 띄우는 버튼"
                 android:layout_height="wrap_content"
                 android:padding="25dp"
                 android:src="@drawable/baseline_more_vert_24"
@@ -79,6 +81,7 @@
                 android:id="@+id/detail_img_profile"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="25dp"
+                android:contentDescription="사용자 프로필 이미지"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 app:layout_constraintStart_toStartOf="@+id/detail_view_line1"

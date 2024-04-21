@@ -13,6 +13,7 @@
         android:id="@+id/search_post_list_img_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="뒤로 가기 버튼"
         android:src="@drawable/arrow_left"
         app:layout_constraintBottom_toBottomOf="@+id/search_post_list_txt_title"
         app:layout_constraintStart_toStartOf="parent"

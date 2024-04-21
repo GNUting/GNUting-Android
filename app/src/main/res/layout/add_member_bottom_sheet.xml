@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_close"
             android:padding="25dp"
+            android:contentDescription="화면 닫기 아이콘"
             app:layout_constraintBottom_toBottomOf="@+id/add_member_bottom_sheet_txt_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/add_member_bottom_sheet_txt_title" />
@@ -77,6 +78,7 @@
             app:layout_constraintVertical_bias="0.0">
 
             <ImageView
+                android:contentDescription="멤버 추가 버튼"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_add_round" />
