@@ -8,11 +8,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.viewModelScope
 import com.changs.android.gnuting_android.databinding.ActivityMainBinding
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
+import com.changs.android.gnuting_android.viewmodel.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -21,6 +24,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
+    private val splashViewModel: SplashViewModel by viewModels()
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,15 +35,22 @@ class MainActivity : AppCompatActivity() {
 
         splashScreen.setKeepOnScreenCondition { true }
 
-        val accessToken = runBlocking { viewModel.getAccessToken().firstOrNull() }
-        Timber.d("Token: $accessToken")
+        splashViewModel.isLoading.observe(this) {
+            if (it == false) {
+                val accessToken = runBlocking {
+                    viewModel.getAccessToken().firstOrNull()
+                }
 
-        if (accessToken != null) {
-            val intent = Intent(this@MainActivity, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        } else {
-            splashScreen.setKeepOnScreenCondition { false }
+                Timber.d("Token: $accessToken")
+
+                splashScreen.setKeepOnScreenCondition { false }
+
+                if (accessToken != null) {
+                    val intent = Intent(this@MainActivity, HomeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                }
+            }
         }
 
         viewModel.spinner.observe(this) { show ->
