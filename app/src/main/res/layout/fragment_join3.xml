@@ -128,7 +128,7 @@
             android:text="프로필 사진 등록하기"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="25dp"
             android:fontFamily="@font/pretendard_bold"
             android:layout_marginBottom="30dp"
             app:layout_constraintBottom_toBottomOf="parent"

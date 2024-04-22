@@ -66,21 +66,20 @@
             android:id="@+id/add_member_bottom_sheet_ll_add_member"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_marginBottom="100dp"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/background_radius_10dp_stroke_gray9"
             android:gravity="center"
-            android:layout_marginHorizontal="25dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            app:layout_constraintBottom_toTopOf="@+id/add_member_bottom_sheet_btn_chat_request"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_member_bottom_sheet_recyclerview"
             app:layout_constraintVertical_bias="0.0">
 
             <ImageView
-                android:contentDescription="멤버 추가 버튼"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="멤버 추가 버튼"
                 android:src="@drawable/ic_add_round" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -90,19 +89,17 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/background_radius_10dp_solid_main"
+            android:fontFamily="@font/pretendard_semi_bold"
             android:paddingVertical="20dp"
             android:text="채팅 신청 완료"
-            android:layout_marginHorizontal="25dp"
-            android:layout_marginTop="10dp"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:fontFamily="@font/pretendard_semi_bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline2" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/spinner"
@@ -113,13 +110,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_end="130dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
