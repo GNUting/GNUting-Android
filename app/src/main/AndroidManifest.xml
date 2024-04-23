@@ -17,28 +17,28 @@
         android:theme="@style/Theme.GNUtingAndroid"
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
-
         <activity
-            android:name=".ui.HomeActivity"
-            android:exported="false" />
-        <activity
-            android:theme="@style/Theme.App.Starting"
-            android:name=".ui.MainActivity"
-            android:exported="true">
+            android:name=".ui.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".ui.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="false" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/OpensourceLicense"/>
-
+            android:theme="@style/OpensourceLicense" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-            android:theme="@style/OpensourceLicense"/>
+            android:theme="@style/OpensourceLicense" />
 
         <service
             android:name=".MyFirebaseMessagingService"
@@ -51,11 +51,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_fcm_logo" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/main" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/channel_id" />

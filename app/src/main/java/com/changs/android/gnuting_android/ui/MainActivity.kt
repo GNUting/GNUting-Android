@@ -24,34 +24,11 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
-    private val splashViewModel: SplashViewModel by viewModels()
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
-
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        splashScreen.setKeepOnScreenCondition { true }
-
-        splashViewModel.isLoading.observe(this) {
-            if (it == false) {
-                val accessToken = runBlocking {
-                    viewModel.getAccessToken().firstOrNull()
-                }
-
-                Timber.d("Token: $accessToken")
-
-                splashScreen.setKeepOnScreenCondition { false }
-
-                if (accessToken != null) {
-                    val intent = Intent(this@MainActivity, HomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                }
-            }
-        }
 
         viewModel.spinner.observe(this) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE

@@ -14,7 +14,7 @@ class SplashViewModel : ViewModel() {
     val isLoading = _isLoading.asStateFlow().asLiveData()
     init {
         viewModelScope.launch()  {
-            delay(2000)
+            delay(1500)
             _isLoading.value = false
         }
     }
