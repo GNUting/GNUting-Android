@@ -168,57 +168,58 @@
                 tools:text="내용" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:visibility="gone"
                 android:id="@+id/detail_ll_spinner"
+                android:visibility="gone"
                 android:layout_width="150dp"
                 android:layout_marginEnd="20dp"
+                android:elevation="5dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="@+id/detail_img_setting"
                 app:layout_constraintTop_toBottomOf="@+id/detail_img_setting"
-                android:background="@drawable/background_radius_17dp_solid_gray12"
+                android:background="@drawable/background_radius_8dp_solid_white"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/detail_txt_menu_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/pretendard_semi_bold"
+                    android:textSize="12sp"
                     android:visibility="gone"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:layout_marginStart="15dp"
                     android:layout_marginVertical="14dp"
                     android:text="수정"/>
                 <View
                     android:id="@+id/detail_view_menu_line1"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#C5C5C5"/>
+                    android:visibility="gone"
+                    android:background="#F3F3F3"/>
                 <TextView
                     android:id="@+id/detail_txt_menu_remove"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:gravity="center"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/pretendard_semi_bold"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/pretendard_regular"
                     android:layout_marginVertical="14dp"
                     android:text="삭제"/>
                 <View
                     android:id="@+id/detail_view_menu_line2"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#C5C5C5"/>
+                    android:visibility="gone"
+                    android:background="#F3F3F3"/>
                 <TextView
                     android:id="@+id/detail_txt_menu_reportd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/pretendard_semi_bold"
+                    android:textSize="12sp"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/pretendard_regular"
                     android:layout_marginVertical="14dp"
                     android:text="신고"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
