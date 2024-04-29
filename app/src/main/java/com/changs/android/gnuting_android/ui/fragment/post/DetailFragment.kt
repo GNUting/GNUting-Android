@@ -88,6 +88,7 @@ class DetailFragment :
                 findNavController().navigate(R.id.action_detailFragment_to_editPostFragment, bundle)
             }
 
+
             response.result.apply {
                 viewModel.myInfo.value?.let { myInfo ->
                     if (myInfo.nickname == user.nickname) {

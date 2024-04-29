@@ -45,7 +45,11 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
 
     private fun setObserver() {
         viewModel.alarmListResponse.observe(viewLifecycleOwner) {
-            if (it.result.isNotEmpty()) adapter.submitList(it.result)
+            adapter.submitList(it.result)
+
+            if (it.result.isNotEmpty()) {
+                binding.alarmListLlEmpty.visibility = View.GONE
+            }
             else {
                 binding.alarmListLlEmpty.visibility = View.VISIBLE
             }

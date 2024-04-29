@@ -40,7 +40,11 @@ class MyPostListFragment : BaseFragment<FragmentMyPostListBinding>(FragmentMyPos
 
     private fun setObserver() {
         postViewModel.postResponse.observe(viewLifecycleOwner) {
-            if (it.result.isNotEmpty()) adapter.submitList(it.result)
+            adapter.submitList(it.result)
+
+            if (it.result.isNotEmpty()) {
+                binding.myPostListLlEmpty.visibility = View.GONE
+            }
             else {
                 binding.myPostListLlEmpty.visibility = View.VISIBLE
             }
