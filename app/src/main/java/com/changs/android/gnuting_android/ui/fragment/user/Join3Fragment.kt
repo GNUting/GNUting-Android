@@ -82,8 +82,6 @@ class Join3Fragment :
 
     override fun onDestroy() {
         super.onDestroy()
-        with(viewModel) {
-            viewModel.profileImage = null
-        }
+        viewModel.profileImage = null
     }
 }
