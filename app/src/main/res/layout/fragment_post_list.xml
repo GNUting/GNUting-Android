@@ -56,42 +56,51 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/post_list_item" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/post_list_card_post"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/post_btn"
+        android:id="@+id/post_list_img_post_btn"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="30dp"
+        android:contentDescription="글쓰기 버튼"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/post_list_ll_empty"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="22dp"
-        app:cardCornerRadius="64dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_list_cl_default">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="22dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="글쓰기 이미지"
-                android:layout_marginEnd="2dp"
-                android:src="@drawable/ic_edit"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/emoji_tear" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="글쓰기"
-                android:textColor="@color/black"
-                android:fontFamily="@font/pretendard_regular"
-                android:textSize="16sp" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="게시글이 없습니다."
+            android:textColor="@color/gray7"
+            android:textSize="17sp" />
 
-
-    </androidx.cardview.widget.CardView>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="조금만 기다려 볼까요?"
+            android:textColor="@color/gray7"
+            android:textSize="14sp" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/spinner"

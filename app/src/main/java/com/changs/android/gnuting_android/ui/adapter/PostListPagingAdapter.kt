@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.PostResult
 import com.changs.android.gnuting_android.databinding.PostListItemBinding
 import com.changs.android.gnuting_android.util.PostItemNavigator
@@ -38,13 +39,24 @@ class PostListPagingAdapter(private val listener: PostItemNavigator) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: PostResult, listener: PostItemNavigator) = with(binding) {
+            if (item.status == "OPEN") {
+                binding.postListItemTxtStatus.text = "신청 가능"
+                binding.postListItemTxtStatus.setTextColor(binding.root.resources.getColor(R.color.secondary, null))
+
+                binding.postListItemTxtTitle.setTextColor(binding.root.resources.getColor(R.color.black, null))
+            } else {
+                binding.postListItemTxtStatus.text = "신청 마감"
+                binding.postListItemTxtStatus.setTextColor(binding.root.resources.getColor(R.color.main, null))
+
+                binding.postListItemTxtTitle.setTextColor(binding.root.resources.getColor(R.color.gray7, null))
+            }
+
+            binding.root.setOnClickListener {
+                if (item.status == "OPEN") listener.navigateToDetail(item.id)
+            }
 
             binding.postListItemTxtTitle.text = item.title
             binding.postListItemTxtInfo.text = "${item.user.department} | ${item.user.studentId}"
-            binding.postListItemTxtMember.text = "인원 : ${item.inUserCount}명"
-            binding.root.setOnClickListener {
-                listener.navigateToDetail(item.id)
-            }
         }
     }
 }

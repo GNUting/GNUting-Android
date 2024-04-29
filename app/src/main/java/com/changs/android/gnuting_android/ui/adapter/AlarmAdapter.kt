@@ -10,8 +10,9 @@ import com.changs.android.gnuting_android.data.model.AlarmResult
 import com.changs.android.gnuting_android.databinding.AlarmListItemBinding
 
 
-class AlarmAdapter(private val listener: (Int) -> Unit) :
-    ListAdapter<AlarmResult, AlarmAdapter.ViewHolder>(object : DiffUtil.ItemCallback<AlarmResult>() {
+class AlarmAdapter(private val navigate: () -> Unit, private val listener: (Int) -> Unit) :
+    ListAdapter<AlarmResult, AlarmAdapter.ViewHolder>(object :
+        DiffUtil.ItemCallback<AlarmResult>() {
         override fun areItemsTheSame(oldItem: AlarmResult, newItem: AlarmResult): Boolean {
             return oldItem == newItem
         }
@@ -21,21 +22,27 @@ class AlarmAdapter(private val listener: (Int) -> Unit) :
         }
     }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(parent, listener)
+        return ViewHolder(parent, navigate, listener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
-    class ViewHolder(parent: ViewGroup, val listener: (Int) -> Unit) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.alarm_list_item, parent, false)
-    ) {
+    class ViewHolder(parent: ViewGroup, val navigate: () -> Unit, val listener: (Int) -> Unit) :
+        RecyclerView.ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.alarm_list_item, parent, false)
+        ) {
         private val binding = AlarmListItemBinding.bind(itemView)
 
         fun bind(item: AlarmResult) {
             binding.root.setOnClickListener {
+                navigate()
+            }
+
+            binding.root.setOnLongClickListener {
                 listener(item.id)
+                true
             }
 
             binding.alarmListItemTxtBody.text = item.body

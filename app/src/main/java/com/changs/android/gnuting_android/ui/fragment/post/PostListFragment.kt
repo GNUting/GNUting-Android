@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
+import com.changs.android.gnuting_android.data.model.PostResult
 import com.changs.android.gnuting_android.databinding.FragmentPostListBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.PostListPagingAdapter
@@ -59,7 +60,7 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(
     private fun setListener() {
         binding.postListImgBack.setOnClickListener { findNavController().popBackStack() }
 
-        binding.postListCardPost.setOnClickListener {
+        binding.postListImgPostBtn.setOnClickListener {
             findNavController().navigate(R.id.action_postListFragment_to_postFragment)
         }
     }
@@ -67,6 +68,14 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(
     private fun setRecyclerView() {
         adapter = PostListPagingAdapter(this)
         adapter.addLoadStateListener {
+            if (it.append.endOfPaginationReached) {
+                if (adapter.itemCount < 1) {
+                    binding.postListLlEmpty.visibility = View.VISIBLE
+                } else {
+                    binding.postListLlEmpty.visibility = View.GONE
+                }
+            }
+
             when (it.refresh) {
                 is LoadState.Loading -> binding.spinner.isVisible = true
                 is LoadState.NotLoading -> binding.spinner.isVisible = false

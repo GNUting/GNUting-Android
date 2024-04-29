@@ -50,7 +50,10 @@ class ChatListFragment :
         }
 
         chatViewModel.chatRoomListResponse.observe(viewLifecycleOwner) {
-            adapter?.submitList(it.result)
+            if (it.result.isNotEmpty()) adapter?.submitList(it.result)
+            else {
+                binding.chatListLlEmpty.visibility = View.VISIBLE
+            }
         }
     }
 
