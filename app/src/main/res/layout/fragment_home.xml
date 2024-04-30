@@ -92,57 +92,42 @@
 
             <TextView
                 android:id="@+id/home_txt_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
                 android:layout_marginTop="25dp"
-                android:fontFamily="@font/pretendard_bold"
+                android:fontFamily="@font/pretendard_regular"
                 android:textColor="@color/black"
                 android:textSize="22sp"
-                android:layout_marginStart="25dp"
+                app:layout_constraintEnd_toStartOf="@+id/home_img_profile"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="김지누" />
 
             <TextView
-                android:id="@+id/home_txt_greetings"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawablePadding="5dp"
-                android:fontFamily="@font/pretendard_regular"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="@+id/home_txt_name"
-                app:layout_constraintEnd_toStartOf="@+id/home_img_profile"
-                app:layout_constraintStart_toEndOf="@+id/home_txt_name"
-                app:layout_constraintTop_toTopOf="@+id/home_txt_name"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text=" 님 안녕하세요 :)" />
-
-            <TextView
                 android:id="@+id/home_txt_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="14dp"
+                android:layout_marginTop="5dp"
                 android:fontFamily="@font/pretendard_medium"
                 android:text="지누팅에서 아름다운 만남을 가져보세요!"
                 android:textColor="@color/gray7"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/home_img_profile"
                 app:layout_constraintStart_toStartOf="@+id/home_txt_name"
-                app:layout_constraintTop_toBottomOf="@+id/home_txt_greetings" />
+                app:layout_constraintTop_toBottomOf="@+id/home_txt_name" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/home_img_profile"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginTop="1dp"
                 android:layout_marginEnd="25dp"
                 android:contentDescription="사용자의 프로필 이미지: 클릭 시 마이 페이지로 이동"
                 android:src="@drawable/ic_profile"
                 app:layout_constraintBottom_toBottomOf="@+id/home_txt_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/home_txt_greetings" />
+                app:layout_constraintTop_toTopOf="@+id/home_txt_name" />
 
             <TextView
                 android:id="@+id/home_btn_post"
@@ -180,8 +165,7 @@
                 android:layout_height="100dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_txt_greetings" />
+                app:layout_constraintStart_toStartOf="parent" />
 
 
             <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
