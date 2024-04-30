@@ -105,9 +105,10 @@ class ListFragment :
         }
 
         applicationViewModel.applicationReceiveStateResponse.observe(viewLifecycleOwner) {
+            receiveStateAdapter.submitList(it.result)
+
             if (it.result.isNotEmpty()) {
                 binding.listLlEmpty.visibility = View.GONE
-                receiveStateAdapter.submitList(it.result)
             }
             else {
                 binding.listLlEmpty.visibility = View.VISIBLE
