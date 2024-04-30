@@ -90,7 +90,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         binding.editProfileTxtEditProfile.setOnClickListener {
             if (args.member.nickname != binding.editProfileEditNickName.text.toString()) {
                 viewModel.nickNameCheck.value?.let {
-                    if (it && binding.editProfileEditNickName.text.toString() == args.member.nickname) {
+                    if (it) {
                         viewModel.updateProfile(
                             department = binding.editProfileTxtMajor.text.toString(),
                             nickname = binding.editProfileEditNickName.text.toString(),
