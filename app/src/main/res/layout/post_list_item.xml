@@ -44,7 +44,7 @@
         android:maxLines="1"
         android:textColor="@color/gray7"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/post_list_item_txt_members"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_list_item_txt_title"
         tools:text="5분 전 | 컴퓨터공학과 | 23학번" />
@@ -58,4 +58,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_list_item_txt_info" />
 
+    <TextView
+        android:id="@+id/post_list_item_txt_members"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_regular"
+        android:maxLines="1"
+        android:textColor="@color/gray7"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/post_list_item_txt_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/post_list_item_txt_info"
+        tools:text="인원: 2명" />
 </androidx.constraintlayout.widget.ConstraintLayout>

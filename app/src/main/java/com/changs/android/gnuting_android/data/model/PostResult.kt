@@ -16,5 +16,7 @@ data class PostResult(
     @SerializedName("title")
     val title: String,
     @SerializedName("user")
-    val user: User
+    val user: User,
+    @SerializedName("time")
+    val time: String
 )

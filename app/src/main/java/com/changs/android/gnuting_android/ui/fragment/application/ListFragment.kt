@@ -38,8 +38,6 @@ class ListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        applicationViewModel.getApplicationReceiveList()
-        applicationViewModel.getApplicationApplyList()
         setRecyclerView()
         setObserver()
 
@@ -76,10 +74,12 @@ class ListFragment :
         when (viewModel.currentApplicationTab) {
             ApplicationAdapter.ApplicationType.APPLY -> {
                 binding.listTl.getTabAt(0)?.select()
+                applicationViewModel.getApplicationApplyList()
             }
 
             else -> {
                 binding.listTl.getTabAt(1)?.select()
+                applicationViewModel.getApplicationReceiveList()
             }
         }
     }
@@ -108,6 +108,8 @@ class ListFragment :
             } else {
                 binding.listLlEmpty.visibility = View.VISIBLE
             }
+
+
         }
 
         applicationViewModel.applicationReceiveStateResponse.observe(viewLifecycleOwner) {

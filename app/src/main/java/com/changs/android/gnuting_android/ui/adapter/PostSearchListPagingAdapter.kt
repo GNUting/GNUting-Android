@@ -55,7 +55,8 @@ class PostSearchListPagingAdapter(private val listener: PostItemNavigator) :
             }
 
             binding.postListItemTxtTitle.text = item.title
-            binding.postListItemTxtInfo.text = "${item.department} | ${item.studentId}"
+            binding.postListItemTxtInfo.text = "${item.time} |  ${item.department} | ${item.studentId}"
+            binding.postListItemTxtMembers.text = "인원: ${item.inUserCount}명"
         }
     }
 }
