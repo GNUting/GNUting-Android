@@ -23,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -34,6 +35,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        Timber.tag("FCM TEST").i("HOME (intent.extras): "+ intent.extras?.getString("location").toString())
 
         val accessToken = runBlocking { viewModel.getAccessToken().firstOrNull() }
 
@@ -122,5 +125,10 @@ class HomeActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         toast = null
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        Timber.tag("Home NewIntent").i("${intent.getStringExtra("loaction").toString()} ${intent.getStringExtra("click_action").toString()}")
     }
 }

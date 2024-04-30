@@ -27,6 +27,8 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val splashScreen = installSplashScreen()
 
+        Timber.tag("FCM TEST").i("SPLASH (intent.extras): "+ intent.extras.toString())
+
         setContentView(R.layout.activity_splash)
 
         splashScreen.setKeepOnScreenCondition { true }
@@ -43,6 +45,7 @@ class SplashActivity : AppCompatActivity() {
 
                 if (accessToken != null) {
                     val intent = Intent(this@SplashActivity, HomeActivity::class.java)
+                    intent.putExtra("테스트", "테스트")
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 } else {

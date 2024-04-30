@@ -10,6 +10,7 @@ import com.changs.android.gnuting_android.ui.HomeActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 import java.util.*
 
 class MyFirebaseMessagingService: FirebaseMessagingService() {
@@ -17,10 +18,19 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         super.onNewToken(token)
     }
 
+    override fun handleIntent(intent: Intent?) {
+        super.handleIntent(intent)
+        Timber.tag("FCM TEST").i("SERVICE handleIntent: "+intent?.getStringExtra("location").toString())
+    }
+
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         val title = message.notification?.title
         val body = message.notification?.body
+        message.data.values.forEach {
+            Timber.tag("FCM TEST").i("SERVICE: $it")
+        }
+        Timber.tag("FCM TEST").i("SERVICE get: "+message.data.get("location").toString())
         sendNotification(title, body)
     }
 
