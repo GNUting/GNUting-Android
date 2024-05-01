@@ -22,9 +22,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(message)
         val title = message.notification?.title
         val body = message.notification?.body
-
-        Timber.tag("FCM TEST").i("SERVICE: ${message.data["location"].toString()}")
-
         val location = message.data["location"]
 
         sendNotification(title, body, location)

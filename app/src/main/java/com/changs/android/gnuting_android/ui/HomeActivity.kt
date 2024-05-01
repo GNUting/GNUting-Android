@@ -75,9 +75,6 @@ class HomeActivity : AppCompatActivity() {
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
 
-        Timber.tag("FCM TEST").i("HomeActivity onCreate")
-        Timber.tag("FCM TEST").i("HOME location: " + intent.getStringExtra("location").toString())
-
         val location = intent.getStringExtra("location")
 
         location?.let {
@@ -136,5 +133,17 @@ class HomeActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         toast = null
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val location = intent?.getStringExtra("location")
+
+        location?.let {
+            when (it) {
+                "chat" -> selectedItemId(R.id.chatListFragment)
+                else -> selectedItemId(R.id.listFragment)
+            }
+        }
     }
 }

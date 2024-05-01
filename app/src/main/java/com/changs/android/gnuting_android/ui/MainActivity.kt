@@ -29,9 +29,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        Timber.tag("FCM TEST").i("MainActivity onCreate")
-        Timber.tag("FCM TEST").i("MAIN location: " + intent.getStringExtra("location").toString())
-
         viewModel.spinner.observe(this) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
