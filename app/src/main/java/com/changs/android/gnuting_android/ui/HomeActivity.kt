@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.changs.android.gnuting_android.R
@@ -35,8 +36,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        Timber.tag("FCM TEST").i("HOME (intent.extras): "+ intent.extras?.getString("location").toString())
 
         val accessToken = runBlocking { viewModel.getAccessToken().firstOrNull() }
 
@@ -74,6 +73,18 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel.spinner.observe(this) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        Timber.tag("FCM TEST").i("HomeActivity onCreate")
+        Timber.tag("FCM TEST").i("HOME location: " + intent.getStringExtra("location").toString())
+
+        val location = intent.getStringExtra("location")
+
+        location?.let {
+            when (it) {
+                "chat" -> selectedItemId(R.id.chatListFragment)
+                else -> selectedItemId(R.id.listFragment)
+            }
         }
 
     }
@@ -125,10 +136,5 @@ class HomeActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         toast = null
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        Timber.tag("Home NewIntent").i("${intent.getStringExtra("loaction").toString()} ${intent.getStringExtra("click_action").toString()}")
     }
 }

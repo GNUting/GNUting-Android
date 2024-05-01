@@ -18,27 +18,28 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         super.onNewToken(token)
     }
 
-    override fun handleIntent(intent: Intent?) {
-        super.handleIntent(intent)
-        Timber.tag("FCM TEST").i("SERVICE handleIntent: "+intent?.getStringExtra("location").toString())
-    }
-
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         val title = message.notification?.title
         val body = message.notification?.body
-        message.data.values.forEach {
-            Timber.tag("FCM TEST").i("SERVICE: $it")
-        }
-        Timber.tag("FCM TEST").i("SERVICE get: "+message.data.get("location").toString())
-        sendNotification(title, body)
+
+        Timber.tag("FCM TEST").i("SERVICE: ${message.data["location"].toString()}")
+
+        val location = message.data["location"]
+
+        sendNotification(title, body, location)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun sendNotification(title: String?, body: String?) {
+    private fun sendNotification(title: String?, body: String?, location: String?) {
         if (GNUApplication.isActiveChatFragment) return
 
         val intent = Intent(this, HomeActivity::class.java)
+
+        if (location != null) {
+            intent.putExtra("location", location)
+        }
+
         val pIntent = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
         } else {
