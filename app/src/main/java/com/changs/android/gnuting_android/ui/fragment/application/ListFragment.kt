@@ -38,8 +38,6 @@ class ListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        applicationViewModel.getApplicationReceiveList()
-        applicationViewModel.getApplicationApplyList()
         setRecyclerView()
         setObserver()
 
@@ -48,12 +46,18 @@ class ListFragment :
                 tab?.let {
                     when (it.position) {
                         0 -> {
-                            viewModel.currentApplicationTab = ApplicationAdapter.ApplicationType.APPLY
+                            applicationViewModel.getApplicationApplyList()
+
+                            viewModel.currentApplicationTab =
+                                ApplicationAdapter.ApplicationType.APPLY
                             binding.listRecyclerview.adapter = applyStateAdapter
                         }
 
                         else -> {
-                            viewModel.currentApplicationTab = ApplicationAdapter.ApplicationType.PARTICIPANT
+                            applicationViewModel.getApplicationReceiveList()
+
+                            viewModel.currentApplicationTab =
+                                ApplicationAdapter.ApplicationType.PARTICIPANT
                             binding.listRecyclerview.adapter = receiveStateAdapter
                         }
                     }
@@ -70,9 +74,12 @@ class ListFragment :
         when (viewModel.currentApplicationTab) {
             ApplicationAdapter.ApplicationType.APPLY -> {
                 binding.listTl.getTabAt(0)?.select()
+                applicationViewModel.getApplicationApplyList()
             }
+
             else -> {
                 binding.listTl.getTabAt(1)?.select()
+                applicationViewModel.getApplicationReceiveList()
             }
         }
     }
@@ -95,10 +102,24 @@ class ListFragment :
 
         applicationViewModel.applicationApplyStateResponse.observe(viewLifecycleOwner) {
             applyStateAdapter.submitList(it.result)
+
+            if (it.result.isNotEmpty()) {
+                binding.listLlEmpty.visibility = View.GONE
+            } else {
+                binding.listLlEmpty.visibility = View.VISIBLE
+            }
+
+
         }
 
         applicationViewModel.applicationReceiveStateResponse.observe(viewLifecycleOwner) {
             receiveStateAdapter.submitList(it.result)
+
+            if (it.result.isNotEmpty()) {
+                binding.listLlEmpty.visibility = View.GONE
+            } else {
+                binding.listLlEmpty.visibility = View.VISIBLE
+            }
 
         }
     }

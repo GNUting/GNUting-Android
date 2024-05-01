@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.changs.android.gnuting_android.R
@@ -23,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -71,6 +73,18 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel.spinner.observe(this) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        Timber.tag("FCM TEST").i("HomeActivity onCreate")
+        Timber.tag("FCM TEST").i("HOME location: " + intent.getStringExtra("location").toString())
+
+        val location = intent.getStringExtra("location")
+
+        location?.let {
+            when (it) {
+                "chat" -> selectedItemId(R.id.chatListFragment)
+                else -> selectedItemId(R.id.listFragment)
+            }
         }
 
     }

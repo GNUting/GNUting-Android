@@ -11,41 +11,23 @@
     android:paddingHorizontal="12dp"
     android:paddingVertical="10dp">
 
-    <LinearLayout
-        android:id="@+id/linearLayout5"
+
+    <TextView
+        android:id="@+id/application_list_txt_member"
         android:layout_width="0dp"
+        android:layout_marginEnd="10dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_medium"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/application_list_ll_status_container"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/application_list_txt_department"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:fontFamily="@font/pretendard_medium"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:text="산업시스템공학부" />
-
-        <TextView
-            android:id="@+id/application_list_txt_member_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:fontFamily="@font/pretendard_regular"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:text="3명" />
-    </LinearLayout>
-
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="산업시스템공학부" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/application_list_ll_status_container"

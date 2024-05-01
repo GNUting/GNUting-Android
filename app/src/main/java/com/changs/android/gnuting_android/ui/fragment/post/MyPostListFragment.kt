@@ -31,7 +31,7 @@ class MyPostListFragment : BaseFragment<FragmentMyPostListBinding>(FragmentMyPos
     }
 
     private fun setListener() {
-        binding.myPostListCardPost.setOnClickListener {
+        binding.myPostListImgPostBtn.setOnClickListener {
             findNavController().navigate(R.id.action_myPostListFragment_to_post_graph)
         }
 
@@ -41,6 +41,13 @@ class MyPostListFragment : BaseFragment<FragmentMyPostListBinding>(FragmentMyPos
     private fun setObserver() {
         postViewModel.postResponse.observe(viewLifecycleOwner) {
             adapter.submitList(it.result)
+
+            if (it.result.isNotEmpty()) {
+                binding.myPostListLlEmpty.visibility = View.GONE
+            }
+            else {
+                binding.myPostListLlEmpty.visibility = View.VISIBLE
+            }
         }
 
         postViewModel.spinner.observe(viewLifecycleOwner) { show ->

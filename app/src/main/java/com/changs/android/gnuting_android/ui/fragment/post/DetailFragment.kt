@@ -88,15 +88,18 @@ class DetailFragment :
                 findNavController().navigate(R.id.action_detailFragment_to_editPostFragment, bundle)
             }
 
+
             response.result.apply {
                 viewModel.myInfo.value?.let { myInfo ->
                     if (myInfo.nickname == user.nickname) {
+                        binding.detailTxtTitle.text = "내가 쓴 게시글"
                         binding.detailBtnChatRequest.visibility = View.GONE
                         binding.detailTxtMenuEdit.visibility = View.VISIBLE
                         binding.detailTxtMenuRemove.visibility = View.VISIBLE
                         binding.detailViewMenuLine1.visibility = View.VISIBLE
                         binding.detailViewMenuLine2.visibility = View.VISIBLE
                     } else {
+                        binding.detailTxtTitle.text = "과팅 게시판"
                         binding.detailBtnChatRequest.visibility = View.VISIBLE
                     }
                 }

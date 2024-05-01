@@ -58,10 +58,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
     val loginResponse: LiveData<Event<LoginResponse>>
         get() = _loginResponse
 
-    private val _emailVerifyResponse = MutableLiveData<Event<Boolean>>()
-
-    val emailVerifyResponse: LiveData<Event<Boolean>>
-        get() = _emailVerifyResponse
+    val emailVerifyResponse = MutableLiveData<Boolean?>()
 
     private val _passwordResponse = MutableLiveData<Event<DefaultResponse>>()
 
@@ -279,7 +276,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
         }
     }
 
-
     fun postEmailVerify(number: String) {
         viewModelScope.launch {
             if (email != null) {
@@ -287,23 +283,25 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     _spinner.value = true
                     val result = repository.postEmailVerify(EmailVerifyRequest(email!!, number))
                     if (result.isSuccessful && result.body() != null) {
-                        _emailVerifyResponse.value = Event(true)
+                        emailVerifyResponse.value = true
                         _spinner.value = false
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
                             errorBody?.let { error ->
                                 _spinner.value = false
-                                _emailVerifyResponse.value = Event(false)
+                                emailVerifyResponse.value = false
                             }
                         }
                     }
                 } catch (e: Exception) {
+                    emailVerifyResponse.value = null
                     _spinner.value = false
                     _toast.value = Event("네트워크 에러가 발생했습니다.")
                     Timber.e(e.message ?: "network error")
                 }
             } else {
+                emailVerifyResponse.value = null
                 _toast.value = Event("이메일 입력이 완료되지 않았습니다.")
             }
         }

@@ -28,6 +28,21 @@ class Join2Fragment :
     private val buttonActiveCheckViewModel: ButtonActiveCheckViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.profileImage = null
+
+        if (viewModel.gender != null) {
+            when (viewModel.gender) {
+                "MALE" -> {
+                    binding.join2RadioMale.isChecked = true
+                }
+
+                "FEMALE" -> {
+                    binding.join2RadioFemale.isChecked = true
+                }
+            }
+        }
+
+
         if (viewModel.birthDate != null) {
             try {
                 val (year, month, day) = viewModel.birthDate!!.split("-")
@@ -43,18 +58,29 @@ class Join2Fragment :
         }
         setListener()
         setObserver()
+
+        with(viewModel) {
+            Timber.tag("회원가입")
+                .d("nickName: ${nickname}, phoneNumber: ${phoneNumber}, gender: ${gender}, department: $department, studentId: ${studentId}")
+        }
     }
 
     private fun setListener() {
         binding.join2EditName.filters = arrayOf<InputFilter>(
-            InputFilter.LengthFilter(8))
+            InputFilter.LengthFilter(8)
+        )
 
         binding.join2EditNickname.filters = arrayOf<InputFilter>(
-            InputFilter.LengthFilter(10))
+            InputFilter.LengthFilter(10)
+        )
 
         binding.join2EditIntro.filters = arrayOf<InputFilter>(
-            InputFilter.LengthFilter(30))
+            InputFilter.LengthFilter(30)
+        )
 
+        /* 닉네임 중복 확인 버튼
+        * 1. 기존 닉네임 중복 확인 상태를 초기화해야 함
+        * */
         binding.join2BtnNicknameCheck.setOnClickListener {
             viewModel.getCheckNickName(binding.join2EditNickname.text.toString())
             binding.join2TxtVerificationNickname.visibility = View.INVISIBLE
@@ -77,8 +103,12 @@ class Join2Fragment :
             checkButtonActiveCondition()
         }
 
+        /* 닉네임 입력창
+        * 1. 입력이 변하면 중복 확인 정보를 초기화시켜야 함
+        * */
         binding.join2EditNickname.doOnTextChanged { text, start, count, after ->
-            binding.join2TxtVerificationNickname.visibility = View.INVISIBLE
+            if (viewModel.nickname != binding.join2EditNickname.text.toString()) viewModel.nickNameCheck.value =
+                null
 
             if (!text.isNullOrEmpty()) {
                 binding.join2BtnNicknameCheck.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
@@ -140,6 +170,9 @@ class Join2Fragment :
 
         binding.join2ImgBack.setOnClickListener { findNavController().popBackStack() }
 
+        /* 다음 버튼
+        * 1. 회원가입에 필요한 뷰모델 필수 정보, 뷰에 표시된 정보가 일치해야 하며, 누락된 것이 없어야 함
+        * */
         binding.join2BtnNext.setOnClickListener {
             viewModel.nickNameCheck.value?.let {
                 if (it && !viewModel.nickname.isNullOrEmpty() && binding.join2EditNickname.text.toString() == viewModel.nickname) {
@@ -185,24 +218,25 @@ class Join2Fragment :
         }
 
         viewModel.nickNameCheck.observe(viewLifecycleOwner) { isSuccess ->
-            isSuccess ?: return@observe
-
-            if (isSuccess) {
+            if (isSuccess == true) {
                 binding.join2TxtVerificationNickname.text = "사용할 수 있는 닉네임 입니다."
                 binding.join2TxtVerificationNickname.setTextColor(
                     resources.getColor(
                         R.color.secondary, null
                     )
                 )
-            } else {
+                binding.join2TxtVerificationNickname.visibility = View.VISIBLE
+            } else if (isSuccess == false) {
                 binding.join2TxtVerificationNickname.text = "중복된 닉네임 입니다."
                 binding.join2TxtVerificationNickname.setTextColor(
                     resources.getColor(
                         R.color.main, null
                     )
                 )
+                binding.join2TxtVerificationNickname.visibility = View.VISIBLE
+            } else {
+                binding.join2TxtVerificationNickname.visibility = View.INVISIBLE
             }
-            binding.join2TxtVerificationNickname.visibility = View.VISIBLE
             checkButtonActiveCondition()
         }
     }
@@ -210,20 +244,5 @@ class Join2Fragment :
     private fun checkButtonActiveCondition() {
         buttonActiveCheckViewModel.buttonActiveCheck.value =
             (viewModel.nickNameCheck.value ?: false && !viewModel.name.isNullOrEmpty() && !viewModel.phoneNumber.isNullOrEmpty() && !viewModel.nickname.isNullOrEmpty() && !viewModel.gender.isNullOrEmpty() && !viewModel.birthDate.isNullOrEmpty() && !viewModel.studentId.isNullOrEmpty() && !viewModel.department.isNullOrEmpty())
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        with(viewModel) {
-            name = null
-            phoneNumber = null
-            gender = null
-            nickname = null
-            birthDate = null
-            department = null
-            studentId = null
-            userSelfIntroduction = null
-            nickNameCheck.value = null
-        }
     }
 }

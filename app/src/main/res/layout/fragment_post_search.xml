@@ -87,6 +87,34 @@
         app:layout_constraintTop_toBottomOf="@+id/post_search_ll_search"
         tools:listitem="@layout/post_list_item" />
 
+    <LinearLayout
+        android:id="@+id/post_search_ll_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_search_ll_search">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/emoji_tear" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="검색 결과가 없습니다."
+            android:textColor="@color/gray7"
+            android:textSize="17sp" />
+
+    </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/spinner"

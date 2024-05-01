@@ -5,23 +5,30 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentPolicyBinding
 import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
+import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import com.changs.android.gnuting_android.viewmodel.PolicyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PolicyFragment :
     BaseFragment<FragmentPolicyBinding>(FragmentPolicyBinding::bind, R.layout.fragment_policy) {
-    private val viewModel: PolicyViewModel by viewModels()
+    private val policyViewModel: PolicyViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private val buttonActiveCheckViewModel: ButtonActiveCheckViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        with(viewModel) {
+            email = null
+            password = null
+        }
 
         binding.policyImgBack.setOnClickListener {
             findNavController().popBackStack()
@@ -42,7 +49,7 @@ class PolicyFragment :
             else Toast.makeText(requireContext(), "필수 항목을 모두 체크해주세요.", Toast.LENGTH_SHORT).show()
         }
 
-        viewModel.isAllChecked.observe(viewLifecycleOwner) {
+        policyViewModel.isAllChecked.observe(viewLifecycleOwner) {
             with(binding) {
                 policyCheckAll.isChecked = it
                 policyCheck1.isChecked = it
@@ -61,7 +68,7 @@ class PolicyFragment :
         }
 
         binding.policyCheckAll.setOnClickListener {
-            viewModel.isAllChecked.value = binding.policyCheckAll.isChecked
+            policyViewModel.isAllChecked.value = binding.policyCheckAll.isChecked
         }
 
         buttonActiveCheckViewModel.buttonActiveCheck.observe(viewLifecycleOwner) {

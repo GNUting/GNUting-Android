@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/two_choice_dialog"
-    android:layout_width="340dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="25dp"
     android:background="@drawable/background_dialog"
     android:elevation="5dp"
     android:orientation="vertical">
@@ -24,10 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        android:paddingBottom="16dp"
-        android:layout_gravity="center"
-        >
+        android:paddingHorizontal="12dp"
+        android:paddingBottom="12dp"
+        android:layout_gravity="center">
 
         <TextView
             android:id="@+id/dialog_two_btn_choice_txt_left"
@@ -41,7 +41,6 @@
             android:textSize="14sp"
             android:textColor="@color/black"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="20dp"
             android:fontFamily="@font/pretendard_semi_bold"/>
 
         <TextView

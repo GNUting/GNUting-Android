@@ -38,14 +38,13 @@ class ApplicationAdapter(private val type: ApplicationType, private val listener
                 listener(item)
             }
 
-            binding.applicationListTxtMemberCount.text = "${item.applyUserCount}명"
             when(type) {
                 ApplicationType.APPLY -> {
-                    binding.applicationListTxtDepartment.text = item.participantUserDepartment
+                    binding.applicationListTxtMember.text = "${item.participantUserDepartment} ${item.applyUserCount}명"
                 }
 
                 ApplicationType.PARTICIPANT -> {
-                    binding.applicationListTxtDepartment.text = item.applyUserDepartment
+                    binding.applicationListTxtMember.text = "${item.applyUserDepartment} ${item.applyUserCount}명"
                 }
             }
 

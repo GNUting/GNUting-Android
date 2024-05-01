@@ -34,7 +34,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
     FragmentEditProflieBinding::bind, R.layout.fragment_edit_proflie
 ) {
     private val args: EditProfileFragmentArgs by navArgs()
-    private var preNickName: String? = null
     private val viewModel: HomeMainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,8 +53,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             binding.editProfileEditIntro.filters =
                 arrayOf<InputFilter>(InputFilter.LengthFilter(30))
 
-
-            preNickName = it.nickname
             viewModel.nickNameCheck.value = true
             viewModel.choiceDepartment.value = it.department
 
@@ -91,9 +88,9 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         }
 
         binding.editProfileTxtEditProfile.setOnClickListener {
-            if (preNickName != binding.editProfileEditNickName.text.toString()) {
+            if (args.member.nickname != binding.editProfileEditNickName.text.toString()) {
                 viewModel.nickNameCheck.value?.let {
-                    if (it && binding.editProfileEditNickName.text.toString() == preNickName) {
+                    if (it) {
                         viewModel.updateProfile(
                             department = binding.editProfileTxtMajor.text.toString(),
                             nickname = binding.editProfileEditNickName.text.toString(),
@@ -116,12 +113,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         }
 
         binding.editProfileEditNickName.doOnTextChanged { text, start, count, after ->
-            if (!text.isNullOrEmpty() && preNickName != binding.editProfileEditNickName.text.toString()) {
+            if (!text.isNullOrEmpty() && args.member.nickname != binding.editProfileEditNickName.text.toString()) {
                 binding.editProfileBtnConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
                 binding.editProfileBtnConfirmation.isEnabled = true
+                viewModel.nickNameCheck.value = false
             } else {
                 binding.editProfileBtnConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
                 binding.editProfileBtnConfirmation.isEnabled = false
+                viewModel.nickNameCheck.value = true
             }
         }
 
@@ -153,7 +152,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
     private fun setObserver() {
         viewModel.nickNameCheck.observe(viewLifecycleOwner) {
             if (it == true) {
-                preNickName = binding.editProfileEditNickName.text.toString()
                 binding.editProfileBtnConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
                 binding.editProfileBtnConfirmation.isEnabled = false
             } else {
@@ -177,7 +175,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         with(viewModel) {
             nickNameCheck.value = null
             choiceDepartment.value = null
-            preNickName = null
         }
     }
 }

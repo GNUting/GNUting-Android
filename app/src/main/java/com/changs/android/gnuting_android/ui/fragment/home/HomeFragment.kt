@@ -2,9 +2,13 @@ package com.changs.android.gnuting_android.ui.fragment.home
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Typeface.BOLD
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -112,8 +116,10 @@ class HomeFragment :
     private fun setObserver() {
         viewModel.myInfo.observe(viewLifecycleOwner) {
             it?.let {
-                binding.homeTxtName.text = it.nickname
-                binding.homeTxtGreetings.text = " 님 안녕하세요 :)"
+                val stringBuilder = SpannableStringBuilder("${it.nickname} 님 안녕하세요 :)")
+                stringBuilder.setSpan(StyleSpan(BOLD), 0, it.nickname.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                binding.homeTxtName.text = stringBuilder
                 Glide.with(binding.root).load(it.profileImage)
                     .error(R.drawable.ic_profile)
                     .into(binding.homeImgProfile)

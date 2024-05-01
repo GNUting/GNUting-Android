@@ -10,9 +10,10 @@ import com.changs.android.gnuting_android.ui.HomeActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 import java.util.*
 
-class MyFirebaseMessagingService: FirebaseMessagingService() {
+class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
     }
@@ -21,31 +22,39 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         super.onMessageReceived(message)
         val title = message.notification?.title
         val body = message.notification?.body
-        sendNotification(title, body)
+
+        Timber.tag("FCM TEST").i("SERVICE: ${message.data["location"].toString()}")
+
+        val location = message.data["location"]
+
+        sendNotification(title, body, location)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun sendNotification(title: String?, body: String?) {
+    private fun sendNotification(title: String?, body: String?, location: String?) {
         if (GNUApplication.isActiveChatFragment) return
 
         val intent = Intent(this, HomeActivity::class.java)
-        val pIntent = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+
+        if (location != null) {
+            intent.putExtra("location", location)
+        }
+
+        val pIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(
+                this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+            )
         } else {
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
         val channelId = getString(R.string.channel_id)
 
-        val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setColor(getColor(R.color.main))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setSmallIcon(R.drawable.ic_fcm_logo)
-            .setContentTitle(title)
-            .setContentText(body)
-            .setContentIntent(pIntent)
-            .setAutoCancel(true)
-            .setStyle(NotificationCompat.BigTextStyle())
+        val notificationBuilder =
+            NotificationCompat.Builder(this, channelId).setColor(getColor(R.color.main))
+                .setPriority(NotificationCompat.PRIORITY_HIGH).setSmallIcon(R.drawable.ic_fcm_logo)
+                .setContentTitle(title).setContentText(body).setContentIntent(pIntent)
+                .setAutoCancel(true).setStyle(NotificationCompat.BigTextStyle())
 
         getSystemService(NotificationManager::class.java).run {
             val channel = NotificationChannel(channelId, "알림", NotificationManager.IMPORTANCE_HIGH)

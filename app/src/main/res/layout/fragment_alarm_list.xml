@@ -11,11 +11,11 @@
         android:id="@+id/alarm_list_img_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="25dp"
         android:contentDescription="화면 닫기 버튼"
-        android:src="@drawable/ic_close"
+        android:padding="25dp"
+        android:src="@drawable/arrow_left"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView" />
 
     <TextView
@@ -44,6 +44,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <LinearLayout
+        android:id="@+id/alarm_list_ll_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/emoji_tear" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="도착한 알림이 없습니다."
+            android:textColor="@color/gray7"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="조금만 기다려 볼까요?"
+            android:textColor="@color/gray7"
+            android:textSize="14sp" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/spinner"

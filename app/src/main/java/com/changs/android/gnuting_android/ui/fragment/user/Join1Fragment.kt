@@ -18,6 +18,7 @@ import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.CertificationViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class Join1Fragment :
@@ -27,8 +28,28 @@ class Join1Fragment :
     private val buttonActiveCheckViewModel: ButtonActiveCheckViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        with(viewModel) {
+            name = null
+            phoneNumber = null
+            gender = null
+            nickname = null
+            birthDate = null
+            department = null
+            studentId = null
+            userSelfIntroduction = null
+            nickNameCheck.value = null
+        }
+
+        with(viewModel) {
+            Timber.tag("회원가입").d("리스너, 옵저버 실행 전 email: ${viewModel.email}, password: ${viewModel.password}, mailCertificationNumberCheck: ${certificationViewModel.mailCertificationNumberCheck}, mailCertificationNumber :${viewModel.mailCertificationNumber.value?.getContentIfNotHandled().toString()}, emailVerifyResponse :${viewModel.emailVerifyResponse.value}")
+        }
+
         setListener()
         setObserver()
+
+        with(viewModel) {
+            Timber.tag("회원가입").d("리스너, 옵저버 실행 후 email: ${viewModel.email}, password: ${viewModel.password}, mailCertificationNumberCheck: ${certificationViewModel.mailCertificationNumberCheck}, mailCertificationNumber :${viewModel.mailCertificationNumber.value?.getContentIfNotHandled().toString()}, emailVerifyResponse :${viewModel.emailVerifyResponse.value}")
+        }
     }
 
     private fun setListener() {
@@ -47,13 +68,34 @@ class Join1Fragment :
             }
         }
 
+        /* 이메일 인증 번호 받기
+        * 1. 인증 받기를 다시 눌렀으므로 기존에 인증번호 확인을 했던 과정들, 인증을 진행 중이던 것 모두 초기화시켜야 함
+        * */
         binding.join1BtnVerify.setOnClickListener {
             binding.join1TxtVerificationCertification.visibility = View.INVISIBLE
             viewModel.postMailCertification()
         }
 
+        /* 이메일 입력창
+        1. 입력이 변하면 인증을 받아야 함
+        2. 인증을 받아야 하므로 인증번호 확인을 했던 과정들, 인증을 진행 중이던 것 모두 초기화시켜야 함
+        * */
         binding.join1EditEmail.doOnTextChanged { text, start, count, after ->
+            if (viewModel.email != text.toString() + "@gnu.ac.kr") {
+                // 타이머 종료 후 화면에서 숨김
+                certificationViewModel.timerStop()
+                binding.join1TxtTimer.visibility = View.GONE
+
+                // 인증 상태 초기화
+                viewModel.emailVerifyResponse.value = null
+                certificationViewModel.mailCertificationNumberCheck = false
+                binding.join1EditCertificationNumber.text?.clear()
+                binding.join1BtnCertificationConfirmation.isEnabled = true
+                binding.join1TxtVerificationCertification.visibility = View.INVISIBLE
+            }
+
             viewModel.email = text.toString() + "@gnu.ac.kr"
+
             if (!text.isNullOrEmpty()) {
                 binding.join1BtnVerify.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
                 binding.join1BtnVerify.isEnabled = true
@@ -61,6 +103,9 @@ class Join1Fragment :
                 binding.join1BtnVerify.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
                 binding.join1BtnVerify.isEnabled = false
             }
+
+            checkButtonActiveCondition()
+
         }
 
         binding.join1EditCertificationNumber.doOnTextChanged { text, start, count, after ->
@@ -87,8 +132,12 @@ class Join1Fragment :
 
         binding.join1ImgBack.setOnClickListener { findNavController().popBackStack() }
 
+        /* 다음 버튼
+        * 회원가입에 필요한 뷰모델 필수 정보, 뷰에 표시된 정보가 일치해야 하며, 누락된 것이 없어야 함
+        * */
         binding.join1BtnNext.setOnClickListener {
-            if (certificationViewModel.mailCertificationNumberCheck) {
+
+            if (certificationViewModel.mailCertificationNumberCheck && viewModel.email != null) {
                 if (binding.join1EditPassword.text.toString()
                         .isEmpty() || binding.join1EditPasswordCheck.text.toString().isEmpty()
                 ) {
@@ -172,15 +221,24 @@ class Join1Fragment :
     }
 
     private fun setObserver() {
+        /*
+        * 이메일 인증번호를 전송했을 때 타이머를 시작함
+        * */
         viewModel.mailCertificationNumber.eventObserve(viewLifecycleOwner) {
             certificationViewModel.timerStart()
             certificationViewModel.mailCertificationNumberCheck = false
+            viewModel.emailVerifyResponse.value = null
+            binding.join1BtnCertificationConfirmation.isEnabled = true
+            binding.join1TxtVerificationCertification.visibility = View.INVISIBLE
             binding.join1TxtTimer.visibility = View.VISIBLE
             checkButtonActiveCondition()
         }
 
-        viewModel.emailVerifyResponse.eventObserve(viewLifecycleOwner) { isSuccess ->
-            if (isSuccess) {
+        /*
+        * 인증 완료, 실패된 상태를 표시
+        * */
+        viewModel.emailVerifyResponse.observe(viewLifecycleOwner) { isSuccess ->
+            if (isSuccess == true) {
                 binding.join1TxtVerificationCertification.text = "인증이 완료되었습니다."
                 binding.join1TxtVerificationCertification.setTextColor(
                     resources.getColor(
@@ -188,11 +246,13 @@ class Join1Fragment :
                     )
                 )
 
+                binding.join1TxtVerificationCertification.visibility = View.VISIBLE
                 certificationViewModel.mailCertificationNumberCheck = true
                 certificationViewModel.timerStop()
 
                 binding.join1TxtTimer.visibility = View.GONE
-            } else {
+                binding.join1BtnCertificationConfirmation.isEnabled = false
+            } else if (isSuccess == false) {
                 binding.join1TxtVerificationCertification.text = "인증번호가 일치하지 않습니다."
                 binding.join1TxtVerificationCertification.setTextColor(
                     resources.getColor(
@@ -200,10 +260,15 @@ class Join1Fragment :
                     )
                 )
 
+                binding.join1TxtVerificationCertification.visibility = View.VISIBLE
+                binding.join1BtnCertificationConfirmation.isEnabled = true
                 certificationViewModel.mailCertificationNumberCheck = false
+            } else {
+                binding.join1TxtVerificationCertification.visibility = View.INVISIBLE
+                binding.join1TxtTimer.visibility = View.GONE
+                binding.join1BtnCertificationConfirmation.isEnabled = true
             }
 
-            binding.join1TxtVerificationCertification.visibility = View.VISIBLE
             checkButtonActiveCondition()
         }
 
@@ -238,13 +303,5 @@ class Join1Fragment :
     private fun validatePassword(password: String): Boolean {
         val passwordRegex = Regex("(?=.*[A-Za-z])(?=.*[!@#$%^&*()-+_])(?=\\S+\$).{8,}")
         return passwordRegex.matches(password)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        with(viewModel) {
-            email = null
-            password = null
-        }
     }
 }

@@ -22,7 +22,7 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
 ) {
     private val viewModel: AlarmViewModel by viewModels()
     private val adapter: AlarmAdapter by lazy {
-        AlarmAdapter {
+        AlarmAdapter(::navigateListener) {
             showTwoButtonDialog(requireContext(), "알림을 삭제하시겠습니까?", rightButtonText = "삭제") {
                 viewModel.deleteAlarm(it)
             }
@@ -46,6 +46,13 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
     private fun setObserver() {
         viewModel.alarmListResponse.observe(viewLifecycleOwner) {
             adapter.submitList(it.result)
+
+            if (it.result.isNotEmpty()) {
+                binding.alarmListLlEmpty.visibility = View.GONE
+            }
+            else {
+                binding.alarmListLlEmpty.visibility = View.VISIBLE
+            }
         }
 
         viewModel.deleteAlarmResponse.observe(viewLifecycleOwner) {
@@ -61,6 +68,10 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
                 (requireActivity() as HomeActivity).showToast(it)
             }
         }
+    }
+
+    private fun navigateListener() {
+        findNavController().navigate(R.id.action_alarmListFragment_to_listFragment2)
     }
 
     private fun setRecyclerView() {

@@ -106,7 +106,21 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(
         }
 
         binding.findPasswordEditEmail.doOnTextChanged { text, start, count, after ->
+            if (viewModel.email != text.toString() + "@gnu.ac.kr") {
+                // 타이머 종료 후 화면에서 숨김
+                certificationViewModel.timerStop()
+                binding.findPasswordTxtTimer.visibility = View.GONE
+
+                // 인증 상태 초기화
+                viewModel.emailVerifyResponse.value = null
+                certificationViewModel.mailCertificationNumberCheck = false
+                binding.findPasswordEditCertificationNumber.text?.clear()
+                binding.findPasswordBtnCertificationConfirmation.isEnabled = true
+                binding.findPasswordTxtVerificationCertification.visibility = View.INVISIBLE
+            }
+
             viewModel.email = text.toString() + "@gnu.ac.kr"
+
             if (!text.isNullOrEmpty()) {
                 binding.findPasswordBtnVerify.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
                 binding.findPasswordBtnVerify.isEnabled = true
@@ -114,6 +128,8 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(
                 binding.findPasswordBtnVerify.setBackgroundResource(R.drawable.background_radius_10dp_solid_gray7)
                 binding.findPasswordBtnVerify.isEnabled = false
             }
+
+            checkButtonActiveCondition()
         }
 
         binding.findPasswordEditCertificationNumber.doOnTextChanged { text, start, count, after ->
@@ -191,20 +207,21 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(
             checkButtonActiveCondition()
         }
 
-        viewModel.emailVerifyResponse.eventObserve(viewLifecycleOwner) { isSuccess ->
-            if (isSuccess) {
+        viewModel.emailVerifyResponse.observe(viewLifecycleOwner) { isSuccess ->
+            if (isSuccess == true) {
                 binding.findPasswordTxtVerificationCertification.text = "인증이 완료되었습니다."
                 binding.findPasswordTxtVerificationCertification.setTextColor(
                     resources.getColor(
                         R.color.secondary, null
                     )
                 )
-
+                binding.findPasswordTxtVerificationCertification.visibility = View.VISIBLE
                 certificationViewModel.mailCertificationNumberCheck = true
                 certificationViewModel.timerStop()
 
                 binding.findPasswordTxtTimer.visibility = View.GONE
-            } else {
+                binding.findPasswordBtnCertificationConfirmation.isEnabled = false
+            } else if (isSuccess == false) {
                 binding.findPasswordTxtVerificationCertification.text = "인증번호가 일치하지 않습니다."
                 binding.findPasswordTxtVerificationCertification.setTextColor(
                     resources.getColor(
@@ -212,10 +229,15 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(
                     )
                 )
 
+                binding.findPasswordTxtVerificationCertification.visibility = View.VISIBLE
+                binding.findPasswordBtnCertificationConfirmation.isEnabled = true
                 certificationViewModel.mailCertificationNumberCheck = false
+            } else {
+                binding.findPasswordTxtVerificationCertification.visibility = View.INVISIBLE
+                binding.findPasswordTxtTimer.visibility = View.GONE
+                binding.findPasswordBtnCertificationConfirmation.isEnabled = false
             }
 
-            binding.findPasswordTxtVerificationCertification.visibility = View.VISIBLE
             checkButtonActiveCondition()
         }
 
