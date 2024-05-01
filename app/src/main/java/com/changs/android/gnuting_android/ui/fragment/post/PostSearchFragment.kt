@@ -95,6 +95,14 @@ class PostSearchFragment : BaseFragment<FragmentPostSearchBinding>(
     private fun setRecyclerView() {
         adapter = PostSearchListPagingAdapter(this)
         adapter.addLoadStateListener {
+            if (it.append.endOfPaginationReached) {
+                if (adapter.itemCount < 1) {
+                    binding.postSearchLlEmpty.visibility = View.VISIBLE
+                } else {
+                    binding.postSearchLlEmpty.visibility = View.GONE
+                }
+            }
+
             when (it.refresh) {
                 is LoadState.Loading -> binding.spinner.isVisible = true
                 is LoadState.NotLoading -> binding.spinner.isVisible = false
