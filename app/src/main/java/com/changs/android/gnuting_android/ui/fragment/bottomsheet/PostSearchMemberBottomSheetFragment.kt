@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.SearchMemberBottomSheetBinding

@@ -36,10 +36,16 @@ class MyPostListFragment : BaseFragment<FragmentMyPostListBinding>(FragmentMyPos
         }
 
         binding.myPostListImgBack.setOnClickListener { findNavController().popBackStack() }
+
+        binding.myPostListRefresh.setColorSchemeColors(resources.getColor(R.color.main, null))
+        binding.myPostListRefresh.setOnRefreshListener {
+            postViewModel.getMyPostList()
+        }
     }
 
     private fun setObserver() {
         postViewModel.postResponse.observe(viewLifecycleOwner) {
+            if (binding.myPostListRefresh.isRefreshing) binding.myPostListRefresh.isRefreshing = false
             adapter.submitList(it.result)
 
             if (it.result.isNotEmpty()) {
@@ -69,5 +75,10 @@ class MyPostListFragment : BaseFragment<FragmentMyPostListBinding>(FragmentMyPos
     override fun navigateToDetail(id: Int) {
         val bundle = bundleOf("id" to id)
         findNavController().navigate(R.id.action_global_detailFragment, bundle)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (binding.myPostListRefresh.isRefreshing) binding.myPostListRefresh.isRefreshing = false
     }
 }

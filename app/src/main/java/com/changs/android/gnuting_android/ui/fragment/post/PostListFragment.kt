@@ -10,11 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
-import com.changs.android.gnuting_android.data.model.PostResult
 import com.changs.android.gnuting_android.databinding.FragmentPostListBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.PostListPagingAdapter
-import com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchPostListBottomSheetFragment
 import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.PostViewModel
@@ -63,6 +61,16 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(
         binding.postListImgPostBtn.setOnClickListener {
             findNavController().navigate(R.id.action_postListFragment_to_postFragment)
         }
+
+        binding.postListRefresh.setColorSchemeColors(resources.getColor(R.color.main, null))
+        binding.postListRefresh.setOnRefreshListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                postViewModel.getPostPagingList().collectLatest {
+                    if (binding.postListRefresh.isRefreshing) binding.postListRefresh.isRefreshing = false
+                    adapter.submitData(it)
+                }
+            }
+        }
     }
 
     private fun setRecyclerView() {
@@ -88,5 +96,10 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(
     override fun navigateToDetail(id: Int) {
         val bundle = bundleOf("id" to id)
         findNavController().navigate(R.id.action_global_detailFragment, bundle)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (binding.postListRefresh.isRefreshing) binding.postListRefresh.isRefreshing = false
     }
 }

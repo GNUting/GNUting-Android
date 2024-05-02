@@ -26,6 +26,12 @@ class ChatListFragment :
         chatViewModel.getChatRoomList()
         setRecyclerView()
         setObserver()
+
+        binding.chatListRefresh.setColorSchemeColors(resources.getColor(R.color.main, null))
+
+        binding.chatListRefresh.setOnRefreshListener {
+            chatViewModel.getChatRoomList()
+        }
     }
 
     private fun itemClickListener(id: Int, title: String, info: String, chatRoomUsers: List<ChatRoomUser>) {
@@ -50,6 +56,7 @@ class ChatListFragment :
         }
 
         chatViewModel.chatRoomListResponse.observe(viewLifecycleOwner) {
+            if (binding.chatListRefresh.isRefreshing) binding.chatListRefresh.isRefreshing = false
             adapter?.submitList(it.result)
 
             if (it.result.isNotEmpty()) {
@@ -64,5 +71,10 @@ class ChatListFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (binding.chatListRefresh.isRefreshing) binding.chatListRefresh.isRefreshing = false
     }
 }

@@ -1,110 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/post_list_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.post.PostListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/post_list_cl_default"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/post_list_img_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="뒤로 가기 버튼"
-            android:src="@drawable/arrow_left"
-            android:padding="25dp"
-            app:layout_constraintBottom_toBottomOf="@+id/post_list_txt_title"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/post_list_txt_title" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/post_list_cl_default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/post_list_img_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="뒤로 가기 버튼"
+                android:src="@drawable/arrow_left"
+                android:padding="25dp"
+                app:layout_constraintBottom_toBottomOf="@+id/post_list_txt_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/post_list_txt_title" />
 
-        <TextView
-            android:id="@+id/post_list_txt_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="과팅 게시판"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:fontFamily="@font/pretendard_medium"
+            <TextView
+                android:id="@+id/post_list_txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="과팅 게시판"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:fontFamily="@font/pretendard_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/post_list_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="27dp"
+            android:layout_marginHorizontal="25dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/post_list_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginHorizontal="25dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_list_cl_default"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/post_list_item" />
-
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/post_btn"
-        android:id="@+id/post_list_img_post_btn"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="30dp"
-        android:contentDescription="글쓰기 버튼"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <LinearLayout
-        android:id="@+id/post_list_ll_empty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_list_cl_default">
+            app:layout_constraintTop_toBottomOf="@+id/post_list_cl_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/post_list_item" />
 
         <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/post_btn"
+            android:id="@+id/post_list_img_post_btn"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="30dp"
+            android:contentDescription="글쓰기 버튼"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/post_list_ll_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_list_cl_default">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/emoji_tear" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_regular"
+                android:text="게시글이 비어있습니다."
+                android:textColor="@color/gray7"
+                android:textSize="17sp" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/spinner"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/emoji_tear" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_regular"
-            android:text="게시글이 비어있습니다."
-            android:textColor="@color/gray7"
-            android:textSize="17sp" />
-
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/spinner"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

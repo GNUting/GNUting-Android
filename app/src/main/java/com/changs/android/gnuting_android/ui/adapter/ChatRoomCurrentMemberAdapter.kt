@@ -7,12 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.ChatRoomUser
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.ChatRoomCurrentMemberItemBinding
-import com.changs.android.gnuting_android.databinding.PostCurrentMemberItemBinding
 
 
 class ChatRoomCurrentMemberAdapter(

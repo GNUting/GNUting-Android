@@ -15,7 +15,6 @@ import com.changs.android.gnuting_android.data.model.SaveRequest
 import com.changs.android.gnuting_android.databinding.FragmentPostBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.PostMemberAdapter
-import com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchMemberBottomSheetFragment
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel

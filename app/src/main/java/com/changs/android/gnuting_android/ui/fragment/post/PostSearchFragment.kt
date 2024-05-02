@@ -1,39 +1,22 @@
 package com.changs.android.gnuting_android.ui.fragment.post
 
-import android.app.Dialog
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
-import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.FragmentPostSearchBinding
-import com.changs.android.gnuting_android.databinding.SearchMemberBottomSheetBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
-import com.changs.android.gnuting_android.ui.adapter.AddMemberAdapter
 import com.changs.android.gnuting_android.ui.adapter.PostSearchListPagingAdapter
-import com.changs.android.gnuting_android.ui.adapter.SelectedMemberAdapter
 import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.util.eventObserve
-import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
-import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
 import com.changs.android.gnuting_android.viewmodel.PostViewModel
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -60,6 +43,7 @@ class PostSearchFragment : BaseFragment<FragmentPostSearchBinding>(
                 postViewModel.getSearchPostPagingList(binding.postSearchEditSearch.text.toString())
                     .collectLatest {
                         adapter.submitData(it)
+                        binding.postSearchRecyclerview.smoothScrollToPosition(0)
                     }
             }
         }
@@ -70,6 +54,18 @@ class PostSearchFragment : BaseFragment<FragmentPostSearchBinding>(
 
         binding.postSearchTxtCancel.setOnClickListener {
             binding.postSearchEditSearch.text?.clear()
+        }
+
+        binding.postSearchRefresh.setColorSchemeColors(resources.getColor(R.color.main, null))
+        binding.postSearchRefresh.setOnRefreshListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                postViewModel.getSearchPostPagingList(binding.postSearchEditSearch.text.toString())
+                    .collectLatest {
+                        if (binding.postSearchRefresh.isRefreshing) binding.postSearchRefresh.isRefreshing = false
+                        adapter.submitData(it)
+                        binding.postSearchRecyclerview.smoothScrollToPosition(0)
+                    }
+            }
         }
     }
 
@@ -115,5 +111,10 @@ class PostSearchFragment : BaseFragment<FragmentPostSearchBinding>(
     override fun navigateToDetail(id: Int) {
         val bundle = bundleOf("id" to id)
         findNavController().navigate(R.id.action_global_detailFragment, bundle)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (binding.postSearchRefresh.isRefreshing) binding.postSearchRefresh.isRefreshing = false
     }
 }

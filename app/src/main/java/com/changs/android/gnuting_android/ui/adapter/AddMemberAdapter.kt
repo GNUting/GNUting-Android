@@ -3,12 +3,10 @@ package com.changs.android.gnuting_android.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.AddMemberItemBinding
