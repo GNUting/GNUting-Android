@@ -1,16 +1,13 @@
 package com.changs.android.gnuting_android.ui.fragment.home
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface.BOLD
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -19,20 +16,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentHomeBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
-import com.changs.android.gnuting_android.ui.adapter.HomeAdapter
 import com.changs.android.gnuting_android.ui.adapter.ViewPagerAdapter
-import com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchPostListBottomSheetFragment
-import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.util.changeStatusBarColor
-import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.AlarmViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
-import com.changs.android.gnuting_android.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay

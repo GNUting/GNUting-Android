@@ -11,7 +11,6 @@ import com.changs.android.gnuting_android.data.model.LogoutRequest
 import com.changs.android.gnuting_android.data.model.MyInfoResponse
 import com.changs.android.gnuting_android.data.model.MyInfoResult
 import com.changs.android.gnuting_android.data.model.ProfileResponse
-import com.changs.android.gnuting_android.data.model.RefreshTokenRequest
 import com.changs.android.gnuting_android.data.model.SaveFCMTokenRequest
 import com.changs.android.gnuting_android.data.model.SearchDepartmentResponse
 import com.changs.android.gnuting_android.data.repository.UserRepository

@@ -10,8 +10,7 @@ import com.changs.android.gnuting_android.ui.HomeActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import timber.log.Timber
-import java.util.*
+import java.util.Date
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {

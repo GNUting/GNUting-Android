@@ -10,11 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
-import com.changs.android.gnuting_android.data.model.PostResult
 import com.changs.android.gnuting_android.databinding.FragmentPostListBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.PostListPagingAdapter
-import com.changs.android.gnuting_android.ui.fragment.bottomsheet.SearchPostListBottomSheetFragment
 import com.changs.android.gnuting_android.util.PostItemNavigator
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.PostViewModel
