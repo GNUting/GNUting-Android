@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".ui.fragment.post.MyPostListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,8 +52,7 @@
             android:id="@+id/my_post_list_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="25dp"
-            android:layout_marginTop="27dp"
+            android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
