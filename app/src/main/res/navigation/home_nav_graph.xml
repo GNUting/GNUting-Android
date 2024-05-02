@@ -21,20 +21,36 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_postListFragment"
-            app:destination="@id/postListFragment" />
+            app:destination="@id/postListFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_homeFragment_to_alarmListFragment"
             app:destination="@id/alarmListFragment"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="false"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_homeFragment_to_myPostListFragment"
-            app:destination="@id/myPostListFragment" />
+            app:destination="@id/myPostListFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_homeFragment_to_post_graph"
             app:destination="@id/post_graph" />
         <action
             android:id="@+id/action_homeFragment_to_postSearchFragment"
-            app:destination="@id/postSearchFragment" />
+            app:destination="@id/postSearchFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/wait"
+            app:popEnterAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/myFragment"
