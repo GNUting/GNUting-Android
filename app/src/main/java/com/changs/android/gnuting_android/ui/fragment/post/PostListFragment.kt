@@ -63,6 +63,16 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(
         binding.postListImgPostBtn.setOnClickListener {
             findNavController().navigate(R.id.action_postListFragment_to_postFragment)
         }
+
+        binding.postListRefresh.setColorSchemeColors(resources.getColor(R.color.main, null))
+        binding.postListRefresh.setOnRefreshListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                postViewModel.getPostPagingList().collectLatest {
+                    if (binding.postListRefresh.isRefreshing) binding.postListRefresh.isRefreshing = false
+                    adapter.submitData(it)
+                }
+            }
+        }
     }
 
     private fun setRecyclerView() {
@@ -88,5 +98,10 @@ class PostListFragment : BaseFragment<FragmentPostListBinding>(
     override fun navigateToDetail(id: Int) {
         val bundle = bundleOf("id" to id)
         findNavController().navigate(R.id.action_global_detailFragment, bundle)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (binding.postListRefresh.isRefreshing) binding.postListRefresh.isRefreshing = false
     }
 }

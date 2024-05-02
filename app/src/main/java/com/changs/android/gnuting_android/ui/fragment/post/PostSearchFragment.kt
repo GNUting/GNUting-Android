@@ -60,6 +60,7 @@ class PostSearchFragment : BaseFragment<FragmentPostSearchBinding>(
                 postViewModel.getSearchPostPagingList(binding.postSearchEditSearch.text.toString())
                     .collectLatest {
                         adapter.submitData(it)
+                        binding.postSearchRecyclerview.smoothScrollToPosition(0)
                     }
             }
         }
@@ -70,6 +71,18 @@ class PostSearchFragment : BaseFragment<FragmentPostSearchBinding>(
 
         binding.postSearchTxtCancel.setOnClickListener {
             binding.postSearchEditSearch.text?.clear()
+        }
+
+        binding.postSearchRefresh.setColorSchemeColors(resources.getColor(R.color.main, null))
+        binding.postSearchRefresh.setOnRefreshListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                postViewModel.getSearchPostPagingList(binding.postSearchEditSearch.text.toString())
+                    .collectLatest {
+                        if (binding.postSearchRefresh.isRefreshing) binding.postSearchRefresh.isRefreshing = false
+                        adapter.submitData(it)
+                        binding.postSearchRecyclerview.smoothScrollToPosition(0)
+                    }
+            }
         }
     }
 
@@ -115,5 +128,10 @@ class PostSearchFragment : BaseFragment<FragmentPostSearchBinding>(
     override fun navigateToDetail(id: Int) {
         val bundle = bundleOf("id" to id)
         findNavController().navigate(R.id.action_global_detailFragment, bundle)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (binding.postSearchRefresh.isRefreshing) binding.postSearchRefresh.isRefreshing = false
     }
 }

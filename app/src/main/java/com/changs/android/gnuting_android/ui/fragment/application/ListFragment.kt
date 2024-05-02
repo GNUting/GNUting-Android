@@ -82,6 +82,21 @@ class ListFragment :
                 applicationViewModel.getApplicationReceiveList()
             }
         }
+
+        binding.listRefresh.setColorSchemeColors(resources.getColor(R.color.main, null))
+        binding.listRefresh.setOnRefreshListener {
+            when (viewModel.currentApplicationTab) {
+                ApplicationAdapter.ApplicationType.APPLY -> {
+                    binding.listTl.getTabAt(0)?.select()
+                    applicationViewModel.getApplicationApplyList()
+                }
+
+                else -> {
+                    binding.listTl.getTabAt(1)?.select()
+                    applicationViewModel.getApplicationReceiveList()
+                }
+            }
+        }
     }
 
     private fun setRecyclerView() {
@@ -101,6 +116,7 @@ class ListFragment :
         }
 
         applicationViewModel.applicationApplyStateResponse.observe(viewLifecycleOwner) {
+            if (binding.listRefresh.isRefreshing) binding.listRefresh.isRefreshing = false
             applyStateAdapter.submitList(it.result)
 
             if (it.result.isNotEmpty()) {
@@ -113,6 +129,7 @@ class ListFragment :
         }
 
         applicationViewModel.applicationReceiveStateResponse.observe(viewLifecycleOwner) {
+            if (binding.listRefresh.isRefreshing) binding.listRefresh.isRefreshing = false
             receiveStateAdapter.submitList(it.result)
 
             if (it.result.isNotEmpty()) {
@@ -127,5 +144,10 @@ class ListFragment :
     private fun applicationItemListener(item: ApplicationResult) {
         val action = ListFragmentDirections.actionListFragmentToApplicationFragment(item)
         findNavController().navigate(action)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (binding.listRefresh.isRefreshing) binding.listRefresh.isRefreshing = false
     }
 }

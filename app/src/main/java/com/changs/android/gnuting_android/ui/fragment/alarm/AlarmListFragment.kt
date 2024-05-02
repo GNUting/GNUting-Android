@@ -41,10 +41,16 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
         binding.alarmListImgClose.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.alarmListRefresh.setColorSchemeColors(resources.getColor(R.color.main, null))
+        binding.alarmListRefresh.setOnRefreshListener {
+            viewModel.getAlarmList()
+        }
     }
 
     private fun setObserver() {
         viewModel.alarmListResponse.observe(viewLifecycleOwner) {
+            if (binding.alarmListRefresh.isRefreshing) binding.alarmListRefresh.isRefreshing = false
             adapter.submitList(it.result)
 
             if (it.result.isNotEmpty()) {
@@ -77,5 +83,10 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
     private fun setRecyclerView() {
         binding.alarmListRecycler.adapter = adapter
         binding.alarmListRecycler.itemAnimator = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (binding.alarmListRefresh.isRefreshing) binding.alarmListRefresh.isRefreshing = false
     }
 }
