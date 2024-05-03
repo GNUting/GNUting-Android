@@ -12,6 +12,10 @@ import com.changs.android.gnuting_android.data.model.NotificationSettingResponse
 import com.changs.android.gnuting_android.data.repository.AlarmRepository
 import com.changs.android.gnuting_android.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -19,6 +23,32 @@ import javax.inject.Inject
 @HiltViewModel
 class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepository) :
     BaseViewModel() {
+    private val _isRefreshing = MutableStateFlow(false)
+
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing.asStateFlow()
+
+    fun refresh() {
+        viewModelScope.launch {
+            _isRefreshing.emit(true)
+
+            try {
+                val response = alarmRepository.getAlarmList()
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _alarmListResponse.value = response.body()!!
+                })
+            } catch (e: Exception) {
+                _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
+            }
+
+            delay(1000)
+
+            _isRefreshing.emit(false)
+        }
+    }
+
     private val _deleteAlarmResponse = MutableLiveData<Event<DefaultResponse>>()
 
     val deleteAlarmResponse: LiveData<Event<DefaultResponse>> get() = _deleteAlarmResponse
@@ -46,6 +76,7 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
     private val _notificationSettingResponse = MutableLiveData<Event<DefaultResponse>>()
 
     val notificationSettingResponse: LiveData<Event<DefaultResponse>> get() = _notificationSettingResponse
+
 
     fun deleteAlarm(id: Int) {
         viewModelScope.launch {
@@ -132,11 +163,15 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
         }
     }
 
-    fun putCurrentChatRoomNotificationSetting(chatRoomId: Int, notificationSettingRequest: NotificationSettingRequest) {
+    fun putCurrentChatRoomNotificationSetting(
+        chatRoomId: Int, notificationSettingRequest: NotificationSettingRequest
+    ) {
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val response = alarmRepository.putCurrentChatRoomNotificationStatus(chatRoomId, notificationSettingRequest)
+                val response = alarmRepository.putCurrentChatRoomNotificationStatus(
+                    chatRoomId, notificationSettingRequest
+                )
 
                 handleResult(response = response, handleSuccess = fun() {
                     _chatNotificationSettingResponse.value = Event(response.body()!!)
@@ -153,7 +188,8 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val response = alarmRepository.putOverallNotificationStatus(notificationSettingRequest)
+                val response =
+                    alarmRepository.putOverallNotificationStatus(notificationSettingRequest)
 
                 handleResult(response = response, handleSuccess = fun() {
                     _notificationSettingResponse.value = Event(response.body()!!)

@@ -2,6 +2,16 @@ package com.changs.android.gnuting_android.ui.fragment.alarm
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
@@ -33,23 +43,32 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
         binding.alarmListImgClose.setOnClickListener {
             findNavController().popBackStack()
         }
-
-/*        binding.alarmListRefresh.setColorSchemeColors(resources.getColor(R.color.main, null))
-        binding.alarmListRefresh.setOnRefreshListener {
-            viewModel.getAlarmList()
-        }*/
     }
 
+    @OptIn(ExperimentalMaterialApi::class)
     private fun setObserver() {
         viewModel.alarmListResponse.observe(viewLifecycleOwner) {
-            // if (binding.alarmListRefresh.isRefreshing) binding.alarmListRefresh.isRefreshing = false
-
             binding.alarmComposeView.setContent {
-                AlarmList(data = it.result, onClick = ::navigateListener, onLongClick = {
-                    showTwoButtonDialog(requireContext(), "알림을 삭제하시겠습니까?", rightButtonText = "삭제") {
-                        viewModel.deleteAlarm(it)
-                    }
-                })
+                val refreshing by viewModel.isRefreshing.collectAsState()
+
+                val pullRefreshState = rememberPullRefreshState(refreshing, { viewModel.refresh() })
+
+                Box(Modifier.pullRefresh(pullRefreshState)) {
+                    AlarmList(data = it.result, onClick = ::navigateListener, onLongClick = {
+                        showTwoButtonDialog(
+                            requireContext(), "알림을 삭제하시겠습니까?", rightButtonText = "삭제"
+                        ) {
+                            viewModel.deleteAlarm(it)
+                        }
+                    })
+
+                    PullRefreshIndicator(
+                        contentColor = Color(0xFFFF6F61),
+                        refreshing = refreshing,
+                        state = pullRefreshState,
+                        modifier = Modifier.align(Alignment.TopCenter)
+                    )
+                }
             }
 
             if (it.result.isNotEmpty()) {
@@ -76,10 +95,5 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
 
     private fun navigateListener() {
         findNavController().navigate(R.id.action_alarmListFragment_to_listFragment2)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        // if (binding.alarmListRefresh.isRefreshing) binding.alarmListRefresh.isRefreshing = false
     }
 }
