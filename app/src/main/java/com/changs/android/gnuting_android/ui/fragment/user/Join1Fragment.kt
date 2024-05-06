@@ -38,17 +38,9 @@ class Join1Fragment :
             userSelfIntroduction = null
             nickNameCheck.value = null
         }
-
-        with(viewModel) {
-            Timber.tag("회원가입").d("리스너, 옵저버 실행 전 email: ${viewModel.email}, password: ${viewModel.password}, mailCertificationNumberCheck: ${certificationViewModel.mailCertificationNumberCheck}, mailCertificationNumber :${viewModel.mailCertificationNumber.value?.getContentIfNotHandled().toString()}, emailVerifyResponse :${viewModel.emailVerifyResponse.value}")
-        }
-
         setListener()
         setObserver()
 
-        with(viewModel) {
-            Timber.tag("회원가입").d("리스너, 옵저버 실행 후 email: ${viewModel.email}, password: ${viewModel.password}, mailCertificationNumberCheck: ${certificationViewModel.mailCertificationNumberCheck}, mailCertificationNumber :${viewModel.mailCertificationNumber.value?.getContentIfNotHandled().toString()}, emailVerifyResponse :${viewModel.emailVerifyResponse.value}")
-        }
     }
 
     private fun setListener() {
