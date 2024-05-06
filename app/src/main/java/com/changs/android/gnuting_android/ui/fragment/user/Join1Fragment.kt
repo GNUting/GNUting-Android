@@ -17,7 +17,6 @@ import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.CertificationViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class Join1Fragment :
