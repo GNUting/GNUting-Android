@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -16,6 +17,7 @@ import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.SearchMemberBottomSheetBinding
 import com.changs.android.gnuting_android.ui.adapter.AddMemberAdapter
 import com.changs.android.gnuting_android.ui.adapter.SelectedMemberAdapter
+import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.hideSoftKeyboard
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
@@ -60,8 +62,6 @@ class SearchMemberBottomSheetFragment :
         binding.root.setOnClickListener {
             it.hideSoftKeyboard()
         }
-
-        viewModel.getSearchUser("")
 
         binding.searchMemberBottomSheetTxtMemberAdd.setOnClickListener {
             dismiss()
@@ -140,6 +140,10 @@ class SearchMemberBottomSheetFragment :
     }
 
     private fun setObserver() {
+        viewModel.toast.eventObserve(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        }
+
         viewModel.currentMember.observe(viewLifecycleOwner) {
             it?.let { selectedMemberAdapter.submitList(it) }
         }

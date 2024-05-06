@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.changs.android.gnuting_android.base.BaseResponse
 import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.Content
 import com.changs.android.gnuting_android.data.model.DefaultResponse
@@ -181,8 +182,8 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
                 handleResult(response = response, handleSuccess = fun() {
                     _toast.value = Event("채팅 신청하기가 완료되었습니다.")
                     _applyChatResponse.value = Event(response.body()!!)
-                }, handleError = fun(message: String) {
-                    _toast.value = Event(message)
+                }, handleError = fun(error: BaseResponse) {
+                    _toast.value = Event(error.message)
                 })
             } catch (e: Exception) {
                 _spinner.value = false
