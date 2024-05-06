@@ -16,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -24,15 +25,15 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(private val chatRepository: ChatRepository, private val tokenManager: TokenManager
 ) : BaseViewModel() {
     private var stompChatSource: StompChatSource? = null
-    private val _message: MutableStateFlow<String?> = MutableStateFlow(null)
-    val message: StateFlow<String?> get() = _message
+    private val _message: MutableLiveData<String> = MutableLiveData()
+    val message: LiveData<String> get() = _message
 
     fun connectChatRoom(chatRoomId: Int) {
         stompChatSource = StompChatSource(chatRoomId, tokenManager)
         stompChatSource?.run {
             viewModelScope.launch {
-                sharedFlow.collect {
-                    _message.emit(it)
+                sharedFlow.collectLatest {
+                    _message.value = it
                 }
             }
             topic()

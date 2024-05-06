@@ -31,6 +31,7 @@ import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -119,6 +120,7 @@ class ChatFragment :
                 adapter.submitList(chatRoomUsers.toList())
             }
         }
+
         alarmViewModel.currentChatRoomAlarmStatusResponse.observe(viewLifecycleOwner) {
             when (it.result.notificationSetting) {
                 AlarmStatus.ENABLE.name -> {
@@ -151,23 +153,19 @@ class ChatFragment :
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val mutex = Mutex()
+        val mutex = Mutex()
 
-                chatViewModel.message.collect {
-                    it?.let {
-                        mutex.withLock {
-                            val messageItem: MessageItem =
-                                GsonBuilder().create().fromJson(it, MessageItem::class.java)
+        chatViewModel.message.observe(viewLifecycleOwner) {
+            lifecycleScope.launch {
+                mutex.withLock {
+                    val messageItem: MessageItem =
+                        GsonBuilder().create().fromJson(it, MessageItem::class.java)
 
-                            adapter?.let {
-                                val currentList = it.currentList.toMutableList()
-                                currentList.add(messageItem)
-                                it.submitList(currentList) {
-                                    binding.chatRecyclerview.scrollToPosition(it.currentList.size - 1)
-                                }
-                            }
+                    adapter?.let {
+                        val currentList = it.currentList.toMutableList()
+                        currentList.add(messageItem)
+                        it.submitList(currentList) {
+                            binding.chatRecyclerview.scrollToPosition(it.currentList.size - 1)
                         }
                     }
                 }
