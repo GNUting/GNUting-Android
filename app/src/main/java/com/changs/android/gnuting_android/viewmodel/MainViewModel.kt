@@ -116,6 +116,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     val result = repository.postMailCertification(requestBody)
                     if (result.isSuccessful && result.body() != null) {
                         _mailCertificationNumber.value = Event(result.body()!!.result.number)
+                        _toast.value = Event("인증번호가 전송되었습니다.")
                         _spinner.value = false
                     } else {
                         result.errorBody()?.let {
@@ -144,6 +145,7 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     val result = repository.postFindPasswordMailCertification(requestBody)
                     if (result.isSuccessful && result.body() != null) {
                         _mailCertificationNumber.value = Event(result.body()!!.result.number)
+                        _toast.value = Event("인증번호가 전송되었습니다.")
                         _spinner.value = false
                     } else {
                         result.errorBody()?.let {
