@@ -45,7 +45,7 @@
         android:background="@drawable/background_radius_5dp_solid_gray14"
         android:drawableStart="@drawable/ic_search3"
         android:drawablePadding="10dp"
-        android:hint="추가할 멤버를 검색해 주세요"
+        android:hint="닉네임을 검색해주세요"
         android:imeOptions="actionSearch"
         android:fontFamily="@font/pretendard_medium"
         android:inputType="text"
