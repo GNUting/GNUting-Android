@@ -7,6 +7,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
@@ -15,6 +16,7 @@ import com.changs.android.gnuting_android.ui.MainActivity
 import com.changs.android.gnuting_android.util.convertMillisecondsToTime
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.hideSoftKeyboard
+import com.changs.android.gnuting_android.util.setClickEvent
 import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.CertificationViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
@@ -51,7 +53,7 @@ class FindPasswordFragment : BaseFragment<FragmentFindPasswordBinding>(
             }
         }
 
-        binding.findPasswordBtnNext.setOnClickListener {
+        binding.findPasswordBtnNext.setClickEvent(viewLifecycleOwner.lifecycleScope)  {
             if (certificationViewModel.mailCertificationNumberCheck) {
                 if (binding.findPasswordEditPassword.text.toString()
                         .isEmpty() || binding.findPasswordEditPasswordCheck.text.toString()

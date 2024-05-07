@@ -12,10 +12,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.databinding.ActivityHomeBinding
+import com.changs.android.gnuting_android.ui.adapter.ApplicationAdapter
+import com.changs.android.gnuting_android.ui.fragment.chat.ChatFragment
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.firebase.messaging.FirebaseMessaging
@@ -28,6 +31,7 @@ import kotlinx.coroutines.runBlocking
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
+    private var navController: NavController? = null
     private var toast: Toast? = null
     private val viewModel: HomeMainViewModel by viewModels()
 
@@ -50,11 +54,11 @@ class HomeActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.home_nav_host_fragment) as NavHostFragment
 
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
 
-        binding.bottomNav.setupWithNavController(navController)
+        binding.bottomNav.setupWithNavController(navController!!)
 
-        navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
+        navController?.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.homeFragment, R.id.listFragment, R.id.chatListFragment, R.id.myFragment -> binding.bottomNav.isVisible =
                     true
@@ -140,7 +144,21 @@ class HomeActivity : AppCompatActivity() {
         location?.let {
             when (it) {
                 "chat" -> selectedItemId(R.id.chatListFragment)
-                else -> selectedItemId(R.id.listFragment)
+
+                "apply" -> {
+                    viewModel.currentApplicationTab =
+                        ApplicationAdapter.ApplicationType.APPLY
+                    selectedItemId(R.id.listFragment)
+                }
+
+                "refuse" -> {
+                    viewModel.currentApplicationTab =
+                        ApplicationAdapter.ApplicationType.PARTICIPANT
+                    selectedItemId(R.id.listFragment)
+                }
+                "cancel" -> {
+
+                }
             }
         }
     }

@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentLoginBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.util.setClickEvent
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +28,7 @@ class LoginFragment :
     }
 
     private fun setListener() {
-        binding.loginBtnLogin.setOnClickListener {
+        binding.loginBtnLogin.setClickEvent(viewLifecycleOwner.lifecycleScope)  {
             if (!binding.loginEditEmail.text.isNullOrEmpty() && !binding.loginEditPassword.text.isNullOrEmpty()) {
                 viewModel.postLogin(
                     binding.loginEditEmail.text.toString(), binding.loginEditPassword.text.toString()

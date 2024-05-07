@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
@@ -16,6 +17,7 @@ import com.changs.android.gnuting_android.databinding.FragmentPostBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.PostMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.util.setClickEvent
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
 import com.changs.android.gnuting_android.viewmodel.PostViewModel
@@ -46,7 +48,7 @@ class PostFragment :
             findNavController().navigate(R.id.action_postFragment_to_postSearchMemberBottomSheetFragment)
         }
 
-        binding.postTxtComplete.setOnClickListener {
+        binding.postTxtComplete.setClickEvent(viewLifecycleOwner.lifecycleScope)  {
             if (!binding.postEditTitle.text.isNullOrEmpty() && !binding.postEditDetail.text.isNullOrEmpty()) {
                 if ((memberAddViewModel.currentMember.value?.size ?: 0) != 0) {
                     val request = SaveRequest(
