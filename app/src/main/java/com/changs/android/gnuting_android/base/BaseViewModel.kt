@@ -35,9 +35,9 @@ open class BaseViewModel : ViewModel() {
                         }
 
                         else -> {
-                            handleError?.let { handle ->
-                                handle(error)
-                            } ?: {
+                            if (handleError != null) {
+                                handleError(error)
+                            } else {
                                 _toast.value = Event("네트워크 에러가 발생했습니다.")
                             }
                         }
