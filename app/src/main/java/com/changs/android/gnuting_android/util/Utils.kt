@@ -153,7 +153,7 @@ fun <T> Flow<T>.throttleFirst(windowDuration: Long): Flow<T> = flow {
 
 fun View.setClickEvent(
     uiScope: CoroutineScope,
-    windowDuration: Long = 2000,
+    windowDuration: Long = 1000,
     onClick: () -> Unit,
 ) {
     clicks()
