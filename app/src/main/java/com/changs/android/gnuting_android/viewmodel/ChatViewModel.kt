@@ -56,8 +56,6 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
 
     fun getChatRoomList() {
         viewModelScope.launch {
-            delay(1000)
-
             try {
                 _spinner.value = true
                 val response = chatRepository.getChatRoomList()
