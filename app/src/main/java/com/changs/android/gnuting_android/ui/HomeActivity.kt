@@ -19,7 +19,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.databinding.ActivityHomeBinding
 import com.changs.android.gnuting_android.ui.adapter.ApplicationAdapter
-import com.changs.android.gnuting_android.ui.fragment.chat.ChatFragment
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.firebase.messaging.FirebaseMessaging
@@ -79,15 +78,7 @@ class HomeActivity : AppCompatActivity() {
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
 
-        val location = intent.getStringExtra("location")
-
-        location?.let {
-            when (it) {
-                "chat" -> selectedItemId(R.id.chatListFragment)
-                else -> selectedItemId(R.id.listFragment)
-            }
-        }
-
+        notificationClickNavigation(intent)
     }
 
     private fun initFirebaseFcm() {
@@ -141,11 +132,14 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        notificationClickNavigation(intent)
+    }
+
+    private fun notificationClickNavigation(intent: Intent?) {
         val location = intent?.getStringExtra("location")
         val id = intent?.getStringExtra("locationId")
 
         Timber.d("FCM click location: $location, id: $id")
-
 
         location?.let {
             when (it) {
