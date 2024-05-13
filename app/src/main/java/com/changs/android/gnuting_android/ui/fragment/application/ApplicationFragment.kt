@@ -52,6 +52,10 @@ class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(
 
         applicationViewModel.applicationDetailResponse.observe(viewLifecycleOwner) {
             it.result.run {
+                binding.applicationLl1.visibility = View.VISIBLE
+                binding.applicationLl2.visibility = View.VISIBLE
+                binding.applicationTxtMember.visibility = View.VISIBLE
+
                 binding.applicationTxtMember.text = "$applyUserCount : $applyUserCount 매칭"
 
                 when (applyStatus) {
