@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -26,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -140,23 +142,49 @@ class HomeActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         val location = intent?.getStringExtra("location")
+        val id = intent?.getStringExtra("locationId")
+
+        Timber.d("FCM click location: $location, id: $id")
+
 
         location?.let {
             when (it) {
-                "chat" -> selectedItemId(R.id.chatListFragment)
+                "chat" -> {
+                    if (id != null) {
+                        val bundle = bundleOf("id" to id.toInt())
+                        navController?.navigate(R.id.chatFragment, bundle)
+                    } else {
+                        selectedItemId(R.id.chatListFragment)
+                    }
+                }
 
                 "apply" -> {
-                    viewModel.currentApplicationTab =
-                        ApplicationAdapter.ApplicationType.APPLY
-                    selectedItemId(R.id.listFragment)
+                    viewModel.currentApplicationTab = ApplicationAdapter.ApplicationType.APPLY
+
+                    if (id != null) {
+                        val bundle = bundleOf("id" to id.toInt())
+                        navController?.navigate(R.id.applicationFragment, bundle)
+                    } else {
+                        selectedItemId(R.id.listFragment)
+                    }
                 }
 
                 "refuse" -> {
-                    viewModel.currentApplicationTab =
-                        ApplicationAdapter.ApplicationType.PARTICIPANT
-                    selectedItemId(R.id.listFragment)
+                    viewModel.currentApplicationTab = ApplicationAdapter.ApplicationType.PARTICIPANT
+
+                    if (id != null) {
+                        val bundle = bundleOf("id" to id.toInt())
+                        navController?.navigate(R.id.applicationFragment, bundle)
+                    } else {
+                        selectedItemId(R.id.listFragment)
+                    }
                 }
+
                 "cancel" -> {
+
+                }
+
+                else -> {
 
                 }
             }

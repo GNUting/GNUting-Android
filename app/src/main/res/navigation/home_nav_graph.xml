@@ -14,6 +14,16 @@
             android:id="@+id/action_chatListFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/chatListFragment2"
+        android:name="com.changs.android.gnuting_android.ui.fragment.chat.ChatListFragment"
+        android:label="fragment_chat_list2"
+        tools:layout="@layout/fragment_chat_list" >
+        <action
+            android:id="@+id/action_chatListFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.home.HomeFragment"
@@ -104,8 +114,9 @@
         android:label="fragment_application"
         tools:layout="@layout/fragment_application" >
         <argument
-            android:name="application_item"
-            app:argType="com.changs.android.gnuting_android.data.model.ApplicationResult" />
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -149,15 +160,6 @@
         <argument
             android:name="id"
             app:argType="integer" />
-        <argument
-            android:name="title"
-            app:argType="string" />
-        <argument
-            android:name="info"
-            app:argType="string" />
-        <argument
-            android:name="chatRoomUsers"
-            app:argType="com.changs.android.gnuting_android.data.model.ChatRoomUser[]" />
     </fragment>
     <fragment
         android:id="@+id/photoFragment"
@@ -178,6 +180,15 @@
         <action
             android:id="@+id/action_alarmListFragment_to_listFragment2"
             app:destination="@id/listFragment2" />
+        <action
+            android:id="@+id/action_alarmListFragment_to_applicationFragment"
+            app:destination="@id/applicationFragment" />
+        <action
+            android:id="@+id/action_alarmListFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_alarmListFragment_to_chatListFragment2"
+            app:destination="@id/chatListFragment2" />
     </fragment>
     <navigation android:id="@+id/detail_graph"
         app:startDestination="@id/detailFragment">

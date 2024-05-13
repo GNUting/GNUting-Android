@@ -142,7 +142,7 @@ class ListFragment :
     }
 
     private fun applicationItemListener(item: ApplicationResult) {
-        val action = ListFragmentDirections.actionListFragmentToApplicationFragment(item)
+        val action = ListFragmentDirections.actionListFragmentToApplicationFragment(item.id)
         findNavController().navigate(action)
     }
 

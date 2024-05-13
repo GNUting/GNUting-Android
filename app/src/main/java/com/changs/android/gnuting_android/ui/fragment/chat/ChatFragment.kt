@@ -25,6 +25,7 @@ import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
 import com.changs.android.gnuting_android.ui.adapter.ChatRoomCurrentMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.hideSoftKeyboard
+import com.changs.android.gnuting_android.util.showOneButtonDialog
 import com.changs.android.gnuting_android.util.showTwoButtonDialog
 import com.changs.android.gnuting_android.viewmodel.AlarmViewModel
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
@@ -50,15 +51,10 @@ class ChatFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        chatViewModel.getChats(args.id)
-        chatViewModel.getChatRoomUsers(args.id)
-        alarmViewModel.getCurrentChatRoomNotificationStatus(args.id)
+        chatViewModel.getChatDetail(args.id)
         setRecyclerView()
         setObserver()
         setListener()
-
-        binding.chatTxtTitle.text = args.title
-        binding.chatTxtInfo.text = args.info
     }
 
     private fun setListener() {
@@ -91,6 +87,22 @@ class ChatFragment :
     }
 
     private fun setObserver() {
+        chatViewModel.dialog.eventObserve(viewLifecycleOwner) { message ->
+            message?.let {
+                showOneButtonDialog(context = requireContext(),  titleText = it, action = {
+                    findNavController().popBackStack()
+                })
+            }
+        }
+        chatViewModel.chatDetailResponse.observe(viewLifecycleOwner) {
+            binding.chatTxtTitle.text = it.result.title
+            binding.chatTxtInfo.text = "${it.result.applyLeaderDepartment} | ${it.result.leaderUserDepartment}"
+
+            chatViewModel.getChats(args.id)
+            chatViewModel.getChatRoomUsers(args.id)
+            alarmViewModel.getCurrentChatRoomNotificationStatus(args.id)
+        }
+
         chatViewModel.chatRoomUsersResponse.observe(viewLifecycleOwner) {
             with(binding.chatLayoutDrawer) {
                 drawerChatImgChatout.setOnClickListener {

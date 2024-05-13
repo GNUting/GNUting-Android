@@ -2,6 +2,8 @@ package com.changs.android.gnuting_android.ui.fragment.alarm
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
@@ -9,9 +11,11 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentAlarmListBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.AlarmAdapter
+import com.changs.android.gnuting_android.ui.adapter.ApplicationAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.showTwoButtonDialog
 import com.changs.android.gnuting_android.viewmodel.AlarmViewModel
+import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -20,18 +24,19 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
     FragmentAlarmListBinding::bind, R.layout.fragment_alarm_list
 ) {
-    private val viewModel: AlarmViewModel by viewModels()
+    private val alarmViewModel: AlarmViewModel by viewModels()
+    private val viewModel: HomeMainViewModel by activityViewModels()
     private val adapter: AlarmAdapter by lazy {
         AlarmAdapter(::navigateListener) {
             showTwoButtonDialog(requireContext(), "알림을 삭제하시겠습니까?", rightButtonText = "삭제") {
-                viewModel.deleteAlarm(it)
+                alarmViewModel.deleteAlarm(it)
             }
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getAlarmList()
+        alarmViewModel.getAlarmList()
         setRecyclerView()
         setListener()
         setObserver()
@@ -44,40 +49,74 @@ class AlarmListFragment : BaseFragment<FragmentAlarmListBinding>(
 
         binding.alarmListRefresh.setColorSchemeColors(resources.getColor(R.color.main, null))
         binding.alarmListRefresh.setOnRefreshListener {
-            viewModel.getAlarmList()
+            alarmViewModel.getAlarmList()
         }
     }
 
     private fun setObserver() {
-        viewModel.alarmListResponse.observe(viewLifecycleOwner) {
+        alarmViewModel.alarmListResponse.observe(viewLifecycleOwner) {
             if (binding.alarmListRefresh.isRefreshing) binding.alarmListRefresh.isRefreshing = false
             adapter.submitList(it.result)
 
             if (it.result.isNotEmpty()) {
                 binding.alarmListLlEmpty.visibility = View.GONE
-            }
-            else {
+            } else {
                 binding.alarmListLlEmpty.visibility = View.VISIBLE
             }
         }
 
-        viewModel.deleteAlarmResponse.observe(viewLifecycleOwner) {
-            viewModel.getAlarmList()
+        alarmViewModel.deleteAlarmResponse.observe(viewLifecycleOwner) {
+            alarmViewModel.getAlarmList()
         }
 
-        viewModel.spinner.observe(viewLifecycleOwner) { show ->
+        alarmViewModel.spinner.observe(viewLifecycleOwner) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
 
-        viewModel.toast.eventObserve(viewLifecycleOwner) { text ->
+        alarmViewModel.toast.eventObserve(viewLifecycleOwner) { text ->
             text?.let {
                 (requireActivity() as HomeActivity).showToast(it)
             }
         }
     }
 
-    private fun navigateListener() {
-        findNavController().navigate(R.id.action_alarmListFragment_to_listFragment2)
+    private fun navigateListener(id: Int?, location: String?) {
+        when (location) {
+            "apply" -> {
+                viewModel.currentApplicationTab = ApplicationAdapter.ApplicationType.APPLY
+
+                if (id != null) {
+                    val bundle = bundleOf("id" to id)
+                    findNavController().navigate(R.id.applicationFragment, bundle)
+                } else {
+                    findNavController().navigate(R.id.action_alarmListFragment_to_listFragment2)
+                }
+            }
+
+            "refuse" -> {
+                viewModel.currentApplicationTab = ApplicationAdapter.ApplicationType.PARTICIPANT
+
+                if (id != null) {
+                    val bundle = bundleOf("id" to id)
+                    findNavController().navigate(R.id.applicationFragment, bundle)
+                } else {
+                    findNavController().navigate(R.id.action_alarmListFragment_to_listFragment2)
+                }
+            }
+
+            "chat" -> {
+                if (id != null) {
+                    val bundle = bundleOf("id" to id)
+                    findNavController().navigate(R.id.chatFragment, bundle)
+                } else {
+                    findNavController().navigate(R.id.action_alarmListFragment_to_chatListFragment2)
+                }
+            }
+
+            else -> {
+                findNavController().navigate(R.id.action_alarmListFragment_to_listFragment2)
+            }
+        }
     }
 
     private fun setRecyclerView() {

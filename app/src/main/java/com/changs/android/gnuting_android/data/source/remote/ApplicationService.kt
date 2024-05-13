@@ -1,5 +1,6 @@
 package com.changs.android.gnuting_android.data.source.remote
 
+import com.changs.android.gnuting_android.data.model.ApplicationDetailResponse
 import com.changs.android.gnuting_android.data.model.ApplicationResponse
 import com.changs.android.gnuting_android.data.model.DefaultResponse
 import retrofit2.Response
@@ -26,4 +27,6 @@ interface ApplicationService {
     @DELETE("/api/v1/board/applications/cancel/{id}")
     suspend fun deleteCancel(@Path("id") id: Int): Response<DefaultResponse>
 
+    @GET("/api/v1/notification/application/click/{id}")
+    suspend fun getApplicationDetail(@Path("id") id: Int): Response<ApplicationDetailResponse>
 }

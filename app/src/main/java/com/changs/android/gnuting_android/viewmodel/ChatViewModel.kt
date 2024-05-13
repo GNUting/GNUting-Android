@@ -3,7 +3,9 @@ package com.changs.android.gnuting_android.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.changs.android.gnuting_android.base.BaseResponse
 import com.changs.android.gnuting_android.base.BaseViewModel
+import com.changs.android.gnuting_android.data.model.ChatDetailResponse
 import com.changs.android.gnuting_android.data.model.ChatListResponse
 import com.changs.android.gnuting_android.data.model.ChatResponse
 import com.changs.android.gnuting_android.data.model.ChatRoomUsersResponse
@@ -63,6 +65,42 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
 
                 handleResult(response = response, handleSuccess = fun() {
                     _chatRoomListResponse.value = response.body()!!
+                })
+            } catch (e: Exception) {
+                _spinner.value = false
+                _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
+            }
+        }
+    }
+
+    private val _chatDetailResponse = MutableLiveData<ChatDetailResponse>()
+
+    val chatDetailResponse: LiveData<ChatDetailResponse> get() = _chatDetailResponse
+
+    fun getChatDetail(chatRoomId: Int) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val response = chatRepository.getChatDetail(chatRoomId)
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _chatDetailResponse.value = response.body()!!
+                }, handleError = fun(error: BaseResponse) {
+                    when( error.code) {
+                        "CHATROOM4001" -> {
+                            _dialog.value = Event(error.message)
+                        }
+
+                        "CHATROOMUSER4001" -> {
+                            _dialog.value = Event(error.message)
+                        }
+
+                        else -> {
+                            _toast.value = Event("네트워크 에러가 발생했습니다.")
+                        }
+                    }
+
                 })
             } catch (e: Exception) {
                 _spinner.value = false

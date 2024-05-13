@@ -11,4 +11,6 @@ class ChatRepository @Inject constructor(private val service: ChatService) {
     suspend fun postChatLeave(chatRoomId: Int) = service.postChatLeave(chatRoomId)
 
     suspend fun getChatRoomUsers(chatRoomId: Int) = service.getChatRoomUsers(chatRoomId)
+
+    suspend fun getChatDetail(chatRoomId: Int) = service.getChatDetail(chatRoomId)
 }

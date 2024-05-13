@@ -1,5 +1,6 @@
 package com.changs.android.gnuting_android.data.source.remote
 
+import com.changs.android.gnuting_android.data.model.ChatDetailResponse
 import com.changs.android.gnuting_android.data.model.ChatListResponse
 import com.changs.android.gnuting_android.data.model.ChatResponse
 import com.changs.android.gnuting_android.data.model.ChatRoomUsersResponse
@@ -21,4 +22,7 @@ interface ChatService {
 
     @GET("/api/v1/chatRoom/{chatRoomId}/chatRoomUsers")
     suspend fun getChatRoomUsers(@Path("chatRoomId") chatRoomId: Int): Response<ChatRoomUsersResponse>
+
+    @GET("/api/v1/notification/chat/click/{id}")
+    suspend fun getChatDetail(@Path("id") id: Int): Response<ChatDetailResponse>
 }

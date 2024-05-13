@@ -10,17 +10,18 @@ import com.changs.android.gnuting_android.data.model.AlarmResult
 import com.changs.android.gnuting_android.databinding.AlarmListItemBinding
 
 
-class AlarmAdapter(private val navigate: () -> Unit, private val listener: (Int) -> Unit) :
-    ListAdapter<AlarmResult, AlarmAdapter.ViewHolder>(object :
-        DiffUtil.ItemCallback<AlarmResult>() {
-        override fun areItemsTheSame(oldItem: AlarmResult, newItem: AlarmResult): Boolean {
-            return oldItem == newItem
-        }
+class AlarmAdapter(
+    private val navigate: (Int?, String?) -> Unit, private val listener: (Int) -> Unit
+) : ListAdapter<AlarmResult, AlarmAdapter.ViewHolder>(object :
+    DiffUtil.ItemCallback<AlarmResult>() {
+    override fun areItemsTheSame(oldItem: AlarmResult, newItem: AlarmResult): Boolean {
+        return oldItem == newItem
+    }
 
-        override fun areContentsTheSame(oldItem: AlarmResult, newItem: AlarmResult): Boolean {
-            return oldItem == newItem
-        }
-    }) {
+    override fun areContentsTheSame(oldItem: AlarmResult, newItem: AlarmResult): Boolean {
+        return oldItem == newItem
+    }
+}) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(parent, navigate, listener)
     }
@@ -29,15 +30,16 @@ class AlarmAdapter(private val navigate: () -> Unit, private val listener: (Int)
         holder.bind(currentList[position])
     }
 
-    class ViewHolder(parent: ViewGroup, val navigate: () -> Unit, val listener: (Int) -> Unit) :
-        RecyclerView.ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.alarm_list_item, parent, false)
-        ) {
+    class ViewHolder(
+        parent: ViewGroup, val navigate: (Int?, String?) -> Unit, val listener: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.alarm_list_item, parent, false)
+    ) {
         private val binding = AlarmListItemBinding.bind(itemView)
 
         fun bind(item: AlarmResult) {
             binding.root.setOnClickListener {
-                navigate()
+                navigate(item.locationId, item.location)
             }
 
             binding.root.setOnLongClickListener {

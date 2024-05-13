@@ -18,6 +18,11 @@ open class BaseViewModel : ViewModel() {
     val spinner: LiveData<Boolean>
         get() = _spinner
 
+    protected val _dialog = MutableLiveData<Event<String?>>()
+
+    val dialog: LiveData<Event<String?>>
+        get() = _dialog
+
     protected fun <T : Any> handleResult(
         response: Response<T>, handleSuccess: () -> Unit, handleError: ((BaseResponse) -> Unit)? = null
     ) {

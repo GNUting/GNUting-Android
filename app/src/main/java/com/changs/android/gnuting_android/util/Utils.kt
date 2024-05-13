@@ -131,6 +131,31 @@ fun showTwoButtonDialog(
     dlg.show()
 }
 
+fun showOneButtonDialog(
+    context: Context,
+    titleText: String,
+    buttonText: String = "확인",
+    action: () -> Unit
+) {
+    val dlg = Dialog(context)
+    dlg.setCancelable(false)
+    dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    dlg.setContentView(R.layout.dialog_one_btn)
+    dlg.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    val dlgTextView = dlg.findViewById<TextView>(R.id.dialog_one_btn_txt_content)
+    dlgTextView.text = titleText
+
+    val ok = dlg.findViewById<View>(R.id.dialog_one_btn_txt_ok) as TextView
+
+    ok.text = buttonText
+    ok.setOnClickListener {
+        action()
+        dlg.dismiss()
+    }
+
+    dlg.show()
+}
+
 // 클릭 이벤트를 flow로 변환
 fun View.clicks(): Flow<Unit> = callbackFlow {
     setOnClickListener {
