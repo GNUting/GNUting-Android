@@ -39,7 +39,7 @@ class ApplicationAdapter(private val type: ApplicationType, private val listener
             }
 
             binding.root.setOnLongClickListener {
-                deleteListener(item.id)
+                if (item.applyStatus != "대기중") deleteListener(item.id)
                 true
             }
 
