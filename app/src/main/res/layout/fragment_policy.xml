@@ -149,6 +149,39 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/policy_check3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/custom_checkbox" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(필수) "
+                    android:fontFamily="@font/pretendard_regular"
+                    android:textColor="@color/main"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/policy_txt_terms_of_service"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:drawableEnd="@drawable/arrow_right"
+                    android:text="서비스 이용약관 동의"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
