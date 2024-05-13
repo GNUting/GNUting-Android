@@ -12,6 +12,7 @@ import com.changs.android.gnuting_android.databinding.FragmentListBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.ApplicationAdapter
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.util.showTwoButtonDialog
 import com.changs.android.gnuting_android.viewmodel.ApplicationViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.android.material.tabs.TabLayout
@@ -28,12 +29,20 @@ class ListFragment :
     private val applyStateAdapter by lazy {
         ApplicationAdapter(
             ApplicationAdapter.ApplicationType.APPLY, ::applicationItemListener
-        )
+        ) {
+            showTwoButtonDialog(requireContext(), "신청현황을 삭제하시겠습니까?", rightButtonText = "삭제") {
+                applicationViewModel.deleteApplyState(it)
+            }
+        }
     }
     private val receiveStateAdapter by lazy {
         ApplicationAdapter(
             ApplicationAdapter.ApplicationType.PARTICIPANT, ::applicationItemListener
-        )
+        ) {
+            showTwoButtonDialog(requireContext(), "신청현황을 삭제하시겠습니까?", rightButtonText = "삭제") {
+                applicationViewModel.deleteReceivedState(it)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,6 +114,34 @@ class ListFragment :
     }
 
     private fun setObserver() {
+        applicationViewModel.deleteApplyStateResponse.eventObserve(viewLifecycleOwner) {
+            when (viewModel.currentApplicationTab) {
+                ApplicationAdapter.ApplicationType.APPLY -> {
+                    binding.listTl.getTabAt(0)?.select()
+                    applicationViewModel.getApplicationApplyList()
+                }
+
+                else -> {
+                    binding.listTl.getTabAt(1)?.select()
+                    applicationViewModel.getApplicationReceiveList()
+                }
+            }
+        }
+
+        applicationViewModel.deleteReceivedStateResponse.eventObserve(viewLifecycleOwner) {
+            when (viewModel.currentApplicationTab) {
+                ApplicationAdapter.ApplicationType.APPLY -> {
+                    binding.listTl.getTabAt(0)?.select()
+                    applicationViewModel.getApplicationApplyList()
+                }
+
+                else -> {
+                    binding.listTl.getTabAt(1)?.select()
+                    applicationViewModel.getApplicationReceiveList()
+                }
+            }
+        }
+
         applicationViewModel.spinner.observe(viewLifecycleOwner) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
         }
@@ -142,7 +179,7 @@ class ListFragment :
     }
 
     private fun applicationItemListener(item: ApplicationResult) {
-        val action = ListFragmentDirections.actionListFragmentToApplicationFragment(item)
+        val action = ListFragmentDirections.actionListFragmentToApplicationFragment(item.id)
         findNavController().navigate(action)
     }
 

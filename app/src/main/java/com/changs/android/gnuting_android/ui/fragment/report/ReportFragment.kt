@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.changs.android.gnuting_android.R
@@ -14,6 +15,7 @@ import com.changs.android.gnuting_android.data.model.UserReportRequest
 import com.changs.android.gnuting_android.databinding.FragmentReportBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.util.setClickEvent
 import com.changs.android.gnuting_android.viewmodel.ReportViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -126,7 +128,7 @@ class ReportFragment :
             reportViewModel.reportCategory = ReportCategory.OTHER
         }
 
-        binding.reportBtnReport.setOnClickListener {
+        binding.reportBtnReport.setClickEvent(viewLifecycleOwner.lifecycleScope) {
             if (args.nickname != null) {
                 val reportRequest = UserReportRequest(
                     args.nickname!!,

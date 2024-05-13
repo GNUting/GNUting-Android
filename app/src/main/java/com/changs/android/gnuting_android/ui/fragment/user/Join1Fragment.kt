@@ -6,6 +6,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
@@ -13,11 +14,11 @@ import com.changs.android.gnuting_android.databinding.FragmentJoin1Binding
 import com.changs.android.gnuting_android.util.convertMillisecondsToTime
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.hideSoftKeyboard
+import com.changs.android.gnuting_android.util.setClickEvent
 import com.changs.android.gnuting_android.viewmodel.ButtonActiveCheckViewModel
 import com.changs.android.gnuting_android.viewmodel.CertificationViewModel
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class Join1Fragment :
@@ -38,21 +39,13 @@ class Join1Fragment :
             userSelfIntroduction = null
             nickNameCheck.value = null
         }
-
-        with(viewModel) {
-            Timber.tag("회원가입").d("리스너, 옵저버 실행 전 email: ${viewModel.email}, password: ${viewModel.password}, mailCertificationNumberCheck: ${certificationViewModel.mailCertificationNumberCheck}, mailCertificationNumber :${viewModel.mailCertificationNumber.value?.getContentIfNotHandled().toString()}, emailVerifyResponse :${viewModel.emailVerifyResponse.value}")
-        }
-
         setListener()
         setObserver()
 
-        with(viewModel) {
-            Timber.tag("회원가입").d("리스너, 옵저버 실행 후 email: ${viewModel.email}, password: ${viewModel.password}, mailCertificationNumberCheck: ${certificationViewModel.mailCertificationNumberCheck}, mailCertificationNumber :${viewModel.mailCertificationNumber.value?.getContentIfNotHandled().toString()}, emailVerifyResponse :${viewModel.emailVerifyResponse.value}")
-        }
     }
 
     private fun setListener() {
-        binding.join1BtnCertificationConfirmation.setOnClickListener {
+        binding.join1BtnCertificationConfirmation.setClickEvent(viewLifecycleOwner.lifecycleScope)  {
             if (certificationViewModel.timerCount.value == 0L) {
                 binding.join1TxtVerificationCertification.text = "인증 시간이 초과되었습니다."
                 binding.join1TxtVerificationCertification.setTextColor(
@@ -70,7 +63,7 @@ class Join1Fragment :
         /* 이메일 인증 번호 받기
         * 1. 인증 받기를 다시 눌렀으므로 기존에 인증번호 확인을 했던 과정들, 인증을 진행 중이던 것 모두 초기화시켜야 함
         * */
-        binding.join1BtnVerify.setOnClickListener {
+        binding.join1BtnVerify.setClickEvent(viewLifecycleOwner.lifecycleScope)  {
             binding.join1TxtVerificationCertification.visibility = View.INVISIBLE
             viewModel.postMailCertification()
         }

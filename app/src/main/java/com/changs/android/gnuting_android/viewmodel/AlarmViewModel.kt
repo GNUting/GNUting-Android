@@ -132,11 +132,15 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
         }
     }
 
-    fun putCurrentChatRoomNotificationSetting(chatRoomId: Int, notificationSettingRequest: NotificationSettingRequest) {
+    fun putCurrentChatRoomNotificationSetting(
+        chatRoomId: Int, notificationSettingRequest: NotificationSettingRequest
+    ) {
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val response = alarmRepository.putCurrentChatRoomNotificationStatus(chatRoomId, notificationSettingRequest)
+                val response = alarmRepository.putCurrentChatRoomNotificationStatus(
+                    chatRoomId, notificationSettingRequest
+                )
 
                 handleResult(response = response, handleSuccess = fun() {
                     _chatNotificationSettingResponse.value = Event(response.body()!!)
@@ -153,7 +157,8 @@ class AlarmViewModel @Inject constructor(private val alarmRepository: AlarmRepos
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val response = alarmRepository.putOverallNotificationStatus(notificationSettingRequest)
+                val response =
+                    alarmRepository.putOverallNotificationStatus(notificationSettingRequest)
 
                 handleResult(response = response, handleSuccess = fun() {
                     _notificationSettingResponse.value = Event(response.body()!!)

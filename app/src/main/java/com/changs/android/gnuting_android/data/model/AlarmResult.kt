@@ -12,5 +12,9 @@ data class AlarmResult(
     @SerializedName("title")
     val title: String,
     @SerializedName("status")
-    val status: String
+    val status: String,
+    @SerializedName("location")
+    val location: String,
+    @SerializedName("locationId")
+    val locationId: Int
 )

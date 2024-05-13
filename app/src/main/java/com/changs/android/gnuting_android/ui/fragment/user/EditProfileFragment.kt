@@ -10,6 +10,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -21,6 +22,7 @@ import com.changs.android.gnuting_android.databinding.FragmentEditProflieBinding
 import com.changs.android.gnuting_android.ui.fragment.bottomsheet.ProfileSearchDepartmentBottomSheetFragment
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.getBitmap
+import com.changs.android.gnuting_android.util.setClickEvent
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -85,7 +87,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             findNavController().popBackStack()
         }
 
-        binding.editProfileTxtEditProfile.setOnClickListener {
+        binding.editProfileTxtEditProfile.setClickEvent(viewLifecycleOwner.lifecycleScope)  {
             if (args.member.nickname != binding.editProfileEditNickName.text.toString()) {
                 viewModel.nickNameCheck.value?.let {
                     if (it) {

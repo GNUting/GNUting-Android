@@ -7,6 +7,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
@@ -15,6 +16,7 @@ import com.changs.android.gnuting_android.databinding.FragmentJoin3Binding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.getBitmap
+import com.changs.android.gnuting_android.util.setClickEvent
 import com.changs.android.gnuting_android.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -56,11 +58,11 @@ class Join3Fragment :
                 }
             }
 
-        binding.join3TxtPassProfileSetting.setOnClickListener {
+        binding.join3TxtPassProfileSetting.setClickEvent(viewLifecycleOwner.lifecycleScope)  {
             viewModel.postSignUp()
         }
 
-        binding.join3BtnNext.setOnClickListener {
+        binding.join3BtnNext.setClickEvent(viewLifecycleOwner.lifecycleScope) {
             if (binding.join3TxtPassProfileSetting.isVisible) {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             } else {

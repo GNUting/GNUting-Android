@@ -8,20 +8,20 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
-import com.changs.android.gnuting_android.data.model.ChatRoomUser
+import com.changs.android.gnuting_android.data.model.ChatRoomUsersResult
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.ChatRoomCurrentMemberItemBinding
 
 
 class ChatRoomCurrentMemberAdapter(
     private val myUserId: Int?, private val navigateListener: (InUser) -> Unit
-) : ListAdapter<ChatRoomUser, ChatRoomCurrentMemberAdapter.ViewHolder>(object :
-    DiffUtil.ItemCallback<ChatRoomUser>() {
-    override fun areItemsTheSame(oldItem: ChatRoomUser, newItem: ChatRoomUser): Boolean {
+) : ListAdapter<ChatRoomUsersResult, ChatRoomCurrentMemberAdapter.ViewHolder>(object :
+    DiffUtil.ItemCallback<ChatRoomUsersResult>() {
+    override fun areItemsTheSame(oldItem: ChatRoomUsersResult, newItem: ChatRoomUsersResult): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: ChatRoomUser, newItem: ChatRoomUser): Boolean {
+    override fun areContentsTheSame(oldItem: ChatRoomUsersResult, newItem: ChatRoomUsersResult): Boolean {
         return oldItem.id == newItem.id
     }
 }) {
@@ -43,7 +43,7 @@ class ChatRoomCurrentMemberAdapter(
     ) {
         private val binding = ChatRoomCurrentMemberItemBinding.bind(itemView)
 
-        fun bind(item: ChatRoomUser) {
+        fun bind(item: ChatRoomUsersResult) {
             binding.chatRoomCurrentMemberItemTxtName.text = item.nickname
 
             if (myUserId == item.userId) {

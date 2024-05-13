@@ -10,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.changs.android.gnuting_android.R
@@ -18,6 +19,7 @@ import com.changs.android.gnuting_android.databinding.AddMemberBottomSheetBindin
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.PostCurrentMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.util.setClickEvent
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.MemberAddViewModel
 import com.changs.android.gnuting_android.viewmodel.PostViewModel
@@ -97,7 +99,7 @@ class AddMemberBottomSheetFragment : BottomSheetDialogFragment() {
             findNavController().popBackStack()
         }
 
-        binding.addMemberBottomSheetBtnChatRequest.setOnClickListener {
+        binding.addMemberBottomSheetBtnChatRequest.setClickEvent(viewLifecycleOwner.lifecycleScope) {
             memberAddViewModel.currentMember.value?.let {
                 postViewModel.postApplyChat(args.boardId, it.toList())
             }

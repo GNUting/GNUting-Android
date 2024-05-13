@@ -18,8 +18,13 @@ open class BaseViewModel : ViewModel() {
     val spinner: LiveData<Boolean>
         get() = _spinner
 
+    protected val _dialog = MutableLiveData<Event<String?>>()
+
+    val dialog: LiveData<Event<String?>>
+        get() = _dialog
+
     protected fun <T : Any> handleResult(
-        response: Response<T>, handleSuccess: () -> Unit, handleError: ((String) -> Unit)? = null
+        response: Response<T>, handleSuccess: () -> Unit, handleError: ((BaseResponse) -> Unit)? = null
     ) {
         if (response.isSuccessful && response.body() != null) {
             handleSuccess()
@@ -35,9 +40,9 @@ open class BaseViewModel : ViewModel() {
                         }
 
                         else -> {
-                            handleError?.let { handle ->
-                                handle(error.message ?: "네트워크 에러가 발생했습니다.")
-                            } ?: {
+                            if (handleError != null) {
+                                handleError(error)
+                            } else {
                                 _toast.value = Event("네트워크 에러가 발생했습니다.")
                             }
                         }

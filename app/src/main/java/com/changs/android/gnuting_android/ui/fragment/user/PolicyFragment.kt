@@ -42,8 +42,16 @@ class PolicyFragment :
             startActivity(intent)
         }
 
+        binding.policyTxtTermsOfService.setOnClickListener {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://equal-kiwi-602.notion.site/9021bea8cf1841fc8a83d26a06c8e72c?pvs=4")
+            )
+            startActivity(intent)
+        }
+
         binding.policyBtnNext.setOnClickListener {
-            if (binding.policyCheck1.isChecked && binding.policyCheck2.isChecked) findNavController().navigate(
+            if (binding.policyCheck1.isChecked && binding.policyCheck2.isChecked && binding.policyCheck3.isChecked) findNavController().navigate(
                 R.id.action_policyFragment_to_join1Fragment
             )
             else Toast.makeText(requireContext(), "필수 항목을 모두 체크해주세요.", Toast.LENGTH_SHORT).show()
@@ -54,6 +62,7 @@ class PolicyFragment :
                 policyCheckAll.isChecked = it
                 policyCheck1.isChecked = it
                 policyCheck2.isChecked = it
+                policyCheck3.isChecked = it
             }
 
             buttonActiveCheckViewModel.buttonActiveCheck.value = it
@@ -64,6 +73,10 @@ class PolicyFragment :
         }
 
         binding.policyCheck2.setOnClickListener {
+            binding.policyCheckAll.isChecked = isAllChecked()
+        }
+
+        binding.policyCheck3.setOnClickListener {
             binding.policyCheckAll.isChecked = isAllChecked()
         }
 
@@ -83,7 +96,8 @@ class PolicyFragment :
     }
 
     private fun isAllChecked(): Boolean {
-        val isAllChecked = binding.policyCheck1.isChecked && binding.policyCheck2.isChecked
+        val isAllChecked =
+            binding.policyCheck1.isChecked && binding.policyCheck2.isChecked && binding.policyCheck3.isChecked
         buttonActiveCheckViewModel.buttonActiveCheck.value = isAllChecked
         return isAllChecked
     }

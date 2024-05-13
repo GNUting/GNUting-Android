@@ -11,7 +11,7 @@ import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.ApplicationMemberItemBinding
 
 
-class ApplicationMemberAdapter(private val navigateListener: (InUser) -> Unit,) :
+class ApplicationMemberAdapter(private val navigateListener: (InUser) -> Unit) :
     ListAdapter<InUser, ApplicationMemberAdapter.ViewHolder>(object :
         DiffUtil.ItemCallback<InUser>() {
         override fun areItemsTheSame(oldItem: InUser, newItem: InUser): Boolean {

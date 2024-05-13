@@ -21,6 +21,13 @@ import androidx.core.view.WindowCompat
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseResponse
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import okhttp3.ResponseBody
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -122,4 +129,60 @@ fun showTwoButtonDialog(
     }
 
     dlg.show()
+}
+
+fun showOneButtonDialog(
+    context: Context,
+    titleText: String,
+    buttonText: String = "확인",
+    action: () -> Unit
+) {
+    val dlg = Dialog(context)
+    dlg.setCancelable(false)
+    dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    dlg.setContentView(R.layout.dialog_one_btn)
+    dlg.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    val dlgTextView = dlg.findViewById<TextView>(R.id.dialog_one_btn_txt_content)
+    dlgTextView.text = titleText
+
+    val ok = dlg.findViewById<View>(R.id.dialog_one_btn_txt_ok) as TextView
+
+    ok.text = buttonText
+    ok.setOnClickListener {
+        action()
+        dlg.dismiss()
+    }
+
+    dlg.show()
+}
+
+// 클릭 이벤트를 flow로 변환
+fun View.clicks(): Flow<Unit> = callbackFlow {
+    setOnClickListener {
+        this.trySend(Unit)
+    }
+    awaitClose { setOnClickListener(null) }
+}
+
+// 마지막 발행 시간과 현재 시간 비교해서 이벤트 발행, 나머지는 무시.
+fun <T> Flow<T>.throttleFirst(windowDuration: Long): Flow<T> = flow {
+    var lastEmissionTime = 0L
+    collect { upstream ->
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastEmissionTime > windowDuration) {
+            lastEmissionTime = currentTime
+            emit(upstream)
+        }
+    }
+}
+
+fun View.setClickEvent(
+    uiScope: CoroutineScope,
+    windowDuration: Long = 1000,
+    onClick: () -> Unit,
+) {
+    clicks()
+        .throttleFirst(windowDuration)
+        .onEach { onClick.invoke() }
+        .launchIn(uiScope)
 }

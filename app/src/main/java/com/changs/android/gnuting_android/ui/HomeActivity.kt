@@ -11,11 +11,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.databinding.ActivityHomeBinding
+import com.changs.android.gnuting_android.ui.adapter.ApplicationAdapter
+import com.changs.android.gnuting_android.ui.fragment.chat.ChatFragment
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.firebase.messaging.FirebaseMessaging
@@ -23,11 +27,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
+    private var navController: NavController? = null
     private var toast: Toast? = null
     private val viewModel: HomeMainViewModel by viewModels()
 
@@ -50,11 +56,11 @@ class HomeActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.home_nav_host_fragment) as NavHostFragment
 
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
 
-        binding.bottomNav.setupWithNavController(navController)
+        binding.bottomNav.setupWithNavController(navController!!)
 
-        navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
+        navController?.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.homeFragment, R.id.listFragment, R.id.chatListFragment, R.id.myFragment -> binding.bottomNav.isVisible =
                     true
@@ -136,11 +142,51 @@ class HomeActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         val location = intent?.getStringExtra("location")
+        val id = intent?.getStringExtra("locationId")
+
+        Timber.d("FCM click location: $location, id: $id")
+
 
         location?.let {
             when (it) {
-                "chat" -> selectedItemId(R.id.chatListFragment)
-                else -> selectedItemId(R.id.listFragment)
+                "chat" -> {
+                    if (id != null) {
+                        val bundle = bundleOf("id" to id.toInt())
+                        navController?.navigate(R.id.chatFragment, bundle)
+                    } else {
+                        selectedItemId(R.id.chatListFragment)
+                    }
+                }
+
+                "apply" -> {
+                    viewModel.currentApplicationTab = ApplicationAdapter.ApplicationType.APPLY
+
+                    if (id != null) {
+                        val bundle = bundleOf("id" to id.toInt())
+                        navController?.navigate(R.id.applicationFragment, bundle)
+                    } else {
+                        selectedItemId(R.id.listFragment)
+                    }
+                }
+
+                "refuse" -> {
+                    viewModel.currentApplicationTab = ApplicationAdapter.ApplicationType.PARTICIPANT
+
+                    if (id != null) {
+                        val bundle = bundleOf("id" to id.toInt())
+                        navController?.navigate(R.id.applicationFragment, bundle)
+                    } else {
+                        selectedItemId(R.id.listFragment)
+                    }
+                }
+
+                "cancel" -> {
+
+                }
+
+                else -> {
+
+                }
             }
         }
     }

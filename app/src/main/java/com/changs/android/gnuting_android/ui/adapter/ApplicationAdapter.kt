@@ -10,7 +10,7 @@ import com.changs.android.gnuting_android.data.model.ApplicationResult
 import com.changs.android.gnuting_android.databinding.ApplicationListItemBinding
 
 
-class ApplicationAdapter(private val type: ApplicationType, private val listener: (ApplicationResult) -> Unit) :
+class ApplicationAdapter(private val type: ApplicationType, private val listener: (ApplicationResult) -> Unit, private val deleteListener: (Int) -> Unit) :
     ListAdapter<ApplicationResult, ApplicationAdapter.ViewHolder>(object : DiffUtil.ItemCallback<ApplicationResult>() {
         override fun areItemsTheSame(oldItem: ApplicationResult, newItem: ApplicationResult): Boolean {
             return oldItem == newItem
@@ -21,14 +21,14 @@ class ApplicationAdapter(private val type: ApplicationType, private val listener
         }
     }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(parent, listener)
+        return ViewHolder(parent, listener, deleteListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(type, currentList[position])
     }
 
-    class ViewHolder(parent: ViewGroup, val listener: (ApplicationResult) -> Unit) : RecyclerView.ViewHolder(
+    class ViewHolder(parent: ViewGroup, val listener: (ApplicationResult) -> Unit, private val deleteListener: (Int) -> Unit) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.application_list_item, parent, false)
     ) {
         private val binding = ApplicationListItemBinding.bind(itemView)
@@ -37,6 +37,12 @@ class ApplicationAdapter(private val type: ApplicationType, private val listener
             binding.root.setOnClickListener {
                 listener(item)
             }
+
+            binding.root.setOnLongClickListener {
+                if (item.applyStatus != "대기중") deleteListener(item.id)
+                true
+            }
+
 
             when(type) {
                 ApplicationType.APPLY -> {

@@ -7,6 +7,9 @@ import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.changs.android.gnuting_android.GNUApplication
@@ -22,13 +25,18 @@ import com.changs.android.gnuting_android.ui.adapter.ChatAdapter
 import com.changs.android.gnuting_android.ui.adapter.ChatRoomCurrentMemberAdapter
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.util.hideSoftKeyboard
+import com.changs.android.gnuting_android.util.showOneButtonDialog
 import com.changs.android.gnuting_android.util.showTwoButtonDialog
 import com.changs.android.gnuting_android.viewmodel.AlarmViewModel
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -43,44 +51,13 @@ class ChatFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        chatViewModel.getChats(args.id)
-        alarmViewModel.getCurrentChatRoomNotificationStatus(args.id)
+        chatViewModel.getChatDetail(args.id)
         setRecyclerView()
         setObserver()
         setListener()
-
-        binding.chatTxtTitle.text = args.title
-        binding.chatTxtInfo.text = args.info
     }
 
     private fun setListener() {
-        with(binding.chatLayoutDrawer) {
-            drawerChatImgChatout.setOnClickListener {
-                showTwoButtonDialog(
-                    context = requireContext(), titleText = "채팅방을 나가시겠습니까?", rightButtonText = "나가기"
-                ) {
-                    chatViewModel.chatRoomLeave(args.id)
-                }
-            }
-
-            val adapter =
-                ChatRoomCurrentMemberAdapter(viewModel.myInfo.value?.id, ::navigateListener)
-            drawerChatRecycler.adapter = adapter
-
-            val chatRoomUsers = args.chatRoomUsers.toMutableList()
-            val index = chatRoomUsers.indexOfFirst {
-                it.userId == (viewModel.myInfo.value?.id ?: -1)
-            }
-
-            if (index != -1) {
-                val user = chatRoomUsers.removeAt(index)
-                chatRoomUsers.add(0, user)
-            }
-
-            adapter.submitList(chatRoomUsers.toList())
-
-
-        }
         binding.chatImgSetting.setOnClickListener {
             it.hideSoftKeyboard()
             if (!binding.chatDrawerMain.isOpen) binding.chatDrawerMain.openDrawer(GravityCompat.END)
@@ -110,6 +87,52 @@ class ChatFragment :
     }
 
     private fun setObserver() {
+        chatViewModel.dialog.eventObserve(viewLifecycleOwner) { message ->
+            message?.let {
+                showOneButtonDialog(context = requireContext(),  titleText = it, action = {
+                    findNavController().popBackStack()
+                })
+            }
+        }
+        chatViewModel.chatDetailResponse.observe(viewLifecycleOwner) {
+            binding.chatTxtTitle.text = it.result.title
+            binding.chatTxtInfo.text = "${it.result.applyLeaderDepartment} | ${it.result.leaderUserDepartment}"
+
+            chatViewModel.getChats(args.id)
+            chatViewModel.getChatRoomUsers(args.id)
+            alarmViewModel.getCurrentChatRoomNotificationStatus(args.id)
+        }
+
+        chatViewModel.chatRoomUsersResponse.observe(viewLifecycleOwner) {
+            with(binding.chatLayoutDrawer) {
+                drawerChatImgChatout.setOnClickListener {
+                    showTwoButtonDialog(
+                        context = requireContext(),
+                        titleText = "채팅방을 나가시겠습니까?",
+                        rightButtonText = "나가기"
+                    ) {
+                        chatViewModel.chatRoomLeave(args.id)
+                    }
+                }
+
+                val adapter =
+                    ChatRoomCurrentMemberAdapter(viewModel.myInfo.value?.id, ::navigateListener)
+                drawerChatRecycler.adapter = adapter
+
+                val chatRoomUsers = it.result.toMutableList()
+                val index = chatRoomUsers.indexOfFirst {
+                    it.userId == (viewModel.myInfo.value?.id ?: -1)
+                }
+
+                if (index != -1) {
+                    val user = chatRoomUsers.removeAt(index)
+                    chatRoomUsers.add(0, user)
+                }
+
+                adapter.submitList(chatRoomUsers.toList())
+            }
+        }
+
         alarmViewModel.currentChatRoomAlarmStatusResponse.observe(viewLifecycleOwner) {
             when (it.result.notificationSetting) {
                 AlarmStatus.ENABLE.name -> {
@@ -142,18 +165,26 @@ class ChatFragment :
             }
         }
 
-        chatViewModel.message.observe(viewLifecycleOwner) {
-            val messageItem: MessageItem =
-                GsonBuilder().create().fromJson(it, MessageItem::class.java)
+        val mutex = Mutex()
 
-            adapter?.let {
-                val currentList = it.currentList.toMutableList()
-                currentList.add(messageItem)
-                it.submitList(currentList) {
-                    binding.chatRecyclerview.scrollToPosition(it.currentList.size - 1)
+        chatViewModel.message.observe(viewLifecycleOwner) {
+            lifecycleScope.launch {
+                mutex.withLock {
+                    val messageItem: MessageItem =
+                        GsonBuilder().create().fromJson(it, MessageItem::class.java)
+
+                    adapter?.let {
+                        val currentList = it.currentList.toMutableList()
+                        currentList.add(messageItem)
+                        it.submitList(currentList) {
+                            binding.chatRecyclerview.scrollToPosition(it.currentList.size - 1)
+                        }
+                    }
                 }
             }
         }
+
+
         chatViewModel.chatsResponse.observe(viewLifecycleOwner) { response ->
             adapter?.let {
                 it.submitList(response.result) {

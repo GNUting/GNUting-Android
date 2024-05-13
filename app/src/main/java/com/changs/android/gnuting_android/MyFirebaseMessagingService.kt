@@ -10,6 +10,7 @@ import com.changs.android.gnuting_android.ui.HomeActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 import java.util.Date
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
@@ -22,18 +23,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val title = message.notification?.title
         val body = message.notification?.body
         val location = message.data["location"]
+        val id = message.data["locationId"]
 
-        sendNotification(title, body, location)
+        Timber.d("FCM click location: $location, id: $id")
+
+        sendNotification(title, body, location, id)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun sendNotification(title: String?, body: String?, location: String?) {
+    private fun sendNotification(title: String?, body: String?, location: String?, id: String?) {
         if (GNUApplication.isActiveChatFragment) return
 
         val intent = Intent(this, HomeActivity::class.java)
 
         if (location != null) {
             intent.putExtra("location", location)
+        }
+
+        if (id != null) {
+            intent.putExtra("locationId", id)
         }
 
         val pIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
