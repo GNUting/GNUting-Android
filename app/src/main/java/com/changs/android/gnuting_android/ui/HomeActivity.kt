@@ -19,7 +19,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.databinding.ActivityHomeBinding
 import com.changs.android.gnuting_android.ui.adapter.ApplicationAdapter
-import com.changs.android.gnuting_android.ui.fragment.chat.ChatFragment
 import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.google.firebase.messaging.FirebaseMessaging
