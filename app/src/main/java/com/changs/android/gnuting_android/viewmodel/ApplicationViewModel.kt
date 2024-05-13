@@ -42,6 +42,50 @@ class ApplicationViewModel @Inject constructor(private val applicationRepository
     val cancelResponse: LiveData<Event<DefaultResponse>>
         get() = _cancelResponse
 
+    private val _deleteApplyStateResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val deleteApplyStateResponse: LiveData<Event<DefaultResponse>>
+        get() = _deleteApplyStateResponse
+
+    private val _deleteReceivedStateResponse = MutableLiveData<Event<DefaultResponse>>()
+
+    val deleteReceivedStateResponse: LiveData<Event<DefaultResponse>>
+        get() = _deleteReceivedStateResponse
+
+    fun deleteApplyState(id: Int) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val response = applicationRepository.patchApplyState(id)
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _deleteApplyStateResponse.value = Event(response.body()!!)
+                })
+            } catch (e: Exception) {
+                _spinner.value = false
+                _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
+            }
+        }
+    }
+
+    fun deleteReceivedState(id: Int) {
+        viewModelScope.launch {
+            try {
+                _spinner.value = true
+                val response = applicationRepository.patchReceivedState(id)
+
+                handleResult(response = response, handleSuccess = fun() {
+                    _deleteReceivedStateResponse.value = Event(response.body()!!)
+                })
+            } catch (e: Exception) {
+                _spinner.value = false
+                _toast.value = Event("네트워크 에러가 발생했습니다.")
+                Timber.e(e.message ?: "network error")
+            }
+        }
+    }
+
     fun getApplicationApplyList() {
         viewModelScope.launch {
             try {

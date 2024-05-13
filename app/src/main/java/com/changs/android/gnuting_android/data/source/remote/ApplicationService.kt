@@ -29,4 +29,10 @@ interface ApplicationService {
 
     @GET("/api/v1/notification/application/click/{id}")
     suspend fun getApplicationDetail(@Path("id") id: Int): Response<ApplicationDetailResponse>
+
+    @PATCH("/api/v1/board/applications/receivedstate/{id}")
+    suspend fun patchReceivedState(@Path("id") id: Int): Response<DefaultResponse>
+
+    @PATCH("/api/v1/board/applications/applystate/{id}")
+    suspend fun patchApplyState(@Path("id") id: Int): Response<DefaultResponse>
 }

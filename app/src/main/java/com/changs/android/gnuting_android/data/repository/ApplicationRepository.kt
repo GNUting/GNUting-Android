@@ -1,6 +1,9 @@
 package com.changs.android.gnuting_android.data.repository
 
+import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.source.remote.ApplicationService
+import retrofit2.Response
+import retrofit2.http.PATCH
 import retrofit2.http.Path
 import javax.inject.Inject
 
@@ -16,4 +19,8 @@ class ApplicationRepository @Inject constructor(private val service: Application
     suspend fun deleteCancel(id: Int) = service.deleteCancel(id)
 
     suspend fun getApplicationDetail(id: Int) = service.getApplicationDetail(id)
+
+    suspend fun patchReceivedState(id: Int) = service.patchReceivedState(id)
+
+    suspend fun patchApplyState(id: Int) = service.patchApplyState(id)
 }
