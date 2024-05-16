@@ -140,6 +140,23 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
                     .error(R.drawable.ic_profile)
                     .into(binding.myImgProfile)
 
+                binding.myImgProfile.setOnClickListener {
+                    val myUserInfo = InUser(
+                        age = myInfo.age,
+                        department = myInfo.department,
+                        gender = myInfo.gender,
+                        id = myInfo.id,
+                        nickname = myInfo.nickname,
+                        profileImage = myInfo.profileImage,
+                        studentId = myInfo.studentId,
+                        userRole = myInfo.userRole,
+                        userSelfIntroduction = myInfo.userSelfIntroduction
+                    )
+
+                    val args = bundleOf("user" to myUserInfo)
+                    findNavController().navigate(R.id.photoFragment, args)
+                }
+
                 binding.myTxtEditProfile.setOnClickListener {
                     val action = MyFragmentDirections.actionMyFragmentToEditProfileFragment(myInfo)
                     findNavController().navigate(action)
