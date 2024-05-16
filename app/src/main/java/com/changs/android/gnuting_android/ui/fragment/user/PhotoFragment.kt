@@ -2,7 +2,6 @@ package com.changs.android.gnuting_android.ui.fragment.user
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
