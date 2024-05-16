@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:layout_marginEnd="80dp"
+            android:layout_marginEnd="90dp"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:fontFamily="@font/pretendard_bold"
@@ -62,6 +62,7 @@
                 app:civ_border_color="#DCDCDC"
                 android:contentDescription="사용자 프로필 이미지"
                 app:civ_border_width="1dp"
+                tools:src="@drawable/ic_profile"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -72,7 +73,7 @@
                 android:layout_marginStart="25dp"
                 android:contentDescription="사용자 프로필 이미지"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_profile"
+                tools:src="@drawable/ic_profile"
                 app:civ_border_color="#DCDCDC"
                 app:civ_border_width="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +86,7 @@
                 android:layout_marginBottom="23dp"
                 android:scaleType="centerCrop"
                 android:contentDescription="사용자 프로필 이미지"
-                android:src="@drawable/ic_profile"
+                tools:src="@drawable/ic_profile"
                 app:civ_border_color="#DCDCDC"
                 app:civ_border_width="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -94,12 +95,45 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <LinearLayout
+            android:id="@+id/chat_item_cl_profile_img_count_2_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/chat_item_img_profile_img_type_count_2_img1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="사용자 프로필 이미지"
+                app:civ_border_color="#DCDCDC"
+                app:civ_border_width="1dp"
+                tools:src="@drawable/ic_profile" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/chat_item_img_profile_img_type_count_2_img2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
+                android:contentDescription="사용자 프로필 이미지"
+                android:scaleType="centerCrop"
+                app:civ_border_color="#DCDCDC"
+                app:civ_border_width="1dp"
+                tools:src="@drawable/ic_profile" />
+
+
+        </LinearLayout>
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/chat_item_img_profile"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_profile"
+            tools:src="@drawable/ic_profile"
             android:contentDescription="사용자 프로필 이미지"
             android:visibility="invisible"
             app:civ_border_color="#DCDCDC"
@@ -121,7 +155,7 @@
                 android:layout_height="30dp"
                 android:scaleType="centerCrop"
                 android:contentDescription="사용자 프로필 이미지"
-                android:src="@drawable/ic_profile"
+                tools:src="@drawable/ic_profile"
                 app:civ_border_color="#DCDCDC"
                 app:civ_border_width="1dp"
                 app:layout_constraintBottom_toTopOf="@+id/chat_item_img_profile_img_type_count_4_img3"
@@ -136,7 +170,7 @@
                 android:layout_height="30dp"
                 android:contentDescription="사용자 프로필 이미지"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_profile"
+                tools:src="@drawable/ic_profile"
                 app:civ_border_color="#DCDCDC"
                 app:civ_border_width="1dp"
                 app:layout_constraintBottom_toTopOf="@+id/chat_item_img_profile_img_type_count_4_img4"
@@ -151,7 +185,7 @@
                 android:layout_height="30dp"
                 android:contentDescription="사용자 프로필 이미지"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_profile"
+                tools:src="@drawable/ic_profile"
                 app:civ_border_color="#DCDCDC"
                 app:civ_border_width="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -166,7 +200,7 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="사용자 프로필 이미지"
                 app:civ_border_overlay="true"
-                android:src="@drawable/ic_profile"
+                tools:src="@drawable/ic_profile"
                 app:civ_border_color="#DCDCDC"
                 app:civ_border_width="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"

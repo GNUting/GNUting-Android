@@ -37,7 +37,9 @@ class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomU
     ) {
         private val binding = ChatItemBinding.bind(itemView)
 
-        fun bind(item: ChatListResult, listener: (Int, String, String, List<ChatRoomUser>) -> Unit) {
+        fun bind(
+            item: ChatListResult, listener: (Int, String, String, List<ChatRoomUser>) -> Unit
+        ) {
 
             val info = "${item.applyLeaderDepartment} | ${item.leaderUserDepartment}"
 
@@ -51,17 +53,29 @@ class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomU
             }
 
             binding.chatItemImgProfile.isVisible = false
+            binding.chatItemClProfileImgCount2Container.isVisible = false
             binding.chatItemClProfileImgCount3Container.isVisible = false
             binding.chatItemClProfileImgCount4Container.isVisible = false
 
             when (item.chatRoomUserProfileImages.size) {
                 1 -> {
-                    Glide.with(binding.root.context)
-                        .load(item.chatRoomUserProfileImages[0])
-                        .error(R.drawable.ic_profile)
-                        .into(binding.chatItemImgProfile)
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0])
+                        .error(R.drawable.ic_profile).into(binding.chatItemImgProfile)
 
                     binding.chatItemImgProfile.isVisible = true
+                }
+
+                2 -> {
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0])
+                        .error(R.drawable.ic_profile)
+                        .into(binding.chatItemImgProfileImgTypeCount2Img1)
+
+
+                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1])
+                        .error(R.drawable.ic_profile)
+                        .into(binding.chatItemImgProfileImgTypeCount2Img2)
+
+                    binding.chatItemClProfileImgCount2Container.isVisible = true
                 }
 
                 3 -> {
