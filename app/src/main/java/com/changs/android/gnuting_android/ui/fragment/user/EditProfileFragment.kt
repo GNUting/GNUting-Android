@@ -164,7 +164,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
                 dialog.dismiss()
             }
 
-
+            dialog.show()
         }
     }
 
