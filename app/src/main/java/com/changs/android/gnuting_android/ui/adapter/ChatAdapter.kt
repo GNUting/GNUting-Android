@@ -108,12 +108,11 @@ class ChatAdapter(private val myNickName: String, private val navigateListener: 
                 binding.otherChatItemTxtTime.text = convertToKoreanTime(item.createdDate)
             }
 
-            Glide.with(binding.root.context).load(item.profileImage)
-                .error(R.drawable.ic_profile)
+            Glide.with(binding.root.context).load(item.profileImage).error(R.drawable.ic_profile)
                 .into(binding.otherChatItemImg)
 
-            if (!item.nickname.isNullOrEmpty() && item.id != null) {
-                binding.otherChatItemImg.setOnClickListener {
+            binding.otherChatItemImg.setOnClickListener {
+                if (!item.nickname.isNullOrEmpty() && item.id != null) {
                     val inUser = InUser(
                         age = "",
                         department = item.department,
@@ -125,6 +124,7 @@ class ChatAdapter(private val myNickName: String, private val navigateListener: 
                         userRole = "",
                         userSelfIntroduction = ""
                     )
+
                     navigateListener(inUser)
                 }
             }
