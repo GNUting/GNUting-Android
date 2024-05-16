@@ -2,10 +2,13 @@ package com.changs.android.gnuting_android.ui.fragment.user
 
 import android.app.Dialog
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
+import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -128,32 +131,33 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
         }
 
+        val pickMedia =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                if (uri != null) {
+                    Timber.d("Selected URI: $uri")
+                    viewModel.profileImage = uri.getBitmap(requireContext().contentResolver)
+
+                    Glide.with(this).load(uri).circleCrop().error(R.drawable.ic_profile)
+                        .into(binding.editProfileImg)
+                } else {
+                    Timber.d("No media selected")
+                }
+            }
 
         binding.editProfileImg.setOnClickListener {
-            val dialog = Dialog(requireContext())
+            val dlg = Dialog(requireContext())
+            dlg.setCancelable(false)
+            dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dlg.setContentView(R.layout.dialog_edit_profile)
+            dlg.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-            dialog.setContentView(R.layout.dialog_edit_profile)
-
-            val pickerBtn = dialog.findViewById<TextView>(R.id.dialog_edit_profile_txt_show_picker)
+            val pickerBtn = dlg.findViewById<TextView>(R.id.dialog_edit_profile_txt_show_picker)
             val defaultImgBtn =
-                dialog.findViewById<TextView>(R.id.dialog_edit_profile_txt_default_image)
+                dlg.findViewById<TextView>(R.id.dialog_edit_profile_txt_default_image)
 
             pickerBtn.setOnClickListener {
-                val pickMedia =
-                    registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                        if (uri != null) {
-                            Timber.d("Selected URI: $uri")
-                            viewModel.profileImage = uri.getBitmap(requireContext().contentResolver)
-
-                            Glide.with(this).load(uri).circleCrop().error(R.drawable.ic_profile)
-                                .into(binding.editProfileImg)
-                        } else {
-                            Timber.d("No media selected")
-                        }
-                        dialog.dismiss()
-                    }
-
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                dlg.dismiss()
             }
 
             defaultImgBtn.setOnClickListener {
@@ -161,10 +165,10 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
                     .into(binding.editProfileImg)
 
                 viewModel.profileImage = null
-                dialog.dismiss()
+                dlg.dismiss()
             }
 
-            dialog.show()
+            dlg.show()
         }
     }
 
