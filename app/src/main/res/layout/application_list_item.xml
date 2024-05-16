@@ -13,6 +13,24 @@
 
 
     <TextView
+        android:id="@+id/application_list_txt_member_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/pretendard_regular"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/application_list_ll_status_container"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/application_list_txt_member"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1명" />
+
+    <TextView
         android:id="@+id/application_list_txt_member"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -23,27 +41,11 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/application_list_txt_member_count"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="산업시스템공학부" />
-
-    <TextView
-        android:id="@+id/application_list_txt_member_count"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/pretendard_regular"
-        android:maxLines="1"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/application_list_ll_status_container"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/application_list_txt_member"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="1명" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/application_list_ll_status_container"
@@ -57,7 +59,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/application_list_txt_member_count"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/application_list_txt_status"
