@@ -10,13 +10,13 @@ data class MessageItem(
     @SerializedName("email")
     val email: String,
     @SerializedName("id")
-    val id: Int,
+    val id: Int?,
     @SerializedName("message")
     val message: String,
     @SerializedName("messageType")
     val messageType: String,
     @SerializedName("nickname")
-    val nickname: String,
+    val nickname: String?,
     @SerializedName("profileImage")
     val profileImage: String,
     @SerializedName("department")
