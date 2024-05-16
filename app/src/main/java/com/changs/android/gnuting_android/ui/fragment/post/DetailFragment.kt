@@ -14,7 +14,9 @@ import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.data.model.InUser
 import com.changs.android.gnuting_android.databinding.FragmentDetailBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
+import com.changs.android.gnuting_android.ui.adapter.ApplicationAdapter
 import com.changs.android.gnuting_android.util.eventObserve
+import com.changs.android.gnuting_android.util.showTwoButtonDialog
 import com.changs.android.gnuting_android.viewmodel.HomeMainViewModel
 import com.changs.android.gnuting_android.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,10 +55,12 @@ class DetailFragment :
         }
 
         binding.detailTxtMenuRemove.setOnClickListener {
-            postViewModel.deletePost(args.id)
+            showTwoButtonDialog(requireContext(), "정말로 삭제하시겠습니까?", rightButtonText = "삭제") {
+                postViewModel.deletePost(args.id)
+            }
         }
 
-        binding.detailTxtMenuReportd.setOnClickListener {
+        binding.detailTxtMenuReport.setOnClickListener {
             val action = DetailFragmentDirections.actionGlobalReportFragment(id = args.id)
             findNavController().navigate(action)
         }
@@ -87,19 +91,31 @@ class DetailFragment :
                 viewModel.myInfo.value?.let { myInfo ->
                     if (myInfo.nickname == user.nickname) {
                         binding.detailTxtTitle.text = "내가 쓴 게시글"
-                        binding.detailBtnChatRequest.visibility = View.GONE
                         binding.detailTxtMenuEdit.visibility = View.VISIBLE
                         binding.detailTxtMenuRemove.visibility = View.VISIBLE
                         binding.detailViewMenuLine1.visibility = View.VISIBLE
-                        binding.detailViewMenuLine2.visibility = View.VISIBLE
+
+                        binding.detailBtnChatRequest.visibility = View.GONE
+                        binding.detailTxtCurrentParticipant.visibility = View.GONE
+
+                        binding.detailBtnApplication.visibility = View.VISIBLE
+
+                        binding.detailBtnApplication.setOnClickListener {
+                            viewModel.currentApplicationTab =
+                                ApplicationAdapter.ApplicationType.PARTICIPANT
+                            findNavController().navigate(R.id.listFragment2)
+                        }
                     } else {
                         binding.detailTxtTitle.text = "과팅 게시판"
                         binding.detailBtnChatRequest.visibility = View.VISIBLE
+                        binding.detailTxtMenuReport.visibility = View.VISIBLE
+
+                        binding.detailTxtCurrentParticipant.text = "과팅 멤버 정보 ${inUser.size}명"
+                        binding.detailTxtCurrentParticipant.visibility = View.VISIBLE
                     }
                 }
 
-                Glide.with(this@DetailFragment).load(user.profileImage)
-                    .error(R.drawable.ic_profile)
+                Glide.with(this@DetailFragment).load(user.profileImage).error(R.drawable.ic_profile)
                     .into(binding.detailImgProfile)
 
                 binding.detailImgProfile.setOnClickListener {
@@ -123,13 +139,13 @@ class DetailFragment :
                 binding.detailTxtNickname.text = user.nickname
                 binding.detailTxtInfo.text = "${user.department} | ${user.studentId}"
                 binding.detailTxtDetail.text = detail
-                binding.detailTxtCurrentParticipant.text = "과팅 멤버 정보 ${inUser.size}명"
-                binding.detailTxtCurrentParticipant.visibility = View.VISIBLE
                 binding.detailTxtTime.text = time
 
                 binding.detailTxtCurrentParticipant.setOnClickListener {
                     val bundle = bundleOf("currentMember" to inUser.toTypedArray())
-                    findNavController().navigate(R.id.action_detailFragment_to_currentMemberBottomSheetFragment, bundle)
+                    findNavController().navigate(
+                        R.id.action_detailFragment_to_currentMemberBottomSheetFragment, bundle
+                    )
                 }
 
                 if (status != "OPEN") {
@@ -139,7 +155,9 @@ class DetailFragment :
 
                 binding.detailBtnChatRequest.setOnClickListener {
                     val bundle = bundleOf("boardId" to args.id)
-                    findNavController().navigate(R.id.action_detailFragment_to_addMemberBottomSheetFragment, bundle)
+                    findNavController().navigate(
+                        R.id.action_detailFragment_to_addMemberBottomSheetFragment, bundle
+                    )
                 }
             }
         }
