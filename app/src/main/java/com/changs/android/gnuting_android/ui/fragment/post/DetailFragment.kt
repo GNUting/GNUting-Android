@@ -56,7 +56,7 @@ class DetailFragment :
             postViewModel.deletePost(args.id)
         }
 
-        binding.detailTxtMenuReportd.setOnClickListener {
+        binding.detailTxtMenuReport.setOnClickListener {
             val action = DetailFragmentDirections.actionGlobalReportFragment(id = args.id)
             findNavController().navigate(action)
         }
@@ -95,6 +95,7 @@ class DetailFragment :
                     } else {
                         binding.detailTxtTitle.text = "과팅 게시판"
                         binding.detailBtnChatRequest.visibility = View.VISIBLE
+                        binding.detailTxtMenuReport.visibility = View.VISIBLE
                     }
                 }
 
