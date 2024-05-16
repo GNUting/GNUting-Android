@@ -1,10 +1,12 @@
 package com.changs.android.gnuting_android.ui.fragment.user
 
+import android.app.Dialog
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,18 +43,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         setListener()
         setObserver()
 
-        binding.editProfileEditNickName.filters =
-            arrayOf<InputFilter>(InputFilter.LengthFilter(10))
-        binding.editProfileEditIntro.filters =
-            arrayOf<InputFilter>(InputFilter.LengthFilter(30))
+        binding.editProfileEditNickName.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(10))
+        binding.editProfileEditIntro.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
 
-        Glide.with(this).load(args.member.profileImage)
-            .error(R.drawable.ic_profile)
+        Glide.with(this).load(args.member.profileImage).error(R.drawable.ic_profile)
             .into(binding.editProfileImg)
 
         args.member.profileImage?.let { img ->
-            Glide.with(this).asBitmap().load(img)
-                .into(object : CustomTarget<Bitmap>() {
+            Glide.with(this).asBitmap().load(img).into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(
                         resource: Bitmap, transition: Transition<in Bitmap>?
                     ) {
@@ -87,7 +85,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             findNavController().popBackStack()
         }
 
-        binding.editProfileTxtEditProfile.setClickEvent(viewLifecycleOwner.lifecycleScope)  {
+        binding.editProfileTxtEditProfile.setClickEvent(viewLifecycleOwner.lifecycleScope) {
             if (args.member.nickname != binding.editProfileEditNickName.text.toString()) {
                 viewModel.nickNameCheck.value?.let {
                     if (it) {
@@ -130,22 +128,43 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
         }
 
-        val pickMedia =
-            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                if (uri != null) {
-                    Timber.d("Selected URI: $uri")
-                    viewModel.profileImage = uri.getBitmap(requireContext().contentResolver)
-
-                    Glide.with(this).load(uri)
-                        .circleCrop().error(R.drawable.ic_profile)
-                        .into(binding.editProfileImg)
-                } else {
-                    Timber.d("No media selected")
-                }
-            }
 
         binding.editProfileImg.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            val dialog = Dialog(requireContext())
+
+            dialog.setContentView(R.layout.dialog_edit_profile)
+
+            val pickerBtn = dialog.findViewById<TextView>(R.id.dialog_edit_profile_txt_show_picker)
+            val defaultImgBtn =
+                dialog.findViewById<TextView>(R.id.dialog_edit_profile_txt_default_image)
+
+            pickerBtn.setOnClickListener {
+                val pickMedia =
+                    registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                        if (uri != null) {
+                            Timber.d("Selected URI: $uri")
+                            viewModel.profileImage = uri.getBitmap(requireContext().contentResolver)
+
+                            Glide.with(this).load(uri).circleCrop().error(R.drawable.ic_profile)
+                                .into(binding.editProfileImg)
+                        } else {
+                            Timber.d("No media selected")
+                        }
+                        dialog.dismiss()
+                    }
+
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+
+            defaultImgBtn.setOnClickListener {
+                Glide.with(this).load(R.drawable.ic_profile).circleCrop()
+                    .into(binding.editProfileImg)
+
+                viewModel.profileImage = null
+                dialog.dismiss()
+            }
+
+
         }
     }
 
