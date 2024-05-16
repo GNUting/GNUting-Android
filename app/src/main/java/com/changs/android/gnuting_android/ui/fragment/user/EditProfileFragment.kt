@@ -40,6 +40,30 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         super.onViewCreated(view, savedInstanceState)
         setListener()
         setObserver()
+
+        binding.editProfileEditNickName.filters =
+            arrayOf<InputFilter>(InputFilter.LengthFilter(10))
+        binding.editProfileEditIntro.filters =
+            arrayOf<InputFilter>(InputFilter.LengthFilter(30))
+
+        Glide.with(this).load(args.member.profileImage)
+            .error(R.drawable.ic_profile)
+            .into(binding.editProfileImg)
+
+        args.member.profileImage?.let { img ->
+            Glide.with(this).asBitmap().load(img)
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(
+                        resource: Bitmap, transition: Transition<in Bitmap>?
+                    ) {
+                        viewModel.profileImage = resource
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+
+                    }
+                })
+        }
     }
 
     override fun onResume() {
@@ -48,32 +72,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             binding.editProfileEditNickName.setText(it.nickname)
             binding.editProfileEditIntro.setText(it.userSelfIntroduction)
 
-            binding.editProfileEditNickName.filters =
-                arrayOf<InputFilter>(InputFilter.LengthFilter(10))
-            binding.editProfileEditIntro.filters =
-                arrayOf<InputFilter>(InputFilter.LengthFilter(30))
-
             viewModel.nickNameCheck.value = true
             viewModel.choiceDepartment.value = it.department
-
-            Glide.with(this).load(it.profileImage)
-                .error(R.drawable.ic_profile)
-                .into(binding.editProfileImg)
-
-            it.profileImage?.let { img ->
-                Glide.with(this).asBitmap().load(img)
-                    .into(object : CustomTarget<Bitmap>() {
-                        override fun onResourceReady(
-                            resource: Bitmap, transition: Transition<in Bitmap>?
-                        ) {
-                            viewModel.profileImage = resource
-                        }
-
-                        override fun onLoadCleared(placeholder: Drawable?) {
-
-                        }
-                    })
-            }
         }
 
     }
