@@ -46,13 +46,16 @@ class ApplicationAdapter(private val type: ApplicationType, private val listener
 
             when(type) {
                 ApplicationType.APPLY -> {
-                    binding.applicationListTxtMember.text = "${item.participantUserDepartment} ${item.applyUserCount}명"
+                    binding.applicationListTxtMember.text = item.participantUserDepartment
+                    binding.applicationListTxtMemberCount.text = item.participantUserCount.toString()
                 }
 
                 ApplicationType.PARTICIPANT -> {
-                    binding.applicationListTxtMember.text = "${item.applyUserDepartment} ${item.applyUserCount}명"
+                    binding.applicationListTxtMember.text = item.applyUserDepartment
+                    binding.applicationListTxtMemberCount.text = item.applyUserCount.toString()
                 }
             }
+
 
             when (item.applyStatus) {
                 "대기중" -> {
