@@ -1,10 +1,15 @@
 package com.changs.android.gnuting_android.ui.fragment.user
 
+import android.app.Dialog
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
+import android.view.Window
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,18 +46,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         setListener()
         setObserver()
 
-        binding.editProfileEditNickName.filters =
-            arrayOf<InputFilter>(InputFilter.LengthFilter(10))
-        binding.editProfileEditIntro.filters =
-            arrayOf<InputFilter>(InputFilter.LengthFilter(30))
+        binding.editProfileEditNickName.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(10))
+        binding.editProfileEditIntro.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(30))
 
-        Glide.with(this).load(args.member.profileImage)
-            .error(R.drawable.ic_profile)
+        Glide.with(this).load(args.member.profileImage).error(R.drawable.ic_profile)
             .into(binding.editProfileImg)
 
         args.member.profileImage?.let { img ->
-            Glide.with(this).asBitmap().load(img)
-                .into(object : CustomTarget<Bitmap>() {
+            Glide.with(this).asBitmap().load(img).into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(
                         resource: Bitmap, transition: Transition<in Bitmap>?
                     ) {
@@ -87,7 +88,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             findNavController().popBackStack()
         }
 
-        binding.editProfileTxtEditProfile.setClickEvent(viewLifecycleOwner.lifecycleScope)  {
+        binding.editProfileTxtEditProfile.setClickEvent(viewLifecycleOwner.lifecycleScope) {
             if (args.member.nickname != binding.editProfileEditNickName.text.toString()) {
                 viewModel.nickNameCheck.value?.let {
                     if (it) {
@@ -136,8 +137,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
                     Timber.d("Selected URI: $uri")
                     viewModel.profileImage = uri.getBitmap(requireContext().contentResolver)
 
-                    Glide.with(this).load(uri)
-                        .circleCrop().error(R.drawable.ic_profile)
+                    Glide.with(this).load(uri).circleCrop().error(R.drawable.ic_profile)
                         .into(binding.editProfileImg)
                 } else {
                     Timber.d("No media selected")
@@ -145,7 +145,30 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
             }
 
         binding.editProfileImg.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            val dlg = Dialog(requireContext())
+            dlg.setCancelable(false)
+            dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dlg.setContentView(R.layout.dialog_edit_profile)
+            dlg.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            val pickerBtn = dlg.findViewById<TextView>(R.id.dialog_edit_profile_txt_show_picker)
+            val defaultImgBtn =
+                dlg.findViewById<TextView>(R.id.dialog_edit_profile_txt_default_image)
+
+            pickerBtn.setOnClickListener {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                dlg.dismiss()
+            }
+
+            defaultImgBtn.setOnClickListener {
+                Glide.with(this).load(R.drawable.ic_profile).circleCrop()
+                    .into(binding.editProfileImg)
+
+                viewModel.profileImage = null
+                dlg.dismiss()
+            }
+
+            dlg.show()
         }
     }
 

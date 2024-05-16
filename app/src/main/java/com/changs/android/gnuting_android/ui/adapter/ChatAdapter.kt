@@ -102,29 +102,31 @@ class ChatAdapter(private val myNickName: String, private val navigateListener: 
 
         fun bind(item: MessageItem) {
             binding.otherChatItemTxtMessage.text = item.message
-            binding.otherChatItemTxtNickname.text = item.nickname
+            binding.otherChatItemTxtNickname.text = item.nickname ?: "(알 수 없음)"
 
             if (!item.createdDate.isNullOrBlank()) {
                 binding.otherChatItemTxtTime.text = convertToKoreanTime(item.createdDate)
             }
 
-            Glide.with(binding.root.context).load(item.profileImage)
-                .error(R.drawable.ic_profile)
+            Glide.with(binding.root.context).load(item.profileImage).error(R.drawable.ic_profile)
                 .into(binding.otherChatItemImg)
 
             binding.otherChatItemImg.setOnClickListener {
-                val inUser = InUser(
-                    age = "",
-                    department = item.department,
-                    gender = "",
-                    nickname = item.nickname,
-                    id = item.id,
-                    profileImage = item.profileImage,
-                    studentId = item.studentId,
-                    userRole = "",
-                    userSelfIntroduction = ""
-                )
-                navigateListener(inUser)
+                if (!item.nickname.isNullOrEmpty() && item.id != null) {
+                    val inUser = InUser(
+                        age = "",
+                        department = item.department,
+                        gender = "",
+                        nickname = item.nickname,
+                        id = item.id,
+                        profileImage = item.profileImage,
+                        studentId = item.studentId,
+                        userRole = "",
+                        userSelfIntroduction = ""
+                    )
+
+                    navigateListener(inUser)
+                }
             }
         }
     }

@@ -13,9 +13,9 @@ data class InUser(
     @SerializedName("gender")
     val gender: String,
     @SerializedName("id")
-    val id: Int,
+    val id: Int?,
     @SerializedName("nickname")
-    val nickname: String,
+    val nickname: String?,
     @SerializedName("profileImage")
     val profileImage: String? = null,
     @SerializedName("studentId")

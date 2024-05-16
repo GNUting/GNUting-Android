@@ -1,6 +1,7 @@
 package com.changs.android.gnuting_android.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -52,7 +53,7 @@ class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomU
                 listener(item.id, item.title, info, item.chatRoomUsers)
             }
 
-            binding.chatItemImgProfile.isVisible = false
+            binding.chatItemImgProfile.visibility = View.INVISIBLE
             binding.chatItemClProfileImgCount2Container.isVisible = false
             binding.chatItemClProfileImgCount3Container.isVisible = false
             binding.chatItemClProfileImgCount4Container.isVisible = false
