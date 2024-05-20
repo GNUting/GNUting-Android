@@ -128,6 +128,8 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
                 handleResult(response = response, handleSuccess = fun() {
                     _saveResponse.value = Event(response.body()!!)
                     _toast.value = Event("게시물 작성이 완료되었습니다.")
+                }, handleError = fun(error: BaseResponse) {
+                    _toast.value = Event(error.message)
                 })
             } catch (e: Exception) {
                 _spinner.value = false
@@ -146,6 +148,8 @@ class PostViewModel @Inject constructor(private val postRepository: PostReposito
                 handleResult(response = response, handleSuccess = fun() {
                     _patchPostDetailResponse.value = Event(response.body()!!)
                     _toast.value = Event("게시물 수정이 완료되었습니다.")
+                }, handleError = fun(error: BaseResponse) {
+                    _toast.value = Event(error.message)
                 })
             } catch (e: Exception) {
                 _spinner.value = false
