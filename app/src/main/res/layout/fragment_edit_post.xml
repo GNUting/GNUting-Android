@@ -118,22 +118,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/post_member_item" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/edit_post_ll_add_member"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginBottom="30dp"
-                android:layout_marginHorizontal="25dp"
-                android:background="@drawable/background_radius_10dp_stroke_gray9"
-                android:gravity="center">
-
-                <ImageView
-                    android:contentDescription="멤버 추가 버튼"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_round" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
 
