@@ -18,22 +18,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="13sp"
+        android:layout_marginHorizontal="1dp"
         android:textColor="@color/secondary"
         tools:text="신청 가능" />
 
     <TextView
-        android:id="@+id/post_list_item_txt_title"
-        android:layout_width="match_parent"
+        android:id="@+id/post_list_item_txt_members"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/background_radius_4dp_solid_purple"
+        android:fontFamily="@font/pretendard_regular"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="3dp"
+        android:textColor="#696969"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/post_list_item_txt_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_list_item_txt_status"
+        tools:text="3:3" />
+
+    <TextView
+        android:id="@+id/post_list_item_txt_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
         android:ellipsize="end"
+        android:layout_marginEnd="1dp"
         android:layout_marginTop="5dp"
         android:fontFamily="@font/pretendard_medium"
         android:maxLines="1"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/post_list_item_txt_status"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/post_list_item_txt_members"
+        app:layout_constraintTop_toBottomOf="@+id/post_list_item_txt_status"
         tools:text="3:3 과팅 하실분 연락 주세요~" />
 
     <TextView
@@ -44,9 +63,10 @@
         android:ellipsize="end"
         android:fontFamily="@font/pretendard_regular"
         android:maxLines="1"
+        android:layout_marginHorizontal="1dp"
         android:textColor="@color/gray7"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/post_list_item_txt_members"
+        app:layout_constraintEnd_toEndOf="@+id/post_list_item_txt_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_list_item_txt_title"
         tools:text="5분 전 | 컴퓨터공학과 | 23학번" />
@@ -60,17 +80,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_list_item_txt_info" />
 
-    <TextView
-        android:id="@+id/post_list_item_txt_members"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:fontFamily="@font/pretendard_regular"
-        android:maxLines="1"
-        android:textColor="@color/gray7"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/post_list_item_txt_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/post_list_item_txt_info"
-        tools:text="인원: 2명" />
 </androidx.constraintlayout.widget.ConstraintLayout>
