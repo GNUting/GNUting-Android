@@ -54,10 +54,6 @@ class EditPostFragment : BaseFragment<FragmentEditPostBinding>(
 
         binding.editPostImgBack.setOnClickListener { findNavController().popBackStack() }
 
-        binding.editPostLlAddMember.setOnClickListener {
-            findNavController().navigate(R.id.action_editPostFragment_to_searchMemberBottomSheetFragment)
-        }
-
         binding.editPostTxtComplete.setClickEvent(viewLifecycleOwner.lifecycleScope)  {
             if (!binding.editPostEditTitle.text.isNullOrEmpty() && !binding.editPostEditDetail.text.isNullOrEmpty()) {
                 if ((memberAddViewModel.currentMember.value?.size ?: 0) != 0) {

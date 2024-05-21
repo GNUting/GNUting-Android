@@ -184,9 +184,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                         userSelfIntroduction = userSelfIntroduction
                     )
                     if (result.isSuccessful && result.body() != null) {
-                        _signUpResponse.value = Event(result.body()!!)
-                        _spinner.value = false
-
                         val accessToken = result.body()!!.result.accessToken
                         val refreshToken = result.body()!!.result.refreshToken
 
@@ -194,6 +191,9 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                             saveAccessToken(accessToken)
                             saveRefreshToken(refreshToken)
                         }
+
+                        _signUpResponse.value = Event(result.body()!!)
+                        _spinner.value = false
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)
@@ -248,9 +248,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     _spinner.value = true
                     val result = repository.postLogin(LoginRequest(email, password))
                     if (result.isSuccessful && result.body() != null) {
-                        _loginResponse.value = Event(result.body()!!)
-                        _spinner.value = false
-
                         val accessToken = result.body()!!.result.accessToken
                         val refreshToken = result.body()!!.result.refreshToken
 
@@ -258,6 +255,9 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                             saveAccessToken(accessToken)
                             saveRefreshToken(refreshToken)
                         }
+
+                        _loginResponse.value = Event(result.body()!!)
+                        _spinner.value = false
                     } else {
                         result.errorBody()?.let {
                             val errorBody = getErrorResponse(it)

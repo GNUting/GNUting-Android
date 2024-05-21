@@ -48,18 +48,55 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_notification"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_post_list_cl_default" />
+
+        <TextView
+            android:id="@+id/my_post_list_txt_notification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="23dp"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="부적절한 게시글을 작성할 경우, 앱 이용이 제한될 수 있습니다."
+            android:textColor="#4F4F4F"
+            android:textSize="11sp"
+            android:layout_marginStart="6dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/background_radius_8dp_solid_purple"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="#EAEAEA"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/my_post_list_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/my_post_list_cl_default"
+            app:layout_constraintTop_toBottomOf="@+id/view3"
             tools:listitem="@layout/post_list_item" />
 
         <ImageView

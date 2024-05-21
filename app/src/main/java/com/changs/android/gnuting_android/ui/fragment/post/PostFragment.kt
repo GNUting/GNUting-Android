@@ -50,13 +50,15 @@ class PostFragment :
 
         binding.postTxtComplete.setClickEvent(viewLifecycleOwner.lifecycleScope)  {
             if (!binding.postEditTitle.text.isNullOrEmpty() && !binding.postEditDetail.text.isNullOrEmpty()) {
-                if ((memberAddViewModel.currentMember.value?.size ?: 0) != 0) {
+                if ((memberAddViewModel.currentMember.value?.size ?: 0) >= 2) {
                     val request = SaveRequest(
                         detail = binding.postEditDetail.text.toString(),
                         title = binding.postEditTitle.text.toString(),
                         inUser = memberAddViewModel.currentMember.value!!.toList()
                     )
                     postViewModel.postSave(request)
+                } else {
+                    (requireActivity() as HomeActivity).showToast("과팅 게시판 이용은 2명 이상부터 가능합니다.")
                 }
             } else {
                 (requireActivity() as HomeActivity).showToast("게시글 작성을 완료해주세요.")

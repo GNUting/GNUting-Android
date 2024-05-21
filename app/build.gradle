@@ -17,8 +17,8 @@ android {
         applicationId "com.changs.android.gnuting_android"
         minSdk 26
         targetSdk 33
-        versionCode 20
-        versionName "1.9.1"
+        versionCode 35
+        versionName "2.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -149,6 +149,10 @@ dependencies {
 
     // Swipe refresh layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    // In-APP Update
+    implementation 'com.google.android.play:app-update:2.1.0'
+    implementation 'com.google.android.play:app-update-ktx:2.1.0'
 }
 
 kapt {
