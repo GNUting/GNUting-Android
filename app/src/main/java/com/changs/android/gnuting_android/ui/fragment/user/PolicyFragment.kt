@@ -37,7 +37,7 @@ class PolicyFragment :
         binding.policyTxtPrivacyPolicy.setOnClickListener {
             val intent = Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("https://gnuting.github.io/GNUting-PrivacyPolicy/privacy_policy")
+                Uri.parse("https://www.notion.so/d687ee3399a44fbcbc577ee3a73a54e4")
             )
             startActivity(intent)
         }
