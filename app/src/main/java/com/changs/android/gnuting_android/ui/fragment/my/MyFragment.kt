@@ -76,10 +76,21 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
 
         binding.myTxtMenuLegalNotice.setOnClickListener {
             runCatching {
-                val uri = Uri.parse("https://gnuting.github.io/GNUting-PrivacyPolicy/privacy_policy")
                 val intent = Intent(
                     Intent.ACTION_VIEW,
-                    uri
+                    Uri.parse("https://www.notion.so/d687ee3399a44fbcbc577ee3a73a54e4")
+                )
+                startActivity(intent)
+            }.onFailure {
+                Timber.e(it.message ?: "error")
+            }
+        }
+
+        binding.myTxtMenuTerms.setOnClickListener {
+            runCatching {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://equal-kiwi-602.notion.site/9021bea8cf1841fc8a83d26a06c8e72c?pvs=4")
                 )
                 startActivity(intent)
             }.onFailure {

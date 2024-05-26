@@ -213,6 +213,16 @@
             android:layout_marginBottom="17dp"
             android:fontFamily="@font/pretendard_semi_bold"
             app:drawableEndCompat="@drawable/ic_arrow_right2" />
+        <TextView
+            android:id="@+id/my_txt_menu_terms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="서비스 이용약관"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginBottom="17dp"
+            android:fontFamily="@font/pretendard_semi_bold"
+            app:drawableEndCompat="@drawable/ic_arrow_right2" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
