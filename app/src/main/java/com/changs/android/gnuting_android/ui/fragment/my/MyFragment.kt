@@ -78,7 +78,7 @@ class MyFragment : BaseFragment<FragmentMyBinding>(FragmentMyBinding::bind, R.la
             runCatching {
                 val intent = Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("https://www.notion.so/d687ee3399a44fbcbc577ee3a73a54e4")
+                    Uri.parse("https://early-badge-c69.notion.site/d687ee3399a44fbcbc577ee3a73a54e4?pvs=4")
                 )
                 startActivity(intent)
             }.onFailure {
