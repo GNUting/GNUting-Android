@@ -5,8 +5,8 @@ object Constant {
     const val X_ACCESS_TOKEN = "X_ACCESS_TOKEN"
     const val X_REFRESH_TOKEN = "X_REFRESH_TOKEN"
     const val TOKEN_HEADER = "Authorization"
-    const val BASE_URL = "http://203.255.3.66:10001"
-    const val CHAT_URL = "ws://203.255.3.66:10001/chat"
+    const val BASE_URL = "http://203.255.15.32:14357"
+    const val CHAT_URL = "ws://203.255.15.32:14357/chat"
     const val TOKEN_PREFERENCE_STORE = "token_preference_store"
     const val MIllIS_IN_FUTURE = 180000L
     const val TICK_INTERVAL = 1000L
