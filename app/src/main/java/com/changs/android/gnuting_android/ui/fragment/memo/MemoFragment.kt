@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
 import com.changs.android.gnuting_android.databinding.FragmentMemoBinding
@@ -98,7 +99,19 @@ class MemoFragment :
                 is LoadState.Error ->  (requireActivity() as HomeActivity).showToast("네트워크 에러가 발생했습니다.")
             }
         }
-        binding.memoRecyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        val spacingInPixels = (20 * resources.displayMetrics.density).toInt()
+
+        binding.memoRecyclerview.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: android.graphics.Rect, view: View,
+                parent: RecyclerView, state: RecyclerView.State
+            ) {
+                outRect.right = spacingInPixels / 2
+                outRect.left = spacingInPixels / 2
+            }
+        })
+
         binding.memoRecyclerview.adapter = adapter
     }
 
