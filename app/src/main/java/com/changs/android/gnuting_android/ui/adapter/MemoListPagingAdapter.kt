@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.changs.android.gnuting_android.data.model.MemoResult
 import com.changs.android.gnuting_android.databinding.MemoListItemBinding
 
-class MemoListPagingAdapter() :
+class MemoListPagingAdapter(private val onClick: (MemoResult) -> Unit) :
     PagingDataAdapter<MemoResult, MemoListPagingAdapter.PagingViewHolder>(object :
         DiffUtil.ItemCallback<MemoResult>() {
 
@@ -56,7 +56,11 @@ class MemoListPagingAdapter() :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: MemoResult) = with(binding) {
-            binding.memoTxt.text = item.content
+            root.setOnClickListener {
+                onClick(item)
+            }
+
+            memoTxt.text = item.content
         }
     }
 }

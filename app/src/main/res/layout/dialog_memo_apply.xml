@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/memo_apply_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="250dp"
+    android:layout_marginHorizontal="25dp"
+    android:background="@drawable/background_dialog"
+    android:elevation="5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_memo_apply_txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginHorizontal="40dp"
+        android:text="메모팅을 진행하시겠습니까?"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:layout_marginTop="30dp"/>
+
+
+    <TextView
+        android:id="@+id/dialog_memo_apply_txt_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginHorizontal="40dp"
+        android:text='"예"버튼을 누르면 자동으로 채팅방이 형성됩니다.'
+        android:fontFamily="@font/pretendard_regular"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginBottom="19dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingBottom="12dp"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/dialog_memo_apply_txt_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/background_radius_10dp_stroke_secondary"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="아니오"
+            android:paddingVertical="19dp"
+            android:textSize="14sp"
+            android:textColor="@color/secondary"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="@font/pretendard_semi_bold"/>
+
+        <TextView
+            android:id="@+id/dialog_memo_apply_txt_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingVertical="19dp"
+            android:textSize="14sp"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="@color/white"
+            android:fontFamily="@font/pretendard_semi_bold"
+            android:background="@drawable/background_radius_10dp_solid_secondary"
+            android:text="예" />
+    </LinearLayout>
+</LinearLayout>
