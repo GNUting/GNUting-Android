@@ -12,6 +12,7 @@ import com.changs.android.gnuting_android.data.source.local.UserDao
 import com.changs.android.gnuting_android.data.source.remote.AlarmService
 import com.changs.android.gnuting_android.data.source.remote.ApplicationService
 import com.changs.android.gnuting_android.data.source.remote.ChatService
+import com.changs.android.gnuting_android.data.source.remote.MemoService
 import com.changs.android.gnuting_android.data.source.remote.PostService
 import com.changs.android.gnuting_android.data.source.remote.UserService
 import com.changs.android.gnuting_android.util.Authenticator
@@ -108,6 +109,13 @@ object AppModule {
     fun provideApplicationApiService(retrofit: Retrofit): ApplicationService {
         return retrofit.create(ApplicationService::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideMemoApiService(retrofit: Retrofit): MemoService {
+        return retrofit.create(MemoService::class.java)
+    }
+
 
     @Singleton
     @Provides

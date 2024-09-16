@@ -68,6 +68,10 @@ class HomeFragment :
             findNavController().navigate(R.id.action_homeFragment_to_alarmListFragment)
         }
 
+        binding.homeCardMemoting.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_memoFragment)
+        }
+
         binding.homeImgProfile.setOnClickListener {
             (requireActivity() as HomeActivity).selectedItemId(R.id.myFragment)
         }

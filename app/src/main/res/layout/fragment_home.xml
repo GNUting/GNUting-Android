@@ -161,11 +161,12 @@
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/home_pager"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
@@ -200,98 +201,195 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_img_banner" />
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2">
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/home_card_post_list"
-                    android:layout_width="0dp"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_weight="1"
-                    android:paddingVertical="5dp"
-                    app:cardCornerRadius="10dp"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginBottom="5dp"
-                    app:cardElevation="1dp">
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/home_card_post_list"
+                        android:layout_width="0dp"
+                        android:layout_height="180dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_weight="1"
+                        android:paddingVertical="5dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginBottom="5dp"
+                        app:cardElevation="1dp">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="15dp">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="15dp">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/home_content1"
-                            android:contentDescription="과팅 게시판 설명 글 이미지: 많은 분들이 기다리고 있어요 좋은 인연을 만들어 보세요"
-                            app:layout_constraintBottom_toTopOf="@+id/imageView1"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/home_content1"
+                                android:contentDescription="과팅 게시판 설명 글 이미지: 많은 분들이 기다리고 있어요 좋은 인연을 만들어 보세요"
+                                app:layout_constraintBottom_toTopOf="@+id/imageView1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0" />
 
-                        <ImageView
-                            android:id="@+id/imageView1"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:src="@drawable/ic_home_love"
-                            android:contentDescription="편지 모양 아이콘"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            <ImageView
+                                android:id="@+id/imageView1"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:src="@drawable/ic_couple"
+                                android:contentDescription="커플 모양 아이콘"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/home_card_my_post_list"
-                    android:layout_width="0dp"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_weight="1"
-                    android:paddingVertical="5dp"
-                    app:cardCornerRadius="10dp"
-                    android:layout_marginEnd="1dp"
-                    android:layout_marginBottom="5dp"
-                    app:cardElevation="1dp">
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/home_card_matching"
+                        android:layout_width="0dp"
+                        android:layout_height="180dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_weight="1"
+                        android:paddingVertical="5dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="5dp"
+                        app:cardElevation="1dp">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="15dp">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="15dp">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/home_content2"
-                            app:layout_constraintBottom_toTopOf="@+id/imageView2"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:contentDescription="내가 쓴 게시글 설명 글 이미지: 내가 쓴 게시물을 한번에 모아서 볼 수 있어요"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/home_content4"
+                                app:layout_constraintBottom_toTopOf="@+id/imageView3"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:contentDescription="1:1 매칭 설명 글 이미지: 랜덤으로 인연을 찾아보세요 마음에 든다면 먼저 연락해봐요"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0" />
 
-                        <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:layout_gravity="end"
-                            android:contentDescription="글쓰기 모양 아이콘"
-                            android:src="@drawable/ic_home_document"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="end"
+                                android:contentDescription="하트 모양 아이콘"
+                                android:src="@drawable/ic_heartarrow"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/home_card_memoting"
+                        android:layout_width="0dp"
+                        android:layout_height="180dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_weight="1"
+                        android:paddingVertical="5dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginBottom="5dp"
+                        app:cardElevation="1dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="15dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/home_content3"
+                                android:contentDescription="메모팅 게시판 설명 글 이미지: 짧고 굵게 마음을 전해요 메모 한 장으로 인연을 찾아요"
+                                app:layout_constraintBottom_toTopOf="@+id/imageView4"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0" />
+
+                            <ImageView
+                                android:id="@+id/imageView4"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:src="@drawable/ic_memoting"
+                                android:contentDescription="메모 모양 아이콘"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/home_card_my_post_list"
+                        android:layout_width="0dp"
+                        android:layout_height="180dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_weight="1"
+                        android:paddingVertical="5dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="5dp"
+                        app:cardElevation="1dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="15dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/home_content2"
+                                app:layout_constraintBottom_toTopOf="@+id/imageView5"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:contentDescription="내가 쓴 게시글 설명 글 이미지: 내가 쓴 게시물을 한번에 모아서 볼 수 있어요"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0" />
+
+                            <ImageView
+                                android:id="@+id/imageView5"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="end"
+                                android:contentDescription="글쓰기 모양 아이콘"
+                                android:src="@drawable/ic_home_document"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
