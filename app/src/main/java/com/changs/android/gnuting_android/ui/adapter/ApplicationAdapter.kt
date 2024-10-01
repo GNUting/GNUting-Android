@@ -58,13 +58,23 @@ class ApplicationAdapter(
 
             when (type) {
                 ApplicationType.APPLY -> {
-                    binding.applicationListTxtMember.text =
-                        "${item.participantUserDepartment} ${item.participantUserCount}명"
+                    if (item.participantUserCount == 1) {
+                        binding.applicationListTxtMember.text =
+                            "1:1 매칭"
+                    } else {
+                        binding.applicationListTxtMember.text =
+                            "과팅 (${item.participantUserCount}:${item.participantUserCount}매칭)"
+                    }
                 }
 
                 ApplicationType.PARTICIPANT -> {
-                    binding.applicationListTxtMember.text =
-                        "${item.applyUserDepartment} ${item.applyUserCount}명"
+                    if (item.applyUserCount == 1) {
+                        binding.applicationListTxtMember.text =
+                            "1:1 매칭"
+                    } else {
+                        binding.applicationListTxtMember.text =
+                            "과팅 (${item.applyUserCount}:${item.applyUserCount}매칭)"
+                    }
                 }
             }
 

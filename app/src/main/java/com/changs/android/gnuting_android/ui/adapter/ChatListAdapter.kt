@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,18 +11,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.data.model.ChatListResult
+import com.changs.android.gnuting_android.data.model.ChatListResult2
 import com.changs.android.gnuting_android.data.model.ChatRoomUser
+import com.changs.android.gnuting_android.databinding.ChatItem2Binding
 import com.changs.android.gnuting_android.databinding.ChatItemBinding
+import com.changs.android.gnuting_android.util.convertToKoreanTime
 
 
-class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomUser>) -> Unit) :
-    ListAdapter<ChatListResult, ChatListAdapter.ViewHolder>(object :
-        DiffUtil.ItemCallback<ChatListResult>() {
-        override fun areItemsTheSame(oldItem: ChatListResult, newItem: ChatListResult): Boolean {
+class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomUser?>) -> Unit) :
+    ListAdapter<ChatListResult2, ChatListAdapter.ViewHolder>(object :
+        DiffUtil.ItemCallback<ChatListResult2>() {
+        override fun areItemsTheSame(oldItem: ChatListResult2, newItem: ChatListResult2): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: ChatListResult, newItem: ChatListResult): Boolean {
+        override fun areContentsTheSame(oldItem: ChatListResult2, newItem: ChatListResult2): Boolean {
             return oldItem == newItem
         }
     }) {
@@ -34,92 +38,39 @@ class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomU
     }
 
     class ViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.chat_item, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.chat_item2, parent, false)
     ) {
-        private val binding = ChatItemBinding.bind(itemView)
+        private val binding = ChatItem2Binding.bind(itemView)
 
         fun bind(
-            item: ChatListResult, listener: (Int, String, String, List<ChatRoomUser>) -> Unit
+            item: ChatListResult2, listener: (Int, String, String, List<ChatRoomUser?>) -> Unit
         ) {
-
-            val info = "${item.applyLeaderDepartment} | ${item.leaderUserDepartment}"
-
             binding.chatItemImgNew.isVisible = item.hasNewMessage
 
-            binding.chatItemTxtTitle.text = item.title
+            val userNameList = item.chatRoomUsers.filterNotNull().map { it.nickname }.joinToString(separator = ", ")
+            val user = item.chatRoomUsers.filterNotNull().firstOrNull()
+            val info = if (user != null) "${user.studentId} | ${user.department}" else ""
+
+            binding.chatItemTxtType.text = item.title
             binding.chatItemTxtInfo.text = info
+            binding.chatItemTxtMessage.text = item.lastMessage
+            binding.chatItemTxtTime.text = convertToKoreanTime(item.lastMessageTime)
+
+            if (item.title == "1:1" || item.title == "메모팅") {
+                binding.chatItemTxtName.text = user?.nickname ?: "(탈퇴한 회원)"
+                binding.chatItemTxtInfo.visibility = View.VISIBLE
+            } else {
+                binding.chatItemTxtName.text = userNameList
+                binding.chatItemTxtInfo.visibility = View.GONE
+            }
 
             binding.root.setOnClickListener {
                 listener(item.id, item.title, info, item.chatRoomUsers)
             }
 
-            binding.chatItemImgProfile.visibility = View.INVISIBLE
-            binding.chatItemClProfileImgCount2Container.isVisible = false
-            binding.chatItemClProfileImgCount3Container.isVisible = false
-            binding.chatItemClProfileImgCount4Container.isVisible = false
 
-            when (item.chatRoomUserProfileImages.size) {
-                1 -> {
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0])
-                        .error(R.drawable.ic_profile).into(binding.chatItemImgProfile)
-
-                    binding.chatItemImgProfile.isVisible = true
-                }
-
-                2 -> {
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0])
-                        .error(R.drawable.ic_profile)
-                        .into(binding.chatItemImgProfileImgTypeCount2Img1)
-
-
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1])
-                        .error(R.drawable.ic_profile)
-                        .into(binding.chatItemImgProfileImgTypeCount2Img2)
-
-                    binding.chatItemClProfileImgCount2Container.isVisible = true
-                }
-
-                3 -> {
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0])
-                        .error(R.drawable.ic_profile)
-                        .into(binding.chatItemImgProfileImgTypeCount3Img1)
-
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1])
-                        .error(R.drawable.ic_profile)
-                        .into(binding.chatItemImgProfileImgTypeCount3Img2)
-
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[2])
-                        .error(R.drawable.ic_profile)
-                        .into(binding.chatItemImgProfileImgTypeCount3Img3)
-
-                    binding.chatItemClProfileImgCount3Container.isVisible = true
-                }
-
-                in 4..10 -> {
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[0])
-                        .error(R.drawable.ic_profile)
-                        .into(binding.chatItemImgProfileImgTypeCount4Img1)
-
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[1])
-                        .error(R.drawable.ic_profile)
-                        .into(binding.chatItemImgProfileImgTypeCount4Img2)
-
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[2])
-                        .error(R.drawable.ic_profile)
-                        .into(binding.chatItemImgProfileImgTypeCount4Img3)
-
-                    Glide.with(binding.root.context).load(item.chatRoomUserProfileImages[3])
-                        .error(R.drawable.ic_profile)
-                        .into(binding.chatItemImgProfileImgTypeCount4Img4)
-
-                    binding.chatItemClProfileImgCount4Container.isVisible = true
-                }
-
-                else -> {
-
-                }
-
-            }
+            Glide.with(binding.root.context).load(user?.profileImage ?: "")
+                .error(R.drawable.ic_profile).into(binding.chatItemImgProfile)
         }
     }
 }

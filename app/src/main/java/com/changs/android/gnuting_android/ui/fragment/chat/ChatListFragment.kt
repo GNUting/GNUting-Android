@@ -34,7 +34,7 @@ class ChatListFragment :
         }
     }
 
-    private fun itemClickListener(id: Int, title: String, info: String, chatRoomUsers: List<ChatRoomUser>) {
+    private fun itemClickListener(id: Int, title: String, info: String, chatRoomUsers: List<ChatRoomUser?>) {
         val action = ChatListFragmentDirections.actionChatListFragmentToChatFragment(id = id)
         findNavController().navigate(action)
     }

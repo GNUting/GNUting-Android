@@ -147,13 +147,32 @@
                 app:layout_constraintStart_toStartOf="@+id/home_txt_content"
                 app:layout_constraintTop_toBottomOf="@+id/home_txt_content" />
 
+            <TextView
+                android:id="@+id/home_btn_memo_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_radius_100dp_solid_gray12"
+                android:contentDescription="메모팅 게시글 작성하는 팝업을 띄우는 버튼"
+                android:fontFamily="@font/pretendard_medium"
+                android:paddingHorizontal="17dp"
+                android:paddingVertical="8dp"
+                android:text="메모팅 남기기"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_marginStart="6dp"
+                app:layout_constraintEnd_toEndOf="@+id/home_txt_content"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/home_btn_post"
+                app:layout_constraintTop_toTopOf="@+id/home_btn_post" />
+
             <ImageView
                 android:id="@+id/home_img_banner"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="45dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/banner"
+                android:clickable="false"
+                android:src="@drawable/event_banner"
                 android:contentDescription="지누팅 인스타그램 앱 프로필 화면으로 이동하는 버튼"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

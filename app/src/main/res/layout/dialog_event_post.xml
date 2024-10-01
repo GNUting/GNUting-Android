@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/memo_post_dialog"
+    android:id="@+id/event_post_dialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minWidth="250dp"
@@ -10,34 +10,79 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/dialog_memo_post_txt_title"
+        android:id="@+id/dialog_event_post_txt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:layout_marginHorizontal="40dp"
-        android:text="메모를 남겨주세요:)"
+        android:text="닉네임을 입력해 주세요 :)"
         android:layout_marginVertical="20dp"
         android:fontFamily="@font/pretendard_semi_bold"
         android:textColor="@color/black"
         android:textSize="18sp" />
     
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/dialog_memo_post_edit"
+        android:id="@+id/dialog_event_post_edit"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:hint="내용을 입력해 주세요"
+        android:layout_height="wrap_content"
+        android:hint="닉네임을 입력해 주세요"
         android:textColorHint="#717171"
         android:textSize="12sp"
         android:textColor="@color/black"
         android:gravity="top"
         android:padding="13dp"
-        android:maxLines="5"
-        android:maxLength="30"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:inputType="text"
         android:fontFamily="@font/pretendard_medium"
         android:layout_marginBottom="19dp"
         android:layout_marginHorizontal="20dp"
         android:background="@color/gray15"/>
 
+    <LinearLayout
+        android:layout_marginHorizontal="23dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#AEAEAE"
+            android:fontFamily="@font/pretendard_regular"
+            android:layout_marginEnd="5dp"
+            android:text="·"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="#AEAEAE"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="본 메모팅은 대동제 기간 동안 진행되는 오감 총학생회와 지누팅의 콜라보 이벤트입니다."/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginBottom="23dp"
+        android:layout_marginHorizontal="23dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_height="wrap_content"
+            android:textColor="#AEAEAE"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="·"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="#AEAEAE"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="대동제 종료 후, 지누팅 애플리케이션을 통해 언제든지 메모팅을 진행하실 수 있습니다. "/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,7 +93,7 @@
         android:layout_gravity="center">
 
         <TextView
-            android:id="@+id/dialog_memo_post_txt_left"
+            android:id="@+id/dialog_event_post_txt_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -62,7 +107,7 @@
             android:fontFamily="@font/pretendard_semi_bold"/>
 
         <TextView
-            android:id="@+id/dialog_memo_post_txt_right"
+            android:id="@+id/dialog_event_post_txt_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

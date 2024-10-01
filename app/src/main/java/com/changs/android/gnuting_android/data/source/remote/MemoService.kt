@@ -1,5 +1,6 @@
 package com.changs.android.gnuting_android.data.source.remote
 
+import com.changs.android.gnuting_android.data.model.ApplyChatResponse
 import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.MemoListResponse
 import com.changs.android.gnuting_android.data.model.MemoRemainingResponse
@@ -20,7 +21,7 @@ interface MemoService {
     suspend fun getMemoRemainingCount(): Response<MemoRemainingResponse>
 
     @POST("api/v1/memo/{id}")
-    suspend fun postMemoApply(@Path("id") id: Int): Response<DefaultResponse>
+    suspend fun postMemoApply(@Path("id") id: Int): Response<ApplyChatResponse>
 
     @POST("api/v1/memo/save")
     suspend fun postMemoSave(@Body request: PostMemoRequestBody): Response<DefaultResponse>

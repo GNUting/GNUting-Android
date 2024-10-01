@@ -10,8 +10,10 @@ import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.ApplyChatResponse
 import com.changs.android.gnuting_android.data.model.DefaultResponse
 import com.changs.android.gnuting_android.data.model.MemoResult
+import com.changs.android.gnuting_android.data.model.PostEventRequestBody
 import com.changs.android.gnuting_android.data.model.PostMemoRequestBody
 import com.changs.android.gnuting_android.data.model.SaveRequest
+import com.changs.android.gnuting_android.data.repository.EventRepository
 import com.changs.android.gnuting_android.data.repository.MemoRepository
 import com.changs.android.gnuting_android.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,36 +23,24 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MemoViewModel @Inject constructor(private val memoRepository: MemoRepository) :
+class EventViewModel @Inject constructor(private val eventRepository: EventRepository) :
     BaseViewModel() {
-    private val _saveMemoResponse = MutableLiveData<Event<DefaultResponse>>()
+    private val _postEventResponse = MutableLiveData<Event<ApplyChatResponse>>()
 
-    val saveMemoResponse: LiveData<Event<DefaultResponse>>
-        get() = _saveMemoResponse
+    val postEventResponse: LiveData<Event<ApplyChatResponse>>
+        get() = _postEventResponse
 
-    private val _applyMemoResponse = MutableLiveData<Event<ApplyChatResponse>>()
+    private val _eventCheckResponse = MutableLiveData<String>()
+    val eventCheckResponse: LiveData<String> get() = _eventCheckResponse
 
-    val applyMemoResponse: LiveData<Event<ApplyChatResponse>>
-        get() = _applyMemoResponse
-
-
-
-    private val _remainingCount = MutableLiveData<Int>()
-    val remainingCount: LiveData<Int> get() = _remainingCount
-
-    fun getMemoPagingList(): Flow<PagingData<MemoResult>> {
-        return memoRepository.getMemoListPagingData().cachedIn(viewModelScope)
-    }
-
-
-    fun getMemoRemainingCount() {
+    fun getEventCheck() {
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val response = memoRepository.getMemoRemainingCount()
+                val response = eventRepository.getEventCheck()
 
                 handleResult(response = response, handleSuccess = fun() {
-                    _remainingCount.value = response.body()?.result
+                   _eventCheckResponse.value = response.body()?.result
                 })
             } catch (e: Exception) {
                 _spinner.value = false
@@ -60,35 +50,14 @@ class MemoViewModel @Inject constructor(private val memoRepository: MemoReposito
         }
     }
 
-    fun postApplyMemo(id: Int) {
+    fun postEvent(request: PostEventRequestBody) {
         viewModelScope.launch {
             try {
                 _spinner.value = true
-                val response = memoRepository.postApplyMemo(id)
+                val response = eventRepository.postEvent(request)
 
                 handleResult(response = response, handleSuccess = fun() {
-                    _applyMemoResponse.value = Event(response.body()!!)
-                    _toast.value = Event("메모 신청이 완료되었습니다.")
-                }, handleError = fun(error: BaseResponse) {
-                    _toast.value = Event(error.message)
-                })
-            } catch (e: Exception) {
-                _spinner.value = false
-                _toast.value = Event("네트워크 에러가 발생했습니다.")
-                Timber.e(e.message ?: "network error")
-            }
-        }
-    }
-
-    fun postSaveMemo(saveRequest: PostMemoRequestBody) {
-        viewModelScope.launch {
-            try {
-                _spinner.value = true
-                val response = memoRepository.postSaveMemo(saveRequest)
-
-                handleResult(response = response, handleSuccess = fun() {
-                    _saveMemoResponse.value = Event(response.body()!!)
-                    _toast.value = Event("메모 작성이 완료되었습니다.")
+                    _postEventResponse.value = Event(response.body()!!)
                 }, handleError = fun(error: BaseResponse) {
                     _toast.value = Event(error.message)
                 })

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -69,6 +70,11 @@ class MemoFragment :
 
         memoViewModel.remainingCount.observe(viewLifecycleOwner) { count ->
             binding.memoTxtRemainingNumber.text = "${count}회"
+        }
+
+        memoViewModel.applyMemoResponse.eventObserve(viewLifecycleOwner) {
+            val bundle = bundleOf("id" to it.result.chatId)
+            findNavController().navigate(R.id.chatFragment, bundle)
         }
     }
 

@@ -64,6 +64,9 @@
         <action
             android:id="@+id/action_homeFragment_to_memoFragment"
             app:destination="@id/memoFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
     <fragment
         android:id="@+id/myFragment"
@@ -327,5 +330,9 @@
         android:id="@+id/memoFragment"
         android:name="com.changs.android.gnuting_android.ui.fragment.memo.MemoFragment"
         android:label="fragment_memo"
-        tools:layout="@layout/fragment_memo" />
+        tools:layout="@layout/fragment_memo" >
+        <action
+            android:id="@+id/action_memoFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
 </navigation>

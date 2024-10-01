@@ -56,7 +56,12 @@ class ApplicationFragment : BaseFragment<FragmentApplicationBinding>(
                 binding.applicationCardRecyclerviewContainer2.visibility = View.VISIBLE
                 binding.applicationTxtMember.visibility = View.VISIBLE
 
-                binding.applicationTxtMember.text = "$applyUserCount : $applyUserCount 매칭"
+
+                if (applyUserCount == 1 && participantUserCount == 1) {
+                    binding.applicationTxtMember.text = "1:1 매칭"
+                } else {
+                    binding.applicationTxtMember.text = "과팅 ($applyUserCount : $participantUserCount 매칭)"
+                }
 
                 when (applyStatus) {
                     "대기중" -> {

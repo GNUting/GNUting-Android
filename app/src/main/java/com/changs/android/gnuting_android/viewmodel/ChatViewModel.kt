@@ -7,6 +7,7 @@ import com.changs.android.gnuting_android.base.BaseResponse
 import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.ChatDetailResponse
 import com.changs.android.gnuting_android.data.model.ChatListResponse
+import com.changs.android.gnuting_android.data.model.ChatListResponse2
 import com.changs.android.gnuting_android.data.model.ChatResponse
 import com.changs.android.gnuting_android.data.model.ChatRoomUsersResponse
 import com.changs.android.gnuting_android.data.model.DefaultResponse
@@ -50,9 +51,9 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
         stompChatSource?.sendMessage(message)
     }
 
-    private val _chatRoomListResponse: MutableLiveData<ChatListResponse> = MutableLiveData()
+    private val _chatRoomListResponse: MutableLiveData<ChatListResponse2> = MutableLiveData()
 
-    val chatRoomListResponse: LiveData<ChatListResponse> get() = _chatRoomListResponse
+    val chatRoomListResponse: LiveData<ChatListResponse2> get() = _chatRoomListResponse
 
     fun getChatRoomList() {
         viewModelScope.launch {
