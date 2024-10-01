@@ -152,9 +152,17 @@ android:background="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pretendard_regular"
-            android:text="게시글이 비어있습니다."
+            android:text="메모팅가 없습니다."
             android:textColor="@color/gray7"
             android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="조금만 기다려볼까요?"
+            android:textColor="@color/gray7"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
