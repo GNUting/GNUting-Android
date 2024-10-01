@@ -57,7 +57,7 @@ class ChatListAdapter(private val listener: (Int, String, String, List<ChatRoomU
             binding.chatItemTxtTime.text = convertToKoreanTime(item.lastMessageTime)
 
             if (item.title == "1:1" || item.title == "메모팅") {
-                binding.chatItemTxtName.text = user?.nickname ?: "(탈퇴한 회원)"
+                binding.chatItemTxtName.text = user?.nickname ?: "(알 수 없음)"
                 binding.chatItemTxtInfo.visibility = View.VISIBLE
             } else {
                 binding.chatItemTxtName.text = userNameList
