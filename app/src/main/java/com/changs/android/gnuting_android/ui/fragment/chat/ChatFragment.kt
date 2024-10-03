@@ -67,7 +67,7 @@ class ChatFragment :
         }
 
         binding.chatImgSend.setOnClickListener {
-            if (!binding.chatEdit.text.isNullOrEmpty()) {
+            if (!binding.chatEdit.text.isNullOrBlank()) {
                 chatViewModel.sendMessage(binding.chatEdit.text.toString())
                 binding.chatEdit.text?.clear()
                 binding.chatEdit.clearFocus()

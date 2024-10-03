@@ -110,7 +110,7 @@ class Join2Fragment :
             if (viewModel.nickname != binding.join2EditNickname.text.toString()) viewModel.nickNameCheck.value =
                 null
 
-            if (!text.isNullOrEmpty()) {
+            if (!text.isNullOrEmpty() && text.isNotBlank()) {
                 binding.join2BtnNicknameCheck.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
                 binding.join2BtnNicknameCheck.isEnabled = true
             } else {

@@ -114,7 +114,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProflieBinding>(
         }
 
         binding.editProfileEditNickName.doOnTextChanged { text, start, count, after ->
-            if (!text.isNullOrEmpty() && args.member.nickname != binding.editProfileEditNickName.text.toString()) {
+            if (!text.isNullOrEmpty() && text.isNotBlank() && args.member.nickname != binding.editProfileEditNickName.text.toString()) {
                 binding.editProfileBtnConfirmation.setBackgroundResource(R.drawable.background_radius_10dp_solid_main)
                 binding.editProfileBtnConfirmation.isEnabled = true
                 viewModel.nickNameCheck.value = false

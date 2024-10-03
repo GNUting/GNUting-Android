@@ -103,27 +103,6 @@ class HomeFragment :
 
             showMemoPostDialog(action)
         }
-
-        binding.homeImgBanner.setOnClickListener {
-            val action = fun(request: PostEventRequestBody) {
-                eventViewModel.postEvent(request)
-            }
-
-            showEventPostDialog(action)
-
-            // 지누팅 인스타로 이동
-/*            runCatching {
-                val uri = Uri.parse("https://www.instagram.com/gnu_ting/p/C5bIzh2yIe5/?img_index=1")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                intent.setPackage("com.instagram.android")
-                startActivity(intent)
-            }.onFailure {
-                Timber.e(it.message ?: "error")
-                val uri = Uri.parse("https://www.instagram.com/gnu_ting/p/C5bIzh2yIe5/?img_index=1")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
-            }*/
-        }
     }
 
     private fun setPager() {
@@ -152,9 +131,17 @@ class HomeFragment :
         eventViewModel.eventCheckResponse.observe(viewLifecycleOwner) {
             it?.let {
                 if (it == "OPEN") {
-                    binding.homeImgBanner.isClickable = true
+                    binding.homeImgBanner.setOnClickListener {
+                        val action = fun(request: PostEventRequestBody) {
+                            eventViewModel.postEvent(request)
+                        }
+
+                        showEventPostDialog(action)
+                    }
                 } else {
-                    binding.homeImgBanner.isClickable = false
+                    binding.homeImgBanner.setOnClickListener {
+                        (requireActivity() as HomeActivity).showToast("이벤트 기간이 아닙니다.")
+                    }
                 }
             }
         }
