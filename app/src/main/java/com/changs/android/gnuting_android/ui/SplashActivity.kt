@@ -44,15 +44,13 @@ class SplashActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_splash)
 
-        navigate()
-
-/*        splashScreen.setKeepOnScreenCondition { true }
+        splashScreen.setKeepOnScreenCondition { true }
 
         splashViewModel.isLoading.observe(this) {
             if (it == false) {
                 splashScreen.setKeepOnScreenCondition { false }
             }
-        }*/
+        }
     }
 
     override fun onResume() {

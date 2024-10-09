@@ -3,6 +3,9 @@ package com.changs.android.gnuting_android.ui.fragment.chat
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
@@ -14,27 +17,31 @@ import com.changs.android.gnuting_android.util.eventObserve
 import com.changs.android.gnuting_android.viewmodel.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class ChatListFragment :
-    BaseFragment<FragmentChatListBinding>(FragmentChatListBinding::bind, R.layout.fragment_chat_list) {
+    BaseFragment<FragmentChatListBinding>(
+        FragmentChatListBinding::bind,
+        R.layout.fragment_chat_list
+    ) {
     private val chatViewModel: ChatViewModel by viewModels()
     private var adapter: ChatListAdapter? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        chatViewModel.getChatRoomList()
+        chatViewModel.startPollingChatRoomList()
         setRecyclerView()
         setObserver()
-
-        binding.chatListRefresh.setColorSchemeColors(resources.getColor(R.color.main, null))
-
-        binding.chatListRefresh.setOnRefreshListener {
-            chatViewModel.getChatRoomList()
-        }
     }
 
-    private fun itemClickListener(id: Int, title: String, info: String, chatRoomUsers: List<ChatRoomUser?>) {
+    private fun itemClickListener(
+        id: Int,
+        title: String,
+        info: String,
+        chatRoomUsers: List<ChatRoomUser?>
+    ) {
         val action = ChatListFragmentDirections.actionChatListFragmentToChatFragment(id = id)
         findNavController().navigate(action)
     }
@@ -55,15 +62,19 @@ class ChatListFragment :
             }
         }
 
-        chatViewModel.chatRoomListResponse.observe(viewLifecycleOwner) {
-            if (binding.chatListRefresh.isRefreshing) binding.chatListRefresh.isRefreshing = false
-            adapter?.submitList(it.result)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                chatViewModel.chatRoomListResponseFlow.collectLatest { response ->
+                    if (response != null) {
+                        adapter?.submitList(response.result)
 
-            if (it.result.isNotEmpty()) {
-                binding.chatListLlEmpty.visibility = View.GONE
-            }
-            else {
-                binding.chatListLlEmpty.visibility = View.VISIBLE
+                        if (response.result.isNotEmpty()) {
+                            binding.chatListLlEmpty.visibility = View.GONE
+                        } else {
+                            binding.chatListLlEmpty.visibility = View.VISIBLE
+                        }
+                    }
+                }
             }
         }
     }
@@ -71,10 +82,5 @@ class ChatListFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         adapter = null
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (binding.chatListRefresh.isRefreshing) binding.chatListRefresh.isRefreshing = false
     }
 }

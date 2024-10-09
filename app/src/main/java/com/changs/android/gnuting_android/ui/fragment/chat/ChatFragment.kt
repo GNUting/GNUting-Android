@@ -3,6 +3,7 @@ package com.changs.android.gnuting_android.ui.fragment.chat
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
@@ -45,6 +46,7 @@ class ChatFragment :
     private val alarmViewModel: AlarmViewModel by viewModels()
     private val args: ChatFragmentArgs by navArgs()
     private var adapter: ChatAdapter? = null
+    private var globalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,6 +54,7 @@ class ChatFragment :
         setRecyclerView()
         setObserver()
         setListener()
+        setupKeyboardListener()
     }
 
     private fun setListener() {
@@ -209,6 +212,9 @@ class ChatFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
+        globalLayoutListener?.let { listener ->
+            binding.root.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+        }
         chatViewModel.disConnectChatRoom()
         adapter = null
     }
@@ -216,5 +222,22 @@ class ChatFragment :
     private fun navigateListener(user: InUser) {
         val args = bundleOf("user" to user)
         findNavController().navigate(R.id.photoFragment, args)
+    }
+
+    private fun setupKeyboardListener() {
+        globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+            val rect = android.graphics.Rect()
+            binding.root.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = binding.root.rootView.height
+            val keypadHeight = screenHeight - rect.bottom
+
+            if (keypadHeight > screenHeight * 0.15) {
+                adapter?.let {
+                    binding.chatRecyclerview.scrollToPosition(it.currentList.size - 1)
+                }
+            }
+        }
+
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener!!)
     }
 }

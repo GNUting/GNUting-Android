@@ -17,6 +17,8 @@ import com.changs.android.gnuting_android.data.source.local.TokenManager
 import com.changs.android.gnuting_android.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -51,22 +53,27 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
         stompChatSource?.sendMessage(message)
     }
 
-    private val _chatRoomListResponse: MutableLiveData<ChatListResponse2> = MutableLiveData()
+    private val _chatRoomListResponseFlow = MutableStateFlow<ChatListResponse2?>(null)
+    val chatRoomListResponseFlow: StateFlow<ChatListResponse2?> = _chatRoomListResponseFlow
 
-    val chatRoomListResponse: LiveData<ChatListResponse2> get() = _chatRoomListResponse
-
-    fun getChatRoomList() {
+    fun startPollingChatRoomList() {
         viewModelScope.launch {
-            delay(500)
+            while (true) {
+                getChatRoomList()
+                delay(2000)
+            }
+        }
+    }
+
+    private fun getChatRoomList() {
+        viewModelScope.launch {
             try {
-                _spinner.value = true
                 val response = chatRepository.getChatRoomList()
 
                 handleResult(response = response, handleSuccess = fun() {
-                    _chatRoomListResponse.value = response.body()!!
+                    _chatRoomListResponseFlow.value = response.body()!!
                 })
             } catch (e: Exception) {
-                _spinner.value = false
                 Timber.e(e.message ?: "network error")
             }
         }
