@@ -100,7 +100,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     nickname = null
                     nickNameCheck.value = false
                     _spinner.value = false
-                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                     Timber.e(e.message ?: "network error")
                 }
             }
@@ -129,7 +128,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                     Timber.e(e.message ?: "network error")
                 }
             }
@@ -158,7 +156,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                     Timber.e(e.message ?: "network error")
                 }
             }
@@ -205,7 +202,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                     Timber.e(e.message ?: "network error")
                 }
             } else {
@@ -234,7 +230,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                     Timber.e(e.message ?: "network error")
                 }
             }
@@ -269,7 +264,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                     Timber.e(e.message ?: "network error")
                 }
             } else {
@@ -299,7 +293,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                 } catch (e: Exception) {
                     emailVerifyResponse.value = null
                     _spinner.value = false
-                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                     Timber.e(e.message ?: "network error")
                 }
             } else {
@@ -330,7 +323,6 @@ class MainViewModel @Inject constructor(private val repository: UserRepository, 
                     }
                 } catch (e: Exception) {
                     _spinner.value = false
-                    _toast.value = Event("네트워크 에러가 발생했습니다.")
                     Timber.e(e.message ?: "network error")
                 }
             } else {

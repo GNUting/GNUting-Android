@@ -37,7 +37,6 @@ class MemberAddViewModel @Inject constructor(private val postRepository: PostRep
                 })
             } catch (e: Exception) {
                 _spinner.value = false
-                _toast.value = Event("네트워크 에러가 발생했습니다.")
                 Timber.e(e.message ?: "network error")
             }
         }
