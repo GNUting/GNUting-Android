@@ -35,6 +35,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import timber.log.Timber
+import java.sql.Time
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -211,12 +213,17 @@ class ChatFragment :
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-        globalLayoutListener?.let { listener ->
-            binding.root.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+        try {
+            globalLayoutListener?.let { listener ->
+                binding.root.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+            }
+            chatViewModel.disConnectChatRoom()
+            adapter = null
+            super.onDestroyView()
+        } catch (e: Exception) {
+            Timber.e("error: ${e.message}")
         }
-        chatViewModel.disConnectChatRoom()
-        adapter = null
+
     }
 
     private fun navigateListener(user: InUser) {
@@ -226,15 +233,19 @@ class ChatFragment :
 
     private fun setupKeyboardListener() {
         globalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
-            val rect = android.graphics.Rect()
-            binding.root.getWindowVisibleDisplayFrame(rect)
-            val screenHeight = binding.root.rootView.height
-            val keypadHeight = screenHeight - rect.bottom
+            try {
+                val rect = android.graphics.Rect()
+                binding.root.getWindowVisibleDisplayFrame(rect)
+                val screenHeight = binding.root.rootView.height
+                val keypadHeight = screenHeight - rect.bottom
 
-            if (keypadHeight > screenHeight * 0.15) {
-                adapter?.let {
-                    binding.chatRecyclerview.scrollToPosition(it.currentList.size - 1)
+                if (keypadHeight > screenHeight * 0.15) {
+                    adapter?.let {
+                        binding.chatRecyclerview.scrollToPosition(it.currentList.size - 1)
+                    }
                 }
+            } catch (e: Exception) {
+                Timber.e("error: ${e.message}")
             }
         }
 
