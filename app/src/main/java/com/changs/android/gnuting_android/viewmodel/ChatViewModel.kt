@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.changs.android.gnuting_android.base.BaseResponse
 import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.ChatDetailResponse
-import com.changs.android.gnuting_android.data.model.ChatListResponse
 import com.changs.android.gnuting_android.data.model.ChatListResponse2
 import com.changs.android.gnuting_android.data.model.ChatResponse
 import com.changs.android.gnuting_android.data.model.ChatRoomUsersResponse
@@ -70,6 +69,7 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
 
     fun stopPollingChatRoomList() {
         pollingJob?.cancel()
+        pollingJob = null
     }
 
     private suspend fun getChatRoomList() {
