@@ -86,7 +86,6 @@ class MemoViewModel @Inject constructor(private val memoRepository: MemoReposito
 
                 handleResult(response = response, handleSuccess = fun() {
                     _saveMemoResponse.value = Event(response.body()!!)
-                    _toast.value = Event("메모 작성이 완료되었습니다.")
                 }, handleError = fun(error: BaseResponse) {
                     _toast.value = Event(error.message)
                 })

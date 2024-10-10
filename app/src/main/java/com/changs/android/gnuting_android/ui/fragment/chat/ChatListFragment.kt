@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
@@ -31,7 +33,6 @@ class ChatListFragment :
     private var adapter: ChatListAdapter? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        chatViewModel.startPollingChatRoomList()
         setRecyclerView()
         setObserver()
     }
@@ -44,6 +45,16 @@ class ChatListFragment :
     ) {
         val action = ChatListFragmentDirections.actionChatListFragmentToChatFragment(id = id)
         findNavController().navigate(action)
+    }
+
+    override fun onResume() {
+        chatViewModel.startPollingChatRoomList()
+        super.onResume()
+    }
+
+    override fun onPause() {
+        chatViewModel.stopPollingChatRoomList()
+        super.onPause()
     }
 
     private fun setRecyclerView() {
@@ -63,16 +74,17 @@ class ChatListFragment :
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                chatViewModel.chatRoomListResponseFlow.collectLatest { response ->
-                    if (response != null) {
-                        adapter?.submitList(response.result)
+            chatViewModel.chatRoomListResponseFlow.flowWithLifecycle(
+                viewLifecycleOwner.lifecycle,
+                Lifecycle.State.RESUMED
+            ).collectLatest { response ->
+                if (response != null) {
+                    adapter?.submitList(response.result)
 
-                        if (response.result.isNotEmpty()) {
-                            binding.chatListLlEmpty.visibility = View.GONE
-                        } else {
-                            binding.chatListLlEmpty.visibility = View.VISIBLE
-                        }
+                    if (response.result.isNotEmpty()) {
+                        binding.chatListLlEmpty.visibility = View.GONE
+                    } else {
+                        binding.chatListLlEmpty.visibility = View.VISIBLE
                     }
                 }
             }
@@ -80,7 +92,7 @@ class ChatListFragment :
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         adapter = null
+        super.onDestroyView()
     }
 }

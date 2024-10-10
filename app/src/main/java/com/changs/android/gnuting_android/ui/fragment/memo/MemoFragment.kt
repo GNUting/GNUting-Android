@@ -15,24 +15,20 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.changs.android.gnuting_android.R
 import com.changs.android.gnuting_android.base.BaseFragment
-import com.changs.android.gnuting_android.data.model.MemoResult
 import com.changs.android.gnuting_android.data.model.PostMemoRequestBody
 import com.changs.android.gnuting_android.databinding.FragmentMemoBinding
 import com.changs.android.gnuting_android.ui.HomeActivity
 import com.changs.android.gnuting_android.ui.adapter.MemoListPagingAdapter
-import com.changs.android.gnuting_android.ui.adapter.PostListPagingAdapter
 import com.changs.android.gnuting_android.util.eventObserve
-import com.changs.android.gnuting_android.util.showTwoButtonDialog
+import com.changs.android.gnuting_android.util.showOneButtonDialog
 import com.changs.android.gnuting_android.viewmodel.MemoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -60,6 +56,12 @@ class MemoFragment :
 
         memoViewModel.spinner.observe(viewLifecycleOwner) { show ->
             binding.spinner.visibility = if (show) View.VISIBLE else View.GONE
+        }
+
+        memoViewModel.saveMemoResponse.eventObserve(viewLifecycleOwner) {
+            showOneButtonDialog(context = requireContext(),  titleText = "메모가 등록되었습니다.\n(작성하신 메모는 본인에게는 표시되지 않습니다)", action = {
+
+            })
         }
 
         memoViewModel.toast.eventObserve(viewLifecycleOwner) { text ->

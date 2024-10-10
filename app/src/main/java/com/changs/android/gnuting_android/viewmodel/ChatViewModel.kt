@@ -16,6 +16,7 @@ import com.changs.android.gnuting_android.data.source.StompChatSource
 import com.changs.android.gnuting_android.data.source.local.TokenManager
 import com.changs.android.gnuting_android.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -56,8 +57,10 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
     private val _chatRoomListResponseFlow = MutableStateFlow<ChatListResponse2?>(null)
     val chatRoomListResponseFlow: StateFlow<ChatListResponse2?> = _chatRoomListResponseFlow
 
+    private var pollingJob: Job? = null
+
     fun startPollingChatRoomList() {
-        viewModelScope.launch {
+        pollingJob = viewModelScope.launch {
             while (true) {
                 getChatRoomList()
                 delay(2000)
@@ -65,8 +68,11 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
         }
     }
 
-    private fun getChatRoomList() {
-        viewModelScope.launch {
+    fun stopPollingChatRoomList() {
+        pollingJob?.cancel()
+    }
+
+    private suspend fun getChatRoomList() {
             try {
                 val response = chatRepository.getChatRoomList()
 
@@ -76,7 +82,6 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
             } catch (e: Exception) {
                 Timber.e(e.message ?: "network error")
             }
-        }
     }
 
     private val _chatDetailResponse = MutableLiveData<ChatDetailResponse>()
