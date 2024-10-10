@@ -47,16 +47,6 @@ class ChatListFragment :
         findNavController().navigate(action)
     }
 
-    override fun onResume() {
-        chatViewModel.startPollingChatRoomList()
-        super.onResume()
-    }
-
-    override fun onPause() {
-        chatViewModel.stopPollingChatRoomList()
-        super.onPause()
-    }
-
     private fun setRecyclerView() {
         adapter = ChatListAdapter(::itemClickListener)
         binding.chatListRecyclerview.adapter = adapter
@@ -74,7 +64,7 @@ class ChatListFragment :
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            chatViewModel.chatRoomListResponseFlow.flowWithLifecycle(
+            chatViewModel.chatRoomListFlow.flowWithLifecycle(
                 viewLifecycleOwner.lifecycle,
                 Lifecycle.State.RESUMED
             ).collectLatest { response ->

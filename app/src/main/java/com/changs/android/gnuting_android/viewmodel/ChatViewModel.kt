@@ -15,17 +15,18 @@ import com.changs.android.gnuting_android.data.source.StompChatSource
 import com.changs.android.gnuting_android.data.source.local.TokenManager
 import com.changs.android.gnuting_android.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatViewModel @Inject constructor(private val chatRepository: ChatRepository, private val tokenManager: TokenManager
+class ChatViewModel @Inject constructor(
+    private val chatRepository: ChatRepository, private val tokenManager: TokenManager
 ) : BaseViewModel() {
     private var stompChatSource: StompChatSource? = null
     private val _message: MutableLiveData<String> = MutableLiveData()
@@ -53,35 +54,14 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
         stompChatSource?.sendMessage(message)
     }
 
-    private val _chatRoomListResponseFlow = MutableStateFlow<ChatListResponse2?>(null)
-    val chatRoomListResponseFlow: StateFlow<ChatListResponse2?> = _chatRoomListResponseFlow
-
-    private var pollingJob: Job? = null
-
-    fun startPollingChatRoomList() {
-        pollingJob = viewModelScope.launch {
-            while (true) {
-                getChatRoomList()
-                delay(2000)
-            }
+    val chatRoomListFlow: Flow<ChatListResponse2?> = flow {
+        while (true) {
+            val response = chatRepository.getChatRoomList().body()
+            emit(response)
+            delay(2000)
         }
-    }
-
-    fun stopPollingChatRoomList() {
-        pollingJob?.cancel()
-        pollingJob = null
-    }
-
-    private suspend fun getChatRoomList() {
-            try {
-                val response = chatRepository.getChatRoomList()
-
-                handleResult(response = response, handleSuccess = fun() {
-                    _chatRoomListResponseFlow.value = response.body()!!
-                })
-            } catch (e: Exception) {
-                Timber.e(e.message ?: "network error")
-            }
+    }.catch {
+        Timber.e(it.message ?: "network error")
     }
 
     private val _chatDetailResponse = MutableLiveData<ChatDetailResponse>()
@@ -97,7 +77,7 @@ class ChatViewModel @Inject constructor(private val chatRepository: ChatReposito
                 handleResult(response = response, handleSuccess = fun() {
                     _chatDetailResponse.value = response.body()!!
                 }, handleError = fun(error: BaseResponse) {
-                    when( error.code) {
+                    when (error.code) {
                         "CHATROOM4001" -> {
                             _dialog.value = Event(error.message)
                         }
