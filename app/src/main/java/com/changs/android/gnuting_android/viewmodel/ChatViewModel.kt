@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.changs.android.gnuting_android.base.BaseResponse
 import com.changs.android.gnuting_android.base.BaseViewModel
 import com.changs.android.gnuting_android.data.model.ChatDetailResponse
-import com.changs.android.gnuting_android.data.model.ChatListResponse2
+import com.changs.android.gnuting_android.data.model.ChatListResponse
 import com.changs.android.gnuting_android.data.model.ChatResponse
 import com.changs.android.gnuting_android.data.model.ChatRoomUsersResponse
 import com.changs.android.gnuting_android.data.model.DefaultResponse
@@ -56,7 +56,7 @@ class ChatViewModel @Inject constructor(
         stompChatSource?.sendMessage(message)
     }
 
-    val chatRoomListFlow: Flow<ChatListResponse2?> = flow {
+    val chatRoomListFlow: Flow<ChatListResponse?> = flow {
         while (true) {
             val response = chatRepository.getChatRoomList().body()
             emit(response)
